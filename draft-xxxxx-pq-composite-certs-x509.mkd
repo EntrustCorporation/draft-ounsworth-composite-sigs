@@ -200,6 +200,10 @@ If either the `signatureAlgorithm` or `signatureValue` field contains the compos
 
 EDNOTE: We may also need to modify the definition of SubjectKeyIdentifier (https://tools.ietf.org/html/rfc5280#section-4.2.1.2) to be "as it is now, or the hash of the `CompositePublicKey`", being specific about which tags and length values are included in the hash.
 
+## Validation {sec-cert-validation}
+
+EDNOTE: talk about how composite certs are validated. Specifically address what happens if a client supports only some of the algs. Do we need to bring in a "SHOULD contain exactly 2 signatures, but MAY contain an arbitrary number if the vendor has a client-policy mechanism by which they can specify an algorithm verification policy" in {{sec-composite-sigs}} ?
+
 <!-- End of Composite Certificates section -->
 
 # Certificate Enrollment {#sec-cert-enrollment}
@@ -240,12 +244,12 @@ Once an entity in the PKI has a valid composite certificate, it MAY send subsequ
 # Certificate Revocation {#sec-revocation}
 EDNOTE: This subsection will talk about compromises of keys, revocation and how recovation will be verified.
 
-When a CA checks for key reuse of compromised keys, they SHOULD (MUST?) check each key individually, not a bit-for-bit match of the entire `CompositePublicKey`
+When a CA checks for key reuse of compromised keys, they SHOULD (MUST?) check each key individually, not a bit-for-bit match of the entire `CompositePublicKey` field.
 
 ## Certificate Revocation Lists (CRLs) {#sec-crl}
 EDNOTE: A mention to OCSP implications should be made.
 
-EDNOTE: The mechanism for globally revoking an algorithm should be mentioned, along with the practical suggestion that an algorithm MAY be globally revoked on the composite PKI's CRL, but not on the traditional PKI.
+EDNOTE: The mechanism for globally revoking an algorithm should be mentioned, along with the practical suggestion that an algorithm MAY be globally revoked on the composite PKI's CRL, but not on the traditional PKI (unless that suggestion should be entirely moved to the parallel-pkis draft?). Need to think about backwards-compatibility of this CRL extension? Do we need to suggest that CAs publish composite and traditional certs on separate CRLs for this reason?
 
 ## End-Entity Requested Revocation
 EDNOTE: Be explicit about whether a single-key revocation request has the authority to revoke the composite cert, and vice-versa.
@@ -254,18 +258,28 @@ EDNOTE: We may need to wade into modifications to the CMP / SCEP / EST protocols
 
 # New Algorithm Identifiers
 EDNOTE: This subsection defines the OIDs for the initial composite algorithm combinations we want to define.
-
+EDNOTE: Merge with {{sec-iana}} ??
 
 # In Practice {#sec-in-pract}
 EDNOTE: This section will talk about practical issue of how these certificates will be used. For example it will talk about the size of these certs and cert chains. It will explain that if a cert in the chain is a Composite cert then the whole chain needs to be of Composite Certs. It will also explain that the root CA cert does not have to be of the same algorithms. The root cert SHOULD NOT be transferred in the authentication exchange to save transport overhead and thus it can be different than the intermediate and leaf certs. It will talk about overhead (size and processing). It will also discuss backwards compatibility. It could include a subsection about implementation considerations.
 <!-- End of In Practice section -->
 
 # Implications for existing standards
+
+## RFC 2986
+EDNOTE: summarize the updates to RFC 2986 (CSR / PKCS#10).
+
+
+## RFC 5280
+EDNOTE: summarize the updates to RFC 5280 (X.509).
+
+
+## Cryptographic protocols
 EDNOTE: This section talks about how protocols like (D)TLS and IKEv2 are affected by this specifications. It will not attempt to solve all these problems, but it will explain the rationale, how things will work and what open problems need to be solved. It will talk about implications of how to distinguish what cert chain to send. It will describe how signature_algorithms extension will be used in TLS. What is missing in TLS and IKEv2 like what and how to sign something with the two private keys. It will discuss overhead (size and processing) as in {{sec-in-pract}}. It will also discuss PKCS#10.
 
 <!-- End of Implications for existing standards section -->
 
-# IANA Considerations
+# IANA Considerations {#sec-iana}
 EDNOTE: This section will include content only if new OIDs or IANA codepoints are asigned for it.
 
 There are no IANA Considerations for this specification.
@@ -282,6 +296,11 @@ EDNOTE: We will need OIDs for these ASN.1 structures:
 
 # Security Considerations
 EDNOTE: This section includes the Security Considerations.
+
+- Case: Only one key is compromised.
+- Case: An entire algorithm is compromised.
+- CA implementations need to be careful when checking for compromised key reuse: unpack the CompositePublicKey structure and compare individual keys.
+
 <!-- End of Security Considerations section -->
 
 # Appendices

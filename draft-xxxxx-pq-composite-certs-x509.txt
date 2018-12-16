@@ -68,25 +68,29 @@ Table of Contents
      4.2.  CompositeSignatureValue . . . . . . . . . . . . . . . . .   4
      4.3.  SubjectPublicKeyInfo  . . . . . . . . . . . . . . . . . .   5
    5.  Composite Certificates  . . . . . . . . . . . . . . . . . . .   5
+     5.1.  Validation {sec-cert-validation}  . . . . . . . . . . . .   6
    6.  Certificate Enrollment  . . . . . . . . . . . . . . . . . . .   6
      6.1.  PCKS#10 . . . . . . . . . . . . . . . . . . . . . . . . .   6
      6.2.  Subsequent Enrollments with Overlapping Public Keys . . .   7
    7.  Certificate Revocation  . . . . . . . . . . . . . . . . . . .   7
      7.1.  Certificate Revocation Lists (CRLs) . . . . . . . . . . .   7
-     7.2.  End-Entity Requested Revocation . . . . . . . . . . . . .   7
+     7.2.  End-Entity Requested Revocation . . . . . . . . . . . . .   8
    8.  New Algorithm Identifiers . . . . . . . . . . . . . . . . . .   8
    9.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .   8
    10. Implications for existing standards . . . . . . . . . . . . .   8
-   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
+     10.1.  RFC 2986 . . . . . . . . . . . . . . . . . . . . . . . .   8
+     10.2.  RFC 5280 . . . . . . . . . . . . . . . . . . . . . . . .   8
+     10.3.  Cryptographic protocols  . . . . . . . . . . . . . . . .   9
+   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
    12. Security Considerations . . . . . . . . . . . . . . . . . . .   9
    13. Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      13.1.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509  .   9
-   14. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .   9
-   15. Acknowledgenents  . . . . . . . . . . . . . . . . . . . . . .   9
-   16. References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
-     16.1.  Normative References . . . . . . . . . . . . . . . . . .   9
-     16.2.  Informative References . . . . . . . . . . . . . . . . .  10
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  10
+   14. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  10
+   15. Acknowledgenents  . . . . . . . . . . . . . . . . . . . . . .  10
+   16. References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
+     16.1.  Normative References . . . . . . . . . . . . . . . . . .  10
+     16.2.  Informative References . . . . . . . . . . . . . . . . .  11
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  11
 
 1.  Change Log
 
@@ -101,10 +105,6 @@ Table of Contents
    EDNOTE: This will be the Introduction
 
    Figure 1 shows an example figure.
-
-
-
-
 
 
 
@@ -304,6 +304,15 @@ Internet-Draft               Composite Certs               December 2018
    "CompositePublicKey"", being specific about which tags and length
    values are included in the hash.
 
+5.1.  Validation {sec-cert-validation}
+
+   EDNOTE: talk about how composite certs are validated.  Specifically
+   address what happens if a client supports only some of the algs.  Do
+   we need to bring in a "SHOULD contain exactly 2 signatures, but MAY
+   contain an arbitrary number if the vendor has a client-policy
+   mechanism by which they can specify an algorithm verification policy"
+   in Section 4.2 ?
+
 6.  Certificate Enrollment
 
    Some aspects of certificate enrollment need to be modified to
@@ -320,6 +329,15 @@ Internet-Draft               Composite Certs               December 2018
    To place multiple signatures into a certificate signing request, we
    re-define the "CertificationRequest" from [RFC2986].
 
+
+
+
+
+Kampanakis (Editor)       Expires June 19, 2019                 [Page 6]
+
+Internet-Draft               Composite Certs               December 2018
+
+
    CertificationRequest ::= SEQUENCE {
            certificationRequestInfo CertificationRequestInfo,
            signatureAlgorithm   CHOICE {
@@ -330,13 +348,6 @@ Internet-Draft               Composite Certs               December 2018
                 CompositeSignatureValue }
           }
       }
-
-
-
-Kampanakis (Editor)       Expires June 19, 2019                 [Page 6]
-
-Internet-Draft               Composite Certs               December 2018
-
 
    If either the "signatureAlgorithm" or "signatureValue" field contains
    the composite version, then the other MUST as well.  The order MUST
@@ -368,23 +379,12 @@ Internet-Draft               Composite Certs               December 2018
 
    When a CA checks for key reuse of compromised keys, they SHOULD
    (MUST?) check each key individually, not a bit-for-bit match of the
-   entire "CompositePublicKey"
+   entire "CompositePublicKey" field.
 
 7.1.  Certificate Revocation Lists (CRLs)
 
    EDNOTE: A mention to OCSP implications should be made.
 
-   EDNOTE: The mechanism for globally revoking an algorithm should be
-   mentioned, along with the practical suggestion that an algorithm MAY
-   be globally revoked on the composite PKI's CRL, but not on the
-   traditional PKI.
-
-7.2.  End-Entity Requested Revocation
-
-   EDNOTE: Be explicit about whether a single-key revocation request has
-   the authority to revoke the composite cert, and vice-versa.  EDNOTE:
-   We may need to wade into modifications to the CMP / SCEP / EST
-   protocols (but I really hope not).
 
 
 
@@ -394,10 +394,27 @@ Kampanakis (Editor)       Expires June 19, 2019                 [Page 7]
 Internet-Draft               Composite Certs               December 2018
 
 
+   EDNOTE: The mechanism for globally revoking an algorithm should be
+   mentioned, along with the practical suggestion that an algorithm MAY
+   be globally revoked on the composite PKI's CRL, but not on the
+   traditional PKI (unless that suggestion should be entirely moved to
+   the parallel-pkis draft?).  Need to think about backwards-
+   compatibility of this CRL extension?  Do we need to suggest that CAs
+   publish composite and traditional certs on separate CRLs for this
+   reason?
+
+7.2.  End-Entity Requested Revocation
+
+   EDNOTE: Be explicit about whether a single-key revocation request has
+   the authority to revoke the composite cert, and vice-versa.  EDNOTE:
+   We may need to wade into modifications to the CMP / SCEP / EST
+   protocols (but I really hope not).
+
 8.  New Algorithm Identifiers
 
    EDNOTE: This subsection defines the OIDs for the initial composite
-   algorithm combinations we want to define.
+   algorithm combinations we want to define.  EDNOTE: Merge with
+   Section 11 ??
 
 9.  In Practice
 
@@ -414,6 +431,26 @@ Internet-Draft               Composite Certs               December 2018
    implementation considerations.
 
 10.  Implications for existing standards
+
+10.1.  RFC 2986
+
+   EDNOTE: summarize the updates to RFC 2986 (CSR / PKCS#10).
+
+10.2.  RFC 5280
+
+   EDNOTE: summarize the updates to RFC 5280 (X.509).
+
+
+
+
+
+
+Kampanakis (Editor)       Expires June 19, 2019                 [Page 8]
+
+Internet-Draft               Composite Certs               December 2018
+
+
+10.3.  Cryptographic protocols
 
    EDNOTE: This section talks about how protocols like (D)TLS and IKEv2
    are affected by this specifications.  It will not attempt to solve
@@ -441,18 +478,17 @@ Internet-Draft               Composite Certs               December 2018
 
    o  CompositeSignatureValue
 
-
-
-
-
-Kampanakis (Editor)       Expires June 19, 2019                 [Page 8]
-
-Internet-Draft               Composite Certs               December 2018
-
-
 12.  Security Considerations
 
    EDNOTE: This section includes the Security Considerations.
+
+   o  Case: Only one key is compromised.
+
+   o  Case: An entire algorithm is compromised.
+
+   o  CA implementations need to be careful when checking for
+      compromised key reuse: unpack the CompositePublicKey structure and
+      compare individual keys.
 
 13.  Appendices
 
@@ -461,6 +497,15 @@ Internet-Draft               Composite Certs               December 2018
    EDNOTE: This section will explain the differences from
    [I-D.truskovsky-lamps-pq-hybrid-x509].  IPR Claims should be
    mentioned here if necessary.  Other things to consider are the things
+
+
+
+
+Kampanakis (Editor)       Expires June 19, 2019                 [Page 9]
+
+Internet-Draft               Composite Certs               December 2018
+
+
    we discussed in an email thread like simplicity and format,
    inadvertnt implementation errors, algorithm agility.
 
@@ -499,13 +544,6 @@ Internet-Draft               Composite Certs               December 2018
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-
-
-Kampanakis (Editor)       Expires June 19, 2019                 [Page 9]
-
-Internet-Draft               Composite Certs               December 2018
-
-
    [RFC2986]  Nystrom, M. and B. Kaliski, "PKCS #10: Certification
               Request Syntax Specification Version 1.7", RFC 2986,
               DOI 10.17487/RFC2986, November 2000,
@@ -516,6 +554,13 @@ Internet-Draft               Composite Certs               December 2018
               Infrastructure Certificate and Certificate Revocation List
               (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
               <https://www.rfc-editor.org/info/rfc5280>.
+
+
+
+Kampanakis (Editor)       Expires June 19, 2019                [Page 10]
+
+Internet-Draft               Composite Certs               December 2018
+
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -557,4 +602,15 @@ Author's Address
 
 
 
-Kampanakis (Editor)       Expires June 19, 2019                [Page 10]
+
+
+
+
+
+
+
+
+
+
+
+Kampanakis (Editor)       Expires June 19, 2019                [Page 11]
