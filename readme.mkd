@@ -1,2 +1,22 @@
-Composite Certificate Internet-Draft
----
+# Composite Certificate Internet-Draft
+
+
+## Setting up a build environment
+
+There may be a way to do this in cygwin, but I cut losses and did it in ubuntu:
+
+    $ sudo apt-get install ruby-full
+    $ sudo gem install kramdown-rfc2629
+
+## Building the document from markdown
+
+    // to build straight to an RFC-style .txt:
+    $ kdrfc draft-xxxxx-pq-composite-sigs-x509.mkd
+
+    // to produce the intermediary .xml for use with other IETF tools:
+    $ kramdown-rfc2629 draft-xxxxx-pq-composite-sigs-x509.mkd > draft-xxxxx-pq-composite-sigs-x509.xml
+
+
+## Editing Etiquette
+
+When checking in changes to the document source (`.mkd`), please also check in the modified `.txt` for those who wish to review changes (diffs) in their browser.

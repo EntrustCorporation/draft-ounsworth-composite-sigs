@@ -2,7 +2,7 @@
 title: Composite Postquantum Keys and Signatures in PKIX Certificates
 abbrev: Composite Certs
 # EDNOTE: Edits the draft name
-docname: draft-xxxxx-pq-composite-sigs-x509-00
+docname: draft-xxxxx-pq-composite-certs-x509-00
 # date: 2012-01-13
 # date: 2012-01
 # date: 2012
@@ -66,7 +66,7 @@ EDNOTE: This will be the abstract
 # Change Log
 EDNOTE: Remove this section before publication.
 
-draft-xxxxx-pq-composite-sigs-x509-00
+draft-xxxxx-pq-composite-certs-x509-00
 
 * Beginning of the draft
 <!-- End of Change Log section -->
@@ -103,11 +103,9 @@ During the transition to post-quantum cryptography, the deployment of cryptograp
 - Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will also start to erode.  A relying party may learn some time after certificate deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
 - Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
 
-This document proposes two mechanisms deployed together to address these two concerns, respectively: formats for encoding multiple public keys into the existing public key field, and parallel PKI hierarchies in which each entity is issued both a classic (traditional single-key) and composite (multi-key, multi-signature) certificate such that non composite-aware clients will continue functioning, and composite-aware clients can detect downgrade attacks.
+This document provides a mechanism to address algorithm strength uncertainty by providing formats for encoding multiple public keys into the existing public key field. The issue of backwards compatibility is left open to be addressed in separate draft(s).
 
-EDNOTE: Include a glossary to define the terms:
-  - Traditional certificate
-  - Composite certificate
+
 
 <!-- End of Introduction section -->
 
@@ -118,55 +116,106 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 as described in BCP 14 {{RFC2119}} {{RFC8174}} when, and only when, they appear in all capitals,
 as shown here.
 
+This document defines the following terms:
 
-# Comparison with draft-truskovsky-lamps-pq-hybrid-x509
-EDNOTE: This section will explain the differences from {{I-D.truskovsky-lamps-pq-hybrid-x509}}. IPR Claims should be mentioned here if necessary. Other things to consider are the things we discussed in an email thread like simplicity and format, inadvertnt implementation errors, algorithm agility.
+EDNOTE: Look up the standard way to do glossaries in RFCs.
 
-(MO): Move to appendix, or to a supporting document?
+EDNOTE: I think there's a proper way to reference another RFC or I-D. Look up.
 
-<!-- End of Comparison with draft-truskovsky-lamps-pq-hybrid-x509 section -->
+Traditional Certificate:
+
+An X.509 certificate conforming to RFC 5280. In particular, a certificate containing a single subject public key, and a single issuer signature.
+
+Composite certificate:
+
+An X.509 certificate containing two or more subject public keys and two or more issuer signatures as defined in this document.
 
 
 # Composite Certificates {#sec-composite-certs}
 This section defines a certificate format containing multiple subject public keys and multiple issuer signatures. This addresses the "algorithm strength uncertainty" concern from {{sec-intro}}, though the authors note that this mechanism may have prove to have utility beyond the post-quantum migration.
 
-## Composite Signatures {#sec-composite-sigs}
-EDNOTE: This subsection describes the PKIX Composite Signatures and how they work. It will also explain how signing a certificate will work and how verification will work.
+Algorithm strength uncertainty is addressed by defining new public key and signature data types that internally hold a list of public keys and signatures, respectively. By adding this structure to the X.509 format, we avoid the exponential proliferation of OIDs needed for each pairwise combination of signature algorithms. This scheme also naturally extends from 2-keypair to n-keypair should a vendor find a use for this.
 
-~~~ asn.1
-CompositeSignatureAlgorithmIdentifierId ::= OBJECT IDENTIFIER ...
-  -- syntax of the algorithm is CompositeSignatureAlgorithm
-CompositeSignatureAlgorithm ::= SEQUENCE OF AlgorithmIdentifier
-CompositeSignature ::= BIT STRING
-  -- Bit string encodes a SEQUENCE OF BIT STRING
-~~~
-{: artwork-name="composite-sig-asn.1"}
 
 ## Composite Public Keys {#sec-composite-pub-keys}
 EDNOTE: This subsection describes the PKIX Composite Public Keys and how they work.
 
+We define the following new structures:
+
 ~~~ asn.1
-CompositeSignatureAlgorithm ::= SEQUENCE OF AlgorithmIdentifier
-CompositePublicKeyId ::= OBJECT IDENTIFIER ...
-CompositePublicKey ::= BIT STRING
-  -- Bit string encodes SEQUENCE OF SubjectPublicKeyInfo
+CompositeAlgorithmIdentifier ::= SEQUENCE OF AlgorithmIdentifier
+
+CompositePublicKey ::= SEQUENCE OF BIT STRING
 ~~~
-{: artwork-name="composite-pk-asn.1"}
+{: artwork-name="composite-new-asn.1-structures"}
+
+The choice of `SEQUENCE OF BIT STRING` rather than `BIT STRING` is so the type-length-value encoding can solve the problem of variable-length public keys.
+
+
+EDNOTE: I think there's a proper way to reference another RFC or I-D. Look up.
+
+We re-define the `SubjectPublicKeyInfo` structure from RFC 5280:
+
+~~~ asn.1
+SubjectPublicKeyInfo  ::=  CHOICE {
+     SEQUENCE  {
+          algorithm            AlgorithmIdentifier,
+          subjectPublicKey     BIT STRING  },
+     SEQUENCE  {
+          algorithms           CompositeAlgorithmIdentifier,
+          subjectPublicKeys    CompositePublicKey }
+      }
+~~~
+{: artwork-name="composite-SubjectPublicKeyInfo-asn.1"}
+
+The order MUST be consistent between the `algorithms` and the `subjectPublicKeys`, ie the 0th `CompositeAlgorithmIdentifier` MUST correspond to the 0th `CompositePublicKey` and so on.
+
+## Composite Signatures {#sec-composite-sigs}
+EDNOTE: This subsection describes the PKIX Composite Signatures and how they work. It will also explain how signing a certificate will work and how verification will work.
+
+
+
+
+We define the following new structure:
+
+~~~ asn.1
+CompositeSignatureValue ::= SEQUENCE OF BIT STRING
+~~~
+{: artwork-name="composite-sig-asn.1"}
+
+The choice of `SEQUENCE OF BIT STRING` rather than `BIT STRING` is so the type-length-value encoding can solve the problem of variable-length signature values.
+
+
+We re-define the `Certificate` structure from RFC 5280:
+
+~~~ asn.1
+Certificate  ::=  SEQUENCE  {
+     tbsCertificate       TBSCertificate,
+     signatureAlgorithm   CHOICE {
+          AlgorithmIdentifier,
+          CompositeAlgorithmIdentifier }
+     signatureValue       CHOICE {
+          BIT STRING,
+          CompositeSignatureValue }
+    }
+~~~
+
+If either the `signatureAlgorithm` or `signatureValue` field contains the composite version, then the other MUST as well. The order MUST be consistent between the `signatureAlgorithm`s and the `signatureValue`s, ie the 0th `CompositeAlgorithmIdentifier` MUST correspond to the 0th `CompositeSignatureValue` and so on.
 
 <!-- End of Composite Certificates section -->
 
-# Parallel PKI hierarchies
-This section defines a PKI hierarchy structure whereby each entity is issued both a classic (traditional single-key) and composite (multi-key, multi-signature) certificate such that non composite-aware clients will continue functioning, and composite-aware clients can detect downgrade attacks.. This addresses the "backwards compatibility" concern from {{sec-intro}}, though the authors note that this mechanism may have prove to have utility beyond the post-quantum migration.
-
 # Certificate Enrollment
+
 ## PCKS#10 {#sec-p10}
 EDNOTE: This subsection talks about the new CSR attributes. It will also talk about how requesting these certs will work.
 
-Once an entity in the PKI has a valid composite certificate, it MAY send subsequent certificate enrollment requests for traditional certificates containing a public key from the composite certificate using the same DN. If the CA has previously issued one or more currently valid composite certificates for the same entity, containing that public key, and containing the same list of SANs, then it MUST include one <wtv_we_call_it> extension pointing to each such certificate, and MUST set the certificate expiry date to be not later than the expiry date of the referenced composite certificate with the {earliest expiry date?, latest expiry date?}.
+Once an entity in the PKI has a valid composite certificate, it MAY send subsequent certificate enrollment requests for traditional certificates containing a public key from the composite certificate using the same DN. If the CA has previously issued one or more currently valid composite certificates for the same entity, containing that public key, and containing the same list of SANs, then it MUST include one "wtv_we_call_it" extension pointing to each such certificate, and MUST set the certificate expiry date to be not later than the expiry date of the referenced composite certificate with the {earliest expiry date?, latest expiry date?}.
 
 
 # Certificate Revocation {#sec-revocation}
 EDNOTE: This subsection will talk about compromises of keys, revocation and how recovation will be verified.
+
+When a CA checks for key reuse of compromised keys, they SHOULD (MUST?) check each key individually, not a bit-for-bit match of the entire `CompositePublicKey`
 
 ## Certificate Revocation Lists (CRLs) {#sec-crl}
 EDNOTE: A mention to OCSP implications should be made.
@@ -195,8 +244,13 @@ EDNOTE: This section talks about how protocols like (D)TLS and IKEv2 are affecte
 EDNOTE: This section will include content only if new OIDs or IANA codepoints are asigned for it.
 
 There are no IANA Considerations for this specification.
+EDNOTE: ^^ ??
 
-(MO): Won't we need to define OIDs for both composite signatures and composite public keys?
+EDNOTE: We will need OIDs for these ASN.1 structures:
+
+- CompositeAlgorithmIdentifier
+- CompositePublicKey
+- CompositeSignatureValue
 
 <!-- End of IANA Considerations section -->
 
@@ -205,6 +259,14 @@ There are no IANA Considerations for this specification.
 EDNOTE: This section includes the Security Considerations.
 <!-- End of Security Considerations section -->
 
+# Appendices
+
+## Comparison with draft-truskovsky-lamps-pq-hybrid-x509
+EDNOTE: This section will explain the differences from {{I-D.truskovsky-lamps-pq-hybrid-x509}}. IPR Claims should be mentioned here if necessary. Other things to consider are the things we discussed in an email thread like simplicity and format, inadvertnt implementation errors, algorithm agility.
+
+(MO): Move to appendix, or to a supporting document?
+
+<!-- End of Comparison with draft-truskovsky-lamps-pq-hybrid-x509 section -->
 
 # Contributors
 EDNOTE: This section includes the contributors of this draft so the authors in the first page do not exceed five and thus violate RFC2223-bis. Example where this happens is RFC1122. We can have another Editor for this draft. Doesn't need to be Panos.
