@@ -1,13 +1,13 @@
 ---
 title: Composite Postquantum Keys and Signatures in PKIX Certificates
 abbrev: Composite Certs
-# EDNOTE: Edits the draft name
-docname: draft-xxxxx-pq-composite-certs-x509-00
-# date: 2012-01-13
-# date: 2012-01
-# date: 2012
+# <!-- EDNOTE: Edits the draft name -->
+docname: draft-xxxxx-pq-composite-certs-x509-00<
+# <!-- date: 2012-01-13 -->
+# <!-- date: 2012-01 -->
+# <!-- date: 2012 -->
 
-# stand_alone: true
+# <!-- stand_alone: true -->
 ipr: trust200902
 area: Security
 wg: XXX WG
@@ -22,11 +22,11 @@ pi:    # can use array (if all yes) or hash here
 
 author:
       -
-        # [EDNOTE: We can have another Editor for this draft. Doesn't need to be Panos.
+        # [EDNOTE: We can have another Editor for this draft. Doesn't need to be Panos. -->
         ins: P. Kampanakis (Editor)
         name: Panos Kampanakis
         org: Cisco Systems
-        # abbrev:
+        #abbrev:
         # street:
         # city:
         #code:
@@ -37,24 +37,18 @@ author:
 
 normative:
   RFC2119:
+  RFC2986:
+  RFC5280:
   RFC8174:
-#  ieee802-1AR:
-#    target: "http://standards.ieee.org/findstds/standard/802.1AR-2009.html"
-#    title: "IEEE 802.1AR Secure Device Identifier"
-#    author:
-#      ins: "IEEE Standard"
-#    date: 2009
-informative:
-#  I-D.ietf-ace-coap-est:
-  I-D.draft-truskovsky-lamps-pq-hybrid-x509-01:
-#  pledge:
-#    title: "Dictionary.com Unabridged"
-#    target: "http://dictionary.reference.com/browse/pledge"
-#    author:
-#      -
-#        name: Dictionary.com
-#    date: 2015
 
+# <!-- EDNOTE: full syntax for this defined here: https://github.com/cabo/kramdown-rfc2629 -->
+
+informative:
+  I-D.draft-truskovsky-lamps-pq-hybrid-x509-01:
+
+updates:
+  RFC2986
+  RFC5280
 
 --- abstract
 EDNOTE: This will be the abstract
@@ -119,26 +113,23 @@ as shown here.
 This document defines the following terms:
 
 EDNOTE: Look up the standard way to do glossaries in RFCs.
-
-EDNOTE: I think there's a proper way to reference another RFC or I-D. Look up.
+EDNOTE: I'm not sure we actually need these terms in this draft. We'll certainly need them in the Parallel PKIs draft.
 
 Traditional Certificate:
 
-An X.509 certificate conforming to RFC 5280. In particular, a certificate containing a single subject public key, and a single issuer signature.
+An X.509 certificate conforming to {{RFC5280}}. In particular, a certificate containing a single subject public key, and a single issuer signature.
 
 Composite certificate:
 
 An X.509 certificate containing two or more subject public keys and two or more issuer signatures as defined in this document.
 
+# Composite Structures {#sec-composite-structs}
 
-# Composite Certificates {#sec-composite-certs}
-This section defines a certificate format containing multiple subject public keys and multiple issuer signatures. This addresses the "algorithm strength uncertainty" concern from {{sec-intro}}, though the authors note that this mechanism may have prove to have utility beyond the post-quantum migration.
+## CompositePublicKey {#sec-composite-pub-keys}
 
-Algorithm strength uncertainty is addressed by defining new public key and signature data types that internally hold a list of public keys and signatures, respectively. By adding this structure to the X.509 format, we avoid the exponential proliferation of OIDs needed for each pairwise combination of signature algorithms. This scheme also naturally extends from 2-keypair to n-keypair should a vendor find a use for this.
+This section defines general structures for holding multiple subject public keys. ~~DESCRIBE DESIGN AND INTENT, SEQUENCE SO WE HAVE 2 OR MORE, BLAH BLAH~~ This addresses the "algorithm strength uncertainty" concern from {{sec-intro}}, though the authors note that this mechanism may have prove to have utility beyond the post-quantum migration.
 
-
-## Composite Public Keys {#sec-composite-pub-keys}
-EDNOTE: This subsection describes the PKIX Composite Public Keys and how they work.
+Defining composite algorithm identifiers in this way avoids the exponential proliferation of OIDs needed for each pairwise combination of signature algorithms. This scheme also naturally extends from 2-keypair to n-keypair should a vendor find a use for this.
 
 We define the following new structures:
 
@@ -151,10 +142,23 @@ CompositePublicKey ::= SEQUENCE OF BIT STRING
 
 The choice of `SEQUENCE OF BIT STRING` rather than `BIT STRING` is so the type-length-value encoding can solve the problem of variable-length public keys.
 
+## CompositeSignatureValue {#sec-composite-sigs}
+EDNOTE: This subsection describes the PKIX Composite Signatures and how they work. It will also explain how signing a certificate will work and how verification will work.
 
-EDNOTE: I think there's a proper way to reference another RFC or I-D. Look up.
+This section defines a general structure containing multiple signature values. ~~DESCRIBE DESIGN AND INTENT, SEQUENCE SO WE HAVE 2 OR MORE, BLAH BLAH~~ This addresses the "algorithm strength uncertainty" concern from {{sec-intro}}, though the authors note that this mechanism may have prove to have utility beyond the post-quantum migration.
 
-We re-define the `SubjectPublicKeyInfo` structure from RFC 5280:
+We define the following new structure:
+
+~~~ asn.1
+CompositeSignatureValue ::= SEQUENCE OF BIT STRING
+~~~
+{: artwork-name="composite-sig-asn.1"}
+
+The choice of `SEQUENCE OF BIT STRING` rather than `BIT STRING` is so the type-length-value encoding can solve the problem of variable-length signature values.
+
+## SubjectPublicKeyInfo {#sec-composite-spki}
+
+We re-define the `SubjectPublicKeyInfo` structure from {{RFC5280}} in the following way so that it is backwards-compatible with the definition given in {{RFC2986}} and {{RFC5280}}.
 
 ~~~ asn.1
 SubjectPublicKeyInfo  ::=  CHOICE {
@@ -170,23 +174,14 @@ SubjectPublicKeyInfo  ::=  CHOICE {
 
 The order MUST be consistent between the `algorithms` and the `subjectPublicKeys`, ie the 0th `CompositeAlgorithmIdentifier` MUST correspond to the 0th `CompositePublicKey` and so on.
 
-## Composite Signatures {#sec-composite-sigs}
-EDNOTE: This subsection describes the PKIX Composite Signatures and how they work. It will also explain how signing a certificate will work and how verification will work.
 
 
+# Composite Certificates {#sec-composite-certs}
+
+This section extends the certificate structure defined in {{RFC5280}} to use the composite public key and signature structures defined in {{sec-composite-pub-keys}} and {{sec-composite-sigs}}, respectively.
 
 
-We define the following new structure:
-
-~~~ asn.1
-CompositeSignatureValue ::= SEQUENCE OF BIT STRING
-~~~
-{: artwork-name="composite-sig-asn.1"}
-
-The choice of `SEQUENCE OF BIT STRING` rather than `BIT STRING` is so the type-length-value encoding can solve the problem of variable-length signature values.
-
-
-We re-define the `Certificate` structure from RFC 5280:
+We re-define the `Certificate` structure from {{RFC5280}}:
 
 ~~~ asn.1
 Certificate  ::=  SEQUENCE  {
@@ -199,15 +194,45 @@ Certificate  ::=  SEQUENCE  {
           CompositeSignatureValue }
     }
 ~~~
+{: artwork-name="composite-Certificate-asn.1"}
 
 If either the `signatureAlgorithm` or `signatureValue` field contains the composite version, then the other MUST as well. The order MUST be consistent between the `signatureAlgorithm`s and the `signatureValue`s, ie the 0th `CompositeAlgorithmIdentifier` MUST correspond to the 0th `CompositeSignatureValue` and so on.
 
+EDNOTE: We may also need to modify the definition of SubjectKeyIdentifier (https://tools.ietf.org/html/rfc5280#section-4.2.1.2) to be "as it is now, or the hash of the `CompositePublicKey`", being specific about which tags and length values are included in the hash.
+
 <!-- End of Composite Certificates section -->
 
-# Certificate Enrollment
+# Certificate Enrollment {#sec-cert-enrollment}
+
+Some aspects of certificate enrollment need to be modified to accomodate certificates with composite public keys and signatures.
 
 ## PCKS#10 {#sec-p10}
-EDNOTE: This subsection talks about the new CSR attributes. It will also talk about how requesting these certs will work.
+
+To place multiple public keys into a certificate signing request, the only modification needed to the PKCS#10 format is to replace the definition of `SubjectPublicKeyInfo ` given in {{RFC2986}} with the one given above in {{sec-composite-spki}}, which is backwards-compatible with the previous definition.
+
+To place multiple signatures into a certificate signing request, we re-define the `CertificationRequest` from {{RFC2986}}.
+
+~~~ asn.1
+CertificationRequest ::= SEQUENCE {
+        certificationRequestInfo CertificationRequestInfo,
+        signatureAlgorithm   CHOICE {
+             AlgorithmIdentifier{{ SignatureAlgorithms }},
+             CompositeAlgorithmIdentifier }
+        signatureValue       CHOICE {
+             BIT STRING,
+             CompositeSignatureValue }
+       }
+   }
+~~~
+{: artwork-name="composite-CertificationRequest-asn.1"}
+
+If either the `signatureAlgorithm` or `signatureValue` field contains the composite version, then the other MUST as well. The order MUST be consistent between the `signatureAlgorithm`s and the `signatureValue`s, ie the 0th `CompositeAlgorithmIdentifier` MUST correspond to the 0th `CompositeSignatureValue` and so on.
+
+EDNOTE: I'm not super familiar with RFC2986. Please double-check. Needs a thorough read-through of RFC2986 for other things that might need modification.
+
+
+
+## Subsequent Enrollments with Overlapping Public Keys
 
 Once an entity in the PKI has a valid composite certificate, it MAY send subsequent certificate enrollment requests for traditional certificates containing a public key from the composite certificate using the same DN. If the CA has previously issued one or more currently valid composite certificates for the same entity, containing that public key, and containing the same list of SANs, then it MUST include one "wtv_we_call_it" extension pointing to each such certificate, and MUST set the certificate expiry date to be not later than the expiry date of the referenced composite certificate with the {earliest expiry date?, latest expiry date?}.
 
