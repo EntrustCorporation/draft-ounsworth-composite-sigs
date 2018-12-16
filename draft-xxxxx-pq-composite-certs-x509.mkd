@@ -1,0 +1,227 @@
+---
+title: Composite Postquantum Keys and Signatures in PKIX Certificates
+abbrev: Composite Certs
+# EDNOTE: Edits the draft name
+docname: draft-xxxxx-pq-composite-sigs-x509-00
+# date: 2012-01-13
+# date: 2012-01
+# date: 2012
+
+# stand_alone: true
+ipr: trust200902
+area: Security
+wg: XXX WG
+kw: Internet-Draft
+cat: std
+
+coding: us-ascii
+pi:    # can use array (if all yes) or hash here
+  toc: yes
+  sortrefs:   # defaults to yes
+  symrefs: yes
+
+author:
+      -
+        # [EDNOTE: We can have another Editor for this draft. Doesn't need to be Panos.
+        ins: P. Kampanakis (Editor)
+        name: Panos Kampanakis
+        org: Cisco Systems
+        # abbrev:
+        # street:
+        # city:
+        #code:
+        #country: USA
+        #phone: +1
+        #facsimile: +1
+        email: pkampana@cisco.com
+
+normative:
+  RFC2119:
+  RFC8174:
+#  ieee802-1AR:
+#    target: "http://standards.ieee.org/findstds/standard/802.1AR-2009.html"
+#    title: "IEEE 802.1AR Secure Device Identifier"
+#    author:
+#      ins: "IEEE Standard"
+#    date: 2009
+informative:
+#  I-D.ietf-ace-coap-est:
+  I-D.draft-truskovsky-lamps-pq-hybrid-x509-01:
+#  pledge:
+#    title: "Dictionary.com Unabridged"
+#    target: "http://dictionary.reference.com/browse/pledge"
+#    author:
+#      -
+#        name: Dictionary.com
+#    date: 2015
+
+
+--- abstract
+EDNOTE: This will be the abstract
+<!-- End of Abstract -->
+
+
+--- middle
+
+# Change Log
+EDNOTE: Remove this section before publication.
+
+draft-xxxxx-pq-composite-sigs-x509-00
+
+* Beginning of the draft
+<!-- End of Change Log section -->
+
+
+# Introduction {#sec-intro}
+EDNOTE: This will be the Introduction
+
+{{fig-example}} shows an example figure.
+
+
+~~~~~~~~~~
+
+
+        STuPiD   ```````````````````````````````,
+        Script   <----------------------------. ,
+                                              | ,
+          ^ ,                                 | ,
+          | ,                                 | ,
+    (1)   | ,                                 | ,  (3)
+    POST  | ,                                 | ,  GET
+          | ,                                 | ,
+          | v                                 | v
+
+        Peer A   ----------------------->   Peer B
+                           (2)
+                       out-of-band
+                       Notification
+~~~~~~~~~~
+{: #fig-example title="Figure example"}
+
+During the transition to post-quantum cryptography, the deployment of cryptographic certificates using post-quantum algorithms will face two challenges
+
+- Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will also start to erode.  A relying party may learn some time after certificate deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
+- Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
+
+This document proposes two mechanisms deployed together to address these two concerns, respectively: formats for encoding multiple public keys into the existing public key field, and parallel PKI hierarchies in which each entity is issued both a classic (traditional single-key) and composite (multi-key, multi-signature) certificate such that non composite-aware clients will continue functioning, and composite-aware clients can detect downgrade attacks.
+
+EDNOTE: Include a glossary to define the terms:
+  - Traditional certificate
+  - Composite certificate
+
+<!-- End of Introduction section -->
+
+
+# Terminology {#sec-terminology}
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT",
+"RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
+as described in BCP 14 {{RFC2119}} {{RFC8174}} when, and only when, they appear in all capitals,
+as shown here.
+
+
+# Comparison with draft-truskovsky-lamps-pq-hybrid-x509
+EDNOTE: This section will explain the differences from {{I-D.truskovsky-lamps-pq-hybrid-x509}}. IPR Claims should be mentioned here if necessary. Other things to consider are the things we discussed in an email thread like simplicity and format, inadvertnt implementation errors, algorithm agility.
+
+(MO): Move to appendix, or to a supporting document?
+
+<!-- End of Comparison with draft-truskovsky-lamps-pq-hybrid-x509 section -->
+
+
+# Composite Certificates {#sec-composite-certs}
+This section defines a certificate format containing multiple subject public keys and multiple issuer signatures. This addresses the "algorithm strength uncertainty" concern from {{sec-intro}}, though the authors note that this mechanism may have prove to have utility beyond the post-quantum migration.
+
+## Composite Signatures {#sec-composite-sigs}
+EDNOTE: This subsection describes the PKIX Composite Signatures and how they work. It will also explain how signing a certificate will work and how verification will work.
+
+~~~ asn.1
+CompositeSignatureAlgorithmIdentifierId ::= OBJECT IDENTIFIER ...
+  -- syntax of the algorithm is CompositeSignatureAlgorithm
+CompositeSignatureAlgorithm ::= SEQUENCE OF AlgorithmIdentifier
+CompositeSignature ::= BIT STRING
+  -- Bit string encodes a SEQUENCE OF BIT STRING
+~~~
+{: artwork-name="composite-sig-asn.1"}
+
+## Composite Public Keys {#sec-composite-pub-keys}
+EDNOTE: This subsection describes the PKIX Composite Public Keys and how they work.
+
+~~~ asn.1
+CompositeSignatureAlgorithm ::= SEQUENCE OF AlgorithmIdentifier
+CompositePublicKeyId ::= OBJECT IDENTIFIER ...
+CompositePublicKey ::= BIT STRING
+  -- Bit string encodes SEQUENCE OF SubjectPublicKeyInfo
+~~~
+{: artwork-name="composite-pk-asn.1"}
+
+<!-- End of Composite Certificates section -->
+
+# Parallel PKI hierarchies
+This section defines a PKI hierarchy structure whereby each entity is issued both a classic (traditional single-key) and composite (multi-key, multi-signature) certificate such that non composite-aware clients will continue functioning, and composite-aware clients can detect downgrade attacks.. This addresses the "backwards compatibility" concern from {{sec-intro}}, though the authors note that this mechanism may have prove to have utility beyond the post-quantum migration.
+
+# Certificate Enrollment
+## PCKS#10 {#sec-p10}
+EDNOTE: This subsection talks about the new CSR attributes. It will also talk about how requesting these certs will work.
+
+Once an entity in the PKI has a valid composite certificate, it MAY send subsequent certificate enrollment requests for traditional certificates containing a public key from the composite certificate using the same DN. If the CA has previously issued one or more currently valid composite certificates for the same entity, containing that public key, and containing the same list of SANs, then it MUST include one <wtv_we_call_it> extension pointing to each such certificate, and MUST set the certificate expiry date to be not later than the expiry date of the referenced composite certificate with the {earliest expiry date?, latest expiry date?}.
+
+
+# Certificate Revocation {#sec-revocation}
+EDNOTE: This subsection will talk about compromises of keys, revocation and how recovation will be verified.
+
+## Certificate Revocation Lists (CRLs) {#sec-crl}
+EDNOTE: A mention to OCSP implications should be made.
+
+EDNOTE: The mechanism for globally revoking an algorithm should be mentioned, along with the practical suggestion that an algorithm MAY be globally revoked on the composite PKI's CRL, but not on the traditional PKI.
+
+## End-Entity Requested Revocation
+EDNOTE: Be explicit about whether a single-key revocation request has the authority to revoke the composite cert, and vice-versa.
+EDNOTE: We may need to wade into modifications to the CMP / SCEP / EST protocols (but I really hope not).
+
+
+# New Algorithm Identifiers
+EDNOTE: This subsection defines the OIDs for the initial composite algorithm combinations we want to define.
+
+
+# In Practice {#sec-in-pract}
+EDNOTE: This section will talk about practical issue of how these certificates will be used. For example it will talk about the size of these certs and cert chains. It will explain that if a cert in the chain is a Composite cert then the whole chain needs to be of Composite Certs. It will also explain that the root CA cert does not have to be of the same algorithms. The root cert SHOULD NOT be transferred in the authentication exchange to save transport overhead and thus it can be different than the intermediate and leaf certs. It will talk about overhead (size and processing). It will also discuss backwards compatibility. It could include a subsection about implementation considerations.
+<!-- End of In Practice section -->
+
+# Implications for existing standards
+EDNOTE: This section talks about how protocols like (D)TLS and IKEv2 are affected by this specifications. It will not attempt to solve all these problems, but it will explain the rationale, how things will work and what open problems need to be solved. It will talk about implications of how to distinguish what cert chain to send. It will describe how signature_algorithms extension will be used in TLS. What is missing in TLS and IKEv2 like what and how to sign something with the two private keys. It will discuss overhead (size and processing) as in {{sec-in-pract}}. It will also discuss PKCS#10.
+
+<!-- End of Implications for existing standards section -->
+
+# IANA Considerations
+EDNOTE: This section will include content only if new OIDs or IANA codepoints are asigned for it.
+
+There are no IANA Considerations for this specification.
+
+(MO): Won't we need to define OIDs for both composite signatures and composite public keys?
+
+<!-- End of IANA Considerations section -->
+
+
+# Security Considerations
+EDNOTE: This section includes the Security Considerations.
+<!-- End of Security Considerations section -->
+
+
+# Contributors
+EDNOTE: This section includes the contributors of this draft so the authors in the first page do not exceed five and thus violate RFC2223-bis. Example where this happens is RFC1122. We can have another Editor for this draft. Doesn't need to be Panos.
+
+This document incorporates contributions and comments from a large
+group of experts. The Editor would especially like to acknowledge the tireless
+dedication of the following people, who attended many long
+meetings and generated millions of bytes of electronic mail over the
+past 3 years months in pursuit of this document:
+Mike Ounsworth (Entrust Datacard), John Gray (Entrust Datacard),
+Serge Mister (Entrust Datacard), Scott Fluhrer (Cisco Systems) and
+Panos Kampanakis (Cisco Systems).
+
+We are grateful to all, including any contributors who may have
+been inadvertently omitted from this list.
+
+<!-- End of Contributors section -->
+
+# Acknowledgenents
+EDNOTE: this section include all those that need to be acknowledged in the draft
