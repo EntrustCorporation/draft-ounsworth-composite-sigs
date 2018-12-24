@@ -255,6 +255,16 @@ EDNOTE: The mechanism for globally revoking an algorithm should be mentioned, al
 EDNOTE: Be explicit about whether a single-key revocation request has the authority to revoke the composite cert, and vice-versa.
 EDNOTE: We may need to wade into modifications to the CMP / SCEP / EST protocols (but I really hope not).
 
+## Deprecating an algorithm
+Since a certificate may contain public keys and / or signatures, it is conceivable that even though a cryptographic algorithm is considered deprecated, a certificate may contain enough keys and signatures on alternative strong algorithms to warrant continuing to use that certificate in production. This section provides a CRL Extension by which a Certificate Authority can communicate the deprecation of an algorithm without causing a mass revocation of certificates. The goal is that by providing such a mechanism, the world can more quickly react to news of algorithm compromise compared to the need to revoke and re-issue all certificates using that algorithm.
+
+EDNOTE: the above paragraph could use some polishing.
+
+TODO: go look at https://tools.ietf.org/html/rfc5280#section-5.2 and define a new CRL Extension for this.
+
+Note that a similar mechanism could be used on a per-certificate basis via CRL Entry Extensions, however the authors believe that giving the option to perform partial revocation of a certificate (ie revoking some keys or signatures but leaving the certificate as a whole valid) will greatly increase the complexity of certificate validation routines, thus increasing the chance of implementation bugs leading to vulnerabilities, without providing a commensurate amount of increased functionality. By not defining a new CRL Entry Extension, the following requirement is implied: if any key within a certificate warrant revocation, the entire certificate MUST be revoked using the existing revocation mechanisms.
+
+<!-- End of Certificate Revocation section -->
 
 # New Algorithm Identifiers
 EDNOTE: This subsection defines the OIDs for the initial composite algorithm combinations we want to define.
@@ -262,6 +272,7 @@ EDNOTE: Merge with {{sec-iana}} ??
 
 # In Practice {#sec-in-pract}
 EDNOTE: This section will talk about practical issue of how these certificates will be used. For example it will talk about the size of these certs and cert chains. It will explain that if a cert in the chain is a Composite cert then the whole chain needs to be of Composite Certs. It will also explain that the root CA cert does not have to be of the same algorithms. The root cert SHOULD NOT be transferred in the authentication exchange to save transport overhead and thus it can be different than the intermediate and leaf certs. It will talk about overhead (size and processing). It will also discuss backwards compatibility. It could include a subsection about implementation considerations.
+
 <!-- End of In Practice section -->
 
 # Implications for existing standards
