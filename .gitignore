@@ -1,2 +1,3 @@
 # built files
-draft-xxxxx-pq-composite-certs-x509.xml
+*.xml
+*.html
