@@ -1,4 +1,4 @@
-# Parallel PKIs Internet-Draft
+# Composite Certificate Internet-Draft
 
 
 ## Setting up a build environment
