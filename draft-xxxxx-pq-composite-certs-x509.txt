@@ -80,23 +80,24 @@ Table of Contents
        7.1.1.  CertificateList . . . . . . . . . . . . . . . . . . .   8
        7.1.2.  TBS Cert List . . . . . . . . . . . . . . . . . . . .   8
      7.2.  Revoking an algorithm: Revoked Algorithms CRL Extension .   9
-     7.3.  End-Entity Requested Revocation . . . . . . . . . . . . .  10
-   8.  New Algorithm Identifiers . . . . . . . . . . . . . . . . . .  10
-   9.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  10
-   10. Implications for existing standards . . . . . . . . . . . . .  11
-     10.1.  RFC 2986 . . . . . . . . . . . . . . . . . . . . . . . .  11
-     10.2.  RFC 5280 . . . . . . . . . . . . . . . . . . . . . . . .  11
-     10.3.  Cryptographic protocols  . . . . . . . . . . . . . . . .  11
-   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
+     7.3.  Implicit Revocation . . . . . . . . . . . . . . . . . . .  10
+     7.4.  End-Entity Requested Revocation . . . . . . . . . . . . .  11
+   8.  New Algorithm Identifiers . . . . . . . . . . . . . . . . . .  11
+   9.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  11
+   10. Implications for existing standards . . . . . . . . . . . . .  12
+     10.1.  RFC 2986 . . . . . . . . . . . . . . . . . . . . . . . .  12
+     10.2.  RFC 5280 . . . . . . . . . . . . . . . . . . . . . . . .  12
+     10.3.  Cryptographic protocols  . . . . . . . . . . . . . . . .  12
+   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
    12. Security Considerations . . . . . . . . . . . . . . . . . . .  12
-   13. Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  12
-     13.1.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509  .  12
-   14. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  12
-   15. Acknowledgenents  . . . . . . . . . . . . . . . . . . . . . .  12
+   13. Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  13
+     13.1.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509  .  13
+   14. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  13
+   15. Acknowledgenents  . . . . . . . . . . . . . . . . . . . . . .  13
    16. References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
      16.1.  Normative References . . . . . . . . . . . . . . . . . .  13
-     16.2.  Informative References . . . . . . . . . . . . . . . . .  13
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  13
+     16.2.  Informative References . . . . . . . . . . . . . . . . .  14
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  14
 
 1.  Change Log
 
@@ -105,7 +106,6 @@ Table of Contents
    draft-xxxxx-pq-composite-certs-x509-00
 
    o  Beginning of the draft
-
 
 
 
@@ -471,11 +471,25 @@ Internet-Draft               Composite Certs               December 2018
    to the need to revoke and re-issue all certificates using that
    algorithm.
 
-   EDNOTE: the above paragraph could use some polishing.  EDNOTE: choose
+   EDNOTE: the above paragraph could use some polishing.  EDNOTE: agree
    a word for this: "Revoking an algorithm" vs "Deprecating an
    algorithm" vs something-else ?
 
-   This extension is OPTIONAL.  If a CRL contains only composite
+   id-ce-RevokedAlgorithms OBJECT IDENTIFIER ::= { OID }
+
+   RevokedAlgorithms ::= SEQUENCE OF SEQUENCE  {
+        algorithms              AlgorithmIdentifier,
+        revocationDate          Time,
+        crlEntryExtensions      Extensions OPTIONAL
+                                 -- if present, version MUST be v2
+        }
+
+   EDNOTE: do we need the crlEntryExtensions field?  If so, which ones
+   from https://tools.ietf.org/html/rfc5280#section-5.3 are allowed
+   here?
+
+   There may only be one "RevokedAlgorithms" extension in a CRL.  This
+   extension is OPTIONAL.  If a CRL contains only composite
    certificates, then this extension SHOULD be designated as critical.
    If a CRL contains a mixture of composite and traditional certificates
    then it SHOULD be designated as non-critical.
@@ -484,20 +498,6 @@ Internet-Draft               Composite Certs               December 2018
    otherwise non-revoked certificate, then a client performing
    certificate validation MUST skip any signatures corresponding to a
    revoked algorithm; thus a certificate is valid only if it would have
-   been valid had those Algorithm IDs and Signature Values been omitted
-   from the certificate.
-
-   EDNOTE: I feel like the wording above can be tightened up to be more
-   precise.
-
-   EDNOTE: mention OCSP; is it the OCSP Responder's responsibility or
-   the client's to check this?
-
-   id-ce-RevokedAlgorithms OBJECT IDENTIFIER ::= { OID }
-
-   RevokedAlgorithms ::= CompositeAlgorithmIdentifier
-
-
 
 
 
@@ -506,19 +506,67 @@ Kampanakis (Editor)       Expires June 29, 2019                 [Page 9]
 Internet-Draft               Composite Certs               December 2018
 
 
+   been valid had those Algorithm IDs and Signature Values been omitted
+   from the certificate.
+
+   EDNOTE: I feel like the wording above can be tightened up to be more
+   precise.
+
+   Once a algorithm has been marked as revoked on a given CRL, it MUST
+   remain revoked on subsequent CRLs.  EDNOTE: ^^^ Is there
+   corresponding wording about cert serial numbers on CRLs from RFC5280?
+   If so, I'm not seeing it.
+
    Note that a similar mechanism could be used on a per-certificate
    basis via CRL Entry Extensions, however the authors believe that
-   giving the option to perform partial revocation of a certificate (ie
-   revoking some keys or signatures but leaving the certificate as a
-   whole valid) will greatly increase the complexity of certificate
-   validation routines, thus increasing the chance of implementation
-   bugs leading to vulnerabilities, without providing a commensurate
-   amount of increased functionality.  By not defining a new CRL Entry
-   Extension, the following requirement is implied: if any key within a
-   certificate warrant revocation, the entire certificate MUST be
-   revoked using the existing revocation mechanisms.
+   giving operators the ability to perform partial revocation of a
+   certificate (ie revoking some keys or signatures but leaving the
+   certificate as a whole valid) will greatly increase the complexity of
+   certificate validation routines, thus increasing the chance of both
+   human error, and implementation bugs leading to vulnerabilities,
+   without providing a commensurate amount of increased functionality.
+   By not defining a new CRL Entry Extension, the following requirement
+   is implied: if any key within a certificate warrant revocation, the
+   entire certificate MUST be revoked using the existing revocation
+   mechanisms (this does not apply when the algorithm is globally
+   revoked for the entire scope of this CRL).
 
-7.3.  End-Entity Requested Revocation
+7.3.  Implicit Revocation
+
+   A certificate is considered to be "implicitly revoked" if one of the
+   following conditions are met, but the certificate is otherwise valid.
+
+   o  All of the algorithms listed in the certificate's
+      "signatureAlgorithm" are revoked.  In this case certificate chain
+      validation of this certificates will fail when performed by a
+      compliant client.
+
+   o  All of the algorithms listed in the certificate's
+      "SubjectPublicKeyInfo" are revoked.  In this case validation of a
+      signature performed by the private keys corresponding to the
+      public keys listed in this certificate will fail when performed by
+      a compliant client.
+
+   At the time of an algorithm revocation, a certificate authority MAY
+   revoke certificates meeting either of the above criteria (by placing
+   them in the "revokedCertificates" list) with a revocation reason of
+   "keyCompromise".  OCSP responders SHOULD designate a certificate as
+   revoked if it meets either of the above conditions.
+
+
+
+
+
+Kampanakis (Editor)       Expires June 29, 2019                [Page 10]
+
+Internet-Draft               Composite Certs               December 2018
+
+
+   EDNOTE: read up on how OCSP works and mention the specific mechanism
+   for the above.  Also, is it the OCSP Responder's responsibility or
+   the client's to check this?
+
+7.4.  End-Entity Requested Revocation
 
    EDNOTE: Before drafting this section, there's a debate to be had
    about whether a single-key revocation request has the authority to
@@ -554,14 +602,6 @@ Internet-Draft               Composite Certs               December 2018
    EDNOTE: This section will talk about practical issue of how these
    certificates will be used.  For example it will talk about the size
    of these certs and cert chains.  It will explain that if a cert in
-
-
-
-Kampanakis (Editor)       Expires June 29, 2019                [Page 10]
-
-Internet-Draft               Composite Certs               December 2018
-
-
    the chain is a Composite cert then the whole chain needs to be of
    Composite Certs.  It will also explain that the root CA cert does not
    have to be of the same algorithms.  The root cert SHOULD NOT be
@@ -570,6 +610,13 @@ Internet-Draft               Composite Certs               December 2018
    It will talk about overhead (size and processing).  It will also
    discuss backwards compatibility.  It could include a subsection about
    implementation considerations.
+
+
+
+Kampanakis (Editor)       Expires June 29, 2019                [Page 11]
+
+Internet-Draft               Composite Certs               December 2018
+
 
 10.  Implications for existing standards
 
@@ -609,15 +656,6 @@ Internet-Draft               Composite Certs               December 2018
 
    o  CompositeSignatureValue
 
-
-
-
-
-Kampanakis (Editor)       Expires June 29, 2019                [Page 11]
-
-Internet-Draft               Composite Certs               December 2018
-
-
 12.  Security Considerations
 
    EDNOTE: This section includes the Security Considerations.
@@ -625,6 +663,16 @@ Internet-Draft               Composite Certs               December 2018
    o  Case: Only one key is compromised.
 
    o  Case: An entire algorithm is compromised.
+
+
+
+
+
+
+Kampanakis (Editor)       Expires June 29, 2019                [Page 12]
+
+Internet-Draft               Composite Certs               December 2018
+
 
    o  CA implementations need to be careful when checking for
       compromised key reuse: unpack the CompositePublicKey structure and
@@ -666,14 +714,6 @@ Internet-Draft               Composite Certs               December 2018
    EDNOTE: this section include all those that need to be acknowledged
    in the draft
 
-
-
-
-Kampanakis (Editor)       Expires June 29, 2019                [Page 12]
-
-Internet-Draft               Composite Certs               December 2018
-
-
 16.  References
 
 16.1.  Normative References
@@ -682,6 +722,13 @@ Internet-Draft               Composite Certs               December 2018
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
+
+
+
+Kampanakis (Editor)       Expires June 29, 2019                [Page 13]
+
+Internet-Draft               Composite Certs               December 2018
+
 
    [RFC2986]  Nystrom, M. and B. Kaliski, "PKCS #10: Certification
               Request Syntax Specification Version 1.7", RFC 2986,
@@ -725,4 +772,13 @@ Author's Address
 
 
 
-Kampanakis (Editor)       Expires June 29, 2019                [Page 13]
+
+
+
+
+
+
+
+
+
+Kampanakis (Editor)       Expires June 29, 2019                [Page 14]

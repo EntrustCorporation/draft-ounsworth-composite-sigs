@@ -291,27 +291,45 @@ The `signature` field MUST contain the same algorithm identifier as the signatur
 Since a certificate may contain public keys and / or signatures, it is conceivable that even though a cryptographic algorithm is considered deprecated, a certificate may contain enough keys and signatures on alternative strong algorithms to warrant continuing to use that certificate in production. This section provides a CRL Extension by which a Certificate Authority can communicate the deprecation of an algorithm without causing a mass revocation of certificates. The goal is that by providing such a mechanism, the world can more quickly react to news of algorithm compromise compared to the need to revoke and re-issue all certificates using that algorithm.
 
 EDNOTE: the above paragraph could use some polishing.
-EDNOTE: choose a word for this: "Revoking an algorithm" vs "Deprecating an algorithm" vs something-else ?
+EDNOTE: agree a word for this: "Revoking an algorithm" vs "Deprecating an algorithm" vs something-else ?
 
+~~~ asn.1
+id-ce-RevokedAlgorithms OBJECT IDENTIFIER ::= { OID }
 
+RevokedAlgorithms ::= SEQUENCE OF SEQUENCE  {
+     algorithms              AlgorithmIdentifier,
+     revocationDate          Time,
+     crlEntryExtensions      Extensions OPTIONAL
+                              -- if present, version MUST be v2
+     }
+~~~
+{: artwork-name="RevokedAlgorithm-asn.1"}
 
-This extension is OPTIONAL. If a CRL contains only composite certificates, then this extension SHOULD be designated as critical. If a CRL contains a mixture of composite and traditional certificates then it SHOULD be designated as non-critical.
+EDNOTE: do we need the crlEntryExtensions field? If so, which ones from https://tools.ietf.org/html/rfc5280#section-5.3 are allowed here?
+
+There may only be one `RevokedAlgorithms` extension in a CRL. This extension is OPTIONAL. If a CRL contains only composite certificates, then this extension SHOULD be designated as critical. If a CRL contains a mixture of composite and traditional certificates then it SHOULD be designated as non-critical.
 
 If the Revoked Algorithms extension is present in the CRL covering an otherwise non-revoked certificate, then a client performing certificate validation MUST skip any signatures corresponding to a revoked algorithm; thus a certificate is valid only if it would have been valid had those Algorithm IDs and Signature Values been omitted from the certificate.
 
 EDNOTE: I feel like the wording above can be tightened up to be more precise.
 
-EDNOTE: mention OCSP; is it the OCSP Responder's responsibility or the client's to check this?
-
-~~~ asn.1
-id-ce-RevokedAlgorithms OBJECT IDENTIFIER ::= { OID }
-
-RevokedAlgorithms ::= CompositeAlgorithmIdentifier
-~~~
-{: artwork-name="RevokedAlgorithm-asn.1"}
+Once a algorithm has been marked as revoked on a given CRL, it MUST remain revoked on subsequent CRLs.
+EDNOTE: ^^^ Is there corresponding wording about cert serial numbers on CRLs from RFC5280? If so, I'm not seeing it.
 
 
-Note that a similar mechanism could be used on a per-certificate basis via CRL Entry Extensions, however the authors believe that giving the option to perform partial revocation of a certificate (ie revoking some keys or signatures but leaving the certificate as a whole valid) will greatly increase the complexity of certificate validation routines, thus increasing the chance of implementation bugs leading to vulnerabilities, without providing a commensurate amount of increased functionality. By not defining a new CRL Entry Extension, the following requirement is implied: if any key within a certificate warrant revocation, the entire certificate MUST be revoked using the existing revocation mechanisms.
+Note that a similar mechanism could be used on a per-certificate basis via CRL Entry Extensions, however the authors believe that giving operators the ability to perform partial revocation of a certificate (ie revoking some keys or signatures but leaving the certificate as a whole valid) will greatly increase the complexity of certificate validation routines, thus increasing the chance of both human error, and implementation bugs leading to vulnerabilities, without providing a commensurate amount of increased functionality. By not defining a new CRL Entry Extension, the following requirement is implied: if any key within a certificate warrant revocation, the entire certificate MUST be revoked using the existing revocation mechanisms (this does not apply when the algorithm is globally revoked for the entire scope of this CRL).
+
+## Implicit Revocation {#sec-implicit-revocation}
+
+A certificate is considered to be "implicitly revoked" if one of the following conditions are met, but the certificate is otherwise valid.
+
+* All of the algorithms listed in the certificate's `signatureAlgorithm` are revoked. In this case certificate chain validation of this certificates will fail when performed by a compliant client.
+
+* All of the algorithms listed in the certificate's `SubjectPublicKeyInfo` are revoked. In this case validation of a signature performed by the private keys corresponding to the public keys listed in this certificate will fail when performed by a compliant client.
+
+At the time of an algorithm revocation, a certificate authority MAY revoke certificates meeting either of the above criteria (by placing them in the `revokedCertificates` list) with a revocation reason of `keyCompromise`. OCSP responders SHOULD designate a certificate as revoked if it meets either of the above conditions.
+
+EDNOTE: read up on how OCSP works and mention the specific mechanism for the above. Also, is it the OCSP Responder's responsibility or the client's to check this?
 
 
 ## End-Entity Requested Revocation
