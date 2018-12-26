@@ -69,29 +69,6 @@ draft-xxxxx-pq-composite-certs-x509-00
 # Introduction {#sec-intro}
 EDNOTE: This will be the Introduction
 
-{{fig-example}} shows an example figure.
-
-
-~~~~~~~~~~
-
-
-        STuPiD   ```````````````````````````````,
-        Script   <----------------------------. ,
-                                              | ,
-          ^ ,                                 | ,
-          | ,                                 | ,
-    (1)   | ,                                 | ,  (3)
-    POST  | ,                                 | ,  GET
-          | ,                                 | ,
-          | v                                 | v
-
-        Peer A   ----------------------->   Peer B
-                           (2)
-                       out-of-band
-                       Notification
-~~~~~~~~~~
-{: #fig-example title="Figure example"}
-
 During the transition to post-quantum cryptography, the deployment of cryptographic certificates using post-quantum algorithms will face two challenges
 
 - Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will also start to erode.  A relying party may learn some time after certificate deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
@@ -105,12 +82,13 @@ This document provides a mechanism to address algorithm strength uncertainty by 
 
 
 # Terminology {#sec-terminology}
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT",
-"RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted
-as described in BCP 14 {{RFC2119}} {{RFC8174}} when, and only when, they appear in all capitals,
-as shown here.
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 {{RFC2119}} {{RFC8174}} when, and only when, they appear in all capitals, as shown here.
 
 This document defines the following terms:
+
+* Traditional Certificate
+* Composite certificate
+
 
 EDNOTE: Look up the standard way to do glossaries in RFCs.
 EDNOTE: I'm not sure we actually need these terms in this draft. We'll certainly need them in the Parallel PKIs draft.
@@ -119,7 +97,7 @@ EDNOTE: I'm not sure we actually need these terms in this draft. We'll certainly
 
 An X.509 certificate conforming to {{RFC5280}}. In particular, a certificate containing a single subject public key, and a single issuer signature.
 
-## Composite certificate
+## Composite Certificate
 
 An X.509 certificate containing two or more subject public keys and two or more issuer signatures as defined in this document.
 
@@ -337,7 +315,13 @@ Note that a similar mechanism could be used on a per-certificate basis via CRL E
 
 
 ## End-Entity Requested Revocation
-EDNOTE: Be explicit about whether a single-key revocation request has the authority to revoke the composite cert, and vice-versa.
+EDNOTE: Before drafting this section, there's a debate to be had about whether a single-key revocation request has the authority to revoke a composite cert. Options:
+
+* A signature from any key in the cert is sufficient to authorize revocation (this trivially requires no modification of protocols).
+* A signature from any key in the cert using a non-revoked algorithm is sufficient to authorize revocation (this trivially requires no modification of protocols). *Note that if the cert contains no keys using non-revoked algorithms, then the cert is defacto revoked already. Mike votes for this option.*
+* Signatures from all keys in the cert using non-revoked algorithms are required to authorize revocation (research needed into revocation protocols)
+* Signatures from all keys in the cert are required to authorize revocation (research needed into revocation protocols)
+
 EDNOTE: We may need to wade into modifications to the CMP / SCEP / EST protocols (but I really hope not).
 
 
