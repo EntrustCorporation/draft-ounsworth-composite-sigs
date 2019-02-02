@@ -60,59 +60,35 @@ Internet-Draft               Composite Certs               February 2019
 
 Table of Contents
 
-   1.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . .   3
-   2.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
+   1.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    3.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
-     3.1.  Traditional Certificate . . . . . . . . . . . . . . . . .   4
-     3.2.  Composite Certificate . . . . . . . . . . . . . . . . . .   4
+     3.1.  Traditional Certificate . . . . . . . . . . . . . . . . .   3
+     3.2.  Composite Certificate . . . . . . . . . . . . . . . . . .   3
    4.  Composite Structures  . . . . . . . . . . . . . . . . . . . .   4
      4.1.  Composite Public Key  . . . . . . . . . . . . . . . . . .   4
-     4.2.  Composite Signature Algorithm Structures  . . . . . . . .   5
+     4.2.  Composite Signature Algorithm Structures  . . . . . . . .   4
    5.  Encoding Composite Structures As Octet Strings and Bit
-       Strings . . . . . . . . . . . . . . . . . . . . . . . . . . .   6
+       Strings . . . . . . . . . . . . . . . . . . . . . . . . . . .   5
    6.  Composite Signature Algorithm . . . . . . . . . . . . . . . .   6
      6.1.  Signature Generation  . . . . . . . . . . . . . . . . . .   6
      6.2.  Signature Verification  . . . . . . . . . . . . . . . . .   6
-   7.  SUGGEST DELETION - Composite Certificates . . . . . . . . . .   6
-     7.1.  SUGGEST DELETION - Validation . . . . . . . . . . . . . .   7
-   8.  SUGGEST DELETION - Certificate Enrollment . . . . . . . . . .   7
-     8.1.  SUGGEST DELETION - PCKS#10  . . . . . . . . . . . . . . .   7
-     8.2.  SUGGEST DELETION - Subsequent Enrollments with
-           Overlapping Public Keys . . . . . . . . . . . . . . . . .   7
-   9.  SUGGEST DELETION - Certificate Revocation . . . . . . . . . .   7
-     9.1.  SUGGEST DELETION - Certificate Revocation Lists (CRLs)  .   7
-       9.1.1.  SUGGEST DELETION - CertificateList  . . . . . . . . .   7
-       9.1.2.  SUGGEST DELETION - TBS Cert List  . . . . . . . . . .   8
-     9.2.  SUGGEST DELETION - Revoking an algorithm: Revoked
-           Algorithms CRL Extension  . . . . . . . . . . . . . . . .   8
-     9.3.  SUGGEST DELETION - Implicit Revocation  . . . . . . . . .   8
-     9.4.  SUGGEST DELETION - End-Entity Requested Revocation  . . .   8
-   10. New Algorithm Identifiers . . . . . . . . . . . . . . . . . .   8
-   11. In Practice . . . . . . . . . . . . . . . . . . . . . . . . .   8
-   12. Implications for existing standards . . . . . . . . . . . . .   9
-     12.1.  RFC 2986 . . . . . . . . . . . . . . . . . . . . . . . .   9
-     12.2.  RFC 5280 . . . . . . . . . . . . . . . . . . . . . . . .   9
-     12.3.  Cryptographic protocols  . . . . . . . . . . . . . . . .   9
-   13. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   9
-   14. Security Considerations . . . . . . . . . . . . . . . . . . .   9
-   15. Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     15.1.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509  .  10
-   16. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  10
-   17. Acknowledgenents  . . . . . . . . . . . . . . . . . . . . . .  10
-   18. References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     18.1.  Normative References . . . . . . . . . . . . . . . . . .  10
-     18.2.  Informative References . . . . . . . . . . . . . . . . .  11
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  11
-
-
-
-
-
-
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 2]
-
-Internet-Draft               Composite Certs               February 2019
-
+   7.  New Algorithm Identifiers . . . . . . . . . . . . . . . . . .   6
+   8.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .   6
+   9.  Implications for existing standards . . . . . . . . . . . . .   7
+     9.1.  RFC 2986  . . . . . . . . . . . . . . . . . . . . . . . .   7
+     9.2.  RFC 5280  . . . . . . . . . . . . . . . . . . . . . . . .   7
+     9.3.  Cryptographic protocols . . . . . . . . . . . . . . . . .   7
+   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+   11. Security Considerations . . . . . . . . . . . . . . . . . . .   7
+   12. Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     12.1.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509  .   8
+   13. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .   8
+   14. Acknowledgenents  . . . . . . . . . . . . . . . . . . . . . .   8
+   15. References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     15.1.  Normative References . . . . . . . . . . . . . . . . . .   8
+     15.2.  Informative References . . . . . . . . . . . . . . . . .   9
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   9
 
 1.  Change Log
 
@@ -129,6 +105,14 @@ Internet-Draft               Composite Certs               February 2019
    During the transition to post-quantum cryptography, the deployment of
    cryptographic certificates using post-quantum algorithms will face
    two challenges
+
+
+
+
+Kampanakis (Editor)      Expires August 6, 2019                 [Page 2]
+
+Internet-Draft               Composite Certs               February 2019
+
 
    o  Algorithm strength uncertainty: During the transition period, some
       post-quantum signature and encryption algorithms will not be fully
@@ -161,15 +145,6 @@ Internet-Draft               Composite Certs               February 2019
 
    o  Composite certificate
 
-
-
-
-
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 3]
-
-Internet-Draft               Composite Certs               February 2019
-
-
    EDNOTE: Look up the standard way to do glossaries in RFCs.  EDNOTE:
    I'm not sure we actually need these terms in this draft.  We'll
    certainly need them in the Parallel PKIs draft.
@@ -184,6 +159,16 @@ Internet-Draft               Composite Certs               February 2019
 
    An X.509 certificate containing two or more subject public keys and
    two or more issuer signatures as defined in this document.
+
+
+
+
+
+
+Kampanakis (Editor)      Expires August 6, 2019                 [Page 3]
+
+Internet-Draft               Composite Certs               February 2019
+
 
 4.  Composite Structures
 
@@ -218,14 +203,6 @@ Internet-Draft               Composite Certs               February 2019
    where each element of the sequence is a SubjectPublicKeyInfo of a
    public key that MAY be used in conjunction with the other keys in the
    sequence.  When the public key must be provided in octet string or
-
-
-
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 4]
-
-Internet-Draft               Composite Certs               February 2019
-
-
    bit string format, the data structure is converted as specified in
    Section 5.
 
@@ -240,6 +217,14 @@ Internet-Draft               Composite Certs               February 2019
    identifier is used:
 
    CompositeSignatureAlgorithmParams ::= SEQUENCE OF AlgorithmIdentifier
+
+
+
+
+Kampanakis (Editor)      Expires August 6, 2019                 [Page 4]
+
+Internet-Draft               Composite Certs               February 2019
+
 
    The algorithms in the sequence MUST correspond to the order in which
    the public keys are listed in the associated CompositePublicKey.
@@ -270,18 +255,6 @@ Internet-Draft               Composite Certs               February 2019
    extends from 2-keypair to n-keypair should a vendor find a use for
    this.
 
-
-
-
-
-
-
-
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 5]
-
-Internet-Draft               Composite Certs               February 2019
-
-
 5.  Encoding Composite Structures As Octet Strings and Bit Strings
 
    EDNOTE: Examples of how other specifications specify how a data
@@ -297,6 +270,17 @@ Internet-Draft               Composite Certs               February 2019
    with the most significant bit of the first octet becoming the first
    bit, and so on, ending with the least significant bit of the last
    octet becoming the last bit of the bit string.
+
+
+
+
+
+
+
+Kampanakis (Editor)      Expires August 6, 2019                 [Page 5]
+
+Internet-Draft               Composite Certs               February 2019
+
 
 6.  Composite Signature Algorithm
 
@@ -324,108 +308,13 @@ Internet-Draft               Composite Certs               February 2019
 
    Signature Verification Procedure:
 
-7.  SUGGEST DELETION - Composite Certificates
-
-   EDNOTE: This section to be removed if we are only defining
-   algorithms?  For the (old) content of this section, see the git
-   commit history.
-
-
-
-
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 6]
-
-Internet-Draft               Composite Certs               February 2019
-
-
-7.1.  SUGGEST DELETION - Validation
-
-   EDNOTE: This section to be removed if we are only defining
-   algorithms?  For the (old) content of this section, see the git
-   commit history.
-
-8.  SUGGEST DELETION - Certificate Enrollment
-
-   EDNOTE: This section to be removed if we are only defining
-   algorithms?  For the (old) content of this section, see the git
-   commit history.
-
-   Some aspects of certificate enrollment need to be modified to
-   accommodate certificates with composite public keys and signatures.
-
-8.1.  SUGGEST DELETION - PCKS#10
-
-   EDNOTE: We probably still need this section, but not the way I had
-   it.  For the (old) content of this section, see the git commit
-   history.
-
-8.2.  SUGGEST DELETION - Subsequent Enrollments with Overlapping Public
-      Keys
-
-   EDNOTE: This section to be removed if we are only defining
-   algorithms?  For the (old) content of this section, see the git
-   commit history.
-
-9.  SUGGEST DELETION - Certificate Revocation
-
-   EDNOTE: This subsection will talk about compromises of keys,
-   revocation and how recovation will be verified.
-
-   When a CA checks for key reuse of compromised keys, they SHOULD
-   (MUST?) check each key individually, not a bit-for-bit match of the
-   entire "CompositePublicKey" field.
-
-9.1.  SUGGEST DELETION - Certificate Revocation Lists (CRLs)
-
-   EDNOTE: This section to be removed if we are only defining
-   algorithms?  For the (old) content of this section, see the git
-   commit history.
-
-9.1.1.  SUGGEST DELETION - CertificateList
-
-   EDNOTE: This section to be removed if we are only defining
-   algorithms?  For the (old) content of this section, see the git
-   commit history.
-
-
-
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 7]
-
-Internet-Draft               Composite Certs               February 2019
-
-
-9.1.2.  SUGGEST DELETION - TBS Cert List
-
-   EDNOTE: This section to be removed if we are only defining
-   algorithms?  For the (old) content of this section, see the git
-   commit history.
-
-9.2.  SUGGEST DELETION - Revoking an algorithm: Revoked Algorithms CRL
-      Extension
-
-   EDNOTE: This section to be removed if we are only defining
-   algorithms?  For the (old) content of this section, see the git
-   commit history.
-
-9.3.  SUGGEST DELETION - Implicit Revocation
-
-   EDNOTE: This section to be removed if we are only defining
-   algorithms?  For the (old) content of this section, see the git
-   commit history.
-
-9.4.  SUGGEST DELETION - End-Entity Requested Revocation
-
-   EDNOTE: This section to be removed if we are only defining
-   algorithms?  For the (old) content of this section, see the git
-   commit history.
-
-10.  New Algorithm Identifiers
+7.  New Algorithm Identifiers
 
    EDNOTE: This subsection defines the OIDs for the initial composite
    algorithm combinations we want to define.  EDNOTE: Merge with
-   Section 13 ??
+   Section 10 ??
 
-11.  In Practice
+8.  In Practice
 
    EDNOTE: This section will talk about practical issue of how these
    certificates will be used.  For example it will talk about the size
@@ -444,23 +333,22 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 8]
+Kampanakis (Editor)      Expires August 6, 2019                 [Page 6]
 
 Internet-Draft               Composite Certs               February 2019
 
 
-12.  Implications for existing standards
+9.  Implications for existing standards
 
-12.1.  RFC 2986
+9.1.  RFC 2986
 
    EDNOTE: summarize the updates to RFC 2986 (CSR / PKCS#10).
 
-12.2.  RFC 5280
+9.2.  RFC 5280
 
    EDNOTE: summarize the updates to RFC 5280 (X.509).
 
-12.3.  Cryptographic protocols
+9.3.  Cryptographic protocols
 
    EDNOTE: This section talks about how protocols like (D)TLS and IKEv2
    are affected by this specifications.  It will not attempt to solve
@@ -470,9 +358,9 @@ Internet-Draft               Composite Certs               February 2019
    will describe how signature_algorithms extension will be used in TLS.
    What is missing in TLS and IKEv2 like what and how to sign something
    with the two private keys.  It will discuss overhead (size and
-   processing) as in Section 11.  It will also discuss PKCS#10.
+   processing) as in Section 8.  It will also discuss PKCS#10.
 
-13.  IANA Considerations
+10.  IANA Considerations
 
    EDNOTE: This section will include content only if new OIDs or IANA
    codepoints are asigned for it.
@@ -488,7 +376,7 @@ Internet-Draft               Composite Certs               February 2019
 
    o  CompositeSignatureValue
 
-14.  Security Considerations
+11.  Security Considerations
 
    EDNOTE: This section includes the Security Considerations.
 
@@ -501,7 +389,7 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 9]
+Kampanakis (Editor)      Expires August 6, 2019                 [Page 7]
 
 Internet-Draft               Composite Certs               February 2019
 
@@ -510,9 +398,9 @@ Internet-Draft               Composite Certs               February 2019
       compromised key reuse: unpack the CompositePublicKey structure and
       compare individual keys.
 
-15.  Appendices
+12.  Appendices
 
-15.1.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509
+12.1.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509
 
    EDNOTE: This section will explain the differences from
    [I-D.truskovsky-lamps-pq-hybrid-x509].  IPR Claims should be
@@ -522,7 +410,7 @@ Internet-Draft               Composite Certs               February 2019
 
    (MO): Move to appendix, or to a supporting document?
 
-16.  Contributors
+13.  Contributors
 
    EDNOTE: This section includes the contributors of this draft so the
    authors in the first page do not exceed five and thus violate
@@ -541,14 +429,14 @@ Internet-Draft               Composite Certs               February 2019
    We are grateful to all, including any contributors who may have been
    inadvertently omitted from this list.
 
-17.  Acknowledgenents
+14.  Acknowledgenents
 
    EDNOTE: this section include all those that need to be acknowledged
    in the draft
 
-18.  References
+15.  References
 
-18.1.  Normative References
+15.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -557,7 +445,7 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-Kampanakis (Editor)      Expires August 6, 2019                [Page 10]
+Kampanakis (Editor)      Expires August 6, 2019                 [Page 8]
 
 Internet-Draft               Composite Certs               February 2019
 
@@ -577,7 +465,7 @@ Internet-Draft               Composite Certs               February 2019
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
-18.2.  Informative References
+15.2.  Informative References
 
    [I-D.truskovsky-lamps-pq-hybrid-x509]
               Truskovsky, A., Geest, D., Fluhrer, S., Kampanakis, P.,
@@ -613,4 +501,4 @@ Author's Address
 
 
 
-Kampanakis (Editor)      Expires August 6, 2019                [Page 11]
+Kampanakis (Editor)      Expires August 6, 2019                 [Page 9]

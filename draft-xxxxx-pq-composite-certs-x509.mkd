@@ -186,49 +186,6 @@ Output:
 
 Signature Verification Procedure:
 
-# SUGGEST DELETION -- Composite Certificates {#sec-composite-certs}
-EDNOTE: This section to be removed if we are only defining algorithms? For the (old) content of this section, see the git commit history.
-
-## SUGGEST DELETION -- Validation {#sec-validation}
-EDNOTE: This section to be removed if we are only defining algorithms? For the (old) content of this section, see the git commit history.
-
-
-# SUGGEST DELETION -- Certificate Enrollment {#sec-cert-enrollment}
-EDNOTE: This section to be removed if we are only defining algorithms? For the (old) content of this section, see the git commit history.
-
-Some aspects of certificate enrollment need to be modified to accommodate certificates with composite public keys and signatures.
-
-## SUGGEST DELETION -- PCKS#10 {#sec-p10}
-EDNOTE: We probably still need this section, but not the way I had it. For the (old) content of this section, see the git commit history.
-
-
-## SUGGEST DELETION -- Subsequent Enrollments with Overlapping Public Keys
-EDNOTE: This section to be removed if we are only defining algorithms? For the (old) content of this section, see the git commit history.
-
-# SUGGEST DELETION -- Certificate Revocation {#sec-revocation}
-EDNOTE: This subsection will talk about compromises of keys, revocation and how recovation will be verified.
-
-When a CA checks for key reuse of compromised keys, they SHOULD (MUST?) check each key individually, not a bit-for-bit match of the entire `CompositePublicKey` field.
-
-## SUGGEST DELETION -- Certificate Revocation Lists (CRLs) {#sec-crl}
-EDNOTE: This section to be removed if we are only defining algorithms? For the (old) content of this section, see the git commit history.
-
-### SUGGEST DELETION -- CertificateList {#sec-certificatelist}
-EDNOTE: This section to be removed if we are only defining algorithms? For the (old) content of this section, see the git commit history.
-
-### SUGGEST DELETION -- TBS Cert List {#sec-tbscertlist}
-EDNOTE: This section to be removed if we are only defining algorithms? For the (old) content of this section, see the git commit history.
-
-## SUGGEST DELETION -- Revoking an algorithm: Revoked Algorithms CRL Extension {#sec-revokedalgorithms}
-EDNOTE: This section to be removed if we are only defining algorithms? For the (old) content of this section, see the git commit history.
-
-## SUGGEST DELETION -- Implicit Revocation {#sec-implicit-revocation}
-EDNOTE: This section to be removed if we are only defining algorithms? For the (old) content of this section, see the git commit history.
-
-
-## SUGGEST DELETION -- End-Entity Requested Revocation
-EDNOTE: This section to be removed if we are only defining algorithms? For the (old) content of this section, see the git commit history.
-
 # New Algorithm Identifiers
 EDNOTE: This subsection defines the OIDs for the initial composite algorithm combinations we want to define.
 EDNOTE: Merge with {{sec-iana}} ??
