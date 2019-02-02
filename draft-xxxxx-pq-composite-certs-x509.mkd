@@ -68,11 +68,10 @@ draft-xxxxx-pq-composite-certs-x509-00
 
 
 # Introduction {#sec-intro}
-EDNOTE: This will be the Introduction
 
 During the transition to post-quantum cryptography, the deployment of cryptographic certificates using post-quantum algorithms will face two challenges
 
-- Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will also start to erode.  A relying party may learn some time after certificate deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
+- Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will also start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
 - Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
 
 This document provides a mechanism to address algorithm strength uncertainty by providing formats for encoding multiple public keys and multiple signature values into existing public key and signature fields. The issue of backwards compatibility is left open to be addressed in separate draft(s).
@@ -82,23 +81,6 @@ This document provides a mechanism to address algorithm strength uncertainty by 
 
 # Terminology {#sec-terminology}
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 {{RFC2119}} {{RFC8174}} when, and only when, they appear in all capitals, as shown here.
-
-This document defines the following terms:
-
-* Traditional Certificate
-* Composite certificate
-
-
-EDNOTE: Look up the standard way to do glossaries in RFCs.
-EDNOTE: I'm not sure we actually need these terms in this draft. We'll certainly need them in the Parallel PKIs draft.
-
-## Traditional Certificate
-
-An X.509 certificate conforming to {{RFC5280}}. In particular, a certificate containing a single subject public key, and a single issuer signature.
-
-## Composite Certificate
-
-An X.509 certificate containing two or more subject public keys and two or more issuer signatures as defined in this document.
 
 # Composite Structures {#sec-composite-structs}
 ~~DESCRIBE DESIGN AND INTENT, SEQUENCE SO WE HAVE 2 OR MORE, BLAH BLAH~~
@@ -168,23 +150,156 @@ EDNOTE: Examples of how other specifications specify how a data structure is con
 Many specifications require that the composite public key and composite signature data structures defined above be represented by an octet string or bit string.  When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.  When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.
 
 # Composite Signature Algorithm {#sec-composite-signature-algorithm}
-The Composite Signature signature algorithm produces a single composite signature by applying multiple signature algorithms to the input data, using multiple public keys, with the resulting signature effectively being the concatenation of the individual signatures.  This algorithm can address algorithm strength uncertainty by leveraging the strength of all of the signature algorithms used as part of the composite signature.
+The Composite Signature signature algorithm produces a single composite signature by applying multiple signature algorithms to the input message, using multiple private keys, with the resulting signature effectively being the concatenation of the individual signatures.  This algorithm can address algorithm strength uncertainty by providing the verifier with parallel signatures from all of the signature algorithms used as part of the composite signature.
 
-## Signature Generation
-
-Input:
-
-Output:
-
-Signature Generation Procedure:
-
-## Signature Verification
+## Composite Signature Generation {#sec-comp-sig-gen}
 
 Input:
+     K1, K2, ..., Kn    The n private keys for the component signature algorithms
+     M         Message to be signed, an octet string
 
 Output:
+     S     signature, an octet string
+
+Signature Generation Procedure::
+   1.  Sign the message separately using each component
+       for i := 1 to n
+           Si := Sign( Ki, M )
+   2.  Encode the component signatures into an ASN.1 value of type Signature with the DER, where the type Signature has the syntax
+       Signature ::= Sequence { S1, S2, ..., Sn }
+     Let S be the DER encoding of the Signature
+   3.  Output S
+
+
+## Composite Signature Verification {#sec-comp-sig-verify}
+
+The choice of how many component signatures must be valid in order for the composite signature as a whole to be valid is a policy decision to be made by the verifier.
+
+Compliant implementations MUST return "Invalid signature" whenever the "One Must Pass" algorithm does, but MAY require more than one signature to be valid. It is RECOMMENDED to implement the "All Must Pass" algorithm.
+
+EDNOTE: The corresponding "encrypt with a composite public key" logic is somewhat less obvious; a naive implementer might be tempted to encrypt the message with each public key separately, which is wrong.  Should we include the correct pseudocode in an appendix, even though the ciphertext would never appear in a certificate?
+
+### "One Must Pass" Verification Algorithm
+
+Input:
+     P    Signer's composite public key
+     M    Message whose signature is to be verified, an octet string
+     S    Composite Signature to be verified
+     A    Composite Algorithm identifier
+
+Output:
+    Validity      "Valid signature" (true) if the composite signature is valid, "Invalid signature" (false) otherwise.
+
+Signature Verification Procedure::
+   1. Parse P, S, A into the component public keys, signatures, algorithm identifiers
+     P1, P2, ..., Pk := Desequence( P )
+     S1, S2, ..., Sk := Desequence( S )
+     A1, A2, ..., Ak := Desequence( A )
+
+    If Error during Desequencing, or the three sequences had different numbers of elements, then output "Invalid signature" and stop.
+
+   2. Check each signature individually
+     ValidSignature := false;
+     for i := 1 to k
+        Check if Ai is a recognized algorithm,  if so
+           if NOT verify( Pi, M, Si ) output "Invalid signature" and stop
+           Check if algorithm Ai has been revoked.  If not, then ValidSignature |= true
+
+    3. Succeed if at least one non-revoked signature algorithm validated
+     if ValidSignature, then output "Valid signature"
+     otherwise output "Invalid signature"
+
+EDNOTE: In order to achieve timing-invariance, all signatures must be verified, even after a successful signatures is found.
+
+EDNOTE (Scott): The above signature algorithm passes if at least one "trusted" algorithm passes.  Obviously, we could be more specific (e.g. "one traditional and one postquantum algorithm"), however I don't believe that the additional complexity is justified.  My philosophy is that it's easier to add complexity to a draft RFC than to remove it, so the first cut should default to simplicity, and if the WG decides they'd prefer a more complex solution, so be it...
+
+EDNOTE (Mike): I have provided the "All must pass" and "One must pass" with the comment that "other variants are possible at the discretion of the verifier".
+
+
+### "All Must Pass" Verification Algorithm
+
+Input:
+   P    Signer's composite public key
+   M    Message whose signature is to be verified, an octet string
+   S    Composite Signature to be verified
+   A    Composite Algorithm identifier
+
+Output:
+  Validity      "Valid signature" (true) if the composite signature is valid, "Invalid signature" (false) otherwise.
 
 Signature Verification Procedure:
+   1. Parse P, S, A into the component public keys, signatures, algorithm identifiers
+      P1, P2, ..., Pk := Desequence( P )
+      S1, S2, ..., Sk := Desequence( S )
+      A1, A2, ..., Ak := Desequence( A )
+
+      If Error during Desequencing, or the three sequences had different numbers of elements, then output "Invalid signature" and stop.
+
+   2. Check each signature individually
+     ValidSignature := false;
+     for i := 1 to k
+        Check if Ai is a recognized algorithm,  if so
+            if NOT verify( Pi, M, Si ) output "Invalid signature" and stop
+            Check if algorithm Ai has been revoked.  If not, then ValidSignature &= true
+          else
+            output "Invalid signature"
+
+    3. Succeed if all non-revoked signature algorithms validated
+       if ValidSignature, then output "Valid signature"
+       otherwise output "Invalid signature"
+
+EDNOTE: In order to achieve timing-invariance, all signatures must be verified, even after a successful signatures is found.
+
+EDNOTE: There is no point in trying to preserve timing-invariance in the case where one or more component algorithms are not supported.
+
+<!-- End of Composite Signature Algorithm section -->
+
+## Revoking an algorithm: Revoked Algorithms CRL Extension {#sec-revokedalgorithms}
+Since a certificate may contain public keys and / or signatures, it is conceivable that even though a cryptographic algorithm is considered deprecated, a certificate may contain enough keys and signatures on alternative strong algorithms to warrant continuing to use that certificate in production. This section provides a CRL Extension by which a Certificate Authority can communicate the deprecation of an algorithm without causing a mass revocation of certificates. The goal is that by providing such a mechanism, the world can more quickly react to news of algorithm compromise compared to the need to revoke and re-issue all certificates using that algorithm.
+
+EDNOTE: the above paragraph could use some polishing.
+EDNOTE: agree a word for this: "Revoking an algorithm" vs "Deprecating an algorithm" vs something-else ?
+
+~~~ asn.1
+id-ce-RevokedAlgorithms OBJECT IDENTIFIER ::= { OID }
+
+RevokedAlgorithms ::= SEQUENCE OF SEQUENCE  {
+     algorithms              AlgorithmIdentifier,
+     revocationDate          Time,
+     crlEntryExtensions      Extensions OPTIONAL
+                              -- if present, version MUST be v2
+     }
+~~~
+{: artwork-name="RevokedAlgorithm-asn.1"}
+
+EDNOTE: do we need the crlEntryExtensions field? If so, which ones from https://tools.ietf.org/html/rfc5280#section-5.3 are allowed here?
+
+There may only be one `RevokedAlgorithms` extension in a CRL. This extension is OPTIONAL. If a CRL contains only composite certificates, then this extension SHOULD be designated as critical. If a CRL contains a mixture of composite and traditional certificates then it SHOULD be designated as non-critical.
+
+If the Revoked Algorithms extension is present in the CRL covering an otherwise non-revoked certificate, then a client performing certificate validation MUST skip any signatures corresponding to a revoked algorithm; thus a certificate is valid only if it would have been valid had those Algorithm IDs and Signature Values been omitted from the certificate.
+
+EDNOTE: I feel like the wording above can be tightened up to be more precise.
+
+Once a algorithm has been marked as revoked on a given CRL, it MUST remain revoked on subsequent CRLs.
+EDNOTE: ^^^ Is there corresponding wording about cert serial numbers on CRLs from RFC5280? If so, I'm not seeing it.
+
+
+Note that a similar mechanism could be used on a per-certificate basis via CRL Entry Extensions, however the authors believe that giving operators the ability to perform partial revocation of a certificate (ie revoking some keys or signatures but leaving the certificate as a whole valid) will greatly increase the complexity of certificate validation routines, thus increasing the chance of both human error, and implementation bugs leading to vulnerabilities, without providing a commensurate amount of increased functionality. By not defining a new CRL Entry Extension, the following requirement is implied: if any key within a certificate warrant revocation, the entire certificate MUST be revoked using the existing revocation mechanisms (this does not apply when the algorithm is globally revoked for the entire scope of this CRL).
+
+## Implicit Revocation {#sec-implicit-revocation}
+
+EDNOTE: This section needs to be re-worded to reflect "Signature Algorithm" rather than "Certificate".
+
+A Composite Signature Algorithm is considered to be "implicitly revoked" if one of the following conditions are met, but the certificate is otherwise valid.
+
+* All of the algorithms listed in the certificate's `signatureAlgorithm` are revoked. In this case certificate chain validation of this certificates will fail when performed by a compliant client.
+
+* All of the algorithms listed in the certificate's `SubjectPublicKeyInfo` are revoked. In this case validation of a signature performed by the private keys corresponding to the public keys listed in this certificate will fail when performed by a compliant client.
+
+At the time of an algorithm revocation, a certificate authority MAY revoke certificates meeting either of the above criteria (by placing them in the `revokedCertificates` list) with a revocation reason of `keyCompromise`. OCSP responders SHOULD designate a certificate as revoked if it meets either of the above conditions.
+
+EDNOTE: read up on how OCSP works and mention the specific mechanism for the above. Also, is it the OCSP Responder's responsibility or the client's to check this?
+
 
 # New Algorithm Identifiers
 EDNOTE: This subsection defines the OIDs for the initial composite algorithm combinations we want to define.
@@ -214,13 +329,7 @@ EDNOTE: This section talks about how protocols like (D)TLS and IKEv2 are affecte
 EDNOTE: This section will include content only if new OIDs or IANA codepoints are asigned for it.
 
 There are no IANA Considerations for this specification.
-EDNOTE: ^^ ??
-
-EDNOTE: We will need OIDs for these ASN.1 structures:
-
-- CompositeAlgorithmIdentifier
-- CompositePublicKey
-- CompositeSignatureValue
+EDNOTE: ^^ ?? Don't we need OIDs?
 
 <!-- End of IANA Considerations section -->
 
@@ -242,6 +351,21 @@ EDNOTE: This section will explain the differences from {{I-D.truskovsky-lamps-pq
 (MO): Move to appendix, or to a supporting document?
 
 <!-- End of Comparison with draft-truskovsky-lamps-pq-hybrid-x509 section -->
+
+## Composite Encryption Algorithm
+
+While this draft does not directly cover ciphertext formats, the "encrypt with a composite public key" logic is somewhat less obvious than for signatures; a naive implementer might be tempted to encrypt the message with each public key separately, which is wrong. We provide a sample algorithm for nesting composite encryptions.
+
+Input:
+  K1, K2, …, Kn     The n private keys for the component signature algorithms
+  M      Message to be encrypted, an octet string
+
+
+Output:
+  Ciphertext      BIT STRING
+
+Encryption procedure:
+
 
 # Contributors
 EDNOTE: This section includes the contributors of this draft so the authors in the first page do not exceed five and thus violate RFC2223-bis. Example where this happens is RFC1122. We can have another Editor for this draft. Doesn't need to be Panos.
