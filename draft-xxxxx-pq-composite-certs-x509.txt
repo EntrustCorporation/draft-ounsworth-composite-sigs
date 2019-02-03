@@ -4,9 +4,9 @@
 
 XXX WG                                            P. Kampanakis (Editor)
 Internet-Draft                                             Cisco Systems
-Updates: RFC2986 RFC5280 (if approved)                 February 02, 2019
+Updates: RFC2986 RFC5280 (if approved)                 February 03, 2019
 Intended status: Standards Track
-Expires: August 6, 2019
+Expires: August 7, 2019
 
 
    Composite Post-Quantum Keys and Signatures For Use In Internet PKI
@@ -31,7 +31,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 6, 2019.
+   This Internet-Draft will expire on August 7, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 1]
+Kampanakis (Editor)      Expires August 7, 2019                 [Page 1]
 
 Internet-Draft               Composite Certs               February 2019
 
@@ -75,7 +75,7 @@ Table of Contents
        6.2.2.  "All Must Pass" Verification Algorithm  . . . . . . .   7
      6.3.  Revoking an algorithm: Revoked Algorithms CRL Extension .   7
      6.4.  Implicit Revocation . . . . . . . . . . . . . . . . . . .   9
-   7.  New Algorithm Identifiers . . . . . . . . . . . . . . . . . .   9
+   7.  New Algorithm Identifiers . . . . . . . . . . . . . . . . . .  10
    8.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  10
    9.  Implications for existing standards . . . . . . . . . . . . .  10
      9.1.  RFC 2986  . . . . . . . . . . . . . . . . . . . . . . . .  10
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 2]
+Kampanakis (Editor)      Expires August 7, 2019                 [Page 2]
 
 Internet-Draft               Composite Certs               February 2019
 
@@ -165,7 +165,7 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 3]
+Kampanakis (Editor)      Expires August 7, 2019                 [Page 3]
 
 Internet-Draft               Composite Certs               February 2019
 
@@ -221,7 +221,7 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 4]
+Kampanakis (Editor)      Expires August 7, 2019                 [Page 4]
 
 Internet-Draft               Composite Certs               February 2019
 
@@ -277,7 +277,7 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 5]
+Kampanakis (Editor)      Expires August 7, 2019                 [Page 5]
 
 Internet-Draft               Composite Certs               February 2019
 
@@ -321,7 +321,7 @@ If Error during Desequencing, or the three sequences had different numbers of el
        algorithm Ai has been revoked.  If not, then ValidSignature |=
        true
 
-   3. Succeed if at least one non-revoked signature algorithm validated
+   3. Succeed if at least one non-revoked signature algorithm is valid
     if ValidSignature, then output "Valid signature"
     otherwise output "Invalid signature"
 
@@ -333,7 +333,7 @@ If Error during Desequencing, or the three sequences had different numbers of el
 
 
 
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 6]
+Kampanakis (Editor)      Expires August 7, 2019                 [Page 6]
 
 Internet-Draft               Composite Certs               February 2019
 
@@ -370,7 +370,7 @@ Internet-Draft               Composite Certs               February 2019
        algorithm Ai has been revoked.  If not, then ValidSignature &=
        true else output "Invalid signature"
 
-   3. Succeed if all non-revoked signature algorithms validated
+   3. Succeed if all non-revoked signature algorithms are valid
       if ValidSignature, then output "Valid signature"
       otherwise output "Invalid signature"
 
@@ -389,7 +389,7 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 7]
+Kampanakis (Editor)      Expires August 7, 2019                 [Page 7]
 
 Internet-Draft               Composite Certs               February 2019
 
@@ -445,7 +445,7 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 8]
+Kampanakis (Editor)      Expires August 7, 2019                 [Page 8]
 
 Internet-Draft               Composite Certs               February 2019
 
@@ -477,8 +477,8 @@ Internet-Draft               Composite Certs               February 2019
       compliant client.
 
    o  All of the algorithms listed in the certificate's
-      "SubjectPublicKeyInfo" are revoked.  In this case validation of a
-      signature performed by the private keys corresponding to the
+      "SubjectPublicKeyInfo" are revoked.  In this case verification of
+      a signature performed by the private keys corresponding to the
       public keys listed in this certificate will fail when performed by
       a compliant client.
 
@@ -492,19 +492,25 @@ Internet-Draft               Composite Certs               February 2019
    for the above.  Also, is it the OCSP Responder's responsibility or
    the client's to check this?
 
+   EDNOTE: If an algorithm is "revoked", shouldn't that also apply to
+   the non-composite uses of that algorithm?  If we decide not to trust
+   RSA within a composite signature, why should we trust an RSA
+   signature standing alone?
+
+
+
+
+
+Kampanakis (Editor)      Expires August 7, 2019                 [Page 9]
+
+Internet-Draft               Composite Certs               February 2019
+
+
 7.  New Algorithm Identifiers
 
    EDNOTE: This subsection defines the OIDs for the initial composite
    algorithm combinations we want to define.  EDNOTE: Merge with
    Section 10 ??
-
-
-
-
-Kampanakis (Editor)      Expires August 6, 2019                 [Page 9]
-
-Internet-Draft               Composite Certs               February 2019
-
 
 8.  In Practice
 
@@ -547,20 +553,17 @@ Internet-Draft               Composite Certs               February 2019
    EDNOTE: This section will include content only if new OIDs or IANA
    codepoints are asigned for it.
 
-   There are no IANA Considerations for this specification.  EDNOTE: ^^
-   ?? Don't we need OIDs?
 
 
 
 
-
-
-
-
-Kampanakis (Editor)      Expires August 6, 2019                [Page 10]
+Kampanakis (Editor)      Expires August 7, 2019                [Page 10]
 
 Internet-Draft               Composite Certs               February 2019
 
+
+   There are no IANA Considerations for this specification.  EDNOTE: ^^
+   ?? Don't we need OIDs?
 
 11.  Security Considerations
 
@@ -608,16 +611,15 @@ Internet-Draft               Composite Certs               February 2019
    RFC2223-bis.  Example where this happens is RFC1122.  We can have
    another Editor for this draft.  Doesn't need to be Panos.
 
-   This document incorporates contributions and comments from a large
-   group of experts.  The Editor would especially like to acknowledge
 
 
-
-Kampanakis (Editor)      Expires August 6, 2019                [Page 11]
+Kampanakis (Editor)      Expires August 7, 2019                [Page 11]
 
 Internet-Draft               Composite Certs               February 2019
 
 
+   This document incorporates contributions and comments from a large
+   group of experts.  The Editor would especially like to acknowledge
    the tireless dedication of the following people, who attended many
    long meetings and generated millions of bytes of electronic mail over
    the past 3 years months in pursuit of this document: Mike Ounsworth
@@ -667,9 +669,7 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-
-
-Kampanakis (Editor)      Expires August 6, 2019                [Page 12]
+Kampanakis (Editor)      Expires August 7, 2019                [Page 12]
 
 Internet-Draft               Composite Certs               February 2019
 
@@ -725,4 +725,4 @@ Author's Address
 
 
 
-Kampanakis (Editor)      Expires August 6, 2019                [Page 13]
+Kampanakis (Editor)      Expires August 7, 2019                [Page 13]

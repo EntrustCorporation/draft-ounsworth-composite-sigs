@@ -205,7 +205,7 @@ Signature Verification Procedure::
            if NOT verify( Pi, M, Si ) output "Invalid signature" and stop
            Check if algorithm Ai has been revoked.  If not, then ValidSignature |= true
 
-    3. Succeed if at least one non-revoked signature algorithm validated
+    3. Succeed if at least one non-revoked signature algorithm is valid
      if ValidSignature, then output "Valid signature"
      otherwise output "Invalid signature"
 
@@ -244,7 +244,7 @@ Signature Verification Procedure:
           else
             output "Invalid signature"
 
-    3. Succeed if all non-revoked signature algorithms validated
+    3. Succeed if all non-revoked signature algorithms are valid
        if ValidSignature, then output "Valid signature"
        otherwise output "Invalid signature"
 
@@ -294,12 +294,13 @@ A Composite Signature Algorithm is considered to be "implicitly revoked" if one 
 
 * All of the algorithms listed in the certificate's `signatureAlgorithm` are revoked. In this case certificate chain validation of this certificates will fail when performed by a compliant client.
 
-* All of the algorithms listed in the certificate's `SubjectPublicKeyInfo` are revoked. In this case validation of a signature performed by the private keys corresponding to the public keys listed in this certificate will fail when performed by a compliant client.
+* All of the algorithms listed in the certificate's `SubjectPublicKeyInfo` are revoked. In this case verification of a signature performed by the private keys corresponding to the public keys listed in this certificate will fail when performed by a compliant client.
 
 At the time of an algorithm revocation, a certificate authority MAY revoke certificates meeting either of the above criteria (by placing them in the `revokedCertificates` list) with a revocation reason of `keyCompromise`. OCSP responders SHOULD designate a certificate as revoked if it meets either of the above conditions.
 
 EDNOTE: read up on how OCSP works and mention the specific mechanism for the above. Also, is it the OCSP Responder's responsibility or the client's to check this?
 
+EDNOTE: If an algorithm is "revoked", shouldn't that also apply to the non-composite uses of that algorithm?  If we decide not to trust RSA within a composite signature, why should we trust an RSA signature standing alone?
 
 # New Algorithm Identifiers
 EDNOTE: This subsection defines the OIDs for the initial composite algorithm combinations we want to define.
