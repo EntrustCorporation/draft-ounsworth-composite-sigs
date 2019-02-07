@@ -1,5 +1,6 @@
-# Composite Certificate Internet-Draft
+# Composite Keys and Signatures Internet-Draft
 
+NOTE: the name of this repo should be changed to "draft-xxxxx-pq-composite-sigs" to better reflect the contents.
 
 ## Setting up a build environment
 
