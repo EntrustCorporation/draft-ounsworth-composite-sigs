@@ -87,17 +87,18 @@ This document provides a mechanism to address algorithm strength uncertainty by 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 {{RFC2119}} {{RFC8174}} when, and only when, they appear in all capitals, as shown here.
 
 # Composite Structures {#sec-composite-structs}
-~~DESCRIBE DESIGN AND INTENT, SEQUENCE SO WE HAVE 2 OR MORE, BLAH BLAH~~
+We define a new public key signature algorithm, which can be used within a certificate.  This signature algorithm has public keys and signatures which consist of a sequence of public keys and signatures from more basic signature algorithms (which we will call component algorithms).  The goal behind this design is to provide a way of using multiple signature algorithms to sign data (because we do not fully trust any one algorithm), and do it in a way that fits within the existing certificate structure.
+
 This section defines
 
   - A general structure for holding multiple public keys within a single public key data structure.
 
-  - Data structures needed to make use of the Composite Signature signature algorithm (defined in {{sec-composite-signature-algorithm}}), which  encapsulates signatures made with multiple public keys.
+  - Data structures needed to make use of the Composite Signature signature algorithm (defined in {{sec-composite-signature-algorithm}}), which encapsulates signatures made with multiple public keys.
 
 These structures can be used to address the "algorithm strength uncertainty" concern from {{sec-intro}}, though the authors note that this mechanism may prove to have utility beyond the post-quantum migration.
 
 ## Composite Public Key {#sec-composite-pub-keys}
-A composite public key is a sequence of public keys that are generally used together.  A composite public key is identified by the object identifier
+A composite public key is a sequence of component public keys that are used together.  A composite public key is identified by the object identifier
 
 ~~~ asn.1
 id-ce-compositePublicKey OBJECT IDENTIFIER ::= { OID }
@@ -130,7 +131,7 @@ CompositeSignatureAlgorithmParams ::= SEQUENCE OF AlgorithmIdentifier
 
 The algorithms in the sequence MUST correspond to the order in which the public keys are listed in the associated CompositePublicKey.
 
-EDNOTE: We haven't defined the private key syntax, should we?
+EDNOTE: We haven't defined the private key syntax, should we?  SRF: My opinion: no, as private keys do not appear within the certificate.
 
 The Composite Signature algorithm output is the DER encoding of the following structure:
 
@@ -141,10 +142,10 @@ CompositeSignatureValue ::= SEQUENCE OF BIT STRING
 ~~~
 {: artwork-name="composite-sig-asn.1"}
 
+Where each bit string within CompositeSignatureValue is a signature by one of the component signature algorithms.
 The choice of `SEQUENCE OF BIT STRING` rather than `BIT STRING` is so the type-length-value encoding can solve the problem of variable-length signature values. The signature values in the sequence MUST correspond to the order in which the signature algorithms are listed in the corresponding CompositeSignatureAlgorithmParams, and in which the public keys are listed in the associated CompositePublicKey.
 
-
-Defining composite algorithm parameters as above avoids the exponential proliferation of OIDs needed for each pairwise combination of signature algorithms. This scheme also naturally extends from 2-keypair to n-keypair should a vendor find a use for this.
+Defining composite algorithm parameters as above avoids the exponential proliferation of OIDs needed for each pairwise combination of signature algorithms. This scheme also naturally extends from 2-keypair to n-keypair should a vendor find a need for this.
 
 # Encoding Composite Structures As Octet Strings and Bit Strings {#sec-encoding-composite-structures}
 EDNOTE: Examples of how other specifications specify how a data structure is converted to a bit string can be found in RFC 2313, section 10.1.4, 3279 section 2.3.5, and RFC 4055, section 3.2.
@@ -152,13 +153,14 @@ EDNOTE: Examples of how other specifications specify how a data structure is con
 Many specifications require that the composite public key and composite signature data structures defined above be represented by an octet string or bit string.  When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.  When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.
 
 # Composite Signature Algorithm {#sec-composite-signature-algorithm}
-The Composite Signature signature algorithm produces a single composite signature by applying multiple signature algorithms to the input message, using multiple private keys, with the resulting signature effectively being the concatenation of the individual signatures.  This algorithm can address algorithm strength uncertainty by providing the verifier with parallel signatures from all of the signature algorithms used as part of the composite signature.
+The Composite Signature signature algorithm produces a single composite signature by applying multiple signature algorithms to the input message, using multiple private keys, with the resulting signature effectively being the concatenation of the individual signatures.  This algorithm can address algorithm strength uncertainty by providing the verifier with parallel signatures from all the component signature algorithms used as part of the composite signature.
 
 ## Composite Signature Generation {#sec-comp-sig-gen}
 
 ~~~
 Input:
-     K1, K2, ..., Kn    The n private keys for the component signature algorithms
+     K1, K2, ..., Kn    The n private keys for the component signature
+                        algorithms
      M                  Message to be signed, an octet string
 
 Output:
@@ -168,8 +170,8 @@ Signature Generation Procedure::
    1.  Sign the message separately using each component
        for i := 1 to n
            Si := Sign( Ki, M )
-   2.  Encode the component signatures into an ASN.1 value of type Signature
-        with the DER, where the type Signature has the syntax
+   2.  Encode the component signatures into an ASN.1 value of type
+        Signature with the DER, where the type Signature has the syntax
        Signature ::= Sequence { S1, S2, ..., Sn }
      Let S be the DER encoding of the Signature
    3.  Output S
@@ -194,25 +196,29 @@ Input:
      A    Composite Algorithm identifier
 
 Output:
-    Validity      "Valid signature" (true) if the composite signature is valid, "Invalid signature" (false) otherwise.
+    Validity      "Valid signature" (true) if the composite signature is
+                  valid, "Invalid signature" (false) otherwise.
 
 Signature Verification Procedure::
-   1. Parse P, S, A into the component public keys, signatures, algorithm identifiers
+   1. Parse P, S, A into the component public keys, signatures,
+      algorithm identifiers
      P1, P2, ..., Pk := Desequence( P )
      S1, S2, ..., Sk := Desequence( S )
      A1, A2, ..., Ak := Desequence( A )
 
-    If Error during Desequencing, or the three sequences had different numbers of elements, then output "Invalid signature" and stop.
+    If Error during Desequencing, or the three sequences had different
+    numbers of elements, then output "Invalid signature" and stop.
 
    2. Check each signature individually
      for i := 1 to k
         Check if Ai is a recognized algorithm,  if so then,
           Check if algorithm Ai has been revoked, if not then,
-           if verify( Pi, M, Si ), then output "Valid signature" and stop.
+             if verify( Pi, M, Si ), then output "Valid signature"
+                 and stop.
+             else output "Invalid signature" and stop.
 
-    3. Succeed if at least one non-revoked signature algorithm is valid
-       if ValidSignature, then output "Valid signature"
-       otherwise output "Invalid signature"
+    3. Output "Invalid signature" (as no nonrevoked signature
+       algorithms were available).
 ~~~
 {: artwork-name="alg-one-must-pass-verif"}
 
@@ -227,33 +233,41 @@ Input:
    A    Composite Algorithm identifier
 
 Output:
-  Validity      "Valid signature" (true) if the composite signature is valid, "Invalid signature" (false) otherwise.
+  Validity      "Valid signature" (true) if the composite signature is
+                valid, "Invalid signature" (false) otherwise.
 
 Signature Verification Procedure:
-   1. Parse P, S, A into the component public keys, signatures, algorithm identifiers
+   1. Parse P, S, A into the component public keys, signatures,
+      algorithm identifiers
       P1, P2, ..., Pk := Desequence( P )
       S1, S2, ..., Sk := Desequence( S )
       A1, A2, ..., Ak := Desequence( A )
 
-      If Error during Desequencing, or the three sequences had different numbers of elements, then output "Invalid signature" and stop.
+      If Error during Desequencing, or the three sequences had different
+      numbers of elements, then output "Invalid signature" and stop.
 
    2. Check each signature individually
      for i := 1 to k
-        Check if Ai is a recognized algorithm, if not then output "Invalid signature" and stop.
+        Check if Ai is a recognized algorithm, if not then output
+            "Invalid signature" and stop.
         else
-            Check if algorithm Ai has been revoked, if so then output "Invalid signature" and stop.
-            if NOT verify( Pi, M, Si ), then output "Invalid signature" and stop.
+            Check if algorithm Ai has been revoked, if so then output
+                "Invalid signature" and stop.
+            if NOT verify( Pi, M, Si ), then output
+                "Invalid signature" and stop.
 
-    3. Succeed if all signature algorithms are non-revoked and all signatures are valid
+    3. Succeed if all signature algorithms are non-revoked and all
+       signatures are valid
        output "Valid signature"
 ~~~
 {: artwork-name="alg-all-must-pass-verif"}
 
+EDNOTE: The above algorithm fails if any component algorithm is revoked.  Should we be quite this strict?  If revoking an algorithm shuts down a cert, what's the point in revoking?
 
 <!-- End of Composite Signature Algorithm section -->
 
 # Revoking an algorithm
-Since a certificate may contain public keys and / or signatures, it is conceivable that even though a cryptographic algorithm is considered deprecated, a certificate may contain enough keys and signatures on alternative strong algorithms to warrant continuing to use that certificate in production. This section provides a CRL Extension by which a Certificate Authority can communicate the deprecation of an algorithm without causing a mass revocation of certificates. The goal is that by providing such a mechanism, the world can more quickly react to news of algorithm compromise with a lower service disruption compared to the need to revoke and re-issue all certificates using that algorithm.
+Since a certificate may contain public keys and/or signatures, it is conceivable that even though a cryptographic algorithm is considered deprecated, a certificate may contain enough keys and signatures on alternative strong algorithms to warrant continuing to use that certificate in production. This section provides a CRL Extension by which a Certificate Authority can communicate the deprecation of an algorithm without causing a mass revocation of certificates. The goal is that by providing such a mechanism, the world can more quickly react to news of algorithm compromise with a lower service disruption compared to the need to revoke and re-issue all certificates using that algorithm.
 
 EDNOTE: the above paragraph could use some polishing.
 
@@ -321,7 +335,15 @@ EDNOTE: summarize the updates to RFC 5280 (X.509).
 
 
 ## Cryptographic protocols
-EDNOTE: This section talks about how protocols like (D)TLS and IKEv2 are affected by this specifications. It will not attempt to solve all these problems, but it will explain the rationale, how things will work and what open problems need to be solved. It will talk about implications of how to distinguish what cert chain to send. It will describe how signature_algorithms extension will be used in TLS. What is missing in TLS and IKEv2 like what and how to sign something with the two private keys. It will discuss overhead (size and processing) as in {{sec-in-pract}}. It will also discuss PKCS#10.
+EDNOTE: This section talks about how protocols like (D)TLS and IKEv2 are affected by this specifications. It will not attempt to solve all these problems, but it will explain the rationale, how things will work and what open problems need to be solved. Obvious issues that need to be discussed:
+
+- How does the protocol declare support for composite signatures?  TLS has hooks for declaring support for specific signature algorithms, however it would need to be extended, because the client would need to declare support for both the composite infrastructure, as well as for the various component signature algorithms.
+
+- How does the protocol use the multiple keys.  The obvious way would be to have the server sign using its composite public key; is this sufficient.
+
+- Overhead; including certificate size, signature processing time, and size of the signature.
+
+- How to deal with crypto protocols that use public key encryption algorithms; this document only lists how to work with signature algorithms.  Encoding composite public keys is straightforward; encoding composite ciphertexts is less so - we decided to put that off to another draft.
 
 <!-- End of Implications for existing standards section -->
 
