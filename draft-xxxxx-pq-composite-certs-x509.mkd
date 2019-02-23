@@ -186,15 +186,11 @@ Signature Generation Procedure::
 
 ## Composite Signature Verification {#sec-comp-sig-verify}
 
-The choice of how many component signatures must be valid in order for the composite signature as a whole to be valid is a policy decision to be made by the verifier.
-
-Compliant implementations MUST return "Invalid signature" whenever the "One Must Pass" algorithm does, but MAY require more than one signature to be valid. It is RECOMMENDED to implement the "All Must Pass" algorithm.
-
-EDNOTE: The corresponding "encrypt with a composite public key" logic is somewhat less obvious; a naive implementer might be tempted to encrypt the message with each public key separately, which is wrong.  Specifying the correct implementation of such an encryption scheme is out of scope for this document.
+This section provide a sample algorithm for validating composite signatures. Compliant implementations MUST return "Invalid signature" whenever the sample algorithm does, but MAY require more than one signature to be valid. Implementations MAY include additional policy mechanisms for determining which and how many algorithms must pass in order for the signature as a whole to be considered valid. See section {{sec-alg-revocation-policy}} for further discussion.
 
 This section assumes the existence of a policy mechanism to revoke individual component algorithms. See section {{sec-alg-revocation-policy}} for further discussion.
 
-### "One Must Pass" Verification Algorithm
+EDNOTE: The corresponding "encrypt with a composite public key" logic is somewhat less obvious; a naive implementer might be tempted to encrypt the message with each public key separately, which is wrong.  Specifying the correct implementation of such an encryption scheme is out of scope for this document, but would be good work for someone in the standards community to pick up.
 
 ~~~
 Input:
@@ -230,47 +226,6 @@ Signature Verification Procedure::
 ~~~
 {: artwork-name="alg-one-must-pass-verif"}
 
-
-### "All Must Pass" Verification Algorithm
-
-~~~
-Input:
-   P    Signer's composite public key
-   M    Message whose signature is to be verified, an octet string
-   S    Composite Signature to be verified
-   A    Composite Algorithm identifier
-
-Output:
-  Validity      "Valid signature" (true) if the composite signature is
-                valid, "Invalid signature" (false) otherwise.
-
-Signature Verification Procedure:
-   1. Parse P, S, A into the component public keys, signatures,
-      algorithm identifiers
-      P1, P2, ..., Pk := Desequence( P )
-      S1, S2, ..., Sk := Desequence( S )
-      A1, A2, ..., Ak := Desequence( A )
-
-      If Error during Desequencing, or the three sequences had different
-      numbers of elements, then output "Invalid signature" and stop.
-
-   2. Check each signature individually
-     for i := 1 to k
-        Check if Ai is a recognized algorithm, if not then output
-            "Invalid signature" and stop.
-        else
-            Check if algorithm Ai has been revoked, if so then output
-                "Invalid signature" and stop.
-            if NOT verify( Pi, M, Si ), then output
-                "Invalid signature" and stop.
-
-    3. Succeed if all signature algorithms are non-revoked and all
-       signatures are valid
-       output "Valid signature"
-~~~
-{: artwork-name="alg-all-must-pass-verif"}
-
-EDNOTE: The above algorithm fails if any component algorithm is revoked.  Should we be quite this strict?  If revoking an algorithm shuts down a cert, what's the point in revoking?
 
 <!-- End of Composite Signature Algorithm section -->
 
