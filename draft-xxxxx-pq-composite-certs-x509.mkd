@@ -73,7 +73,13 @@ draft-xxxxx-pq-composite-sigs-00
 
 # Introduction {#sec-intro}
 
-During the transition to post-quantum cryptography, the deployment of cryptographic certificates using post-quantum algorithms will face two challenges
+During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms. Unlike previous cryptographic algorithm migrations, the choice of when to migrate, and which algorithms to migrate to is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms layered together.
+
+This document is intended for general applicability anywhere that public key structures or digital signatures are used, but where specific design decisions needed to be made, the authors chose the variant that caused the least disruption to existing X.509 certificates, as defined in {{RFC5280}}.
+
+EDNOTE: Is the above statement "...anywhere that public key or signatures are used" too bold? Do we need to restrict it with "X500-style" or something?
+
+The deployment of composite public keys and signatures using post-quantum algorithms will face two challenges
 
 - Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will also start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
 - Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
@@ -87,7 +93,7 @@ This document provides a mechanism to address algorithm strength uncertainty by 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 {{RFC2119}} {{RFC8174}} when, and only when, they appear in all capitals, as shown here.
 
 # Composite Structures {#sec-composite-structs}
-We define a new public key signature algorithm, which can be used within a certificate.  This signature algorithm has public keys and signatures which consist of a sequence of public keys and signatures from more basic signature algorithms (which we will call component algorithms).  The goal behind this design is to provide a way of using multiple signature algorithms to sign data (because we do not fully trust any one algorithm), and do it in a way that fits within the existing certificate structure.
+We define a new public key signature algorithm, which can be used within a certificate or other protocols that make use of public keys and signatures.  This signature algorithm has public keys and signatures which consist of a sequence of public keys and signatures from more basic signature algorithms (which we will call component algorithms).  The goal behind this design is to provide a way of using multiple signature algorithms to sign data (because we do not fully trust any one algorithm), and do it in a way that fits within the existing certificate structure.
 
 This section defines
 
