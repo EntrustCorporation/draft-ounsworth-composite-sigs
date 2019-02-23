@@ -192,6 +192,8 @@ Compliant implementations MUST return "Invalid signature" whenever the "One Must
 
 EDNOTE: The corresponding "encrypt with a composite public key" logic is somewhat less obvious; a naive implementer might be tempted to encrypt the message with each public key separately, which is wrong.  Specifying the correct implementation of such an encryption scheme is out of scope for this document.
 
+This section assumes the existence of a policy mechanism to revoke individual component algorithms. See section {{sec-alg-revocation-policy}} for further discussion.
+
 ### "One Must Pass" Verification Algorithm
 
 ~~~
@@ -272,17 +274,39 @@ EDNOTE: The above algorithm fails if any component algorithm is revoked.  Should
 
 <!-- End of Composite Signature Algorithm section -->
 
-# Revoking an algorithm
-Since a certificate may contain public keys and/or signatures, it is conceivable that even though a cryptographic algorithm is considered deprecated, a certificate may contain enough keys and signatures on alternative strong algorithms to warrant continuing to use that certificate in production. This section provides a CRL Extension by which a Certificate Authority can communicate the deprecation of an algorithm without causing a mass revocation of certificates. The goal is that by providing such a mechanism, the world can more quickly react to news of algorithm compromise with a lower service disruption compared to the need to revoke and re-issue all certificates using that algorithm.
+# Mechanisms to distribute verification policy to clients {#sec-alg-revocation-policy}
 
-EDNOTE: the above paragraph could use some polishing.
+In the traditional world where public keys and signature comprise a single algorithm, the semantics of a signature and a verification are straight-forward: if the key is trusted (via public key pinning, a PKIX revocation check, etc) and the signature is valid, then the signed content can be trusted. However the semantics are less obvious in a world where public keys and signatures are composed of two or more algorithms; it is conceivable that even though a cryptographic algorithm is deprecated, a multi-algorithm signature may contain enough other trustworthy component algorithms to still be considered valid.
 
-EDNOTE: agree a word for this: "Revoking an algorithm" vs "Deprecating an algorithm" vs something-else ?
+In this section addresses policy surrounding which and how many component algorithms must be valid in order for the signature as a whole to be valid. The authors ask for community feedback about whether how best to implement this, for example should it be specified by the signer at signing time, specified by an administrative authority such as a Certificate Authority, or left up to local policy of the verifier much as we do today? The authors believe that by specifying such a mechanism, the world will be able to more quickly react to news of algorithm compromise with a lower service disruption compared to the need to revoke and re-issue all certificates using that algorithm. However, we are not sure if the gains justify the added complexity.
 
-EDNOTE: The authors are unsure whether there are sufficient use-cases for this to justify have it in the draft. We seek community feedback.
+We list here several such mechanisms that have come up in discussion, mainly focused around X.509 PKIs, provided here for the purposes of sparking debate.
 
+## Local verifier policy
+
+Much as we do today, this is left up to domain administrators and software vendors to implement the guidance of governing bodies on a system-by-system basis.
+
+## Extra metadata in the signature
+
+This policy information could be included in the signature structure, allowing the signer to specify it at signing time.
+
+## Extra metadata in the certificate
+
+This policy information could be included in a certificate via an X.509 v3 extension. This gives the Certificate Authority control, but has the drawback that updating the policy requires revoking and reissuing certificates.
+
+## Policy certificate issued by the Certificate Authority
+
+Certificate Authorities have the ability to issue policy certificates that specify the behaviour when verifying signatures performed by keys in certificates within the scope of the policy certificate.
+
+This method has the advantage that policy is centrally-managed, and can be updated without needing to reissue any certificates, but has the drawback that not all PKI implementations support policy certificates.
+
+## Policy constraints in a cross-certificate
+
+This method behaves similarly to the policy certificate method above, but has better support across PKI implementations.
 
 ## Revoked Algorithms CRL Extension {#sec-revokedalgorithms}
+
+Add an extension to CRLs so that in addition to revoking certificates, they can also revoke algorithms for all certificates within the scope of that CRL. Implemented with care, this could allow a single PKI to do a staged algorithm migration by only revoking the algorithm for one CRL group at a time.
 
 ~~~ asn.1
 id-ce-RevokedAlgorithms OBJECT IDENTIFIER ::= { OID }
