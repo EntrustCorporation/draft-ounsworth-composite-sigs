@@ -71,32 +71,30 @@ Table of Contents
    6.  Composite Signature Algorithm . . . . . . . . . . . . . . . .   6
      6.1.  Composite Signature Generation  . . . . . . . . . . . . .   6
      6.2.  Composite Signature Verification  . . . . . . . . . . . .   6
-       6.2.1.  "One Must Pass" Verification Algorithm  . . . . . . .   7
-       6.2.2.  "All Must Pass" Verification Algorithm  . . . . . . .   8
-   7.  Mechanisms to distribute verification policy to clients . . .   8
-     7.1.  Local verifier policy . . . . . . . . . . . . . . . . . .   9
-     7.2.  Extra metadata in the signature . . . . . . . . . . . . .   9
-     7.3.  Extra metadata in the certificate . . . . . . . . . . . .   9
-     7.4.  Policy certificate issued by the Certificate Authority  .   9
-     7.5.  Policy constraints in a cross-certificate . . . . . . . .  10
-     7.6.  Revoked Algorithms CRL Extension  . . . . . . . . . . . .  10
-     7.7.  Implicit Revocation . . . . . . . . . . . . . . . . . . .  11
-   8.  New Algorithm Identifiers . . . . . . . . . . . . . . . . . .  12
-   9.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  12
-   10. Implications for existing standards . . . . . . . . . . . . .  12
-     10.1.  RFC 2986 . . . . . . . . . . . . . . . . . . . . . . . .  12
-     10.2.  RFC 5280 . . . . . . . . . . . . . . . . . . . . . . . .  12
-     10.3.  Cryptographic protocols  . . . . . . . . . . . . . . . .  12
-   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
-   12. Security Considerations . . . . . . . . . . . . . . . . . . .  13
-   13. Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     13.1.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509  .  13
-   14. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  13
-   15. Acknowledgenents  . . . . . . . . . . . . . . . . . . . . . .  14
-   16. References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
-     16.1.  Normative References . . . . . . . . . . . . . . . . . .  14
-     16.2.  Informative References . . . . . . . . . . . . . . . . .  14
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  15
+   7.  Mechanisms to distribute verification policy to clients . . .   7
+     7.1.  Local verifier policy . . . . . . . . . . . . . . . . . .   8
+     7.2.  Extra metadata in the signature . . . . . . . . . . . . .   8
+     7.3.  Extra metadata in the certificate . . . . . . . . . . . .   8
+     7.4.  Policy certificate issued by the Certificate Authority  .   8
+     7.5.  Policy constraints in a cross-certificate . . . . . . . .   9
+     7.6.  Revoked Algorithms CRL Extension  . . . . . . . . . . . .   9
+     7.7.  Implicit Revocation . . . . . . . . . . . . . . . . . . .  10
+   8.  New Algorithm Identifiers . . . . . . . . . . . . . . . . . .  11
+   9.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  11
+   10. Implications for existing standards . . . . . . . . . . . . .  11
+     10.1.  RFC 2986 . . . . . . . . . . . . . . . . . . . . . . . .  11
+     10.2.  RFC 5280 . . . . . . . . . . . . . . . . . . . . . . . .  11
+     10.3.  Cryptographic protocols  . . . . . . . . . . . . . . . .  11
+   11. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
+   12. Security Considerations . . . . . . . . . . . . . . . . . . .  12
+   13. Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  12
+     13.1.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509  .  12
+   14. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  12
+   15. Acknowledgenents  . . . . . . . . . . . . . . . . . . . . . .  13
+   16. References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
+     16.1.  Normative References . . . . . . . . . . . . . . . . . .  13
+     16.2.  Informative References . . . . . . . . . . . . . . . . .  13
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  14
 
 1.  Change Log
 
@@ -105,6 +103,8 @@ Table of Contents
    draft-xxxxx-pq-composite-sigs-00
 
    o  Beginning of the draft
+
+
 
 
 
@@ -323,13 +323,13 @@ Internet-Draft               Composite Certs               February 2019
 
 6.2.  Composite Signature Verification
 
-   The choice of how many component signatures must be valid in order
-   for the composite signature as a whole to be valid is a policy
-   decision to be made by the verifier.
-
-   Compliant implementations MUST return "Invalid signature" whenever
-   the "One Must Pass" algorithm does, but MAY require more than one
-
+   This section provide a sample algorithm for validating composite
+   signatures.  Compliant implementations MUST return "Invalid
+   signature" whenever the sample algorithm does, but MAY require more
+   than one signature to be valid.  Implementations MAY include
+   additional policy mechanisms for determining which and how many
+   algorithms must pass in order for the signature as a whole to be
+   considered valid.  See section Section 7 for further discussion.
 
 
 
@@ -338,20 +338,16 @@ Kampanakis (Editor)      Expires August 27, 2019                [Page 6]
 Internet-Draft               Composite Certs               February 2019
 
 
-   signature to be valid.  It is RECOMMENDED to implement the "All Must
-   Pass" algorithm.
+   This section assumes the existence of a policy mechanism to revoke
+   individual component algorithms.  See section Section 7 for further
+   discussion.
 
    EDNOTE: The corresponding "encrypt with a composite public key" logic
    is somewhat less obvious; a naive implementer might be tempted to
    encrypt the message with each public key separately, which is wrong.
    Specifying the correct implementation of such an encryption scheme is
-   out of scope for this document.
-
-   This section assumes the existence of a policy mechanism to revoke
-   individual component algorithms.  See section Section 7 for further
-   discussion.
-
-6.2.1.  "One Must Pass" Verification Algorithm
+   out of scope for this document, but would be good work for someone in
+   the standards community to pick up.
 
 Input:
      P    Signer's composite public key
@@ -384,8 +380,12 @@ Signature Verification Procedure::
     3. Output "Invalid signature" (as no nonrevoked signature
        algorithms were available).
 
+7.  Mechanisms to distribute verification policy to clients
 
-
+   In the traditional world where public keys and signature comprise a
+   single algorithm, the semantics of a signature and a verification are
+   straight-forward: if the key is trusted (via public key pinning, a
+   PKIX revocation check, etc) and the signature is valid, then the
 
 
 
@@ -394,62 +394,8 @@ Kampanakis (Editor)      Expires August 27, 2019                [Page 7]
 Internet-Draft               Composite Certs               February 2019
 
 
-6.2.2.  "All Must Pass" Verification Algorithm
-
-Input:
-   P    Signer's composite public key
-   M    Message whose signature is to be verified, an octet string
-   S    Composite Signature to be verified
-   A    Composite Algorithm identifier
-
-Output:
-  Validity      "Valid signature" (true) if the composite signature is
-                valid, "Invalid signature" (false) otherwise.
-
-Signature Verification Procedure:
-   1. Parse P, S, A into the component public keys, signatures,
-      algorithm identifiers
-      P1, P2, ..., Pk := Desequence( P )
-      S1, S2, ..., Sk := Desequence( S )
-      A1, A2, ..., Ak := Desequence( A )
-
-      If Error during Desequencing, or the three sequences had different
-      numbers of elements, then output "Invalid signature" and stop.
-
-   2. Check each signature individually
-     for i := 1 to k
-        Check if Ai is a recognized algorithm, if not then output
-            "Invalid signature" and stop.
-        else
-            Check if algorithm Ai has been revoked, if so then output
-                "Invalid signature" and stop.
-            if NOT verify( Pi, M, Si ), then output
-                "Invalid signature" and stop.
-
-    3. Succeed if all signature algorithms are non-revoked and all
-       signatures are valid
-       output "Valid signature"
-
-   EDNOTE: The above algorithm fails if any component algorithm is
-   revoked.  Should we be quite this strict?  If revoking an algorithm
-   shuts down a cert, what's the point in revoking?
-
-7.  Mechanisms to distribute verification policy to clients
-
-   In the traditional world where public keys and signature comprise a
-   single algorithm, the semantics of a signature and a verification are
-   straight-forward: if the key is trusted (via public key pinning, a
-   PKIX revocation check, etc) and the signature is valid, then the
    signed content can be trusted.  However the semantics are less
    obvious in a world where public keys and signatures are composed of
-
-
-
-Kampanakis (Editor)      Expires August 27, 2019                [Page 8]
-
-Internet-Draft               Composite Certs               February 2019
-
-
    two or more algorithms; it is conceivable that even though a
    cryptographic algorithm is deprecated, a multi-algorithm signature
    may contain enough other trustworthy component algorithms to still be
@@ -496,16 +442,16 @@ Internet-Draft               Composite Certs               February 2019
    that specify the behaviour when verifying signatures performed by
    keys in certificates within the scope of the policy certificate.
 
-   This method has the advantage that policy is centrally-managed, and
-   can be updated without needing to reissue any certificates, but has
 
 
 
-Kampanakis (Editor)      Expires August 27, 2019                [Page 9]
+Kampanakis (Editor)      Expires August 27, 2019                [Page 8]
 
 Internet-Draft               Composite Certs               February 2019
 
 
+   This method has the advantage that policy is centrally-managed, and
+   can be updated without needing to reissue any certificates, but has
    the drawback that not all PKI implementations support policy
    certificates.
 
@@ -551,17 +497,17 @@ Internet-Draft               Composite Certs               February 2019
    EDNOTE: I feel like the wording above can be tightened up to be more
    precise.
 
-   Once a algorithm has been marked as revoked on a given CRL, it MUST
-   remain revoked on subsequent CRLs.  EDNOTE: ^^^ Is there
 
 
 
 
-Kampanakis (Editor)      Expires August 27, 2019               [Page 10]
+Kampanakis (Editor)      Expires August 27, 2019                [Page 9]
 
 Internet-Draft               Composite Certs               February 2019
 
 
+   Once a algorithm has been marked as revoked on a given CRL, it MUST
+   remain revoked on subsequent CRLs.  EDNOTE: ^^^ Is there
    corresponding wording about cert serial numbers on CRLs from RFC5280?
    If so, I'm not seeing it.
 
@@ -611,9 +557,7 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-
-
-Kampanakis (Editor)      Expires August 27, 2019               [Page 11]
+Kampanakis (Editor)      Expires August 27, 2019               [Page 10]
 
 Internet-Draft               Composite Certs               February 2019
 
@@ -669,7 +613,7 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-Kampanakis (Editor)      Expires August 27, 2019               [Page 12]
+Kampanakis (Editor)      Expires August 27, 2019               [Page 11]
 
 Internet-Draft               Composite Certs               February 2019
 
@@ -725,7 +669,7 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-Kampanakis (Editor)      Expires August 27, 2019               [Page 13]
+Kampanakis (Editor)      Expires August 27, 2019               [Page 12]
 
 Internet-Draft               Composite Certs               February 2019
 
@@ -781,7 +725,7 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-Kampanakis (Editor)      Expires August 27, 2019               [Page 14]
+Kampanakis (Editor)      Expires August 27, 2019               [Page 13]
 
 Internet-Draft               Composite Certs               February 2019
 
@@ -837,4 +781,4 @@ Author's Address
 
 
 
-Kampanakis (Editor)      Expires August 27, 2019               [Page 15]
+Kampanakis (Editor)      Expires August 27, 2019               [Page 14]
