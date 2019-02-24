@@ -73,14 +73,14 @@ The deployment of composite public keys and signatures using post-quantum algori
 
 This document provides a mechanism to address algorithm strength uncertainty by providing formats for encoding multiple public keys and multiple signature values into existing public key and signature fields. The issue of backwards compatibility is left open to be addressed in separate draft(s).
 
-This document is intended for general applicability anywhere that public key structures or digital signatures are used, but where specific design decisions needed to be made, the authors chose the variant that caused the least disruption to existing X.509 certificates, as defined in {{RFC5280}}.
+This document is intended for general applicability anywhere that public key structures or digital signatures are used, but where specific design decisions needed to be made, the authors chose the variant that caused the least disruption to existing X.509 certificates, as defined in [RFC5280].
 
 
 <!-- End of Introduction section -->
 
 
 # Terminology {#sec-terminology}
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 {{RFC2119}} {{RFC8174}} when, and only when, they appear in all capitals, as shown here.
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 [RFC2119], [RFC8174] when, and only when, they appear in all capitals, as shown here.
 
 # Definitions and notation
 
@@ -117,7 +117,7 @@ COMPOSITE ALGORITHM:  An algorithm which is a sequence of one or
 No special notation is used in this document.
 
 # Composite Structures {#sec-composite-structs}
-In order for public keys and signatures to be composed of multiple algorithms, the respective structures defined in {{RFC2986}}, {{RFC5280}} (AND OTHERS??) need to be extended.
+In order for public keys and signatures to be composed of multiple algorithms, the respective structures defined in [RFC2986], [RFC5280] (AND OTHERS??) need to be extended.
 We define encodings of sequences of public keys and signature data which consist of a sequence of public keys and signatures from more basic signature algorithms (aka "component algorithms") such that these structures can be places into any existing public key or signature structure.
 
 This section defines
