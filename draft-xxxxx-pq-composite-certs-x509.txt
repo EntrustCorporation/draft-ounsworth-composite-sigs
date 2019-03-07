@@ -2,15 +2,18 @@
 
 
 
-XXX WG                                            P. Kampanakis (Editor)
-Internet-Draft                                             Cisco Systems
-Updates: RFC2986 RFC5280 (if approved)                 February 24, 2019
-Intended status: Standards Track
-Expires: August 28, 2019
+LAMPS                                                       M. Ounsworth
+Internet-Draft                                                 S. Mister
+Intended status: Standards Track                                 J. Gray
+Expires: September 8, 2019                              Entrust Datacard
+                                                              S. Fluhrer
+                                                           P. Kampanakis
+                                                           Cisco Systems
+                                                          March 07, 2019
 
 
          Composite Keys and Signatures For Use In Internet PKI
-                    draft-xxxxx-pq-composite-sigs-00
+               draft-ounsworth-lamps-pq-composite-sigs-00
 
 Abstract
 
@@ -31,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 28, 2019.
+   This Internet-Draft will expire on September 8, 2019.
 
 Copyright Notice
 
@@ -50,12 +53,9 @@ Copyright Notice
 
 
 
-
-
-
-Kampanakis (Editor)      Expires August 28, 2019                [Page 1]
+Ounsworth, et al.       Expires September 8, 2019               [Page 1]
 
-Internet-Draft               Composite Certs               February 2019
+Internet-Draft             PQ Composite Certs                 March 2019
 
 
 Table of Contents
@@ -75,14 +75,14 @@ Table of Contents
      5.2.  Composite Signature Verification  . . . . . . . . . . . .   7
    6.  Mechanisms to distribute verification policy to clients . . .   8
      6.1.  Local verifier policy . . . . . . . . . . . . . . . . . .   9
-     6.2.  Extra metadata in the signature . . . . . . . . . . . . .   9
+     6.2.  Extra metadata in the public key or signature . . . . . .   9
      6.3.  Extra metadata in the certificate . . . . . . . . . . . .   9
      6.4.  Policy certificate issued by the Certificate Authority  .   9
      6.5.  Policy constraints in a cross-certificate . . . . . . . .  10
      6.6.  Revoked Algorithms CRL Extension  . . . . . . . . . . . .  10
        6.6.1.  Implicit Revocation . . . . . . . . . . . . . . . . .  11
    7.  New Algorithm Identifiers . . . . . . . . . . . . . . . . . .  11
-   8.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  11
+   8.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  12
    9.  Implications for existing standards . . . . . . . . . . . . .  12
      9.1.  RFC 2986  . . . . . . . . . . . . . . . . . . . . . . . .  12
      9.2.  RFC 5280  . . . . . . . . . . . . . . . . . . . . . . . .  12
@@ -96,7 +96,7 @@ Table of Contents
    15. References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
      15.1.  Normative References . . . . . . . . . . . . . . . . . .  14
      15.2.  Informative References . . . . . . . . . . . . . . . . .  14
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  14
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  14
 
 1.  Introduction
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Kampanakis (Editor)      Expires August 28, 2019                [Page 2]
+Ounsworth, et al.       Expires September 8, 2019               [Page 2]
 
-Internet-Draft               Composite Certs               February 2019
+Internet-Draft             PQ Composite Certs                 March 2019
 
 
    migrations, the choice of when to migrate and which algorithms to
@@ -165,9 +165,9 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-Kampanakis (Editor)      Expires August 28, 2019                [Page 3]
+Ounsworth, et al.       Expires September 8, 2019               [Page 3]
 
-Internet-Draft               Composite Certs               February 2019
+Internet-Draft             PQ Composite Certs                 March 2019
 
 
 3.1.  Definitions
@@ -175,24 +175,17 @@ Internet-Draft               Composite Certs               February 2019
    _EDNOTE: A glossary of terms we define for this document, or terms
    that we borrow from other RFCs._
 
-ALGORITHM: <!-- Borrowed straight from RFC2986 -->
-            ENDOTE: need to clean up the link to "ITU-T Recommendation
-            X.681 (1997)" ([11])
-            An information object class defined in X.509 to
-                   describe objects composed of an algorithm (a unique
-                   object identifier) and its parameters (any ASN.1
-                   type).  The values of objects in this class can be
-                   represented by the ASN.1 type AlgorithmIdentifier{}.
-                   ALGORITHM is defined as the "useful" information
-                   object class TYPE-IDENTIFIER, specified in [11],
-                   Annex A. This document is only concerned with
-                   algorithms for producing digital signatures.
+   ALGORITHM: An information object class for identifying the type of
+               cryptographic operation to be performed. This document is
+               only concerned with algorithms for producing digital
+               signatures.
 
-COMPONENT ALGORITHM:  A single basic algorithm which is contained
-                      within a composite algorithm.
+   COMPONENT ALGORITHM:  A single basic algorithm which is contained
+                         within a composite algorithm.
 
-COMPOSITE ALGORITHM:  An algorithm which is a sequence of one or
-                      more basic algorithm, as defined in {{sec-composite-structs}}.
+   COMPOSITE ALGORITHM:  An algorithm which is a sequence of one or
+                         more basic algorithm, as defined in
+                         {{sec-composite-structs}}.
 
 3.2.  Notation
 
@@ -217,21 +210,21 @@ COMPOSITE ALGORITHM:  An algorithm which is a sequence of one or
       Composite Signature signature algorithm (defined in Section 5),
       which encapsulates signatures made with multiple public keys.
 
-
-
-
-
-Kampanakis (Editor)      Expires August 28, 2019                [Page 4]
-
-Internet-Draft               Composite Certs               February 2019
-
-
    _EDNOTE: Defining composite algorithms parameters as a sequent inside
    the existing structure avoids an exponential proliferation of OIDs
    that are needed for each pairwise combination of signature algorithms
    in other competing schemes for achieving multi-key certificates.
    This scheme also naturally extends from 2-keypair to n-keypair keys
    and certificates._
+
+
+
+
+
+Ounsworth, et al.       Expires September 8, 2019               [Page 4]
+
+Internet-Draft             PQ Composite Certs                 March 2019
+
 
 4.1.  Composite Public Key
 
@@ -275,17 +268,19 @@ Internet-Draft               Composite Certs               February 2019
 
    id-ce-compositeSignature OBJECT IDENTIFIER ::= { OID }
 
-
-
-Kampanakis (Editor)      Expires August 28, 2019                [Page 5]
-
-Internet-Draft               Composite Certs               February 2019
-
-
    The following algorithm parameters MUST be included when this
    identifier is used:
 
    CompositeSignatureAlgorithmParams ::= SEQUENCE OF AlgorithmIdentifier
+
+
+
+
+
+Ounsworth, et al.       Expires September 8, 2019               [Page 5]
+
+Internet-Draft             PQ Composite Certs                 March 2019
+
 
    When a composite signature is generated by a key with a
    CompositePublicKey, the signature's CompositeSignatureAlgorithmParams
@@ -330,17 +325,18 @@ Internet-Draft               Composite Certs               February 2019
 
    This algorithm addresses algorithm strength uncertainty by providing
    the verifier with parallel signatures from all the component
-
-
-
-Kampanakis (Editor)      Expires August 28, 2019                [Page 6]
-
-Internet-Draft               Composite Certs               February 2019
-
-
    signature algorithms used as part of the composite signature;
    breaking the composite signature would require breaking each of the
    component signatures.
+
+
+
+
+
+Ounsworth, et al.       Expires September 8, 2019               [Page 6]
+
+Internet-Draft             PQ Composite Certs                 March 2019
+
 
 5.1.  Composite Signature Generation
 
@@ -389,9 +385,13 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-Kampanakis (Editor)      Expires August 28, 2019                [Page 7]
+
+
+
+
+Ounsworth, et al.       Expires September 8, 2019               [Page 7]
 
-Internet-Draft               Composite Certs               February 2019
+Internet-Draft             PQ Composite Certs                 March 2019
 
 
 Input:
@@ -423,7 +423,8 @@ Signature Verification Procedure::
             algorithm's specification
               Vi = verify( Pi, M, Si )
 
-    3. Check policy to see whether V1, V2, ..., Vn constitutes a valid signature
+    3. Check policy to see whether V1, V2, ..., Vn constitutes a valid
+          signature
       if isValid(V1, V2, ..., Vn), then
         output "Valid signature"
       else
@@ -441,15 +442,15 @@ Signature Verification Procedure::
    check, etc) and the signature is valid, then the signed content can
    be trusted.  However the semantics are less obvious in a world where
    public keys and signatures are composed of two or more algorithms; it
-   is conceivable that even though one component algorithm fails
 
 
 
-Kampanakis (Editor)      Expires August 28, 2019                [Page 8]
+Ounsworth, et al.       Expires September 8, 2019               [Page 8]
 
-Internet-Draft               Composite Certs               February 2019
+Internet-Draft             PQ Composite Certs                 March 2019
 
 
+   is conceivable that even though one component algorithm fails
    verification, for example because the algorithm is revoked, a multi-
    algorithm signature may contain enough other trustworthy component
    algorithms to still be considered valid.
@@ -476,10 +477,13 @@ Internet-Draft               Composite Certs               February 2019
    software vendors to implement the guidance of governing bodies on a
    system-by-system basis.
 
-6.2.  Extra metadata in the signature
+6.2.  Extra metadata in the public key or signature
 
-   This policy information could be included in the signature structure,
-   allowing the signer to specify it at signing time.
+   This policy information could be specified by the signer at signing
+   time.  Depending on the structure of the databeing signed, this
+   metadata could go into the public key, or an extension to the
+   signature, or some other field provided that it is inside the signed
+   data blob.
 
 6.3.  Extra metadata in the certificate
 
@@ -494,17 +498,18 @@ Internet-Draft               Composite Certs               February 2019
    that specify the behaviour when verifying signatures performed by
    keys in certificates within the scope of the policy certificate.
 
+
+
+
+Ounsworth, et al.       Expires September 8, 2019               [Page 9]
+
+Internet-Draft             PQ Composite Certs                 March 2019
+
+
    This method has the advantage that policy is centrally-managed, and
    can be updated without needing to reissue any certificates, but has
    the drawback that not all PKI implementations support policy
    certificates.
-
-
-
-Kampanakis (Editor)      Expires August 28, 2019                [Page 9]
-
-Internet-Draft               Composite Certs               February 2019
-
 
 6.5.  Policy constraints in a cross-certificate
 
@@ -548,20 +553,21 @@ Internet-Draft               Composite Certs               February 2019
    Once a algorithm has been marked as revoked on a given CRL, it MUST
    remain revoked on subsequent CRLs.
 
+
+
+
+
+Ounsworth, et al.       Expires September 8, 2019              [Page 10]
+
+Internet-Draft             PQ Composite Certs                 March 2019
+
+
    _EDNOTE: Is there corresponding wording about cert serial numbers on
    CRLs from RFC5280?  Or is this unnecessary implied?_
 
    Note that a similar mechanism could be used on a per-certificate
    basis via CRL Entry Extensions, however the authors believe that
    giving operators the ability to perform partial revocation of a
-
-
-
-Kampanakis (Editor)      Expires August 28, 2019               [Page 10]
-
-Internet-Draft               Composite Certs               February 2019
-
-
    certificate (ie revoking some keys or signatures but leaving the
    certificate as a whole valid) will greatly increase the complexity of
    certificate validation routines, thus increasing the chance of both
@@ -603,6 +609,15 @@ Internet-Draft               Composite Certs               February 2019
 
    _EDNOTE: Merge with ??_Section 10
 
+
+
+
+
+Ounsworth, et al.       Expires September 8, 2019              [Page 11]
+
+Internet-Draft             PQ Composite Certs                 March 2019
+
+
 8.  In Practice
 
    _EDNOTE: This section will talk about practical issue of how these
@@ -610,14 +625,6 @@ Internet-Draft               Composite Certs               February 2019
    of these certs and cert chains.  It will explain that if a cert in
    the chain is a Composite cert then the whole chain needs to be of
    Composite Certs.  It will also explain that the root CA cert does not
-
-
-
-Kampanakis (Editor)      Expires August 28, 2019               [Page 11]
-
-Internet-Draft               Composite Certs               February 2019
-
-
    have to be of the same algorithms.  The root cert SHOULD NOT be
    transferred in the authentication exchange to save transport overhead
    and thus it can be different than the intermediate and leaf certs.
@@ -659,20 +666,17 @@ Internet-Draft               Composite Certs               February 2019
 
    o  How to deal with crypto protocols that use public key encryption
       algorithms; this document only lists how to work with signature
+
+
+
+Ounsworth, et al.       Expires September 8, 2019              [Page 12]
+
+Internet-Draft             PQ Composite Certs                 March 2019
+
+
       algorithms.  Encoding composite public keys is straightforward;
       encoding composite ciphertexts is less so - we decided to put that
       off to another draft.
-
-
-
-
-
-
-
-Kampanakis (Editor)      Expires August 28, 2019               [Page 12]
-
-Internet-Draft               Composite Certs               February 2019
-
 
 10.  IANA Considerations
 
@@ -705,11 +709,6 @@ Internet-Draft               Composite Certs               February 2019
 
 13.  Contributors
 
-   EDNOTE: This section includes the contributors of this draft so the
-   authors in the first page do not exceed five and thus violate
-   RFC2223-bis.  Example where this happens is RFC1122.  We can have
-   another Editor for this draft.  Doesn't need to be Panos.
-
    This document incorporates contributions and comments from a large
    group of experts.  The Editor would especially like to acknowledge
    the tireless dedication of the following people, who attended many
@@ -725,9 +724,10 @@ Internet-Draft               Composite Certs               February 2019
 
 
 
-Kampanakis (Editor)      Expires August 28, 2019               [Page 13]
+
+Ounsworth, et al.       Expires September 8, 2019              [Page 13]
 
-Internet-Draft               Composite Certs               February 2019
+Internet-Draft             PQ Composite Certs                 March 2019
 
 
 14.  Acknowledgenents
@@ -767,7 +767,42 @@ Internet-Draft               Composite Certs               February 2019
               Algorithm X.509 Certificates", draft-truskovsky-lamps-pq-
               hybrid-x509-01 (work in progress), August 2018.
 
-Author's Address
+Authors' Addresses
+
+   Mike Ounsworth
+   Entrust Datacard Limited
+   1000 Innovation Drive
+   Ottawa, Ontario  K2K 1E3
+   Canada
+
+   Phone: +1-613-270-2873
+   Email: mike.ounsworth@entrustdatacard.com
+
+
+
+
+Ounsworth, et al.       Expires September 8, 2019              [Page 14]
+
+Internet-Draft             PQ Composite Certs                 March 2019
+
+
+   Serge Mister
+   Entrust Datacard Limited
+
+   Email: serge.mister@entrustdatacard.com
+
+
+   John Gray
+   Entrust Datacard Limited
+
+   Email: john.gray@entrustdatacard.com
+
+
+   Scott Fluhrer
+   Cisco Systems
+
+   Email: sfluhrer@cisco.com
+
 
    Panos Kampanakis
    Cisco Systems
@@ -781,4 +816,25 @@ Author's Address
 
 
 
-Kampanakis (Editor)      Expires August 28, 2019               [Page 14]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth, et al.       Expires September 8, 2019              [Page 15]

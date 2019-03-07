@@ -1,16 +1,16 @@
 ---
 title: Composite Keys and Signatures For Use In Internet PKI
-abbrev: Composite Certs
+abbrev: PQ Composite Certs
 # <!-- EDNOTE: Edits the draft name -->
-docname: draft-xxxxx-pq-composite-sigs-00
+docname: draft-ounsworth-lamps-pq-composite-sigs-00
 # <!-- date: 2012-01-13 -->
 # <!-- date: 2012-01 -->
 # <!-- date: 2012 -->
 
 # <!-- stand_alone: true -->
-ipr: trust200902
+<!-- ipr: trust200902 -->
 area: Security
-wg: XXX WG
+wg: LAMPS
 kw: Internet-Draft
 cat: std
 
@@ -21,19 +21,54 @@ pi:    # can use array (if all yes) or hash here
   symrefs: yes
 
 author:
-      -
-        # [EDNOTE: We can have another Editor for this draft. Doesn't need to be Panos. -->
-        ins: P. Kampanakis (Editor)
-        name: Panos Kampanakis
-        org: Cisco Systems
-        #abbrev:
-        # street:
-        # city:
-        #code:
-        #country: USA
-        #phone: +1
-        #facsimile: +1
-        email: pkampana@cisco.com
+    -
+      ins: M. Ounsworth
+      name: Mike Ounsworth
+      org: Entrust Datacard Limited
+      abbrev: Entrust Datacard
+      street: 1000 Innovation Drive
+      city: Ottawa, Ontario
+      country: Canada
+      code: K2K 1E3
+      phone: +1-613-270-2873
+      email: mike.ounsworth@entrustdatacard.com
+
+    -
+      ins: S. Mister
+      name: Serge Mister
+      org: Entrust Datacard Limited
+      abbrev: Entrust Datacard
+      email: serge.mister@entrustdatacard.com
+
+    -
+      ins: J. Gray
+      name: John Gray
+      org: Entrust Datacard Limited
+      abbrev: Entrust Datacard
+      #street: 1000 Innovation dr
+      #city: Kanata, On
+      #code:
+      #country: CA
+      email: john.gray@entrustdatacard.com
+
+    -
+      ins: S. Fluhrer
+      name: Scott Fluhrer
+      org: Cisco Systems
+      #abbrev:
+      # street:
+      # city:
+      #code:
+      #country: USA
+      #phone: +1
+      #facsimile: +1
+      email: sfluhrer@cisco.com
+    -
+      ins: P. Kampanakis
+      name: Panos Kampanakis
+      org: Cisco Systems
+      email: pkampana@cisco.com
+
 
 normative:
   RFC2119:
@@ -46,9 +81,9 @@ normative:
 informative:
   I-D.draft-truskovsky-lamps-pq-hybrid-x509-01:
 
-updates:
+<!--updates:
   RFC2986
-  RFC5280
+  RFC5280 -->
 
 # <!-- EDNOTE: does it update these anymore?? -->
 
@@ -91,24 +126,18 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 _EDNOTE: A glossary of terms we define for this document, or terms that we borrow from other RFCs._
 
 ~~~
-ALGORITHM: <!-- Borrowed straight from RFC2986 -->
-            ENDOTE: need to clean up the link to "ITU-T Recommendation
-            X.681 (1997)" ([11])
-            An information object class defined in X.509 to
-                   describe objects composed of an algorithm (a unique
-                   object identifier) and its parameters (any ASN.1
-                   type).  The values of objects in this class can be
-                   represented by the ASN.1 type AlgorithmIdentifier{}.
-                   ALGORITHM is defined as the "useful" information
-                   object class TYPE-IDENTIFIER, specified in [11],
-                   Annex A. This document is only concerned with
-                   algorithms for producing digital signatures.
+ALGORITHM: An information object class for identifying the type of
+            cryptographic operation to be performed. This document is
+            primarily concerned with algorithms for producing digital
+            signatures, though the public key structure could just as
+            easily hold encryption keys.
 
 COMPONENT ALGORITHM:  A single basic algorithm which is contained
                       within a composite algorithm.
 
 COMPOSITE ALGORITHM:  An algorithm which is a sequence of one or
-                      more basic algorithm, as defined in {{sec-composite-structs}}.
+                      more basic algorithm, as defined in
+                      {{sec-composite-structs}}.
 ~~~
 {: artwork-name="glossary"}
 
@@ -256,7 +285,8 @@ Signature Verification Procedure::
             algorithm's specification
               Vi = verify( Pi, M, Si )
 
-    3. Check policy to see whether V1, V2, ..., Vn constitutes a valid signature
+    3. Check policy to see whether V1, V2, ..., Vn constitutes a valid
+          signature
       if isValid(V1, V2, ..., Vn), then
         output "Valid signature"
       else
@@ -281,9 +311,9 @@ This section lists rough outlines for several such mechanisms that have come up 
 
 Much as we do today, this is left up to domain administrators and software vendors to implement the guidance of governing bodies on a system-by-system basis.
 
-## Extra metadata in the signature
+## Extra metadata in the public key or signature
 
-This policy information could be included in the signature structure, allowing the signer to specify it at signing time.
+This policy information could be specified by the signer at signing time. Depending on the structure of the databeing signed, this metadata could go into the public key, or an extension to the signature, or some other field provided that it is inside the signed data blob.
 
 ## Extra metadata in the certificate
 
@@ -396,8 +426,6 @@ EDNOTE: This section will explain the differences from {{I-D.truskovsky-lamps-pq
 
 
 # Contributors
-EDNOTE: This section includes the contributors of this draft so the authors in the first page do not exceed five and thus violate RFC2223-bis. Example where this happens is RFC1122. We can have another Editor for this draft. Doesn't need to be Panos.
-
 This document incorporates contributions and comments from a large
 group of experts. The Editor would especially like to acknowledge the tireless
 dedication of the following people, who attended many long
