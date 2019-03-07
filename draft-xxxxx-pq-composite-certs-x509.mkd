@@ -30,7 +30,6 @@ author:
       city: Ottawa, Ontario
       country: Canada
       code: K2K 1E3
-      phone: +1-613-270-2873
       email: mike.ounsworth@entrustdatacard.com
 
     -
