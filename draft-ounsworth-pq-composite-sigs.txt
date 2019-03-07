@@ -13,7 +13,7 @@ Expires: September 8, 2019                              Entrust Datacard
 
 
          Composite Keys and Signatures For Use In Internet PKI
-               draft-ounsworth-lamps-pq-composite-sigs-00
+                  draft-ounsworth-pq-composite-sigs-00
 
 Abstract
 
@@ -627,9 +627,8 @@ Internet-Draft             PQ Composite Certs                 March 2019
 7.  New Algorithm Identifiers
 
    _EDNOTE: This subsection will define the OIDs for the initial
-   composite algorithm combinations we want to define._
-
-   _EDNOTE: Merge with ??_Section 10
+   composite algorithm combinations we want to define.  These are the
+   OID that Section 10 will ask for IANA to assign._
 
 8.  In Practice
 
@@ -666,6 +665,7 @@ Internet-Draft             PQ Composite Certs                 March 2019
    o  How does the protocol declare support for composite signatures?
       TLS has hooks for declaring support for specific signature
       algorithms, however it would need to be extended, because the
+      client would need to declare support for both the composite
 
 
 
@@ -674,7 +674,6 @@ Ounsworth, et al.       Expires September 8, 2019              [Page 12]
 Internet-Draft             PQ Composite Certs                 March 2019
 
 
-      client would need to declare support for both the composite
       infrastructure, as well as for the various component signature
       algorithms.
 
@@ -714,11 +713,12 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 12.1.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509
 
-   EDNOTE: This section will explain the differences from
-   [I-D.truskovsky-lamps-pq-hybrid-x509].  IPR Claims should be
-   mentioned here if necessary.  Other things to consider are the things
-   we discussed in an email thread like simplicity and format,
-   inadvertnt implementation errors, algorithm agility.
+   _EDNOTE: This section will explain the differences from . IPR Claims
+   should be mentioned here if necessary.  Other things to consider are
+   the things we discussed in an email thread like simplicity and
+   format, inadvertnt implementation errors, algorithm
+   agility._[I-D.truskovsky-lamps-pq-hybrid-x509]
+
 
 
 
@@ -736,18 +736,15 @@ Internet-Draft             PQ Composite Certs                 March 2019
    group of experts.  The Editor would especially like to acknowledge
    the tireless dedication of the following people, who attended many
    long meetings and generated millions of bytes of electronic mail over
-   the past 3 years months in pursuit of this document: Mike Ounsworth
-   (Entrust Datacard), John Gray (Entrust Datacard), Serge Mister
-   (Entrust Datacard), Scott Fluhrer (Cisco Systems) and Panos
-   Kampanakis (Cisco Systems).
+   the past 3 years months in pursuit of this document:
 
    We are grateful to all, including any contributors who may have been
    inadvertently omitted from this list.
 
 14.  Acknowledgenents
 
-   EDNOTE: this section include all those that need to be acknowledged
-   in the draft
+   _EDNOTE: this section include all those that need to be acknowledged
+   in the draft_
 
 15.  References
 
@@ -775,8 +772,11 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 15.2.  Informative References
 
-
-
+   [I-D.truskovsky-lamps-pq-hybrid-x509]
+              Truskovsky, A., Geest, D., Fluhrer, S., Kampanakis, P.,
+              Ounsworth, M., and S. Mister, "Multiple Public-Key
+              Algorithm X.509 Certificates", draft-truskovsky-lamps-pq-
+              hybrid-x509-01 (work in progress), August 2018.
 
 
 
@@ -786,12 +786,6 @@ Ounsworth, et al.       Expires September 8, 2019              [Page 14]
 Internet-Draft             PQ Composite Certs                 March 2019
 
 
-   [I-D.truskovsky-lamps-pq-hybrid-x509]
-              Truskovsky, A., Geest, D., Fluhrer, S., Kampanakis, P.,
-              Ounsworth, M., and S. Mister, "Multiple Public-Key
-              Algorithm X.509 Certificates", draft-truskovsky-lamps-pq-
-              hybrid-x509-01 (work in progress), August 2018.
-
 Authors' Addresses
 
    Mike Ounsworth
@@ -800,7 +794,6 @@ Authors' Addresses
    Ottawa, Ontario  K2K 1E3
    Canada
 
-   Phone: +1-613-270-2873
    Email: mike.ounsworth@entrustdatacard.com
 
 
@@ -826,6 +819,13 @@ Authors' Addresses
    Cisco Systems
 
    Email: pkampana@cisco.com
+
+
+
+
+
+
+
 
 
 
