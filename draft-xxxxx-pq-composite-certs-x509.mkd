@@ -91,7 +91,10 @@ informative:
 # <!-- EDNOTE: Add RFC 3279? -->
 
 --- abstract
-_EDNOTE: This will be the abstract_
+With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite public keys and composite signature data.
+
+This document defines the structures CompositePublicKey, CompositeSignatureAlgorithmParams, and CompositeSignatureValue which are sequences of the respective structure for each component algorithm. This document also defines algorithms for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification algorithms are defined.
+
 <!-- End of Abstract -->
 
 
