@@ -81,8 +81,8 @@ Table of Contents
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   4
    3.  Definitions and notation  . . . . . . . . . . . . . . . . . .   4
      3.1.  Definitions . . . . . . . . . . . . . . . . . . . . . . .   4
-     3.2.  Notation  . . . . . . . . . . . . . . . . . . . . . . . .   4
-   4.  Composite Structures  . . . . . . . . . . . . . . . . . . . .   4
+     3.2.  Notation  . . . . . . . . . . . . . . . . . . . . . . . .   5
+   4.  Composite Structures  . . . . . . . . . . . . . . . . . . . .   5
      4.1.  Composite Public Key  . . . . . . . . . . . . . . . . . .   5
      4.2.  Composite Signature Algorithm . . . . . . . . . . . . . .   6
      4.3.  Encoding Composite Structures As Octet Strings and Bit
@@ -115,7 +115,8 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
    12. Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     12.1.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509  .  13
+     12.1.  Intellection Property Considerations . . . . . . . . . .  13
+     12.2.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509  .  13
    13. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  14
    14. Acknowledgenents  . . . . . . . . . . . . . . . . . . . . . .  14
    15. References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
@@ -160,8 +161,7 @@ Internet-Draft             PQ Composite Certs                 March 2019
    fields.  The issue of backwards compatibility is left open to be
    addressed in separate draft(s).
 
-   This document is intended for general applicability anywhere that
-   public key structures or digital signatures are used, but where
+
 
 
 
@@ -170,9 +170,23 @@ Ounsworth, et al.       Expires September 9, 2019               [Page 3]
 Internet-Draft             PQ Composite Certs                 March 2019
 
 
+   This document is intended for general applicability anywhere that
+   public key structures or digital signatures are used, but where
    specific design decisions needed to be made, the authors chose the
    variant that caused the least disruption to existing X.509
    certificates, as defined in [RFC5280].
+
+   _EDNOTE: While the scope of this document is restricted to
+   signatures, we note that the same structure is equally applicable to
+   asymmetric encryption keys.  Though a word of warning that the
+   corresponding "encrypt / decrypt with a composite public key" logic
+   is somewhat less obvious than; a naive implementer might be tempted
+   to follow the same pattern as bellow and encrypt the message with
+   each public key separately and then concatenate the ciphertexts,
+   which is wrong.  Specifying the correct implementation of such an
+   encryption scheme is out of scope for this document, but would be
+   good work for someone in the standards community to pick
+   up._"CompositePublicKey"
 
 2.  Terminology
 
@@ -202,6 +216,16 @@ Internet-Draft             PQ Composite Certs                 March 2019
                          more basic algorithm, as defined in
                          {{sec-composite-structs}}.
 
+
+
+
+
+
+Ounsworth, et al.       Expires September 9, 2019               [Page 4]
+
+Internet-Draft             PQ Composite Certs                 March 2019
+
+
 3.2.  Notation
 
    No special notation is used in this document.
@@ -218,14 +242,6 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
    This section defines
 
-
-
-
-Ounsworth, et al.       Expires September 9, 2019               [Page 4]
-
-Internet-Draft             PQ Composite Certs                 March 2019
-
-
    o  Composite public key: A general structure for holding multiple
       public keys within a single public key data structure.
 
@@ -233,7 +249,7 @@ Internet-Draft             PQ Composite Certs                 March 2019
       Composite Signature signature algorithm (defined in Section 5),
       which encapsulates signatures made with multiple public keys.
 
-   _EDNOTE: Defining composite algorithms parameters as a sequent inside
+   _EDNOTE: Defining composite algorithm parameters as a sequence inside
    the existing structure avoids an exponential proliferation of OIDs
    that are needed for each pairwise combination of signature algorithms
    in other competing schemes for achieving multi-key certificates.
@@ -259,28 +275,18 @@ Internet-Draft             PQ Composite Certs                 March 2019
    bit string format, the data structure is converted as specified in
    Section 4.3.
 
-   _EDNOTE: We haven't defined the private key syntax, should we?  SRF:
-   My opinion: no, as private keys do not appear within the certificate
-   or other public key structure._
-
-   _EDNOTE: While the scope of this document is restricted to
-   signatures, we note that the same structure is equally applicable to
-   asymmetric encryption keys.  Though a word of warning that the
-   corresponding "encrypt / decrypt with a composite public key" logic
-   is somewhat less obvious than; a naive implementer might be tempted
-   to follow the same pattern as bellow and encrypt the message with
-   each public key separately and then concatenate the ciphertexts,
-   which is wrong.  Specifying the correct implementation of such an
-   encryption scheme is out of scope for this document, but would be
-   good work for someone in the standards community to pick
-   up._"CompositePublicKey"
-
 
 
 Ounsworth, et al.       Expires September 9, 2019               [Page 5]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
+
+   _EDNOTE: This document does not define the corresponding private key
+   formats because the authors deemed it to be out of scope.  We do note
+   that the draft the Max Pala on a similar topic, does define private
+   key formats, so there could be scope to merge these
+   submissions._[I-D.pala-composite-crypto]
 
 4.2.  Composite Signature Algorithm
 
@@ -324,12 +330,6 @@ Internet-Draft             PQ Composite Certs                 March 2019
    string is required, the octets of the DER encoded composite data
    structure SHALL be used as the bits of the bit string, with the most
    significant bit of the first octet becoming the first bit, and so on,
-   ending with the least significant bit of the last octet becoming the
-   last bit of the bit string.
-
-
-
-
 
 
 
@@ -337,6 +337,9 @@ Ounsworth, et al.       Expires September 9, 2019               [Page 6]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
+
+   ending with the least significant bit of the last octet becoming the
+   last bit of the bit string.
 
 5.  Composite Signature Algorithm
 
@@ -384,9 +387,6 @@ Internet-Draft             PQ Composite Certs                 March 2019
    sufficient number of component algorithms were valid, and "Invalid
    signature" (false) otherwise.
 
-   Implementations MAY include policy mechanisms for determining which
-   and how many component algorithms must be valid in order for the
-
 
 
 Ounsworth, et al.       Expires September 9, 2019               [Page 7]
@@ -394,6 +394,8 @@ Ounsworth, et al.       Expires September 9, 2019               [Page 7]
 Internet-Draft             PQ Composite Certs                 March 2019
 
 
+   Implementations MAY include policy mechanisms for determining which
+   and how many component algorithms must be valid in order for the
    composite signature to be considered valid.  See Section 6 for
    further discussion of possible standardization of such mechanisms.
    This section assumes the existence of such a policy mechanism,
@@ -440,8 +442,6 @@ Signature Verification Procedure::
         output "Valid signature"
       else
         output "Invalid signature"
-
-
 
 
 
@@ -711,17 +711,17 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 12.  Appendices
 
-12.1.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509
+12.1.  Intellection Property Considerations
+
+   The authors claim no IPR associated with any of the content of this
+   draft.
+
+12.2.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509
 
    _EDNOTE: This section will explain the differences from . IPR Claims
    should be mentioned here if necessary.  Other things to consider are
    the things like simplicity and format, inadvertnt implementation
    errors, algorithm agility._[I-D.truskovsky-lamps-pq-hybrid-x509]
-
-
-
-
-
 
 
 
@@ -772,11 +772,11 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 15.2.  Informative References
 
-   [I-D.truskovsky-lamps-pq-hybrid-x509]
-              Truskovsky, A., Geest, D., Fluhrer, S., Kampanakis, P.,
-              Ounsworth, M., and S. Mister, "Multiple Public-Key
-              Algorithm X.509 Certificates", draft-truskovsky-lamps-pq-
-              hybrid-x509-01 (work in progress), August 2018.
+   [I-D.pala-composite-crypto]
+              Pala, M., "Composite Public Keys and Signatures", draft-
+              pala-composite-crypto-00 (work in progress), February
+              2019.
+
 
 
 
@@ -785,6 +785,12 @@ Ounsworth, et al.       Expires September 9, 2019              [Page 14]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
+
+   [I-D.truskovsky-lamps-pq-hybrid-x509]
+              Truskovsky, A., Geest, D., Fluhrer, S., Kampanakis, P.,
+              Ounsworth, M., and S. Mister, "Multiple Public-Key
+              Algorithm X.509 Certificates", draft-truskovsky-lamps-pq-
+              hybrid-x509-01 (work in progress), August 2018.
 
 Authors' Addresses
 
@@ -819,12 +825,6 @@ Authors' Addresses
    Cisco Systems
 
    Email: pkampana@cisco.com
-
-
-
-
-
-
 
 
 

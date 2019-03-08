@@ -79,7 +79,6 @@ normative:
 
 informative:
   I-D.draft-truskovsky-lamps-pq-hybrid-x509-01:
-
   I-D.draft-pala-composite-crypto-00:
 
 <!--updates:
@@ -180,7 +179,7 @@ CompositePublicKey ::= SEQUENCE OF SubjectPublicKeyInfo
 
 where each element of the sequence is a `SubjectPublicKeyInfo` of a public key that MAY be used in conjunction with the other keys in the sequence.  When the public key must be provided in octet string or bit string format, the data structure is converted as specified in {{sec-encoding-composite-structures}}.
 
-_EDNOTE: This document does not define the corresponding private key formats because the authors deemed it to be out of scope. We do note that the draft the Max Pala on a similar topic, {{I-D.draft-pala-composite-crypto}} does define private key formats, so there could be scope to merge these submissions._
+_EDNOTE: This document does not define the corresponding private key formats because the authors deemed it to be out of scope. We do note that the draft the Max Pala on a similar topic, {{I-D.pala-composite-crypto}} does define private key formats, so there could be scope to merge these submissions._
 
 
 ## Composite Signature Algorithm {#sec-composite-sigs}
