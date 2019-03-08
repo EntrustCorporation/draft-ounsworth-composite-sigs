@@ -1,19 +1,19 @@
 
-docName = draft-xxxxx-pq-composite-certs-x509
+docName = draft-ounsworth-pq-composite-sigs
 
 
 default: all
 
 txt: $(docName).txt
 
-draft-xxxxx-pq-composite-certs-x509.txt: $(docName).mkd
+draft-ounsworth-pq-composite-sigs.txt: $(docName).mkd
 	kdrfc $(docName).mkd
 
 
 
 xml: $(docName).xml
 
-draft-xxxxx-pq-composite-certs-x509.xml: $(docName).mkd
+draft-ounsworth-pq-composite-sigs.xml: $(docName).mkd
 	 kramdown-rfc2629 $(docName).mkd > $(docName).xml
 
 
