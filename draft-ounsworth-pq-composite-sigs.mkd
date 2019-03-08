@@ -79,6 +79,7 @@ normative:
 
 informative:
   I-D.draft-truskovsky-lamps-pq-hybrid-x509-01:
+
   I-D.draft-pala-composite-crypto-00:
 
 <!--updates:
@@ -119,7 +120,7 @@ _EDNOTE: While the scope of this document is restricted to signatures, we note t
 
 
 # Terminology {#sec-terminology}
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 [RFC2119], [RFC8174] when, and only when, they appear in all capitals, as shown here.
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 {{RFC2119}}  {{RFC8174}} when, and only when, they appear in all capitals, as shown here.
 
 # Definitions and notation
 

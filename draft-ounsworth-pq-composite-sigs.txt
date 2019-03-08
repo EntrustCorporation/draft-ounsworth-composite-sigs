@@ -193,7 +193,7 @@ Internet-Draft             PQ Composite Certs                 March 2019
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in BCP
-   14 [RFC2119], [RFC8174] when, and only when, they appear in all
+   14 [RFC2119]  [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
 3.  Definitions and notation
