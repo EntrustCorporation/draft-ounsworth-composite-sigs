@@ -419,7 +419,7 @@ _EDNOTE: This section includes the Security Considerations._
 # Appendices
 
 ## Comparison with draft-truskovsky-lamps-pq-hybrid-x509
-_EDNOTE: This section will explain the differences from {{I-D.truskovsky-lamps-pq-hybrid-x509}}. IPR Claims should be mentioned here if necessary. Other things to consider are the things we discussed in an email thread like simplicity and format, inadvertnt implementation errors, algorithm agility._
+_EDNOTE: This section will explain the differences from {{I-D.truskovsky-lamps-pq-hybrid-x509}}. IPR Claims should be mentioned here if necessary. Other things to consider are the things like simplicity and format, inadvertnt implementation errors, algorithm agility._
 
 <!-- End of Comparison with draft-truskovsky-lamps-pq-hybrid-x509 section -->
 

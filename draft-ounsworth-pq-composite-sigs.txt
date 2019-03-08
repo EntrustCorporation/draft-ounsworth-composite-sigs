@@ -5,11 +5,11 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                 S. Mister
 Intended status: Standards Track                                 J. Gray
-Expires: September 8, 2019                              Entrust Datacard
+Expires: September 9, 2019                              Entrust Datacard
                                                               S. Fluhrer
                                                            P. Kampanakis
                                                            Cisco Systems
-                                                          March 07, 2019
+                                                          March 08, 2019
 
 
          Composite Keys and Signatures For Use In Internet PKI
@@ -53,12 +53,12 @@ Status of This Memo
 
 
 
-Ounsworth, et al.       Expires September 8, 2019               [Page 1]
+Ounsworth, et al.       Expires September 9, 2019               [Page 1]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
 
-   This Internet-Draft will expire on September 8, 2019.
+   This Internet-Draft will expire on September 9, 2019.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth, et al.       Expires September 8, 2019               [Page 2]
+Ounsworth, et al.       Expires September 9, 2019               [Page 2]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
@@ -165,7 +165,7 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 8, 2019               [Page 3]
+Ounsworth, et al.       Expires September 9, 2019               [Page 3]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
@@ -221,7 +221,7 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 8, 2019               [Page 4]
+Ounsworth, et al.       Expires September 9, 2019               [Page 4]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
@@ -277,7 +277,7 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 8, 2019               [Page 5]
+Ounsworth, et al.       Expires September 9, 2019               [Page 5]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
@@ -333,7 +333,7 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 8, 2019               [Page 6]
+Ounsworth, et al.       Expires September 9, 2019               [Page 6]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
@@ -389,7 +389,7 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 8, 2019               [Page 7]
+Ounsworth, et al.       Expires September 9, 2019               [Page 7]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
@@ -445,7 +445,7 @@ Signature Verification Procedure::
 
 
 
-Ounsworth, et al.       Expires September 8, 2019               [Page 8]
+Ounsworth, et al.       Expires September 9, 2019               [Page 8]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
@@ -501,7 +501,7 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 8, 2019               [Page 9]
+Ounsworth, et al.       Expires September 9, 2019               [Page 9]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
@@ -557,7 +557,7 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 8, 2019              [Page 10]
+Ounsworth, et al.       Expires September 9, 2019              [Page 10]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
@@ -613,7 +613,7 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 8, 2019              [Page 11]
+Ounsworth, et al.       Expires September 9, 2019              [Page 11]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
@@ -669,7 +669,7 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 8, 2019              [Page 12]
+Ounsworth, et al.       Expires September 9, 2019              [Page 12]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
@@ -715,9 +715,8 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
    _EDNOTE: This section will explain the differences from . IPR Claims
    should be mentioned here if necessary.  Other things to consider are
-   the things we discussed in an email thread like simplicity and
-   format, inadvertnt implementation errors, algorithm
-   agility._[I-D.truskovsky-lamps-pq-hybrid-x509]
+   the things like simplicity and format, inadvertnt implementation
+   errors, algorithm agility._[I-D.truskovsky-lamps-pq-hybrid-x509]
 
 
 
@@ -725,7 +724,8 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 8, 2019              [Page 13]
+
+Ounsworth, et al.       Expires September 9, 2019              [Page 13]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
@@ -781,7 +781,7 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 8, 2019              [Page 14]
+Ounsworth, et al.       Expires September 9, 2019              [Page 14]
 
 Internet-Draft             PQ Composite Certs                 March 2019
 
@@ -837,4 +837,4 @@ Authors' Addresses
 
 
 
-Ounsworth, et al.       Expires September 8, 2019              [Page 15]
+Ounsworth, et al.       Expires September 9, 2019              [Page 15]
