@@ -5,11 +5,11 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                 S. Mister
 Intended status: Standards Track                                 J. Gray
-Expires: September 9, 2019                              Entrust Datacard
+Expires: October 19, 2019                               Entrust Datacard
                                                               S. Fluhrer
                                                            P. Kampanakis
                                                            Cisco Systems
-                                                          March 08, 2019
+                                                          April 17, 2019
 
 
          Composite Keys and Signatures For Use In Internet PKI
@@ -53,12 +53,12 @@ Status of This Memo
 
 
 
-Ounsworth, et al.       Expires September 9, 2019               [Page 1]
+Ounsworth, et al.       Expires October 19, 2019                [Page 1]
 
-Internet-Draft             PQ Composite Certs                 March 2019
+Internet-Draft             PQ Composite Certs                 April 2019
 
 
-   This Internet-Draft will expire on September 9, 2019.
+   This Internet-Draft will expire on October 19, 2019.
 
 Copyright Notice
 
@@ -91,37 +91,37 @@ Table of Contents
      5.1.  Composite Signature Generation  . . . . . . . . . . . . .   7
      5.2.  Composite Signature Verification  . . . . . . . . . . . .   7
    6.  Mechanisms to distribute verification policy to clients . . .   9
-     6.1.  Local verifier policy . . . . . . . . . . . . . . . . . .   9
-     6.2.  Extra metadata in the public key or signature . . . . . .   9
+     6.1.  Local verifier policy . . . . . . . . . . . . . . . . . .  10
+     6.2.  Extra metadata in the public key or signature . . . . . .  10
      6.3.  Extra metadata in the certificate . . . . . . . . . . . .  10
      6.4.  Policy certificate issued by the Certificate Authority  .  10
-     6.5.  Policy constraints in a cross-certificate . . . . . . . .  10
-     6.6.  Revoked Algorithms CRL Extension  . . . . . . . . . . . .  10
-       6.6.1.  Implicit Revocation . . . . . . . . . . . . . . . . .  11
+     6.5.  Policy constraints in a cross-certificate . . . . . . . .  11
+     6.6.  Revoked Algorithms CRL Extension  . . . . . . . . . . . .  11
+       6.6.1.  Implicit Revocation . . . . . . . . . . . . . . . . .  12
    7.  New Algorithm Identifiers . . . . . . . . . . . . . . . . . .  12
-   8.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  12
-   9.  Implications for existing standards . . . . . . . . . . . . .  12
-     9.1.  RFC 2986  . . . . . . . . . . . . . . . . . . . . . . . .  12
-     9.2.  RFC 5280  . . . . . . . . . . . . . . . . . . . . . . . .  12
-     9.3.  Cryptographic protocols . . . . . . . . . . . . . . . . .  12
-   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
-   11. Security Considerations . . . . . . . . . . . . . . . . . . .  13
+   8.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  13
+   9.  Implications for existing standards . . . . . . . . . . . . .  13
+     9.1.  RFC 2986  . . . . . . . . . . . . . . . . . . . . . . . .  13
+     9.2.  RFC 5280  . . . . . . . . . . . . . . . . . . . . . . . .  13
+     9.3.  Cryptographic protocols . . . . . . . . . . . . . . . . .  13
+   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
+   11. Security Considerations . . . . . . . . . . . . . . . . . . .  14
 
 
 
-Ounsworth, et al.       Expires September 9, 2019               [Page 2]
+Ounsworth, et al.       Expires October 19, 2019                [Page 2]
 
-Internet-Draft             PQ Composite Certs                 March 2019
+Internet-Draft             PQ Composite Certs                 April 2019
 
 
-   12. Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     12.1.  Intellection Property Considerations . . . . . . . . . .  13
-     12.2.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509  .  13
+   12. Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  14
+     12.1.  Intellection Property Considerations . . . . . . . . . .  14
+     12.2.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509  .  14
    13. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  14
-   14. Acknowledgenents  . . . . . . . . . . . . . . . . . . . . . .  14
-   15. References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
-     15.1.  Normative References . . . . . . . . . . . . . . . . . .  14
-     15.2.  Informative References . . . . . . . . . . . . . . . . .  14
+   14. Acknowledgenents  . . . . . . . . . . . . . . . . . . . . . .  15
+   15. References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
+     15.1.  Normative References . . . . . . . . . . . . . . . . . .  15
+     15.2.  Informative References . . . . . . . . . . . . . . . . .  15
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  15
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 9, 2019               [Page 3]
+Ounsworth, et al.       Expires October 19, 2019                [Page 3]
 
-Internet-Draft             PQ Composite Certs                 March 2019
+Internet-Draft             PQ Composite Certs                 April 2019
 
 
    This document is intended for general applicability anywhere that
@@ -221,9 +221,9 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 9, 2019               [Page 4]
+Ounsworth, et al.       Expires October 19, 2019                [Page 4]
 
-Internet-Draft             PQ Composite Certs                 March 2019
+Internet-Draft             PQ Composite Certs                 April 2019
 
 
 3.2.  Notation
@@ -277,9 +277,9 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 9, 2019               [Page 5]
+Ounsworth, et al.       Expires October 19, 2019                [Page 5]
 
-Internet-Draft             PQ Composite Certs                 March 2019
+Internet-Draft             PQ Composite Certs                 April 2019
 
 
    _EDNOTE: This document does not define the corresponding private key
@@ -333,9 +333,9 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 9, 2019               [Page 6]
+Ounsworth, et al.       Expires October 19, 2019                [Page 6]
 
-Internet-Draft             PQ Composite Certs                 March 2019
+Internet-Draft             PQ Composite Certs                 April 2019
 
 
    ending with the least significant bit of the last octet becoming the
@@ -389,10 +389,23 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
 
 
-Ounsworth, et al.       Expires September 9, 2019               [Page 7]
+Ounsworth, et al.       Expires October 19, 2019                [Page 7]
 
-Internet-Draft             PQ Composite Certs                 March 2019
+Internet-Draft             PQ Composite Certs                 April 2019
 
+
+   As cryptographic algorithms and attacks against them evolve,
+   implementors will want a way to specify a policy at the verifier
+   controlling which combinations of cryptograpbic algorithms are
+   acceptable.  Implementations SHOULD include a policy mechanism for
+   determining which and how many component algorithms must be valid in
+   order for the composite signature to be considered valid.  This
+   section assumes the existence of such a policy mechanism, denoted as
+   "checkPolicy(V1, V2, ..., Vn)" in the algorithm below.  This document
+   does not specify the implementation of such a policy mechanism, but
+   notes that the simplest such policy is that a signature is valid so
+   long as one component algorithm is valid.  See Section 6 for further
+   discussion of possible standardization of such mechanisms.
 
    Implementations MAY include policy mechanisms for determining which
    and how many component algorithms must be valid in order for the
@@ -406,6 +419,36 @@ Internet-Draft             PQ Composite Certs                 March 2019
    signatures.  Compliant implementations MUST return "Invalid
    signature" whenever the sample algorithm does, but MAY require more
    than one signature to be valid.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth, et al.       Expires October 19, 2019                [Page 8]
+
+Internet-Draft             PQ Composite Certs                 April 2019
+
 
 Input:
      P    Signer's composite public key
@@ -438,17 +481,10 @@ Signature Verification Procedure::
 
     3. Check policy to see whether V1, V2, ..., Vn constitutes a valid
           signature
-      if isValid(V1, V2, ..., Vn), then
+      if checkPolicy(V1, V2, ..., Vn), then
         output "Valid signature"
       else
         output "Invalid signature"
-
-
-
-Ounsworth, et al.       Expires September 9, 2019               [Page 8]
-
-Internet-Draft             PQ Composite Certs                 March 2019
-
 
    If "V1 = V2 = ... = Vn = false" for all "Vi", then "isValid(V1, V2,
    ..., Vn)" MUST return false.  Implementations MAY include additional
@@ -462,6 +498,14 @@ Internet-Draft             PQ Composite Certs                 March 2019
    check, etc) and the signature is valid, then the signed content can
    be trusted.  However the semantics are less obvious in a world where
    public keys and signatures are composed of two or more algorithms; it
+
+
+
+Ounsworth, et al.       Expires October 19, 2019                [Page 9]
+
+Internet-Draft             PQ Composite Certs                 April 2019
+
+
    is conceivable that even though one component algorithm fails
    verification, for example because the algorithm is revoked, a multi-
    algorithm signature may contain enough other trustworthy component
@@ -497,15 +541,6 @@ Internet-Draft             PQ Composite Certs                 March 2019
    signature, or some other field provided that it is inside the signed
    data blob.
 
-
-
-
-
-Ounsworth, et al.       Expires September 9, 2019               [Page 9]
-
-Internet-Draft             PQ Composite Certs                 March 2019
-
-
 6.3.  Extra metadata in the certificate
 
    This policy information could be included in a certificate via an
@@ -518,6 +553,14 @@ Internet-Draft             PQ Composite Certs                 March 2019
    Certificate Authorities have the ability to issue policy certificates
    that specify the behaviour when verifying signatures performed by
    keys in certificates within the scope of the policy certificate.
+
+
+
+
+Ounsworth, et al.       Expires October 19, 2019               [Page 10]
+
+Internet-Draft             PQ Composite Certs                 April 2019
+
 
    This method has the advantage that policy is centrally-managed, and
    can be updated without needing to reissue any certificates, but has
@@ -553,15 +596,6 @@ Internet-Draft             PQ Composite Certs                 March 2019
    There may only be one "RevokedAlgorithms" extension in a CRL.  This
    extension is OPTIONAL.  If a CRL contains only composite
    certificates, then this extension SHOULD be designated as critical.
-
-
-
-
-Ounsworth, et al.       Expires September 9, 2019              [Page 10]
-
-Internet-Draft             PQ Composite Certs                 March 2019
-
-
    If a CRL contains a mixture of composite and traditional certificates
    then it SHOULD be designated as non-critical.
 
@@ -574,6 +608,15 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
    Once a algorithm has been marked as revoked on a given CRL, it MUST
    remain revoked on subsequent CRLs.
+
+
+
+
+
+Ounsworth, et al.       Expires October 19, 2019               [Page 11]
+
+Internet-Draft             PQ Composite Certs                 April 2019
+
 
    _EDNOTE: Is there corresponding wording about cert serial numbers on
    CRLs from RFC5280?  Or is this unnecessary implied?_
@@ -609,15 +652,6 @@ Internet-Draft             PQ Composite Certs                 March 2019
       performed by a compliant client, regardless of which verification
       algorithm is used.
 
-
-
-
-
-Ounsworth, et al.       Expires September 9, 2019              [Page 11]
-
-Internet-Draft             PQ Composite Certs                 March 2019
-
-
    At the time of an algorithm revocation, a certificate authority MAY
    revoke certificates meeting one ofd the above criteria (by placing
    them in the traditional "revokedCertificates" list) with a revocation
@@ -629,6 +663,16 @@ Internet-Draft             PQ Composite Certs                 March 2019
    _EDNOTE: This subsection will define the OIDs for the initial
    composite algorithm combinations we want to define.  These are the
    OID that Section 10 will ask for IANA to assign._
+
+
+
+
+
+
+Ounsworth, et al.       Expires October 19, 2019               [Page 12]
+
+Internet-Draft             PQ Composite Certs                 April 2019
+
 
 8.  In Practice
 
@@ -666,14 +710,6 @@ Internet-Draft             PQ Composite Certs                 March 2019
       TLS has hooks for declaring support for specific signature
       algorithms, however it would need to be extended, because the
       client would need to declare support for both the composite
-
-
-
-Ounsworth, et al.       Expires September 9, 2019              [Page 12]
-
-Internet-Draft             PQ Composite Certs                 March 2019
-
-
       infrastructure, as well as for the various component signature
       algorithms.
 
@@ -686,6 +722,14 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
    o  How to deal with crypto protocols that use public key encryption
       algorithms; this document only lists how to work with signature
+
+
+
+Ounsworth, et al.       Expires October 19, 2019               [Page 13]
+
+Internet-Draft             PQ Composite Certs                 April 2019
+
+
       algorithms.  Encoding composite public keys is straightforward;
       encoding composite ciphertexts is less so - we decided to put that
       off to another draft.
@@ -723,13 +767,6 @@ Internet-Draft             PQ Composite Certs                 March 2019
    the things like simplicity and format, inadvertnt implementation
    errors, algorithm agility._[I-D.truskovsky-lamps-pq-hybrid-x509]
 
-
-
-Ounsworth, et al.       Expires September 9, 2019              [Page 13]
-
-Internet-Draft             PQ Composite Certs                 March 2019
-
-
 13.  Contributors
 
    This document incorporates contributions and comments from a large
@@ -740,6 +777,14 @@ Internet-Draft             PQ Composite Certs                 March 2019
 
    We are grateful to all, including any contributors who may have been
    inadvertently omitted from this list.
+
+
+
+
+Ounsworth, et al.       Expires October 19, 2019               [Page 14]
+
+Internet-Draft             PQ Composite Certs                 April 2019
+
 
 14.  Acknowledgenents
 
@@ -777,15 +822,6 @@ Internet-Draft             PQ Composite Certs                 March 2019
               pala-composite-crypto-00 (work in progress), February
               2019.
 
-
-
-
-
-Ounsworth, et al.       Expires September 9, 2019              [Page 14]
-
-Internet-Draft             PQ Composite Certs                 March 2019
-
-
    [I-D.truskovsky-lamps-pq-hybrid-x509]
               Truskovsky, A., Geest, D., Fluhrer, S., Kampanakis, P.,
               Ounsworth, M., and S. Mister, "Multiple Public-Key
@@ -793,6 +829,18 @@ Internet-Draft             PQ Composite Certs                 March 2019
               hybrid-x509-01 (work in progress), August 2018.
 
 Authors' Addresses
+
+
+
+
+
+
+
+
+Ounsworth, et al.       Expires October 19, 2019               [Page 15]
+
+Internet-Draft             PQ Composite Certs                 April 2019
+
 
    Mike Ounsworth
    Entrust Datacard Limited
@@ -837,4 +885,12 @@ Authors' Addresses
 
 
 
-Ounsworth, et al.       Expires September 9, 2019              [Page 15]
+
+
+
+
+
+
+
+
+Ounsworth, et al.       Expires October 19, 2019               [Page 16]

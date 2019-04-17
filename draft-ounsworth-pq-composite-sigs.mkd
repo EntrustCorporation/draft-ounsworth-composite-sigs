@@ -253,6 +253,9 @@ Signature Generation Procedure:
 ## Composite Signature Verification {#sec-comp-sig-verify}
 Verification of a composite signature involves applying each component algorithm's verification routine according to its specification, and then outputting "Valid signature" (true) if a sufficient number of component algorithms were valid, and "Invalid signature" (false) otherwise.
 
+As cryptographic algorithms and attacks against them evolve, implementors will want a way to specify a policy at the verifier controlling which combinations of cryptograpbic algorithms are acceptable.  Implementations SHOULD include a policy mechanism for determining which and how many component algorithms must be valid in order for the composite signature to be considered valid. This section assumes the existence of such a policy mechanism, denoted as `checkPolicy(V1, V2, ..., Vn)` in the algorithm below. This document does not specify the implementation of such a policy mechanism, but notes that the simplest such policy is that a signature is valid so long as one component algorithm is valid.  See {{sec-alg-revocation-policy}} for further discussion of possible standardization of such mechanisms.
+
+
 Implementations MAY include policy mechanisms for determining which and how many component algorithms must be valid in order for the composite signature to be considered valid. See {{sec-alg-revocation-policy}} for further discussion of possible standardization of such mechanisms.
 This section assumes the existence of such a policy mechanism, specifically one that allows revocation of individual component algorithms.
 
@@ -291,7 +294,7 @@ Signature Verification Procedure::
 
     3. Check policy to see whether V1, V2, ..., Vn constitutes a valid
           signature
-      if isValid(V1, V2, ..., Vn), then
+      if checkPolicy(V1, V2, ..., Vn), then
         output "Valid signature"
       else
         output "Invalid signature"
