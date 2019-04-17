@@ -90,15 +90,15 @@ Table of Contents
    5.  Composite Signature Algorithm . . . . . . . . . . . . . . . .   7
      5.1.  Composite Signature Generation  . . . . . . . . . . . . .   7
      5.2.  Composite Signature Verification  . . . . . . . . . . . .   7
-   6.  Mechanisms to distribute verification policy to clients . . .   9
+   6.  Mechanisms to distribute verification policy to clients . . .  10
      6.1.  Local verifier policy . . . . . . . . . . . . . . . . . .  10
      6.2.  Extra metadata in the public key or signature . . . . . .  10
      6.3.  Extra metadata in the certificate . . . . . . . . . . . .  10
-     6.4.  Policy certificate issued by the Certificate Authority  .  10
+     6.4.  Policy certificate issued by the Certificate Authority  .  11
      6.5.  Policy constraints in a cross-certificate . . . . . . . .  11
      6.6.  Revoked Algorithms CRL Extension  . . . . . . . . . . . .  11
        6.6.1.  Implicit Revocation . . . . . . . . . . . . . . . . .  12
-   7.  New Algorithm Identifiers . . . . . . . . . . . . . . . . . .  12
+   7.  New Algorithm Identifiers . . . . . . . . . . . . . . . . . .  13
    8.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  13
    9.  Implications for existing standards . . . . . . . . . . . . .  13
      9.1.  RFC 2986  . . . . . . . . . . . . . . . . . . . . . . . .  13
@@ -122,7 +122,7 @@ Internet-Draft             PQ Composite Certs                 April 2019
    15. References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
      15.1.  Normative References . . . . . . . . . . . . . . . . . .  15
      15.2.  Informative References . . . . . . . . . . . . . . . . .  15
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  15
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  16
 
 1.  Introduction
 
@@ -396,7 +396,7 @@ Internet-Draft             PQ Composite Certs                 April 2019
 
    As cryptographic algorithms and attacks against them evolve,
    implementors will want a way to specify a policy at the verifier
-   controlling which combinations of cryptograpbic algorithms are
+   controlling which combinations of cryptographic algorithms are
    acceptable.  Implementations SHOULD include a policy mechanism for
    determining which and how many component algorithms must be valid in
    order for the composite signature to be considered valid.  This
@@ -470,25 +470,41 @@ Signature Verification Procedure::
     If Error during Desequencing, or the three sequences have different
     numbers of elements, then output "Invalid signature" and stop.
 
-   2. Check each signature individually
+   2. Check policy to see whether A1, A2, ..., An constitutes a valid
+        combination of algorithms.
+     if not checkPolicy(A1, A2, ..., An), then
+       output "Invalid signature"
+
+   3. Check each signature individually. If any fail, then the entire
+        signature validation fails
      V1, V2 , ..., Vn := BOOLEAN
      for i := 1 to n
         Check if Ai is a recognized algorithm,  if so then,
-          Check if algorithm Ai has been revoked, if not then,
-            Verify the component signature according to the component
-            algorithm's specification
-              Vi = verify( Pi, M, Si )
+          Verify the component signature according to the component
+          algorithm's specification
+            if not verify( Pi, M, Si ), then
+              output "Invalid signature"
 
-    3. Check policy to see whether V1, V2, ..., Vn constitutes a valid
-          signature
-      if checkPolicy(V1, V2, ..., Vn), then
+      if all succeeded, then
         output "Valid signature"
-      else
-        output "Invalid signature"
 
-   If "V1 = V2 = ... = Vn = false" for all "Vi", then "isValid(V1, V2,
-   ..., Vn)" MUST return false.  Implementations MAY include additional
-   policy mechanisms as discussed in Section 6.
+
+
+   An acceptable modification to this algorithm is to produce in step 2
+   one or more subsets of the algorithms "A1, A2, ..., An" which
+   constitute acceptable combinations, and then in step 3 only perform
+   validation of the necessary algorithms, ie it is acceptable to skip
+   the computation for algorithms for which the result will not affect
+   the overall validity of the signature.  In particular, this allows
+   for the validation of a signature even if it contains one or more
+   algorithms that are unknown to the verifier.
+
+
+
+Ounsworth, et al.       Expires October 19, 2019                [Page 9]
+
+Internet-Draft             PQ Composite Certs                 April 2019
+
 
 6.  Mechanisms to distribute verification policy to clients
 
@@ -498,14 +514,6 @@ Signature Verification Procedure::
    check, etc) and the signature is valid, then the signed content can
    be trusted.  However the semantics are less obvious in a world where
    public keys and signatures are composed of two or more algorithms; it
-
-
-
-Ounsworth, et al.       Expires October 19, 2019                [Page 9]
-
-Internet-Draft             PQ Composite Certs                 April 2019
-
-
    is conceivable that even though one component algorithm fails
    verification, for example because the algorithm is revoked, a multi-
    algorithm signature may contain enough other trustworthy component
@@ -545,14 +553,6 @@ Internet-Draft             PQ Composite Certs                 April 2019
 
    This policy information could be included in a certificate via an
    X.509 v3 extension.  This gives the Certificate Authority control,
-   but has the drawback that updating the policy requires revoking and
-   reissuing certificates.
-
-6.4.  Policy certificate issued by the Certificate Authority
-
-   Certificate Authorities have the ability to issue policy certificates
-   that specify the behaviour when verifying signatures performed by
-   keys in certificates within the scope of the policy certificate.
 
 
 
@@ -561,6 +561,15 @@ Ounsworth, et al.       Expires October 19, 2019               [Page 10]
 
 Internet-Draft             PQ Composite Certs                 April 2019
 
+
+   but has the drawback that updating the policy requires revoking and
+   reissuing certificates.
+
+6.4.  Policy certificate issued by the Certificate Authority
+
+   Certificate Authorities have the ability to issue policy certificates
+   that specify the behaviour when verifying signatures performed by
+   keys in certificates within the scope of the policy certificate.
 
    This method has the advantage that policy is centrally-managed, and
    can be updated without needing to reissue any certificates, but has
@@ -601,15 +610,6 @@ Internet-Draft             PQ Composite Certs                 April 2019
 
    If the Revoked Algorithms extension is present in a CRL, then a
    client performing a certificate validation on an otherwise non-
-   revoked certificate within the scope of that CRL MUST skip any
-   signatures corresponding to a revoked algorithm; thus a certificate
-   is valid only if it would have been valid had those Algorithm IDs and
-   Signature Values been omitted from the certificate.
-
-   Once a algorithm has been marked as revoked on a given CRL, it MUST
-   remain revoked on subsequent CRLs.
-
-
 
 
 
@@ -617,6 +617,14 @@ Ounsworth, et al.       Expires October 19, 2019               [Page 11]
 
 Internet-Draft             PQ Composite Certs                 April 2019
 
+
+   revoked certificate within the scope of that CRL MUST skip any
+   signatures corresponding to a revoked algorithm; thus a certificate
+   is valid only if it would have been valid had those Algorithm IDs and
+   Signature Values been omitted from the certificate.
+
+   Once a algorithm has been marked as revoked on a given CRL, it MUST
+   remain revoked on subsequent CRLs.
 
    _EDNOTE: Is there corresponding wording about cert serial numbers on
    CRLs from RFC5280?  Or is this unnecessary implied?_
@@ -658,14 +666,6 @@ Internet-Draft             PQ Composite Certs                 April 2019
    reason of "keyCompromise".  OCSP responders SHOULD designate a
    certificate as revoked if it meets the above condition.
 
-7.  New Algorithm Identifiers
-
-   _EDNOTE: This subsection will define the OIDs for the initial
-   composite algorithm combinations we want to define.  These are the
-   OID that Section 10 will ask for IANA to assign._
-
-
-
 
 
 
@@ -673,6 +673,12 @@ Ounsworth, et al.       Expires October 19, 2019               [Page 12]
 
 Internet-Draft             PQ Composite Certs                 April 2019
 
+
+7.  New Algorithm Identifiers
+
+   _EDNOTE: This subsection will define the OIDs for the initial
+   composite algorithm combinations we want to define.  These are the
+   OID that Section 10 will ask for IANA to assign._
 
 8.  In Practice
 
@@ -717,12 +723,6 @@ Internet-Draft             PQ Composite Certs                 April 2019
       would be to have the server sign using its composite public key;
       is this sufficient.
 
-   o  Overhead; including certificate size, signature processing time,
-      and size of the signature.
-
-   o  How to deal with crypto protocols that use public key encryption
-      algorithms; this document only lists how to work with signature
-
 
 
 Ounsworth, et al.       Expires October 19, 2019               [Page 13]
@@ -730,6 +730,11 @@ Ounsworth, et al.       Expires October 19, 2019               [Page 13]
 Internet-Draft             PQ Composite Certs                 April 2019
 
 
+   o  Overhead; including certificate size, signature processing time,
+      and size of the signature.
+
+   o  How to deal with crypto protocols that use public key encryption
+      algorithms; this document only lists how to work with signature
       algorithms.  Encoding composite public keys is straightforward;
       encoding composite ciphertexts is less so - we decided to put that
       off to another draft.
@@ -772,11 +777,6 @@ Internet-Draft             PQ Composite Certs                 April 2019
    This document incorporates contributions and comments from a large
    group of experts.  The Editor would especially like to acknowledge
    the tireless dedication of the following people, who attended many
-   long meetings and generated millions of bytes of electronic mail over
-   the past 3 years months in pursuit of this document:
-
-   We are grateful to all, including any contributors who may have been
-   inadvertently omitted from this list.
 
 
 
@@ -785,6 +785,12 @@ Ounsworth, et al.       Expires October 19, 2019               [Page 14]
 
 Internet-Draft             PQ Composite Certs                 April 2019
 
+
+   long meetings and generated millions of bytes of electronic mail over
+   the past 3 years months in pursuit of this document:
+
+   We are grateful to all, including any contributors who may have been
+   inadvertently omitted from this list.
 
 14.  Acknowledgenents
 
@@ -828,12 +834,6 @@ Internet-Draft             PQ Composite Certs                 April 2019
               Algorithm X.509 Certificates", draft-truskovsky-lamps-pq-
               hybrid-x509-01 (work in progress), August 2018.
 
-Authors' Addresses
-
-
-
-
-
 
 
 
@@ -841,6 +841,8 @@ Ounsworth, et al.       Expires October 19, 2019               [Page 15]
 
 Internet-Draft             PQ Composite Certs                 April 2019
 
+
+Authors' Addresses
 
    Mike Ounsworth
    Entrust Datacard Limited
@@ -873,8 +875,6 @@ Internet-Draft             PQ Composite Certs                 April 2019
    Cisco Systems
 
    Email: pkampana@cisco.com
-
-
 
 
 
