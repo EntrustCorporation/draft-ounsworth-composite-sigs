@@ -309,75 +309,6 @@ An acceptable modification to this algorithm is to produce in step 2 one or more
 
 <!-- End of Composite Signature Algorithm section -->
 
-# Mechanisms to distribute verification policy to clients {#sec-alg-revocation-policy}
-
-In the traditional world of single-key public keys and signatures, the semantics of a signature and a verification are straight-forward: if the key is trusted (via public key pinning, a PKIX revocation check, etc) and the signature is valid, then the signed content can be trusted. However the semantics are less obvious in a world where public keys and signatures are composed of two or more algorithms; it is conceivable that even though one component algorithm fails verification, for example because the algorithm is revoked, a multi-algorithm signature may contain enough other trustworthy component algorithms to still be considered valid.
-
-This section addresses how a verifier can obtain policy information for which and/or how many component algorithms must be valid in order for the signature as a whole to be valid. The authors ask for community feedback about whether this needs to be specified, and if so, how best to do it.
-
-This section lists rough outlines for several such mechanisms that have come up in discussion during the drafting of this document. They are mainly focused around X.509 PKIs, and provided here merely for the purposes of sparking debate. The authors believe that by specifying such a mechanism, the world will be able to more quickly react to news of algorithm compromise with a lower service disruption compared to the need to revoke and re-issue all certificates using that algorithm. However, we are not sure if the gains justify the added complexity.
-
-## Local verifier policy
-
-Much as we do today, this is left up to domain administrators and software vendors to implement the guidance of governing bodies on a system-by-system basis.
-
-## Extra metadata in the public key or signature
-
-This policy information could be specified by the signer at signing time. Depending on the structure of the databeing signed, this metadata could go into the public key, or an extension to the signature, or some other field provided that it is inside the signed data blob.
-
-## Extra metadata in the certificate
-
-This policy information could be included in a certificate via an X.509 v3 extension. This gives the Certificate Authority control, but has the drawback that updating the policy requires revoking and reissuing certificates.
-
-## Policy certificate issued by the Certificate Authority
-
-Certificate Authorities have the ability to issue policy certificates that specify the behaviour when verifying signatures performed by keys in certificates within the scope of the policy certificate.
-
-This method has the advantage that policy is centrally-managed, and can be updated without needing to reissue any certificates, but has the drawback that not all PKI implementations support policy certificates.
-
-## Policy constraints in a cross-certificate
-
-This method behaves similarly to the policy certificate method above, but has better support across PKI implementations.
-
-## Revoked Algorithms CRL Extension {#sec-revokedalgorithms}
-
-Add an extension to CRLs so that in addition to revoking certificates, they can also revoke algorithms for all certificates within the scope of that CRL. Implemented with care, this could allow a single PKI to do a staged algorithm migration by only revoking the algorithm for one CRL group at a time.
-
-~~~ asn.1
-id-ce-RevokedAlgorithms OBJECT IDENTIFIER ::= { OID }
-
-RevokedAlgorithms ::= SEQUENCE OF SEQUENCE  {
-     algorithms              AlgorithmIdentifier,
-     revocationDate          Time,
-     crlEntryExtensions      Extensions OPTIONAL
-                              -- if present, version MUST be v2
-     }
-~~~
-{: artwork-name="RevokedAlgorithm-asn.1"}
-
-_EDNOTE: do we need the crlEntryExtensions field? If so, which ones from https://tools.ietf.org/html/rfc5280#section-5.3 are allowed here?_
-
-There may only be one `RevokedAlgorithms` extension in a CRL. This extension is OPTIONAL. If a CRL contains only composite certificates, then this extension SHOULD be designated as critical. If a CRL contains a mixture of composite and traditional certificates then it SHOULD be designated as non-critical.
-
-If the Revoked Algorithms extension is present in a CRL, then a client performing a certificate validation on an otherwise non-revoked certificate within the scope of that CRL MUST skip any signatures corresponding to a revoked algorithm; thus a certificate is valid only if it would have been valid had those Algorithm IDs and Signature Values been omitted from the certificate.
-
-Once a algorithm has been marked as revoked on a given CRL, it MUST remain revoked on subsequent CRLs.
-
-_EDNOTE: Is there corresponding wording about cert serial numbers on CRLs from RFC5280? Or is this unnecessary implied?_
-
-
-Note that a similar mechanism could be used on a per-certificate basis via CRL Entry Extensions, however the authors believe that giving operators the ability to perform partial revocation of a certificate (ie revoking some keys or signatures but leaving the certificate as a whole valid) will greatly increase the complexity of certificate validation routines, thus increasing the chance of both human error, and implementation bugs leading to vulnerabilities, without providing a commensurate amount of increased functionality. By not defining a new CRL Entry Extension, the following requirement is implied: if any key within a certificate warrant revocation, the entire certificate MUST be revoked using the existing revocation mechanisms (this does not apply when the algorithm is globally revoked for the entire scope of this CRL).
-
-### Implicit Revocation {#sec-implicit-revocation}
-
-A Composite Signature Algorithm is considered to be "implicitly revoked" if the certificate is otherwise valid but one of the following conditions are met.
-
-* A certificate using a single-key algorithm which is revoked within the scope of its CRL. In this case, signature verification SHOULD fail when performed by a compliant client, but of course will succeed when performed by a legacy client which is not aware of this CRL extension.
-* All of the component algorithms are revoked within the scope if its CRL. In this case, signature verification MUST fail when performed by a compliant client, regardless of which verification algorithm is used.
-
-At the time of an algorithm revocation, a certificate authority MAY revoke certificates meeting one ofd the above criteria (by placing them in the traditional `revokedCertificates` list) with a revocation reason of `keyCompromise`. OCSP responders SHOULD designate a certificate as revoked if it meets the above condition.
-
-
 # New Algorithm Identifiers
 _EDNOTE: This subsection will define the OIDs for the initial composite algorithm combinations we want to define. These are the OID that Section 10 will ask for IANA to assign._
 
@@ -434,6 +365,89 @@ TODO: Need to mention CableLab's IP holdings, and copy in CableLab's royalty-fre
 _EDNOTE: This section will explain the differences from {{I-D.truskovsky-lamps-pq-hybrid-x509}}. IPR Claims should be mentioned here if necessary. Other things to consider are the things like simplicity and format, inadvertnt implementation errors, algorithm agility._
 
 <!-- End of Comparison with draft-truskovsky-lamps-pq-hybrid-x509 section -->
+
+## Other ideas that were considered
+This section is here to be informative during the review process, to document ideas that were raised and the rationales for not including them in the final draft.
+
+
+
+### Mechanisms to distribute verification policy to clients {#sec-alg-revocation-policy}
+
+EDNOTE: The authors had extensive discussions about how to handle algorithm revocation / deprication, sepcifically around how to distribute policy information to verifiers. In the end we decided to remove the whole thing and instead leave this is a responsibility of the implementors of the software performing signature verification.
+
+The original content for this section follows.
+
+----
+
+
+In the traditional world of single-key public keys and signatures, the semantics of a signature and a verification are straight-forward: if the key is trusted (via public key pinning, a PKIX revocation check, etc) and the signature is valid, then the signed content can be trusted. However the semantics are less obvious in a world where public keys and signatures are composed of two or more algorithms; it is conceivable that even though one component algorithm fails verification, for example because the algorithm is revoked, a multi-algorithm signature may contain enough other trustworthy component algorithms to still be considered valid.
+
+This section addresses how a verifier can obtain policy information for which and/or how many component algorithms must be valid in order for the signature as a whole to be valid. The authors ask for community feedback about whether this needs to be specified, and if so, how best to do it.
+
+This section lists rough outlines for several such mechanisms that have come up in discussion during the drafting of this document. They are mainly focused around X.509 PKIs, and provided here merely for the purposes of sparking debate. The authors believe that by specifying such a mechanism, the world will be able to more quickly react to news of algorithm compromise with a lower service disruption compared to the need to revoke and re-issue all certificates using that algorithm. However, we are not sure if the gains justify the added complexity.
+
+#### Local verifier policy
+
+Much as we do today, this is left up to domain administrators and software vendors to implement the guidance of governing bodies on a system-by-system basis.
+
+#### Extra metadata in the public key or signature
+
+This policy information could be specified by the signer at signing time. Depending on the structure of the databeing signed, this metadata could go into the public key, or an extension to the signature, or some other field provided that it is inside the signed data blob.
+
+#### Extra metadata in the certificate
+
+This policy information could be included in a certificate via an X.509 v3 extension. This gives the Certificate Authority control, but has the drawback that updating the policy requires revoking and reissuing certificates.
+
+#### Policy certificate issued by the Certificate Authority
+
+Certificate Authorities have the ability to issue policy certificates that specify the behaviour when verifying signatures performed by keys in certificates within the scope of the policy certificate.
+
+This method has the advantage that policy is centrally-managed, and can be updated without needing to reissue any certificates, but has the drawback that not all PKI implementations support policy certificates.
+
+#### Policy constraints in a cross-certificate
+
+This method behaves similarly to the policy certificate method above, but has better support across PKI implementations.
+
+#### Revoked Algorithms CRL Extension {#sec-revokedalgorithms}
+
+Add an extension to CRLs so that in addition to revoking certificates, they can also revoke algorithms for all certificates within the scope of that CRL. Implemented with care, this could allow a single PKI to do a staged algorithm migration by only revoking the algorithm for one CRL group at a time.
+
+~~~ asn.1
+id-ce-RevokedAlgorithms OBJECT IDENTIFIER ::= { OID }
+
+RevokedAlgorithms ::= SEQUENCE OF SEQUENCE  {
+     algorithms              AlgorithmIdentifier,
+     revocationDate          Time,
+     crlEntryExtensions      Extensions OPTIONAL
+                              -- if present, version MUST be v2
+     }
+~~~
+{: artwork-name="RevokedAlgorithm-asn.1"}
+
+_EDNOTE: do we need the crlEntryExtensions field? If so, which ones from https://tools.ietf.org/html/rfc5280#section-5.3 are allowed here?_
+
+There may only be one `RevokedAlgorithms` extension in a CRL. This extension is OPTIONAL. If a CRL contains only composite certificates, then this extension SHOULD be designated as critical. If a CRL contains a mixture of composite and traditional certificates then it SHOULD be designated as non-critical.
+
+If the Revoked Algorithms extension is present in a CRL, then a client performing a certificate validation on an otherwise non-revoked certificate within the scope of that CRL MUST skip any signatures corresponding to a revoked algorithm; thus a certificate is valid only if it would have been valid had those Algorithm IDs and Signature Values been omitted from the certificate.
+
+Once a algorithm has been marked as revoked on a given CRL, it MUST remain revoked on subsequent CRLs.
+
+_EDNOTE: Is there corresponding wording about cert serial numbers on CRLs from RFC5280? Or is this unnecessary implied?_
+
+
+Note that a similar mechanism could be used on a per-certificate basis via CRL Entry Extensions, however the authors believe that giving operators the ability to perform partial revocation of a certificate (ie revoking some keys or signatures but leaving the certificate as a whole valid) will greatly increase the complexity of certificate validation routines, thus increasing the chance of both human error, and implementation bugs leading to vulnerabilities, without providing a commensurate amount of increased functionality. By not defining a new CRL Entry Extension, the following requirement is implied: if any key within a certificate warrant revocation, the entire certificate MUST be revoked using the existing revocation mechanisms (this does not apply when the algorithm is globally revoked for the entire scope of this CRL).
+
+##### Implicit Revocation {#sec-implicit-revocation}
+
+A Composite Signature Algorithm is considered to be "implicitly revoked" if the certificate is otherwise valid but one of the following conditions are met.
+
+* A certificate using a single-key algorithm which is revoked within the scope of its CRL. In this case, signature verification SHOULD fail when performed by a compliant client, but of course will succeed when performed by a legacy client which is not aware of this CRL extension.
+* All of the component algorithms are revoked within the scope if its CRL. In this case, signature verification MUST fail when performed by a compliant client, regardless of which verification algorithm is used.
+
+At the time of an algorithm revocation, a certificate authority MAY revoke certificates meeting one ofd the above criteria (by placing them in the traditional `revokedCertificates` list) with a revocation reason of `keyCompromise`. OCSP responders SHOULD designate a certificate as revoked if it meets the above condition.
+
+
+
 
 
 
