@@ -101,7 +101,7 @@ Table of Contents
    11. Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  11
      11.1.  Intellection Property Considerations . . . . . . . . . .  11
      11.2.  Comparison with draft-truskovsky-lamps-pq-hybrid-x509  .  11
-     11.3.  Other ideas that were considered . . . . . . . . . . . .  11
+     11.3.  Other ideas that were considered . . . . . . . . . . . .  12
        11.3.1.  Mechanisms to distribute verification policy to
                 clients  . . . . . . . . . . . . . . . . . . . . . .  12
    12. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  16
@@ -384,8 +384,8 @@ Internet-Draft             PQ Composite Certs                 April 2019
    sufficient number of component algorithms were valid, and "Invalid
    signature" (false) otherwise.
 
-   As cryptographic algorithms and attacks against them evolve,
-   implementors will want a way to specify a policy at the verifier
+   In order to future-proof implementations of verifiers against
+   evolutions in cryptographic algorithms and attacks against them,
 
 
 
@@ -394,29 +394,29 @@ Ounsworth, et al.       Expires October 20, 2019                [Page 7]
 Internet-Draft             PQ Composite Certs                 April 2019
 
 
-   controlling which combinations of cryptographic algorithms are
-   acceptable.  Implementations SHOULD include a policy mechanism for
-   determining which and how many component algorithms must be valid in
-   order for the composite signature to be considered valid.  This
-   section assumes the existence of such a policy mechanism, denoted as
-   "checkPolicy(V1, V2, ..., Vn)" in the algorithm below.  This document
-   does not specify the implementation of such a policy mechanism, but
-   notes that the simplest such policy is that a signature is valid so
-   long as one component algorithm is valid.  See Section 11.3.1 for
-   further discussion of possible standardization of such mechanisms.
+   implementations SHOULD include a field-updatable policy mechanism for
+   determining which and/or how many component algorithms must be valid
+   in order for the composite signature as a whole to be considered
+   valid.  This section assumes the existence of such a policy
+   mechanism, denoted as "checkPolicy(A1, A2, ..., An)" in the algorithm
+   below.  The implementation of such a policy mechanism is the
+   responsibility of the verifier / client and therefore is out of scope
+   for this document, but this document notes that at least one
+   component signature MUST be verified.
 
-   Implementations MAY include policy mechanisms for determining which
-   and how many component algorithms must be valid in order for the
-   composite signature to be considered valid.  See Section 11.3.1 for
-   further discussion of possible standardization of such mechanisms.
-   This section assumes the existence of such a policy mechanism,
-   specifically one that allows revocation of individual component
-   algorithms.
+   EDNOTE: See the appendix Section 11.3.1 for further discussion of
+   possible standardization of such mechanisms.
 
    This section provides a sample algorithm for validating composite
    signatures.  Compliant implementations MUST return "Invalid
-   signature" whenever the sample algorithm does, but MAY require more
-   than one signature to be valid.
+   signature" whenever the sample algorithm does, with the exception of
+   the modification noted below.
+
+
+
+
+
+
 
 
 
@@ -475,29 +475,29 @@ Signature Verification Procedure::
      if not checkPolicy(A1, A2, ..., An), then
        output "Invalid signature"
 
-   3. Check each signature individually. If any fail, then the entire
-        signature validation fails
-     V1, V2 , ..., Vn := BOOLEAN
+   3. Check each component signature individually. If any fail, then
+        the entire signature validation fails
      for i := 1 to n
-        Check if Ai is a recognized algorithm,  if so then,
-          Verify the component signature according to the component
-          algorithm's specification
-            if not verify( Pi, M, Si ), then
-              output "Invalid signature"
+        Verify the component signature according to the component
+        algorithm's specification
+          if not verify( Pi, M, Si ), then
+            output "Invalid signature"
 
       if all succeeded, then
         output "Valid signature"
 
 
 
-   An acceptable modification to this algorithm is to produce in step 2
-   one or more subsets of the algorithms "A1, A2, ..., An" which
-   constitute acceptable combinations, and then in step 3 only perform
-   validation of the necessary algorithms, ie it is acceptable to skip
-   the computation for algorithms for which the result will not affect
-   the overall validity of the signature.  In particular, this allows
-   for the validation of a signature even if it contains one or more
-   algorithms that are unknown to the verifier.
+   There will be circumstances in which the verifier does not have
+   cryptographic libraries for all of the provided component algorithms,
+   or where the performance gains from omitting algorithms justifies the
+   loss of security.  In these cases, an acceptable modification to this
+   algorithm is to produce in step 2 one or more subsets of the
+   algorithms "A1, A2, ..., An" which constitute acceptable
+   combinations, outputting "Invalid signature" if an acceptable subset
+   can not be found, and then in step 3 only perform verification of the
+   necessary component algorithms.
+
 
 
 
@@ -505,6 +505,11 @@ Ounsworth, et al.       Expires October 20, 2019                [Page 9]
 
 Internet-Draft             PQ Composite Certs                 April 2019
 
+
+   Implementations SHOULD verify all recognized and supported
+   algorithms, and output "Invalid signature" if the verification of any
+   component signature fails, but MAY choose to only verify a subset of
+   the algorithms for the reasons stated above.
 
 6.  New Algorithm Identifiers
 
@@ -548,12 +553,7 @@ Internet-Draft             PQ Composite Certs                 April 2019
       TLS has hooks for declaring support for specific signature
       algorithms, however it would need to be extended, because the
       client would need to declare support for both the composite
-      infrastructure, as well as for the various component signature
-      algorithms.
 
-   o  How does the protocol use the multiple keys.  The obvious way
-      would be to have the server sign using its composite public key;
-      is this sufficient.
 
 
 
@@ -561,6 +561,13 @@ Ounsworth, et al.       Expires October 20, 2019               [Page 10]
 
 Internet-Draft             PQ Composite Certs                 April 2019
 
+
+      infrastructure, as well as for the various component signature
+      algorithms.
+
+   o  How does the protocol use the multiple keys.  The obvious way
+      would be to have the server sign using its composite public key;
+      is this sufficient.
 
    o  Overhead; including certificate size, signature processing time,
       and size of the signature.
@@ -604,19 +611,18 @@ Internet-Draft             PQ Composite Certs                 April 2019
    the things like simplicity and format, inadvertnt implementation
    errors, algorithm agility._[I-D.truskovsky-lamps-pq-hybrid-x509]
 
-11.3.  Other ideas that were considered
-
-   This section is here to be informative during the review process, to
-   document ideas that were raised and the rationales for not including
-   them in the final draft.
-
-
 
 
 Ounsworth, et al.       Expires October 20, 2019               [Page 11]
 
 Internet-Draft             PQ Composite Certs                 April 2019
 
+
+11.3.  Other ideas that were considered
+
+   This section is here to be informative during the review process, to
+   document ideas that were raised and the rationales for not including
+   them in the final draft.
 
 11.3.1.  Mechanisms to distribute verification policy to clients
 
@@ -627,12 +633,6 @@ Internet-Draft             PQ Composite Certs                 April 2019
    the implementors of the software performing signature verification.
 
    The original content for this section follows.
-
-
-
-
-
-
 
 
 
