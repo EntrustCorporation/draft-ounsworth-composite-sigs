@@ -22,7 +22,7 @@ pi:    # can use array (if all yes) or hash here
 
 author:
     -
-      ins: M. Ounsworth
+      ins: M. Ounsworth (Editor)
       name: Mike Ounsworth
       org: Entrust Datacard Limited
       abbrev: Entrust Datacard
@@ -32,41 +32,11 @@ author:
       code: K2K 1E3
       email: mike.ounsworth@entrustdatacard.com
 
-    -
-      ins: S. Mister
-      name: Serge Mister
-      org: Entrust Datacard Limited
-      abbrev: Entrust Datacard
-      email: serge.mister@entrustdatacard.com
-
-    -
-      ins: J. Gray
-      name: John Gray
-      org: Entrust Datacard Limited
-      abbrev: Entrust Datacard
-      #street: 1000 Innovation dr
-      #city: Kanata, On
-      #code:
-      #country: CA
-      email: john.gray@entrustdatacard.com
-
-    -
-      ins: S. Fluhrer
-      name: Scott Fluhrer
-      org: Cisco Systems
-      #abbrev:
-      # street:
-      # city:
-      #code:
-      #country: USA
-      #phone: +1
-      #facsimile: +1
-      email: sfluhrer@cisco.com
-    -
-      ins: P. Kampanakis
-      name: Panos Kampanakis
-      org: Cisco Systems
-      email: pkampana@cisco.com
+    - 
+      ins: Max Pala (Editor)
+      name: Massimiliano Pala
+      org: CableLabs
+      email: director@openca.org
 
 
 normative:
@@ -78,8 +48,7 @@ normative:
 # <!-- EDNOTE: full syntax for this defined here: https://github.com/cabo/kramdown-rfc2629 -->
 
 informative:
-  I-D.draft-truskovsky-lamps-pq-hybrid-x509-01:
-
+  <!-- I-D.draft-truskovsky-lamps-pq-hybrid-x509-01: -->
   I-D.draft-pala-composite-crypto-00:
 
 <!--updates:
@@ -180,7 +149,7 @@ CompositePublicKey ::= SEQUENCE OF SubjectPublicKeyInfo
 
 where each element of the sequence is a `SubjectPublicKeyInfo` of a public key that MAY be used in conjunction with the other keys in the sequence.  When the public key must be provided in octet string or bit string format, the data structure is converted as specified in {{sec-encoding-composite-structures}}.
 
-_EDNOTE: This document does not define the corresponding private key formats because the authors deemed it to be out of scope. We do note that the draft the Max Pala on a similar topic, {{I-D.pala-composite-crypto}} does define private key formats, so there could be scope to merge these submissions._
+_EDNOTE: This document does not define the corresponding private key formats because the authors deemed it to be out of scope. We do note that {{I-D.pala-composite-crypto}} does define private key formats, so there could be scope to merge these submissions._
 
 
 ## Composite Signature Algorithm {#sec-composite-sigs}
@@ -363,9 +332,8 @@ TODO: Need to mention CableLab's IP holdings, and copy in CableLab's royalty-fre
 
 <!-- Keep it here only for reference, in case it is needed 
 ## Comparison with draft-truskovsky-lamps-pq-hybrid-x509
-_EDNOTE: This section will explain the differences from {{I-D.truskovsky-lamps-pq-hybrid-x509}}.._
+_EDNOTE: This section will explain the differences from {{I-D.truskovsky-lamps-pq-hybrid-x509}}._
 --> 
-
 <!-- End of Comparison with draft-truskovsky-lamps-pq-hybrid-x509 section -->
 
 ## Other ideas that were considered
@@ -455,13 +423,13 @@ At the time of an algorithm revocation, a certificate authority MAY revoke certi
 
 # Contributors
 This document incorporates contributions and comments from a large
-group of experts. The Editor would especially like to acknowledge the tireless
-dedication of the following people, who attended many long
-meetings and generated millions of bytes of electronic mail over the
-past 3 years months in pursuit of this document:
-<!-- Mike Ounsworth (Entrust Datacard), John Gray (Entrust Datacard),
-Serge Mister (Entrust Datacard), Scott Fluhrer (Cisco Systems) and
-Panos Kampanakis (Cisco Systems). -->
+group of experts. The Editors would especially like to acknowledge the 
+expertise and tireless dedication of the following people, who attended 
+many long meetings and generated millions of bytes of electronic mail 
+over the past few years months in pursuit of this document:
+John Gray (Entrust Datacard), Serge Mister (Entrust Datacard), 
+Scott Fluhrer (Cisco Systems), Panos Kampanakis (Cisco Systems), 
+Daniel Van Geest (ISARA) and Tim Hollebeek (Digicert). 
 
 We are grateful to all, including any contributors who may have
 been inadvertently omitted from this list.
