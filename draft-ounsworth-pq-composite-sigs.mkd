@@ -428,7 +428,7 @@ _EDNOTE: This section includes the Security Considerations._
 
 ## Intellection Property Considerations
 
-The authors claim no IPR associated with any of the content of this draft.
+TODO: Need to mention CableLab's IP holdings, and copy in CableLab's royalty-free statement.
 
 ## Comparison with draft-truskovsky-lamps-pq-hybrid-x509
 _EDNOTE: This section will explain the differences from {{I-D.truskovsky-lamps-pq-hybrid-x509}}. IPR Claims should be mentioned here if necessary. Other things to consider are the things like simplicity and format, inadvertnt implementation errors, algorithm agility._
