@@ -1,0 +1,49 @@
+{
+  "policyType": "groupCombinationisTrusted",
+
+  "trustedAlgCombinations": [
+    ["hss-lms-hashsig"],
+    ["xmss"],
+    ["xmssmt"],
+    ["ed25519", "dilithium"]
+    ["sha256WithRSAEncryption", "dilithium"]
+  ],
+
+  "trustedGroupCombinations": [
+    ["pq-trusted"],
+    ["classical-semi-trusted", "pq-semi-trusted"]
+  ],
+
+  "knownAlgs": [
+    {
+      "name": "ed25519",
+      "OID": "1.3.101.112",
+      "group": "classical-semi-trusted"
+    },
+    {
+      "name": "dilithium",
+      "OID": "1.2.3.4.5.6.7.8",
+      "group": "pq-semi-trusted"
+    }
+    {
+      "name": "hss-lms-hashsig",
+      "OID": "1.2.840.113549.1.9.16.3.17",
+      "group": "pq-trusted"
+    },
+    {
+      "name": "sha256WithRSAEncryption",
+      "OID": "1.2.840.113549.1.1.11",
+      "group": "classical-semi-trusted"
+    },
+    {
+      "name": "xmss",
+      "OID": "0.4.0.127.0.15.1.1.13.0",
+      "group": "pq-trusted"
+    },
+    {
+      "name": "xmssmt",
+      "OID": "0.4.0.127.0.15.1.1.14.0",
+      "group": "pq-trusted"
+    }
+  ],
+}
