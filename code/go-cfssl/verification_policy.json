@@ -1,17 +1,17 @@
 {
   "policyType": "groupCombinationisTrusted",
 
+  "trustedGroupCombinations": [
+      ["pq-trusted"],
+      ["classical-semi-trusted", "pq-semi-trusted"]
+    ],
+
   "trustedAlgCombinations": [
     ["hss-lms-hashsig"],
     ["xmss"],
     ["xmssmt"],
     ["ed25519", "dilithium"]
     ["sha256WithRSAEncryption", "dilithium"]
-  ],
-
-  "trustedGroupCombinations": [
-    ["pq-trusted"],
-    ["classical-semi-trusted", "pq-semi-trusted"]
   ],
 
   "knownAlgs": [
