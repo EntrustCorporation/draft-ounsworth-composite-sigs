@@ -120,7 +120,7 @@ No special notation is used in this document.
 
 # Composite Structures {#sec-composite-structs}
 In order for public keys and signatures to be composed of multiple algorithms, the respective structures defined in [RFC2986], [RFC5280] (AND OTHERS??) need to be extended.
-We define encodings of sequences of public keys and signature data which consist of a sequence of public keys and signatures from more basic signature algorithms (aka "component algorithms") such that these structures can be places into any existing public key or signature structure.
+We define encodings of sequences of public keys and signature data which consist of a sequence of public keys and signatures from more basic signature algorithms (aka "component algorithms") such that these structures can be placed into any existing public key or signature structure.
 
 This section defines
 
