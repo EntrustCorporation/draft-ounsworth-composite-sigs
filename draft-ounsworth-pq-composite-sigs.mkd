@@ -396,18 +396,22 @@ Protection of the private key information is vital to public key cryptography.  
 
 CA implementations need to be careful when checking for compromised key reuse, for example as required by WebTrust regulations; when checking for compromised keys, you MUST unpack the CompositePublicKey structure and compare individual component keys.
 
-## Composite Encryption
 
-This document deals only with signature keys. While the CompositePublicKey and CompositePrivateKey structures could equally be used to hold encryption keys, the authors warn that the corresponding multi-key encryption routine is considerably more prone to implementation errors that will result in a catastrophic loss of security if done incorrectly, as compared with the signature algorithms specified in this document. We leave it to the community to standardize an analogous composite encryption scheme.
+## Composite Encryption and KEMs
+
+This document deals only with signature keys. While the CompositePublicKey and CompositePrivateKey structures could equally be used to hold encryption or KEM keys, the authors warn that there are non-trivial design decisions to be made when constructing a multi-key public key encryption or KEM algorithm. Some of these design and implementation decisions, if done incorrectly will result in a catastrophic loss of security. We leave it to the community to standardize analogous composite encryption and KEM schemes.
+
 
 
 <!-- End of Security Considerations section -->
 
 # Appendices
 
-## Intellection Property Considerations
+## Intellectual Property Considerations
 
-TODO: Need to mention CableLab's IP holdings, and copy in CableLab's royalty-free statement.
+The authors are aware that Massimiliano Pala and CableLabs hold Intellectual Property around composite key, signatures, and certificates. We have a verbal agreement with Max that this IP will be made freely available to the community.
+
+However, at time of writing, this is all verbal hearsay; we have yet to find any written documentation of the existence of the IPR.
 
 <!-- Keep it here only for reference, in case it is needed
 ## Comparison with draft-truskovsky-lamps-pq-hybrid-x509
@@ -499,7 +503,7 @@ At the time of an algorithm revocation, a certificate authority MAY revoke certi
 
 
 
-# Contributors
+# Contributors and Acknowledgements
 This document incorporates contributions and comments from a large
 group of experts. The Editors would especially like to acknowledge the
 expertise and tireless dedication of the following people, who attended
@@ -516,6 +520,3 @@ This document borrows text from similar documents, including those referenced be
    documents.  "Copying always makes things easier and less error prone" - [RFC8411].
 
 <!-- End of Contributors section -->
-
-# Acknowledgenents
-_EDNOTE: this section include all those that need to be acknowledged in the draft_
