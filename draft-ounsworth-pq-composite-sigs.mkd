@@ -33,7 +33,7 @@ author:
       email: mike.ounsworth@entrustdatacard.com
 
     -
-      ins: Max Pala (Editor)
+      ins: M. Pala (Editor)
       name: Massimiliano Pala
       org: CableLabs
       email: director@openca.org
@@ -68,7 +68,7 @@ informative:
 --- abstract
 With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite public keys and composite signature data.
 
-This document defines the structures CompositePublicKey, CompositeSignatureAlgorithmParams, and CompositeSignatureValue which are sequences of the respective structure for each component algorithm. This document also defines algorithms for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification algorithms are defined.
+This document defines the structures CompositePublicKey, CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. This document also defines algorithms for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification algorithms are defined.
 
 <!-- End of Abstract -->
 
@@ -119,8 +119,8 @@ COMPOSITE ALGORITHM:  An algorithm which is a sequence of one or
 
 DER:  Distinguished Encoding Rules as defined in [X.690].
 
-SIGNATURE:  ... digital cryptographic signature, making no assumptions
-            about which algorithm.
+SIGNATURE:  ... digital cryptographic signature, making no
+            assumptions about which algorithm.
 
 ~~~
 {: artwork-name="glossary"}
@@ -144,47 +144,60 @@ This section defines
 
 _EDNOTE: Defining composite algorithm parameters as a sequence inside the existing structure avoids an exponential proliferation of OIDs that are needed for each pairwise combination of signature algorithms in other competing schemes for achieving multi-key certificates. This scheme also naturally extends from 2-keypair to n-keypair keys and certificates._
 
+## Algorithm Identifier
 
-## Composite Public Key {#sec-composite-pub-keys}
-A composite public key is a sequence of component public keys that are used together.  A composite public key is identified by the object identifier
+The same algorithm identifier is used for identifying a public key, a private key, and a signature.  Additional encoding information is provided below for each of these objects.
 
 ~~~ asn.1
-id-ce-compositePublicKey OBJECT IDENTIFIER ::= { OID }
+id-Composite OBJECT IDENTIFIER ::= { TBD }
 ~~~
-{: artwork-name="CompositePublicKeyOID-asn.1-structures"}
 
-The parameters field for this public key type MUST be absent.  The composite public key data is represented by the following structure:
+## Composite Keys
+
+The ASN.1 algorithm object for composite public and private keys is:
 
 ~~~ asn.1
-CompositePublicKey ::= SEQUENCE OF SubjectPublicKeyInfo
+pk-Composite PUBLIC-KEY ::= {
+    IDENTIFIER id-Composite
+    KEY CompositePublicKey
+    PARAMS ARE absent
+    CERT-KEY-USAGE
+        { digitalSignature, nonRepudiation, keyCertSign, cRLSign }
+    PRIVATE-KEY CompositePrivateKey
+}
+~~~
+{: artwork-name="CompositeAlgorithmObject-asn.1-structures"}
+
+## Composite Public Key
+
+A composite public key is a sequence of component public keys that are used together.  The AlgorithmIdentifier for a composite public key uses the id-Composite object identifier, and the parameters field MUST be absent.  A composite public key MUST contain at least one component public key.
+
+Each element of a CompositePublicKey is a SubjectPublicKeyInfo object for a component public key.  When the composite public key must be provided in octet string or bit string format, the data structure is converted as specified in {{sec-encoding-rules}}.
+
+The composite public key data is represented by the following structure:
+
+~~~ asn.1
+CompositePublicKey ::= SEQUENCE SIZE (1..MAX) OF SubjectPublicKeyInfo
 ~~~
 {: artwork-name="CompositePublicKey-asn.1-structures"}
 
-where each element of the sequence is a `SubjectPublicKeyInfo` of a component public key.  When the composite public key must be provided in octet string or bit string format, the data structure is converted as specified in {{sec-encoding-rules}}.
-
-
 ## Composite Private Key
 
-This section specifies a syntax and semantics for composite private key information. Composite private key information is built as a SEQUENCE of BIT STRINGs each of which contains the single private keys and parameters. Additionally, it may include the corresponding public keys.
+A composite private key is a sequence of component private keys that are used together.  The AlgorithmIdentifier for a composite private key uses the id-Composite object identifier, and the parameters field MUST be absent.  A composite private key MUST contain at least one component private key.
 
-The structure defined in this document allows for the distribution of the composite keys (public and private) and the associated domain parameters by using a sequence of OneAsymmetricKey as defined in [RFC5958].
-
-The Composite Private Key is identified by the object identifier
-
-~~~ asn.1
-id-ce-compositePrivateKey OBJECT IDENTIFIER ::= { OID }
-~~~
-{: artwork-name="CompositePrivateKeyOID-asn.1-structures"}
+Each element of a CompositePrivateKey is a OneAsymmetricKey [RFC5958] object for a component private key.  The component private key's OneAsymmetricKey object may optionally include the corresponding public key.
 
 The composite private key data is represented by the following structure:
 
+TODO: the previous version defined the CompositePrivateKey as a SEQUENCE of OneAsymmetricKey but also said that it is a SEQUENCE of BIT STRINGs.  This doesn't make sense unless the OneAsymmetricKey objects are wrapped as a BIT STRING (in which case we need to specify this and why).
+
 ~~~ asn.1
-CompositePrivateKey ::= SEQUENCE OF OneAsymmetricKey
+CompositePrivateKey ::= SEQUENCE SIZE (1..MAX) OF OneAsymmetricKey
 ~~~
 {: artwork-name="CompositePrivateKey-asn.1-structures"}
 
 ### Encrypted and Un-encrypted Local Storage
-The compositePrivateKey format as defined in the previous subsection can also be used for local storage of an unencrypted compositePrivateKeys binary object. The compositePrivateKeys can also be formatted in PEM format that uses the (".pem") file extension and which is encoded as the the Base64 encoding (see Section 4 of [RFC4648]), of the DER-encoded compositePrivateKey object with the following armour:
+The compositePrivateKey format as defined in the previous subsection can also be used for local storage of an unencrypted compositePrivateKeys binary object. The compositePrivateKey can also be formatted in PEM format that uses the (".pem") file extension and which is encoded as the the Base64 encoding (see Section 4 of [RFC4648]), of the DER-encoded compositePrivateKey object with the following armour:
 
 ~~~
 -----BEGIN COMPOSITE PRIVATE KEY-----
@@ -192,19 +205,19 @@ The compositePrivateKey format as defined in the previous subsection can also be
 ~~~
 {: artwork-name="privkey-pem-armour"}
 
-Local storage of an encrypted CompositePrivateKeys object is out of scope of this document.  However, CompositePrivateKeys should be the format for the plaintext key being encrypted.  DER encoding the CompositePrivateKeys will promote interoperability if the key is encrypted for transport to another party.  PEM encoding the DER-encoded CompositePrivateKeys is common; "Proc-Type:" and "DEK-INFO:" fields [RFC1421] followed by the DER-encoded CompositePrivateKeys.
+Local storage of an encrypted CompositePrivateKeys object is out of scope of this document.  However, CompositePrivateKey should be the format for the plaintext key being encrypted.  DER encoding the CompositePrivateKey will promote interoperability if the key is encrypted for transport to another party.  PEM encoding the DER-encoded CompositePrivateKey is common; "Proc-Type:" and "DEK-INFO:" fields [RFC1421] followed by the DER-encoded CompositePrivateKey.
 The following armour used in this case is as follows:
 
 ~~~
------BEGIN COMPOSITE PRIVATE KEY-----
------END COMPOSITE PRIVATE KEY-----
+-----BEGIN ENCRYPTED COMPOSITE PRIVATE KEY-----
+-----END ENCRYPTED COMPOSITE PRIVATE KEY-----
 ~~~
 
 ### Asymmetric Key Packages
 
 The Cryptographic Message Syntax (CMS), as defined in [RFC5652], can be used to digitally sign, digest, authenticate, or encrypt the asymmetric key format content type.
 
-When encoding composite private keys, the privateKeyAlgorithm in the OneAsymmetricKey SHALL be set to id-ce-compositePrivateKey.
+When encoding composite private keys, the privateKeyAlgorithm in the OneAsymmetricKey SHALL be set to id-Composite.
 
 The parameters of the privateKeyAlgorithm SHALL be a sequence of AlgorithmIdentifier objects, each of which are encoded according to the rules defined for each of the different keys in the composite private key.
 
@@ -215,34 +228,40 @@ The value of the the publicKey (if present) SHALL be set to the DER encoding of 
 The value of the attributes is encoded as usual.
 
 ## Composite Signature Algorithm {#sec-composite-sigs}
-The Composite Signature signature algorithm defined in {{sec-composite-signature-algorithm}} is identified by the following object identifier:
+
+The ASN.1 algorithm object for a composite signature is:
 
 ~~~ asn.1
-id-ce-compositeSignature OBJECT IDENTIFIER ::= { OID }
+sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
+    IDENTIFIER id-Composite
+    VALUE CompositeSignatureValue
+    PARAMS TYPE CompositeParams ARE required
+    PUBLIC-KEYS { pk-Composite }
+    SMIME-CAPS { IDENTIFIED BY id-Composite } }
+}
 ~~~
-{: artwork-name="CompositeSignature-asn.1-structures"}
 
-The following algorithm parameters MUST be included when this identifier is used:
+The id-Composite object identifier is used to identify when a signature has been created by a composite private key.
+
+The following algorithm parameters MUST be included when this identifier is used to identify a signature algorithm:
 
 ~~~ asn.1
-CompositeSignatureAlgorithmParams ::= SEQUENCE OF AlgorithmIdentifier
+CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
 ~~~
 {: artwork-name="CompositeSignatureParams-asn.1-structures"}
 
-When a composite signature is generated by a key with a CompositePublicKey, the signature's CompositeSignatureAlgorithmParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.
+When a composite signature is generated by a composite private key, the signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePrivateKey and CompositePublicKey.
 
-The Composite Signature algorithm output is the DER encoding of the following structure:
+The composite signature algorithm output is the DER encoding of the following structure:
 
 ~~~ asn.1
-id-ce-CompositeSignatureValue OBJECT IDENTIFIER ::= { OID }
-
-CompositeSignatureValue ::= SEQUENCE OF BIT STRING
+CompositeSignatureValue ::= SEQUENCE SIZE (1..MAX) OF BIT STRING
 ~~~
 {: artwork-name="composite-sig-asn.1"}
 
-Where each bit string within `CompositeSignatureValue` is a signature by one of the component signature algorithms.
+Where each component within a CompositeSignatureValue SEQUENCE is a BIT STRING wrapping a signature produced by one of the component signature algorithms.
 
-The choice of `SEQUENCE OF BIT STRING` rather than `BIT STRING` is so the type-length-value encoding can solve the problem of variable-length signature values. The signature's `CompositeSignatureValue` sequence MUST contain the same component algorithms listed in the same order as in the associated `CompositeSignatureAlgorithmParams`.
+The choice of `SEQUENCE SIZE (1..MAX) OF BIT STRING` is so the BIT STRING encoding can solve the problem of variable-length signature values. The signature's `CompositeSignatureValue` sequence MUST contain signatures by the same component algorithms listed in the same order as in the associated `CompositeParams`.
 
 ## Encoding Rules {#sec-encoding-rules}
 <!-- EDNOTE: Examples of how other specifications specify how a data structure is converted to a bit string can be found in RFC 2313, section 10.1.4, 3279 section 2.3.5, and RFC 4055, section 3.2. -->
@@ -304,8 +323,8 @@ Input:
      A    Composite Algorithm identifier
 
 Output:
-    Validity      "Valid signature" (true) if the composite signature is
-                  valid, "Invalid signature" (false) otherwise.
+    Validity      "Valid signature" (true) if the composite signature
+                  is valid, "Invalid signature" (false) otherwise.
 
 Signature Verification Procedure::
    1. Parse P, S, A into the component public keys, signatures,
@@ -314,8 +333,9 @@ Signature Verification Procedure::
       S1, S2, ..., Sn := Desequence( S )
       A1, A2, ..., An := Desequence( A )
 
-    If Error during Desequencing, or the three sequences have different
-    numbers of elements, then output "Invalid signature" and stop.
+    If Error during Desequencing, or the three sequences have
+    different numbers of elements, then output "Invalid signature"
+    and stop.
 
    2. Check policy to see whether A1, A2, ..., An constitutes a valid
         combination of algorithms.
@@ -344,8 +364,11 @@ Implementations SHOULD verify all recognized and supported algorithms, and outpu
 
 <!-- End of Composite Signature Algorithm section -->
 
+<!--
+_EDNOTE: DVG is removing this section because the OIDs are already defined above and in the ASN.1 Module section.
 # New Algorithm Identifiers
-_EDNOTE: This subsection will define the OIDs for the initial composite algorithm combinations we want to define. These are the OID that Section 10 will ask for IANA to assign._
+_EDNOTE: This subsection will define the OIDs for the initial composite algorithm combinations we want to define. These are the OID that {#sec-iana} will ask for IANA to assign._
+-->
 
 # In Practice {#sec-in-pract}
 _EDNOTE: This section will talk about practical issue of how these certificates will be used. For example it will talk about the size of these certs and cert chains. It will explain that if a cert in the chain is a Composite cert then the whole chain needs to be of Composite Certs. It will also explain that the root CA cert does not have to be of the same algorithms. The root cert SHOULD NOT be transferred in the authentication exchange to save transport overhead and thus it can be different than the intermediate and leaf certs. It will talk about overhead (size and processing). It will also discuss backwards compatibility. It could include a subsection about implementation considerations._
@@ -376,10 +399,7 @@ This section talks about how protocols like (D)TLS and IKEv2 are affected by thi
 <!-- End of Implications for existing standards section -->
 
 # IANA Considerations {#sec-iana}
-The CMS content type OID is registered in a DoD arc.  The ASN.1
-   module OID is TBD.  The id-ce-compositePublicKey, id-ce-compositePrivateKey, id-ce-compositeSignature, and id-ce-CompositeSignatureValue OIDs are to be assigned by IANA.  The authors
-   suggest to use the id-pkix arc for this usage.
-
+The ASN.1 module OID is TBD.  The id-Composite OID is to be assigned by IANA.  The authors suggest to use the id-pkix arc for this usage.
 
 <!-- End of IANA Considerations section -->
 
@@ -406,6 +426,82 @@ This document deals only with signature keys. While the CompositePublicKey and C
 <!-- End of Security Considerations section -->
 
 # Appendices
+
+## ASN.1 Module
+
+~~~ asn.1
+
+<CODE STARTS>
+
+Composite-Signatures-2019
+  { TBD }
+
+DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+EXPORTS ALL;
+
+IMPORTS
+  PUBLIC-KEY, SIGNATURE-ALGORITHM
+    FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
+      { iso(1) identified-organization(3) dod(6) internet(1)
+        security(5) mechanisms(5) pkix(7) id-mod(0)
+        id-mod-algorithmInformation-02(58) }
+
+  SubjectPublicKeyInfo
+    FROM PKIX1Explicit-2009
+      { iso(1) identified-organization(3) dod(6) internet(1)
+        security(5) mechanisms(5) pkix(7) id-mod(0)
+        id-mod-pkix1-explicit-02(51) }
+
+  OneAsymmetricKey
+    FROM AsymmetricKeyPackageModuleV1
+      { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
+        pkcs-9(9) smime(16) modules(0)
+        id-mod-asymmetricKeyPkgV1(50) } ;
+
+--
+-- Object Identifiers
+--
+
+id-Composite OBJECT IDENTIFIER ::= { TBD }
+
+--
+-- Public Key
+--
+
+pk-Composite PUBLIC-KEY ::= {
+    IDENTIFIER id-Composite
+    KEY CompositePublicKey
+    PARAMS ARE absent
+    CERT-KEY-USAGE
+        { digitalSignature, nonRepudiation, keyCertSign, cRLSign }
+    PRIVATE-KEY CompositePrivateKey
+}
+
+CompositePublicKey ::= SEQUENCE SIZE (1..MAX) OF SubjectPublicKeyInfo
+
+CompositePrivateKey ::= SEQUENCE SIZE (1..MAX) OF OneAsymmetricKey
+
+--
+-- Signature Algorithm
+--
+
+sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
+    IDENTIFIER id-Composite
+    VALUE CompositeSignatureValue
+    PARAMS TYPE CompositeParams ARE required
+    PUBLIC-KEYS { pk-Composite }
+    SMIME-CAPS { IDENTIFIED BY id-Composite } }
+
+CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
+
+CompositeSignatureValue ::= SEQUENCE SIZE (1..MAX) OF BIT STRING
+
+END
+
+<CODE ENDS>
+
+~~~
 
 ## Intellectual Property Considerations
 
