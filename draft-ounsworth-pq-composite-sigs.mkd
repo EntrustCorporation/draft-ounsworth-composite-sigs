@@ -172,7 +172,7 @@ pk-Composite PUBLIC-KEY ::= {
 
 A composite public key is a sequence of component public keys that are used together.  The AlgorithmIdentifier for a composite public key uses the id-Composite object identifier, and the parameters field MUST be absent.  A composite public key MUST contain at least one component public key.
 
-Each element of a CompositePublicKey is a SubjectPublicKeyInfo object for a component public key.  When the composite public key must be provided in octet string or bit string format, the data structure is converted as specified in {{sec-encoding-rules}}.
+Each element of a CompositePublicKey is a SubjectPublicKeyInfo object for a component public key.  When the CompositePublicKey must be provided in octet string or bit string format, the data structure is converted as specified in {{sec-encoding-rules}}.
 
 The composite public key data is represented by the following structure:
 
@@ -181,6 +181,35 @@ CompositePublicKey ::= SEQUENCE SIZE (1..MAX) OF SubjectPublicKeyInfo
 ~~~
 {: artwork-name="CompositePublicKey-asn.1-structures"}
 
+## Key Usage Bits
+
+The intended application for the key is indicated in the keyUsage certificate extension and defined in the CERT-KEY-USAGE field of pk-Composite.
+
+If the keyUsage extension is present in an end-entity certificate that indicates id-Composite, then the keyUsage extension MUST contain one or both of the following values:
+
+~~~
+    nonRepudiation; and
+    digitalSignature.
+~~~
+{: artwork-name="Cert-Key-Usage-1"}
+
+If the keyUsage extension is present in a certification authority certificate that indicates id-Composite, then the keyUsage extension MUST contain one or more of the following values:
+
+~~~
+    nonRepudiation;
+    digitalSignature;
+    keyCertSign; and
+    cRLSign.
+~~~
+{: artwork-name="Cert-Key-Usage-2"}
+
+_EDNOTE: BEGIN - This text is based on RFC 8410 (Ed25519 etc in X.509). It specifies a minimum required set of key usage bits to set, but doesn't preclude one from setting more.  On the other hand, the text for cms-hash-sig is below.  It is less explicit about which situations use the signature-related bits, but does preclude all other bits from being set.  Do we want to follow one or the other of these models?
+
+QUOTE:
+When this AlgorithmIdentifier appears in the SubjectPublicKeyInfo field of an X.509 certificate [RFC5280], the certificate key usage extension MAY contain digitalSignature, nonRepudiation, keyCertSign, and cRLSign; however, it MUST NOT contain other values.
+
+_EDNOTE: END
+
 ## Composite Private Key
 
 A composite private key is a sequence of component private keys that are used together.  The AlgorithmIdentifier for a composite private key uses the id-Composite object identifier, and the parameters field MUST be absent.  A composite private key MUST contain at least one component private key.
@@ -188,8 +217,6 @@ A composite private key is a sequence of component private keys that are used to
 Each element of a CompositePrivateKey is a OneAsymmetricKey [RFC5958] object for a component private key.  The component private key's OneAsymmetricKey object may optionally include the corresponding public key.
 
 The composite private key data is represented by the following structure:
-
-TODO: the previous version defined the CompositePrivateKey as a SEQUENCE of OneAsymmetricKey but also said that it is a SEQUENCE of BIT STRINGs.  This doesn't make sense unless the OneAsymmetricKey objects are wrapped as a BIT STRING (in which case we need to specify this and why).
 
 ~~~ asn.1
 CompositePrivateKey ::= SEQUENCE SIZE (1..MAX) OF OneAsymmetricKey
@@ -363,12 +390,6 @@ Implementations SHOULD verify all recognized and supported algorithms, and outpu
 
 
 <!-- End of Composite Signature Algorithm section -->
-
-<!--
-_EDNOTE: DVG is removing this section because the OIDs are already defined above and in the ASN.1 Module section.
-# New Algorithm Identifiers
-_EDNOTE: This subsection will define the OIDs for the initial composite algorithm combinations we want to define. These are the OID that {#sec-iana} will ask for IANA to assign._
--->
 
 # In Practice {#sec-in-pract}
 _EDNOTE: This section will talk about practical issue of how these certificates will be used. For example it will talk about the size of these certs and cert chains. It will explain that if a cert in the chain is a Composite cert then the whole chain needs to be of Composite Certs. It will also explain that the root CA cert does not have to be of the same algorithms. The root cert SHOULD NOT be transferred in the authentication exchange to save transport overhead and thus it can be different than the intermediate and leaf certs. It will talk about overhead (size and processing). It will also discuss backwards compatibility. It could include a subsection about implementation considerations._
