@@ -5,8 +5,8 @@
 LAMPS                                              M. Ounsworth (Editor)
 Internet-Draft                                          Entrust Datacard
 Intended status: Standards Track                     . Max Pala (Editor)
-Expires: December 1, 2019                                      CableLabs
-                                                            May 30, 2019
+Expires: December 12, 2019                                     CableLabs
+                                                           June 10, 2019
 
 
          Composite Keys and Signatures For Use In Internet PKI
@@ -47,15 +47,15 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 1, 2019.
+   This Internet-Draft will expire on December 12, 2019.
 
 
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019                [Page 1]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 1]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
 Copyright Notice
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019                [Page 2]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 2]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
      11.1.  Normative References . . . . . . . . . . . . . . . . . .  17
@@ -165,9 +165,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019                [Page 3]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 3]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
    public key separately and then concatenate the ciphertexts, which is
@@ -221,9 +221,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019                [Page 4]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 4]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
 2.  Composite Structures
@@ -277,9 +277,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019                [Page 5]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 5]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
    in octet string or bit string format, the data structure is converted
@@ -310,10 +310,12 @@ Internet-Draft             PQ Composite Certs                   May 2019
 2.2.1.  Encrypted and Un-encrypted Local Storage
 
    The compositePrivateKey format as defined in the previous subsection
-   can also be used for local storage of an unencrypted
+   can also be used for local storage of an encrypted or unencrypted
    compositePrivateKeys binary object.  The compositePrivateKeys can
-   also be formatted in PEM format that uses the (".pem") file extension
-   and which is encoded as the the Base64 encoding (see Section 4 of
+   also be formatted in PEM format according to the encoding rules in
+   [RFC7468] with the following
+
+   and which is encoded as the Base64 encoding (see Section 4 of
    [RFC4648]), of the DER-encoded compositePrivateKey object with the
    following armour:
 
@@ -331,15 +333,15 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 
 
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019                [Page 6]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 6]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
    -----BEGIN COMPOSITE PRIVATE KEY-----
    -----END COMPOSITE PRIVATE KEY-----
+
+   ~~~ Mention encryption ~~~
 
 2.2.2.  Asymmetric Key Packages
 
@@ -361,9 +363,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
    sequence SHALL be the same as identified in the sequence of
    parameters in the privateKeyAlgorithm.
 
-   The value of the the publicKey (if present) SHALL be set to the DER
-   encoding of the SEQUENCE of publicKey values.  If this field is
-   present, the number and order of elements SHALL be the same as
+   The value of the publicKey (if present) SHALL be set to the DER
+   encoding of the corresponding CompositePublicKey.  If this field is
+   present, the number and order of component keys MUST be the same as
    identified in the sequence of parameters in the privateKeyAlgorithm.
 
    The value of the attributes is encoded as usual.
@@ -387,11 +389,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 
 
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019                [Page 7]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 7]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
    The Composite Signature algorithm output is the DER encoding of the
@@ -412,9 +412,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 2.4.  Encoding Rules
 
-   Many specifications require that the composite public key and
-   composite signature data structures be represented by an octet string
-   or bit string.
+   Many specifications require that the composite public key, composite
+   private key, and composite signature data structures be represented
+   by an octet string or bit string.
 
    When an octet string is required, the DER encoding of the composite
    data structure SHALL be used directly.
@@ -425,7 +425,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
    bit, and so on, ending with the least significant bit of the last
    octet becoming the last bit of the bit string.
 
-   Receivers SHOULD be prepared to handle both BER and DER.
+   In the interest of simplicity and avoiding compatibility issues,
+   implementations that parse these structures MAY accept both BER and
+   DER.
 
 3.  Composite Signature Algorithm
 
@@ -443,11 +445,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 
 
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019                [Page 8]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 8]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
 3.1.  Composite Signature Generation
@@ -468,7 +468,7 @@ Internet-Draft             PQ Composite Certs                   May 2019
          according to their algorithm specifications.
            for i := 1 to n
                Si := Sign( Ki, M )
-      2. DER encode the component signatures into an ASN.1 value of type
+      2. Encode the component signatures into an ASN.1 value of type
          Signature, where the type Signature has the syntax
            Signature ::= Sequence { S1, S2, ..., Sn }
         Let S be the DER encoding of the Signature
@@ -501,9 +501,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019                [Page 9]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 9]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
    This section provides a sample algorithm for validating composite
@@ -557,9 +557,9 @@ Signature Verification Procedure::
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019               [Page 10]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 10]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
    algorithms "A1, A2, ..., An" which constitute acceptable
@@ -613,9 +613,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019               [Page 11]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 11]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
    o  How does the protocol declare support for composite signatures?
@@ -669,9 +669,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019               [Page 12]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 12]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
 8.2.  Checking for Compromised Key Reuse
@@ -725,9 +725,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019               [Page 13]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 13]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
    In the traditional world of single-key public keys and signatures,
@@ -781,9 +781,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019               [Page 14]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 14]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
 9.2.1.4.  Policy certificate issued by the Certificate Authority
@@ -837,9 +837,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019               [Page 15]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 15]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
    is valid only if it would have been valid had those Algorithm IDs and
@@ -893,9 +893,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019               [Page 16]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 16]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
 10.  Contributors and Acknowledgements
@@ -949,9 +949,9 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019               [Page 17]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 17]
 
-Internet-Draft             PQ Composite Certs                   May 2019
+Internet-Draft             PQ Composite Certs                  June 2019
 
 
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
@@ -967,6 +967,10 @@ Internet-Draft             PQ Composite Certs                   May 2019
    [RFC5958]  Turner, S., "Asymmetric Key Packages", RFC 5958,
               DOI 10.17487/RFC5958, August 2010,
               <https://www.rfc-editor.org/info/rfc5958>.
+
+   [RFC7468]  Josefsson, S. and S. Leonard, "Textual Encodings of PKIX,
+              PKCS, and CMS Structures", RFC 7468, DOI 10.17487/RFC7468,
+              April 2015, <https://www.rfc-editor.org/info/rfc7468>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -992,6 +996,20 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 Authors' Addresses
 
+
+
+
+
+
+
+
+
+
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 18]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
    Mike Ounsworth
    Entrust Datacard Limited
    1000 Innovation Drive
@@ -999,15 +1017,6 @@ Authors' Addresses
    Canada
 
    Email: mike.ounsworth@entrustdatacard.com
-
-
-
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019               [Page 18]
-
-Internet-Draft             PQ Composite Certs                   May 2019
 
 
    Massimiliano Pala
@@ -1052,13 +1061,4 @@ Internet-Draft             PQ Composite Certs                   May 2019
 
 
 
-
-
-
-
-
-
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 1, 2019               [Page 19]
+Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 19]
