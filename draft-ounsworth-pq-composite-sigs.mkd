@@ -186,28 +186,12 @@ CompositePrivateKey ::= SEQUENCE OF OneAsymmetricKey
 ~~~
 {: artwork-name="CompositePrivateKey-asn.1-structures"}
 
-### Encrypted and Un-encrypted Local Storage
-The compositePrivateKey format as defined in the previous subsection can also be used for local storage of an encrypted or unencrypted compositePrivateKeys binary object. The compositePrivateKeys can also be formatted in PEM format according to the encoding rules in [RFC7468] with the following
+### PEM Storage of Composite Private Keys
 
+CompositePrivateKeys can be encoded to the PEM format by placing a ComposetiPrivateKey into the privateKey field of a PrivateKeyInfo or OneAsymmetricKey object, and then applying the PEM encoding rules as defined in [RFC7468] section 10 and 11 for plaintext and encrypted private keys, respectively.
 
+EDNOTE: Do we really need this? Isn't it obvious? We do want to open the can of worms of needing to add a similar sentence for every protocol and encoding under the sun?
 
-and which is encoded as the Base64 encoding (see Section 4 of [RFC4648]), of the DER-encoded compositePrivateKey object with the following armour:
-
-~~~
------BEGIN COMPOSITE PRIVATE KEY-----
------END COMPOSITE PRIVATE KEY-----
-~~~
-{: artwork-name="privkey-pem-armour"}
-
-Local storage of an encrypted CompositePrivateKeys object is out of scope of this document.  However, CompositePrivateKeys should be the format for the plaintext key being encrypted.  DER encoding the CompositePrivateKeys will promote interoperability if the key is encrypted for transport to another party.  PEM encoding the DER-encoded CompositePrivateKeys is common; "Proc-Type:" and "DEK-INFO:" fields [RFC1421] followed by the DER-encoded CompositePrivateKeys.
-The following armour used in this case is as follows:
-
-~~~
------BEGIN COMPOSITE PRIVATE KEY-----
------END COMPOSITE PRIVATE KEY-----
-~~~
-
-~~~ Mention encryption ~~~
 
 ### Asymmetric Key Packages
 
