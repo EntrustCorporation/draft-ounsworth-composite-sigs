@@ -325,7 +325,7 @@ _EDNOTE: This section will talk about practical issue of how these certificates 
 
 ## PEM Storage of Composite Private Keys
 
-CompositePrivateKeys can be encoded to the PEM format by placing a ComposetiPrivateKey into the privateKey field of a PrivateKeyInfo or OneAsymmetricKey object, and then applying the PEM encoding rules as defined in [RFC7468] section 10 and 11 for plaintext and encrypted private keys, respectively.
+CompositePrivateKeys can be encoded to the PEM format by placing a CompositePrivateKey into the privateKey field of a PrivateKeyInfo or OneAsymmetricKey object, and then applying the PEM encoding rules as defined in [RFC7468] section 10 and 11 for plaintext and encrypted private keys, respectively.
 
 EDNOTE: Do we really need this? Isn't it obvious? We do want to open the can of worms of needing to add a similar sentence for every protocol and encoding under the sun?
 

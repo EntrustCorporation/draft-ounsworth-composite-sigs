@@ -539,7 +539,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 5.1.  PEM Storage of Composite Private Keys
 
    CompositePrivateKeys can be encoded to the PEM format by placing a
-   ComposetiPrivateKey into the privateKey field of a PrivateKeyInfo or
+   CompositePrivateKey into the privateKey field of a PrivateKeyInfo or
    OneAsymmetricKey object, and then applying the PEM encoding rules as
    defined in [RFC7468] section 10 and 11 for plaintext and encrypted
    private keys, respectively.
