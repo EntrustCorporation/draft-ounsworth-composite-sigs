@@ -80,7 +80,7 @@ Table of Contents
      1.2.  Notation  . . . . . . . . . . . . . . . . . . . . . . . .   4
    2.  Composite Structures  . . . . . . . . . . . . . . . . . . . .   5
      2.1.  Algorithm Identifier  . . . . . . . . . . . . . . . . . .   5
-     2.2.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   5
+     2.2.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   6
      2.3.  Composite Public Key  . . . . . . . . . . . . . . . . . .   6
      2.4.  Key Usage Bits  . . . . . . . . . . . . . . . . . . . . .   6
      2.5.  Composite Private Key . . . . . . . . . . . . . . . . . .   7
@@ -264,13 +264,13 @@ Internet-Draft             PQ Composite Certs                  June 2019
    private key, and a signature.  Additional encoding information is
    provided below for each of these objects.
 
- id-Composite OBJECT IDENTIFIER ::= { iso(1)  identified-organization(3)
-     dod(6) internet(1) private(4) enterprise(1) OpenCA(18227)
-     Algorithms(2) id-alg-composite(101) }
+id-alg-composite OBJECT IDENTIFIER ::= { iso(1)  identified-organization(3)
+    dod(6) internet(1) private(4) enterprise(1) OpenCA(18227)
+    Algorithms(2) id-alg-composite(1) }
 
-2.2.  Composite Keys
+   EDNOTE: this is a temporary OID for the purposes of prototyping.  We
+   are requesting IANA to assign a permanent OID, see section Section 6.
 
-   The ASN.1 algorithm object for composite public and private keys is:
 
 
 
@@ -282,8 +282,12 @@ Ounsworth (Editor) & PalExpiresoDecember 13, 2019               [Page 5]
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
+2.2.  Composite Keys
+
+   The ASN.1 algorithm object for composite public and private keys is:
+
    pk-Composite PUBLIC-KEY ::= {
-       IDENTIFIER id-Composite
+       IDENTIFIER id-alg-composite
        KEY CompositePublicKey
        PARAMS ARE absent
        CERT-KEY-USAGE
@@ -323,13 +327,9 @@ Internet-Draft             PQ Composite Certs                  June 2019
        digitalSignature.
 
    If the keyUsage extension is present in a certification authority
-   certificate that indicates id-Composite, then the keyUsage extension
-   MUST contain one or more of the following values:
+   certificate that indicates id-alg-composite, then the keyUsage
+   extension MUST contain one or more of the following values:
 
-       nonRepudiation;
-       digitalSignature;
-       keyCertSign; and
-       cRLSign.
 
 
 
@@ -337,6 +337,11 @@ Ounsworth (Editor) & PalExpiresoDecember 13, 2019               [Page 6]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
+
+       nonRepudiation;
+       digitalSignature;
+       keyCertSign; and
+       cRLSign.
 
    _EDNOTE: BEGIN - This text is based on RFC 8410 (Ed25519 etc in
    X.509).  It specifies a minimum required set of key usage bits to
@@ -358,9 +363,9 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
    A composite private key is a sequence of component private keys that
    are used together.  The AlgorithmIdentifier for a composite private
-   key uses the id-Composite object identifier, and the parameters field
-   MUST be absent.  A composite private key MUST contain at least one
-   component private key.
+   key uses the id-alg-composite object identifier, and the parameters
+   field MUST be absent.  A composite private key MUST contain at least
+   one component private key.
 
    Each element of a CompositePrivateKey is a OneAsymmetricKey [RFC5958]
    object for a component private key.  The component private key's
@@ -382,17 +387,15 @@ Internet-Draft             PQ Composite Certs                  June 2019
    [RFC4648]), of the DER-encoded compositePrivateKey object with the
    following armour:
 
-   -----BEGIN COMPOSITE PRIVATE KEY-----
-   -----END COMPOSITE PRIVATE KEY-----
-
-
-
 
 
 Ounsworth (Editor) & PalExpiresoDecember 13, 2019               [Page 7]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
+
+   -----BEGIN COMPOSITE PRIVATE KEY-----
+   -----END COMPOSITE PRIVATE KEY-----
 
    Local storage of an encrypted CompositePrivateKeys object is out of
    scope of this document.  However, CompositePrivateKey should be the
@@ -413,7 +416,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
    asymmetric key format content type.
 
    When encoding composite private keys, the privateKeyAlgorithm in the
-   OneAsymmetricKey SHALL be set to id-Composite.
+   OneAsymmetricKey SHALL be set to id-alg-composite.
 
    The parameters of the privateKeyAlgorithm SHALL be a sequence of
    AlgorithmIdentifier objects, each of which are encoded according to
@@ -442,23 +445,20 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-
-
-
 Ounsworth (Editor) & PalExpiresoDecember 13, 2019               [Page 8]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
    sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
-       IDENTIFIER id-Composite
+       IDENTIFIER id-alg-composite
        VALUE CompositeSignatureValue
        PARAMS TYPE CompositeParams ARE required
        PUBLIC-KEYS { pk-Composite }
        SMIME-CAPS { IDENTIFIED BY id-Composite } }
    }
 
-   The id-Composite object identifier is used to identify when a
+   The id-alg-composite object identifier is used to identify when a
    signature has been created by a composite private key.
 
    The following algorithm parameters MUST be included when this
@@ -741,12 +741,13 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 6.  IANA Considerations
 
-   The ASN.1 module OID is TBD.  The id-Composite OID is to be assigned
-   by IANA.  The authors suggest to use the id-pkix arc for this usage:
+   The ASN.1 module OID is TBD.  The id-alg-composite OID is to be
+   assigned by IANA.  The authors suggest to use the id-pkix arc for
+   this usage:
 
-  id-Composite OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
-      dod(6) internet(1) security(5) mechanisms(5) pkix(7) algorithms(6)
-      id-alg-composite(??) }
+id-alg-composite OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
+    dod(6) internet(1) security(5) mechanisms(5) pkix(7) algorithms(6)
+    composite(??) }
 
 7.  Security Considerations
 
@@ -777,7 +778,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    This document deals only with signature keys.  While the
    CompositePublicKey and CompositePrivateKey structures could equally
    be used to hold encryption or KEM keys, the authors warn that there
-   are non-trivial design decisions to be made when constructing a
 
 
 
@@ -786,6 +786,7 @@ Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 14]
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
+   are non-trivial design decisions to be made when constructing a
    multi-key public key encryption or KEM algorithm.  Some of these
    design and implementation decisions, if done incorrectly will result
    in a catastrophic loss of security.  We leave it to the community to
@@ -833,7 +834,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    -- Public Key
    --
 
-   pk-Composite PUBLIC-KEY ::= {
 
 
 
@@ -842,6 +842,7 @@ Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 15]
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
+   pk-Composite PUBLIC-KEY ::= {
        IDENTIFIER id-Composite
        KEY CompositePublicKey
        PARAMS ARE absent
@@ -889,7 +890,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    This section is here to be informative during the review process, to
    document ideas that were raised and the rationales for not including
    them in the final draft.
-
 
 
 

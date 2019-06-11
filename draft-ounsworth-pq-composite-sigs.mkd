@@ -149,10 +149,12 @@ _EDNOTE: Defining composite algorithm parameters as a sequence inside the existi
 The same algorithm identifier is used for identifying a public key, a private key, and a signature.  Additional encoding information is provided below for each of these objects.
 
 ~~~ asn.1
-id-Composite OBJECT IDENTIFIER ::= { iso(1)  identified-organization(3)
+id-alg-composite OBJECT IDENTIFIER ::= { iso(1)  identified-organization(3)
     dod(6) internet(1) private(4) enterprise(1) OpenCA(18227)
-    Algorithms(2) id-alg-composite(101) }
+    Algorithms(2) id-alg-composite(1) }
 ~~~
+
+EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see section {{sec-iana}}.
 
 ## Composite Keys
 
@@ -160,7 +162,7 @@ The ASN.1 algorithm object for composite public and private keys is:
 
 ~~~ asn.1
 pk-Composite PUBLIC-KEY ::= {
-    IDENTIFIER id-Composite
+    IDENTIFIER id-alg-composite
     KEY CompositePublicKey
     PARAMS ARE absent
     CERT-KEY-USAGE
@@ -195,7 +197,7 @@ If the keyUsage extension is present in an end-entity certificate that indicates
 ~~~
 {: artwork-name="Cert-Key-Usage-1"}
 
-If the keyUsage extension is present in a certification authority certificate that indicates id-Composite, then the keyUsage extension MUST contain one or more of the following values:
+If the keyUsage extension is present in a certification authority certificate that indicates id-alg-composite, then the keyUsage extension MUST contain one or more of the following values:
 
 ~~~
     nonRepudiation;
@@ -214,7 +216,7 @@ _EDNOTE: END
 
 ## Composite Private Key
 
-A composite private key is a sequence of component private keys that are used together.  The AlgorithmIdentifier for a composite private key uses the id-Composite object identifier, and the parameters field MUST be absent.  A composite private key MUST contain at least one component private key.
+A composite private key is a sequence of component private keys that are used together.  The AlgorithmIdentifier for a composite private key uses the id-alg-composite object identifier, and the parameters field MUST be absent.  A composite private key MUST contain at least one component private key.
 
 Each element of a CompositePrivateKey is a OneAsymmetricKey [RFC5958] object for a component private key.  The component private key's OneAsymmetricKey object may optionally include the corresponding public key.
 
@@ -246,7 +248,7 @@ The following armour used in this case is as follows:
 
 The Cryptographic Message Syntax (CMS), as defined in [RFC5652], can be used to digitally sign, digest, authenticate, or encrypt the asymmetric key format content type.
 
-When encoding composite private keys, the privateKeyAlgorithm in the OneAsymmetricKey SHALL be set to id-Composite.
+When encoding composite private keys, the privateKeyAlgorithm in the OneAsymmetricKey SHALL be set to id-alg-composite.
 
 The parameters of the privateKeyAlgorithm SHALL be a sequence of AlgorithmIdentifier objects, each of which are encoded according to the rules defined for each of the different keys in the composite private key.
 
@@ -262,7 +264,7 @@ The ASN.1 algorithm object for a composite signature is:
 
 ~~~ asn.1
 sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
-    IDENTIFIER id-Composite
+    IDENTIFIER id-alg-composite
     VALUE CompositeSignatureValue
     PARAMS TYPE CompositeParams ARE required
     PUBLIC-KEYS { pk-Composite }
@@ -270,7 +272,7 @@ sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
 }
 ~~~
 
-The id-Composite object identifier is used to identify when a signature has been created by a composite private key.
+The id-alg-composite object identifier is used to identify when a signature has been created by a composite private key.
 
 The following algorithm parameters MUST be included when this identifier is used to identify a signature algorithm:
 
@@ -422,12 +424,12 @@ This section talks about how protocols like (D)TLS and IKEv2 are affected by thi
 <!-- End of Implications for existing standards section -->
 
 # IANA Considerations {#sec-iana}
-The ASN.1 module OID is TBD.  The id-Composite OID is to be assigned by IANA.  The authors suggest to use the id-pkix arc for this usage:
+The ASN.1 module OID is TBD.  The id-alg-composite OID is to be assigned by IANA.  The authors suggest to use the id-pkix arc for this usage:
 
 ~~~
-id-Composite OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
+id-alg-composite OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
     dod(6) internet(1) security(5) mechanisms(5) pkix(7) algorithms(6)
-    id-alg-composite(??) }
+    composite(??) }
 ~~~
 
 <!-- End of IANA Considerations section -->
