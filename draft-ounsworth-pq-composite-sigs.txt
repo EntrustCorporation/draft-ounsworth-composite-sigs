@@ -5,8 +5,8 @@
 LAMPS                                              M. Ounsworth (Editor)
 Internet-Draft                                          Entrust Datacard
 Intended status: Standards Track                     . Max Pala (Editor)
-Expires: December 12, 2019                                     CableLabs
-                                                           June 10, 2019
+Expires: December 13, 2019                                     CableLabs
+                                                           June 11, 2019
 
 
          Composite Keys and Signatures For Use In Internet PKI
@@ -47,13 +47,13 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 12, 2019.
+   This Internet-Draft will expire on December 13, 2019.
 
 
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 1]
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019               [Page 1]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -93,7 +93,7 @@ Table of Contents
    6.  Implications for existing standards . . . . . . . . . . . . .  11
      6.1.  RFC 2986  . . . . . . . . . . . . . . . . . . . . . . . .  11
      6.2.  RFC 5280  . . . . . . . . . . . . . . . . . . . . . . . .  11
-     6.3.  Cryptographic protocols . . . . . . . . . . . . . . . . .  11
+     6.3.  Cryptographic protocols . . . . . . . . . . . . . . . . .  12
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
    8.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
      8.1.  Protection of Private Keys  . . . . . . . . . . . . . . .  12
@@ -109,14 +109,14 @@ Table of Contents
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 2]
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019               [Page 2]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
      11.1.  Normative References . . . . . . . . . . . . . . . . . .  17
      11.2.  Informative References . . . . . . . . . . . . . . . . .  18
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  19
 
 1.  Introduction
 
@@ -165,7 +165,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 3]
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019               [Page 3]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -221,7 +221,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 4]
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019               [Page 4]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -269,19 +269,23 @@ Internet-Draft             PQ Composite Certs                  June 2019
    The parameters field for this public key type MUST be absent.  The
    composite public key data is represented by the following structure:
 
-   CompositePublicKey ::= SEQUENCE OF SubjectPublicKeyInfo
-
-   where each element of the sequence is a "SubjectPublicKeyInfo" of a
-   component public key.  When the composite public key must be provided
-
-
+   EDNOTE: there has been some discussion of using the parameters to
+   duplicate either the number of component keys, or their algorithm
+   IDs.  Unclear at the moment if this is worth the complexity, but it
+   has been proposed.
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 5]
+
+
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019               [Page 5]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
+   CompositePublicKey ::= SEQUENCE OF SubjectPublicKeyInfo
+
+   where each element of the sequence is a "SubjectPublicKeyInfo" of a
+   component public key.  When the composite public key must be provided
    in octet string or bit string format, the data structure is converted
    as specified in Section 2.4.
 
@@ -326,17 +330,18 @@ Internet-Draft             PQ Composite Certs                  June 2019
    scope of this document.  However, CompositePrivateKeys should be the
    format for the plaintext key being encrypted.  DER encoding the
    CompositePrivateKeys will promote interoperability if the key is
+
+
+
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019               [Page 6]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
    encrypted for transport to another party.  PEM encoding the DER-
    encoded CompositePrivateKeys is common; "Proc-Type:" and "DEK-INFO:"
    fields [RFC1421] followed by the DER-encoded CompositePrivateKeys.
    The following armour used in this case is as follows:
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 6]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
    -----BEGIN COMPOSITE PRIVATE KEY-----
    -----END COMPOSITE PRIVATE KEY-----
@@ -382,17 +387,17 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
    CompositeSignatureAlgorithmParams ::= SEQUENCE OF AlgorithmIdentifier
 
+
+
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019               [Page 7]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
    When a composite signature is generated by a key with a
    CompositePublicKey, the signature's CompositeSignatureAlgorithmParams
    sequence MUST contain the same component algorithms listed in the
    same order as in the associated CompositePublicKey.
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 7]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
    The Composite Signature algorithm output is the DER encoding of the
    following structure:
@@ -437,18 +442,19 @@ Internet-Draft             PQ Composite Certs                  June 2019
    signature effectively being the concatenation of the individual
    signature values.
 
+
+
+
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019               [Page 8]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
    This algorithm addresses algorithm strength uncertainty by providing
    the verifier with parallel signatures from all the component
    signature algorithms used as part of the composite signature;
    breaking the composite signature would require breaking each of the
    component signatures.
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 8]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
 3.1.  Composite Signature Generation
 
@@ -491,20 +497,20 @@ Internet-Draft             PQ Composite Certs                  June 2019
    mechanism, denoted as "checkPolicy(A1, A2, ..., An)" in the algorithm
    below.  The implementation of such a policy mechanism is the
    responsibility of the verifier / client and therefore is out of scope
+
+
+
+
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019               [Page 9]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
    for this document, but this document notes that at least one
    component signature MUST be verified.
 
    EDNOTE: See the appendix Section 9.2.1 for further discussion of
    possible standardization of such mechanisms.
-
-
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 9]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
    This section provides a sample algorithm for validating composite
    signatures.  Compliant implementations MUST return "Invalid
@@ -549,19 +555,18 @@ Signature Verification Procedure::
 
 
 
+
+
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019              [Page 10]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
    There will be circumstances in which the verifier does not have
    cryptographic libraries for all of the provided component algorithms,
    or where the performance gains from omitting algorithms justifies the
    loss of security.  In these cases, an acceptable modification to this
    algorithm is to produce in step 2 one or more subsets of the
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 10]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
-
    algorithms "A1, A2, ..., An" which constitute acceptable
    combinations, outputting "Invalid signature" if an acceptable subset
    can not be found, and then in step 3 only perform verification of the
@@ -602,6 +607,17 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
    _EDNOTE: summarize the updates to RFC 5280 (X.509)._
 
+
+
+
+
+
+
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019              [Page 11]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
 6.3.  Cryptographic protocols
 
    This section talks about how protocols like (D)TLS and IKEv2 are
@@ -609,14 +625,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    these problems, but it will explain the rationale, how things will
    work and what open problems need to be solved.  Obvious issues that
    need to be discussed.
-
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 11]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
    o  How does the protocol declare support for composite signatures?
       TLS has hooks for declaring support for specific signature
@@ -658,21 +666,18 @@ Internet-Draft             PQ Composite Certs                  June 2019
    Protection of the private key information is vital to public key
    cryptography.  The consequences of disclosure depend on the purpose
    of the private key.  If a private key is used for signature, then the
+
+
+
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019              [Page 12]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
    disclosure allows unauthorized signing.  If a private key is used for
    key management, then disclosure allows unauthorized parties to access
    the managed keying material.  The encryption algorithm used in the
    encryption process must be as 'strong' as the key it is protecting.
-
-
-
-
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 12]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
 8.2.  Checking for Compromised Key Reuse
 
@@ -718,17 +723,17 @@ Internet-Draft             PQ Composite Certs                  June 2019
    remove the whole thing and instead leave this is a responsibility of
    the implementors of the software performing signature verification.
 
+
+
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019              [Page 13]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
    EDNOTE: The original content for this section is left for interest's
    sake, but should be removed in a subsequent version of this draft.
 
    -
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 13]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
    In the traditional world of single-key public keys and signatures,
    the semantics of a signature and a verification are straight-forward:
@@ -771,20 +776,22 @@ Internet-Draft             PQ Composite Certs                  June 2019
    signature, or some other field provided that it is inside the signed
    data blob.
 
+
+
+
+
+
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019              [Page 14]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
 9.2.1.3.  Extra metadata in the certificate
 
    This policy information could be included in a certificate via an
    X.509 v3 extension.  This gives the Certificate Authority control,
    but has the drawback that updating the policy requires revoking and
    reissuing certificates.
-
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 14]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
 9.2.1.4.  Policy certificate issued by the Certificate Authority
 
@@ -826,6 +833,15 @@ Internet-Draft             PQ Composite Certs                  June 2019
    There may only be one "RevokedAlgorithms" extension in a CRL.  This
    extension is OPTIONAL.  If a CRL contains only composite
    certificates, then this extension SHOULD be designated as critical.
+
+
+
+
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019              [Page 15]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
    If a CRL contains a mixture of composite and traditional certificates
    then it SHOULD be designated as non-critical.
 
@@ -833,15 +849,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    client performing a certificate validation on an otherwise non-
    revoked certificate within the scope of that CRL MUST skip any
    signatures corresponding to a revoked algorithm; thus a certificate
-
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 15]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
-
    is valid only if it would have been valid had those Algorithm IDs and
    Signature Values been omitted from the certificate.
 
@@ -882,21 +889,20 @@ Internet-Draft             PQ Composite Certs                  June 2019
       performed by a compliant client, regardless of which verification
       algorithm is used.
 
+
+
+
+
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019              [Page 16]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
    At the time of an algorithm revocation, a certificate authority MAY
    revoke certificates meeting one ofd the above criteria (by placing
    them in the traditional "revokedCertificates" list) with a revocation
    reason of "keyCompromise".  OCSP responders SHOULD designate a
    certificate as revoked if it meets the above condition.
-
-
-
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 16]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
 10.  Contributors and Acknowledgements
 
@@ -936,6 +942,18 @@ Internet-Draft             PQ Composite Certs                  June 2019
               DOI 10.17487/RFC2986, November 2000,
               <https://www.rfc-editor.org/info/rfc2986>.
 
+
+
+
+
+
+
+
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019              [Page 17]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
    [RFC4210]  Adams, C., Farrell, S., Kause, T., and T. Mononen,
               "Internet X.509 Public Key Infrastructure Certificate
               Management Protocol (CMP)", RFC 4210,
@@ -945,14 +963,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/info/rfc4648>.
-
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 17]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
@@ -988,6 +998,18 @@ Internet-Draft             PQ Composite Certs                  June 2019
               pala-composite-crypto-00 (work in progress), February
               2019.
 
+
+
+
+
+
+
+
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019              [Page 18]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
    [I-D.truskovsky-lamps-pq-hybrid-x509]
               Truskovsky, A., Geest, D., Fluhrer, S., Kampanakis, P.,
               Ounsworth, M., and S. Mister, "Multiple Public-Key
@@ -995,20 +1017,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
               hybrid-x509-01 (work in progress), August 2018.
 
 Authors' Addresses
-
-
-
-
-
-
-
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 18]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
    Mike Ounsworth
    Entrust Datacard Limited
@@ -1053,12 +1061,4 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-
-
-
-
-
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 19]
+Ounsworth (Editor) & MaxExpiresEDecember 13, 2019              [Page 19]

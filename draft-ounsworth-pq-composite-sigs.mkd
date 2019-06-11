@@ -156,6 +156,8 @@ id-ce-compositePublicKey OBJECT IDENTIFIER ::= { OID }
 
 The parameters field for this public key type MUST be absent.  The composite public key data is represented by the following structure:
 
+EDNOTE: there has been some discussion of using the parameters to duplicate either the number of component keys, or their algorithm IDs. Unclear at the moment if this is worth the complexity, but it has been proposed.
+
 ~~~ asn.1
 CompositePublicKey ::= SEQUENCE OF SubjectPublicKeyInfo
 ~~~
