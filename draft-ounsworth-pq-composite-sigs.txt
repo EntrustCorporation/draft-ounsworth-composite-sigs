@@ -5,8 +5,8 @@
 LAMPS                                              M. Ounsworth (Editor)
 Internet-Draft                                          Entrust Datacard
 Intended status: Standards Track                        M. Pala (Editor)
-Expires: December 8, 2019                                      CableLabs
-                                                           June 06, 2019
+Expires: December 13, 2019                                     CableLabs
+                                                           June 11, 2019
 
 
          Composite Keys and Signatures For Use In Internet PKI
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 8, 2019.
+   This Internet-Draft will expire on December 13, 2019.
 
 
 
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019                [Page 1]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019               [Page 1]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019                [Page 2]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019               [Page 2]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -165,7 +165,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019                [Page 3]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019               [Page 3]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -184,7 +184,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in BCP
-   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   14 [RFC2119]  [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
    The following terms are used:
@@ -221,7 +221,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019                [Page 4]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019               [Page 4]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -264,7 +264,9 @@ Internet-Draft             PQ Composite Certs                  June 2019
    private key, and a signature.  Additional encoding information is
    provided below for each of these objects.
 
-   id-Composite OBJECT IDENTIFIER ::= { TBD }
+  id-Composite OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
+      dod(6) internet(1) security(5) mechanisms(5) pkix(7) algorithms(6)
+      id-alg-composite(101) }
 
 2.2.  Composite Keys
 
@@ -275,9 +277,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-
-
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019                [Page 5]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019               [Page 5]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -333,7 +333,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019                [Page 6]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019               [Page 6]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -389,7 +389,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019                [Page 7]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019               [Page 7]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -445,7 +445,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019                [Page 8]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019               [Page 8]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -501,7 +501,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019                [Page 9]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019               [Page 9]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -557,7 +557,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019               [Page 10]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 10]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -613,7 +613,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019               [Page 11]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 11]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -669,7 +669,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019               [Page 12]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 12]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -725,7 +725,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019               [Page 13]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 13]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -781,7 +781,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019               [Page 14]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 14]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -837,7 +837,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019               [Page 15]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 15]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -893,7 +893,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019               [Page 16]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 16]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -949,7 +949,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019               [Page 17]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 17]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -1005,7 +1005,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019               [Page 18]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 18]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -1061,7 +1061,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019               [Page 19]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 19]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -1117,7 +1117,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019               [Page 20]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 20]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -1173,7 +1173,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019               [Page 21]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 21]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -1229,4 +1229,4 @@ Authors' Addresses
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 8, 2019               [Page 22]
+Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 22]
