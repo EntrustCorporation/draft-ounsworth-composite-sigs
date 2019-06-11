@@ -114,7 +114,7 @@ Ounsworth (Editor) & PalExpiresoDecember 13, 2019               [Page 2]
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
-               clients . . . . . . . . . . . . . . . . . . . . . . .  16
+               clients . . . . . . . . . . . . . . . . . . . . . . .  17
    9.  Contributors and Acknowledgements . . . . . . . . . . . . . .  20
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  20
@@ -264,9 +264,9 @@ Internet-Draft             PQ Composite Certs                  June 2019
    private key, and a signature.  Additional encoding information is
    provided below for each of these objects.
 
-  id-Composite OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
-      dod(6) internet(1) security(5) mechanisms(5) pkix(7) algorithms(6)
-      id-alg-composite(101) }
+ id-Composite OBJECT IDENTIFIER ::= { iso(1)  identified-organization(3)
+     dod(6) internet(1) private(4) enterprise(1) OpenCA(18227)
+     Algorithms(2) id-alg-composite(101) }
 
 2.2.  Composite Keys
 
@@ -742,7 +742,11 @@ Internet-Draft             PQ Composite Certs                  June 2019
 6.  IANA Considerations
 
    The ASN.1 module OID is TBD.  The id-Composite OID is to be assigned
-   by IANA.  The authors suggest to use the id-pkix arc for this usage.
+   by IANA.  The authors suggest to use the id-pkix arc for this usage:
+
+  id-Composite OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
+      dod(6) internet(1) security(5) mechanisms(5) pkix(7) algorithms(6)
+      id-alg-composite(??) }
 
 7.  Security Considerations
 
@@ -774,10 +778,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    CompositePublicKey and CompositePrivateKey structures could equally
    be used to hold encryption or KEM keys, the authors warn that there
    are non-trivial design decisions to be made when constructing a
-   multi-key public key encryption or KEM algorithm.  Some of these
-   design and implementation decisions, if done incorrectly will result
-   in a catastrophic loss of security.  We leave it to the community to
-   standardize analogous composite encryption and KEM schemes.
 
 
 
@@ -785,6 +785,11 @@ Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 14]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
+
+   multi-key public key encryption or KEM algorithm.  Some of these
+   design and implementation decisions, if done incorrectly will result
+   in a catastrophic loss of security.  We leave it to the community to
+   standardize analogous composite encryption and KEM schemes.
 
 8.  Appendices
 
@@ -829,11 +834,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    --
 
    pk-Composite PUBLIC-KEY ::= {
-       IDENTIFIER id-Composite
-       KEY CompositePublicKey
-       PARAMS ARE absent
-       CERT-KEY-USAGE
-           { digitalSignature, nonRepudiation, keyCertSign, cRLSign }
 
 
 
@@ -842,6 +842,11 @@ Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 15]
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
+       IDENTIFIER id-Composite
+       KEY CompositePublicKey
+       PARAMS ARE absent
+       CERT-KEY-USAGE
+           { digitalSignature, nonRepudiation, keyCertSign, cRLSign }
        PRIVATE-KEY CompositePrivateKey
    }
 
@@ -885,11 +890,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    document ideas that were raised and the rationales for not including
    them in the final draft.
 
-8.3.1.  Mechanisms to distribute verification policy to clients
-
-   EDNOTE: The authors had extensive discussions about how to handle
-   algorithm revocation / deprication, sepcifically around how to
-   distribute policy information to verifiers.  In the end we decided to
 
 
 
@@ -898,6 +898,11 @@ Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 16]
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
+8.3.1.  Mechanisms to distribute verification policy to clients
+
+   EDNOTE: The authors had extensive discussions about how to handle
+   algorithm revocation / deprication, sepcifically around how to
+   distribute policy information to verifiers.  In the end we decided to
    remove the whole thing and instead leave this is a responsibility of
    the implementors of the software performing signature verification.
 
@@ -939,13 +944,8 @@ Internet-Draft             PQ Composite Certs                  June 2019
    software vendors to implement the guidance of governing bodies on a
    system-by-system basis.
 
-8.3.1.2.  Extra metadata in the public key or signature
 
-   This policy information could be specified by the signer at signing
-   time.  Depending on the structure of the databeing signed, this
-   metadata could go into the public key, or an extension to the
-   signature, or some other field provided that it is inside the signed
-   data blob.
+
 
 
 
@@ -953,6 +953,14 @@ Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 17]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
+
+8.3.1.2.  Extra metadata in the public key or signature
+
+   This policy information could be specified by the signer at signing
+   time.  Depending on the structure of the databeing signed, this
+   metadata could go into the public key, or an extension to the
+   signature, or some other field provided that it is inside the signed
+   data blob.
 
 8.3.1.3.  Extra metadata in the certificate
 
@@ -994,14 +1002,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
                                  -- if present, version MUST be v2
         }
 
-   _EDNOTE: do we need the crlEntryExtensions field?  If so, which ones
-   from https://tools.ietf.org/html/rfc5280#section-5.3 are allowed
-   here?_
-
-   There may only be one "RevokedAlgorithms" extension in a CRL.  This
-   extension is OPTIONAL.  If a CRL contains only composite
-   certificates, then this extension SHOULD be designated as critical.
-
 
 
 
@@ -1010,6 +1010,13 @@ Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 18]
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
+   _EDNOTE: do we need the crlEntryExtensions field?  If so, which ones
+   from https://tools.ietf.org/html/rfc5280#section-5.3 are allowed
+   here?_
+
+   There may only be one "RevokedAlgorithms" extension in a CRL.  This
+   extension is OPTIONAL.  If a CRL contains only composite
+   certificates, then this extension SHOULD be designated as critical.
    If a CRL contains a mixture of composite and traditional certificates
    then it SHOULD be designated as non-critical.
 
@@ -1052,19 +1059,17 @@ Internet-Draft             PQ Composite Certs                  June 2019
       succeed when performed by a legacy client which is not aware of
       this CRL extension.
 
-   o  All of the component algorithms are revoked within the scope if
-      its CRL.  In this case, signature verification MUST fail when
-      performed by a compliant client, regardless of which verification
-      algorithm is used.
-
-
-
 
 
 Ounsworth (Editor) & PalExpiresoDecember 13, 2019              [Page 19]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
+
+   o  All of the component algorithms are revoked within the scope if
+      its CRL.  In this case, signature verification MUST fail when
+      performed by a compliant client, regardless of which verification
+      algorithm is used.
 
    At the time of an algorithm revocation, a certificate authority MAY
    revoke certificates meeting one ofd the above criteria (by placing
@@ -1109,11 +1114,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
               Request Syntax Specification Version 1.7", RFC 2986,
               DOI 10.17487/RFC2986, November 2000,
               <https://www.rfc-editor.org/info/rfc2986>.
-
-
-
-
-
 
 
 
