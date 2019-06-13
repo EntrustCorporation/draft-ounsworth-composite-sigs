@@ -210,13 +210,6 @@ If the keyUsage extension is present in a certification authority certificate th
 ~~~
 {: artwork-name="Cert-Key-Usage-2"}
 
-_EDNOTE: BEGIN - This text is based on RFC 8410 (Ed25519 etc in X.509). It specifies a minimum required set of key usage bits to set, but doesn't preclude one from setting more.  On the other hand, the text for cms-hash-sig is below.  It is less explicit about which situations use the signature-related bits, but does preclude all other bits from being set.  Do we want to follow one or the other of these models?
-
-QUOTE:
-When this AlgorithmIdentifier appears in the SubjectPublicKeyInfo field of an X.509 certificate [RFC5280], the certificate key usage extension MAY contain digitalSignature, nonRepudiation, keyCertSign, and cRLSign; however, it MUST NOT contain other values.
-
-_EDNOTE: END
-
 ## Composite Private Key
 
 A composite private key is a sequence of component private keys that are used together.  The AlgorithmIdentifier for a composite private key uses the id-alg-composite object identifier, and the parameters field MUST be absent.  A composite private key MUST contain at least one component private key.
