@@ -210,6 +210,8 @@ If the keyUsage extension is present in a certification authority certificate th
 ~~~
 {: artwork-name="Cert-Key-Usage-2"}
 
+As this draft only covers composite signatures, the key usage bits specified here apply to all component keys within a composite key.
+
 ## Composite Private Key
 
 A composite private key is a sequence of component private keys that are used together.  The AlgorithmIdentifier for a composite private key uses the id-alg-composite object identifier, and the parameters field MUST be absent.  A composite private key MUST contain at least one component private key.
