@@ -33,7 +33,7 @@ author:
       email: mike.ounsworth@entrustdatacard.com
 
     -
-      ins: Max Pala (Editor)
+      ins: M. Pala (Editor)
       name: Massimiliano Pala
       org: CableLabs
       email: director@openca.org
