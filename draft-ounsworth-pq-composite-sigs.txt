@@ -5,8 +5,8 @@
 LAMPS                                              M. Ounsworth (Editor)
 Internet-Draft                                          Entrust Datacard
 Intended status: Standards Track                     . Max Pala (Editor)
-Expires: December 12, 2019                                     CableLabs
-                                                           June 10, 2019
+Expires: December 15, 2019                                     CableLabs
+                                                           June 13, 2019
 
 
          Composite Keys and Signatures For Use In Internet PKI
@@ -47,13 +47,13 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 12, 2019.
+   This Internet-Draft will expire on December 15, 2019.
 
 
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 1]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019               [Page 1]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 2]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019               [Page 2]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -165,7 +165,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 3]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019               [Page 3]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -221,7 +221,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 4]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019               [Page 4]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -277,7 +277,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 5]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019               [Page 5]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -333,7 +333,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 6]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019               [Page 6]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -389,7 +389,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 7]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019               [Page 7]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -445,7 +445,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 8]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019               [Page 8]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -480,9 +480,10 @@ Internet-Draft             PQ Composite Certs                  June 2019
         Let S be the DER encoding of the Signature
       3. Output S
 
-   Since recursive composite public keys are banned in section
-   Section 2.1, it is safe to assume that the private keys K1, K2, ..,
-   Kn will not contain composite types.
+   Since recursive composite public keys are disallowed in section
+   Section 2.1, no component signature may itself be composite; ie the
+   signature generation routine MUST fail if one of the private keys K1,
+   K2, .., Kn is composite with the OID id-alg-composite.
 
 3.2.  Composite Signature Verification
 
@@ -497,15 +498,15 @@ Internet-Draft             PQ Composite Certs                  June 2019
    implementations SHOULD include a field-updatable policy mechanism for
    determining which and/or how many component algorithms must be valid
    in order for the composite signature as a whole to be considered
-   valid.  This section assumes the existence of such a policy
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019               [Page 9]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019               [Page 9]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
+   valid.  This section assumes the existence of such a policy
    mechanism, denoted as "checkPolicy(A1, A2, ..., An)" in the algorithm
    below.  The implementation of such a policy mechanism is the
    responsibility of the verifier / client and therefore is out of scope
@@ -556,8 +557,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 10]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019              [Page 10]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -598,27 +598,26 @@ Signature Verification Procedure::
       if all succeeded, then
         output "Valid signature"
 
-
-
-   Since recursive composite public keys are banned in section
-   Section 2.1, it is safe to assume that the public keys P1, P2, .., Pn
-   and algorithm identifiers A1, A2, .., An will not contain composite
-   types.
+   Since recursive composite public keys are disallowed in section
+   Section 2.1, no component signature may be composite; ie the
+   signature verification procedure MUST fail if any of the public keys
+   P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite
+   with the OID id-alg-composite.
 
    There will be circumstances in which the verifier does not have
    cryptographic libraries for all of the provided component algorithms,
    or where the performance gains from omitting algorithms justifies the
    loss of security.  In these cases, an acceptable modification to this
    algorithm is to produce in step 2 one or more subsets of the
+   algorithms "A1, A2, ..., An" which constitute acceptable
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 11]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019              [Page 11]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
-   algorithms "A1, A2, ..., An" which constitute acceptable
    combinations, outputting "Invalid signature" if an acceptable subset
    can not be found, and then in step 3 only perform verification of the
    necessary component algorithms.
@@ -669,7 +668,8 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 12]
+
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019              [Page 12]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -725,7 +725,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 13]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019              [Page 13]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -781,7 +781,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 14]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019              [Page 14]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -837,7 +837,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 15]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019              [Page 15]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -893,7 +893,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 16]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019              [Page 16]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -949,7 +949,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 17]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019              [Page 17]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -1005,7 +1005,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 18]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019              [Page 18]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -1061,7 +1061,7 @@ Authors' Addresses
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 19]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019              [Page 19]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -1117,4 +1117,4 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & MaxExpiresEDecember 12, 2019              [Page 20]
+Ounsworth (Editor) & MaxExpiresEDecember 15, 2019              [Page 20]

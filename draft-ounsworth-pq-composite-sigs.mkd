@@ -295,7 +295,7 @@ Signature Generation Procedure:
 ~~~
 {: artwork-name="alg-composite-sig-gen"}
 
-Since recursive composite public keys are banned in section {{sec-composite-pub-keys}}, it is safe to assume that the private keys K1, K2, .., Kn will not contain composite types.
+Since recursive composite public keys are disallowed in section {{sec-composite-pub-keys}}, no component signature may itself be composite; ie the signature generation routine MUST fail if one of the private keys K1, K2, .., Kn is composite with the OID id-alg-composite.
 
 ## Composite Signature Verification {#sec-comp-sig-verify}
 Verification of a composite signature involves applying each component algorithm's verification routine according to its specification, and then outputting "Valid signature" (true) if a sufficient number of component algorithms were valid, and "Invalid signature" (false) otherwise.
@@ -343,12 +343,10 @@ Signature Verification Procedure::
 
       if all succeeded, then
         output "Valid signature"
-
-
 ~~~
 {: artwork-name="alg-sig-verif"}
 
-Since recursive composite public keys are banned in section {{sec-composite-pub-keys}}, it is safe to assume that the public keys P1, P2, .., Pn and algorithm identifiers A1, A2, .., An will not contain composite types.
+Since recursive composite public keys are disallowed in section {{sec-composite-pub-keys}}, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
 
 There will be circumstances in which the verifier does not have cryptographic libraries for all of the provided component algorithms, or where the performance gains from omitting algorithms justifies the loss of security. In these cases, an acceptable modification to this algorithm is to produce in step 2 one or more subsets of the algorithms `A1, A2, ..., An` which constitute acceptable combinations, outputting "Invalid signature" if an acceptable subset can not be found, and then in step 3 only perform verification of the necessary component algorithms.
 
