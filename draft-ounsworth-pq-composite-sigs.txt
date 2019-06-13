@@ -444,10 +444,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-<<<<<<< HEAD
 
-=======
->>>>>>> Nits from the phone call
 Ounsworth (Editor) & MaxExpiresEDecember 15, 2019               [Page 8]
 
 Internet-Draft             PQ Composite Certs                  June 2019
@@ -504,7 +501,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-
 Ounsworth (Editor) & MaxExpiresEDecember 15, 2019               [Page 9]
 
 Internet-Draft             PQ Composite Certs                  June 2019
@@ -518,17 +514,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    implementations SHOULD include a field-updatable policy mechanism for
    determining which and/or how many component algorithms must be valid
    in order for the composite signature as a whole to be considered
-<<<<<<< HEAD
-=======
-
-
-
-Ounsworth (Editor) & MaxExpiresEDecember 15, 2019               [Page 9]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
-
->>>>>>> Nits from the phone call
    valid.  This section assumes the existence of such a policy
    mechanism, denoted as "checkPolicy(A1, A2, ..., An)" in the algorithm
    below.  The implementation of such a policy mechanism is the
@@ -572,17 +557,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-<<<<<<< HEAD
-=======
-
-
-
-
-
-
-
-
->>>>>>> Nits from the phone call
 Ounsworth (Editor) & MaxExpiresEDecember 15, 2019              [Page 10]
 
 Internet-Draft             PQ Composite Certs                  June 2019
@@ -694,10 +668,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> Nits from the phone call
 Ounsworth (Editor) & MaxExpiresEDecember 15, 2019              [Page 12]
 
 Internet-Draft             PQ Composite Certs                  June 2019
