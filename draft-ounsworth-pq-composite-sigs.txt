@@ -304,9 +304,9 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
    A composite public key is a sequence of component public keys that
    are used together.  The AlgorithmIdentifier for a composite public
-   key uses the id-Composite object identifier, and the parameters field
-   MUST be absent.  A composite public key MUST contain at least one
-   component public key.  A CompositePublicKey MUST NOT contain a
+   key uses the id-alg-composite object identifier, and the parameters
+   field MUST be absent.  A composite public key MUST contain at least
+   one component public key.  A CompositePublicKey MUST NOT contain a
    component public key which itself describes a composite key; ie
    recursive CompositePublicKeys are not allowed.
 
@@ -327,8 +327,8 @@ Internet-Draft             PQ Composite Certs                  June 2019
    Composite.
 
    If the keyUsage extension is present in an end-entity certificate
-   that indicates id-Composite, then the keyUsage extension MUST contain
-   one or both of the following values:
+   that indicates id-alg-composite, then the keyUsage extension MUST
+   contain one or both of the following values:
 
 
 
@@ -380,7 +380,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
        VALUE CompositeSignatureValue
        PARAMS TYPE CompositeParams ARE required
        PUBLIC-KEYS { pk-Composite }
-       SMIME-CAPS { IDENTIFIED BY id-Composite } }
+       SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
    }
 
    The id-alg-composite object identifier is used to identify when a
@@ -825,14 +825,14 @@ Internet-Draft             PQ Composite Certs                  June 2019
    -- Object Identifiers
    --
 
-   id-Composite OBJECT IDENTIFIER ::= { TBD }
+   id-alg-composite OBJECT IDENTIFIER ::= { TBD }
 
    --
    -- Public Key
    --
 
    pk-Composite PUBLIC-KEY ::= {
-       IDENTIFIER id-Composite
+       IDENTIFIER id-alg-composite
        KEY CompositePublicKey
 
 
@@ -857,11 +857,11 @@ Internet-Draft             PQ Composite Certs                  June 2019
    --
 
    sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
-       IDENTIFIER id-Composite
+       IDENTIFIER id-alg-composite
        VALUE CompositeSignatureValue
        PARAMS TYPE CompositeParams ARE required
        PUBLIC-KEYS { pk-Composite }
-       SMIME-CAPS { IDENTIFIED BY id-Composite } }
+       SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 
    CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
 

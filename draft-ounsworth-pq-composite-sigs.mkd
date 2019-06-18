@@ -177,7 +177,7 @@ pk-Composite PUBLIC-KEY ::= {
 
 ## Composite Public Key {#sec-composite-pub-keys}
 
-A composite public key is a sequence of component public keys that are used together.  The AlgorithmIdentifier for a composite public key uses the id-Composite object identifier, and the parameters field MUST be absent.  A composite public key MUST contain at least one component public key.  A CompositePublicKey MUST NOT contain a component public key which itself describes a composite key; ie recursive CompositePublicKeys are not allowed.
+A composite public key is a sequence of component public keys that are used together.  The AlgorithmIdentifier for a composite public key uses the id-alg-composite object identifier, and the parameters field MUST be absent.  A composite public key MUST contain at least one component public key.  A CompositePublicKey MUST NOT contain a component public key which itself describes a composite key; ie recursive CompositePublicKeys are not allowed.
 
 Each element of a CompositePublicKey is a SubjectPublicKeyInfo object for a component public key.  When the CompositePublicKey must be provided in octet string or bit string format, the data structure is converted as specified in {{sec-encoding-rules}}.
 
@@ -192,7 +192,7 @@ CompositePublicKey ::= SEQUENCE SIZE (1..MAX) OF SubjectPublicKeyInfo
 
 The intended application for the key is indicated in the keyUsage certificate extension and defined in the CERT-KEY-USAGE field of pk-Composite.
 
-If the keyUsage extension is present in an end-entity certificate that indicates id-Composite, then the keyUsage extension MUST contain one or both of the following values:
+If the keyUsage extension is present in an end-entity certificate that indicates id-alg-composite, then the keyUsage extension MUST contain one or both of the following values:
 
 ~~~
     nonRepudiation; and
@@ -235,7 +235,7 @@ sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
     VALUE CompositeSignatureValue
     PARAMS TYPE CompositeParams ARE required
     PUBLIC-KEYS { pk-Composite }
-    SMIME-CAPS { IDENTIFIED BY id-Composite } }
+    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 }
 ~~~
 
@@ -488,14 +488,14 @@ IMPORTS
 -- Object Identifiers
 --
 
-id-Composite OBJECT IDENTIFIER ::= { TBD }
+id-alg-composite OBJECT IDENTIFIER ::= { TBD }
 
 --
 -- Public Key
 --
 
 pk-Composite PUBLIC-KEY ::= {
-    IDENTIFIER id-Composite
+    IDENTIFIER id-alg-composite
     KEY CompositePublicKey
     PARAMS ARE absent
     CERT-KEY-USAGE
@@ -512,11 +512,11 @@ CompositePrivateKey ::= SEQUENCE SIZE (1..MAX) OF OneAsymmetricKey
 --
 
 sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
-    IDENTIFIER id-Composite
+    IDENTIFIER id-alg-composite
     VALUE CompositeSignatureValue
     PARAMS TYPE CompositeParams ARE required
     PUBLIC-KEYS { pk-Composite }
-    SMIME-CAPS { IDENTIFIED BY id-Composite } }
+    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 
 CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
 
