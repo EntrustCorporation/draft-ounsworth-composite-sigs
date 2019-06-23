@@ -269,7 +269,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
        enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) }
 
    EDNOTE: this is a temporary OID for the purposes of prototyping.  We
-   are requesting IANA to assign a permanent OID, see section Section 6.
+   are requesting IANA to assign a permanent OID, see Section 6.
 
 
 
@@ -298,8 +298,8 @@ Internet-Draft             PQ Composite Certs                  June 2019
    EDNOTE: The authors are currently unsure whether the params should be
    absent (ie this structere simply says "I am a composite algorithm"),
    or used to duplicate some amount of information about what the
-   component algoritms are.  See section {sec-composite-pub-keys} for a
-   longer ENDOTE on this.
+   component algoritms are.  See {sec-composite-pub-keys} for a longer
+   ENDOTE on this.
 
 2.2.1.  Key Usage Bits
 
@@ -562,10 +562,30 @@ Ounsworth (Editor) & PalExpires December 25, 2019              [Page 10]
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
-   Since recursive composite public keys are disallowed in section
-   Section 2.3, no component signature may itself be composite; ie the
-   signature generation routine MUST fail if one of the private keys K1,
-   K2, .., Kn is composite with the OID id-alg-composite.
+   Since recursive composite public keys are disallowed in Section 2.3,
+   no component signature may itself be composite; ie the signature
+   generation routine MUST fail if one of the private keys K1, K2, ..,
+   Kn is composite with the OID id-alg-composite.
+
+   A composite signature MUST produce a signature value for every
+   component key in the corresponding CompositePublicKey.
+
+   EDNOTE1: With NIST's position that they will standardize use-case-
+   specific algorihtm suites, the authors are aware of potential use-
+   cases where a PKI entity may want to have many public keys, but only
+   sign with a subset for each given signature.  At the present time,
+   this draft does not allow for this because the mechanism for
+   verifying "subset-signatures" in a secure way would be very complex
+   and prone to implementation errors, we but want public opinions on
+   whether this is a valuable enough use-case to justify the complexity.
+
+   EDNOTE2: The authors are also aware of a potential use-case of
+   combining signature and KEM keys inside a single public key /
+   certificate.  At the present time, this draft does not allow for this
+   because, again, the mechanism for verifying "subset-signatures" in a
+   secure way would be very complex and prone to implementation errors,
+   we but want public opinions on whether this is a valuable enough use-
+   case to justify the complexity.
 
 3.2.  Composite Signature Verification
 
@@ -589,26 +609,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
    This section provides a sample algorithm for validating composite
    signatures.  Compliant implementations MUST return "Invalid
-   signature" whenever the sample algorithm does, with the exception of
-   the modification noted below.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -617,6 +617,9 @@ Ounsworth (Editor) & PalExpires December 25, 2019              [Page 11]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
+
+   signature" whenever the sample algorithm does, with the exception of
+   the modification noted below.
 
    Input:
         P    Signer's composite public key
@@ -655,17 +658,14 @@ Internet-Draft             PQ Composite Certs                  June 2019
          if all succeeded, then
            output "Valid signature"
 
-   Since recursive composite public keys are disallowed in section
-   Section 2.3, no component signature may be composite; ie the
-   signature verification procedure MUST fail if any of the public keys
-   P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite
-   with the OID id-alg-composite.
+   Since recursive composite public keys are disallowed in Section 2.3,
+   no component signature may be composite; ie the signature
+   verification procedure MUST fail if any of the public keys P1, P2,
+   .., Pn or algorithm identifiers A1, A2, .., An are composite with the
+   OID id-alg-composite.
 
    There will be circumstances in which the verifier does not have
    cryptographic libraries for all of the provided component algorithms,
-   or where the performance gains from omitting algorithms justifies the
-   loss of security.  In these cases, an acceptable modification to this
-   algorithm is to produce in step 2 one or more subsets of the
 
 
 
@@ -674,6 +674,9 @@ Ounsworth (Editor) & PalExpires December 25, 2019              [Page 12]
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
+   or where the performance gains from omitting algorithms justifies the
+   loss of security.  In these cases, an acceptable modification to this
+   algorithm is to produce in step 2 one or more subsets of the
    algorithms "A1, A2, ..., An" which constitute acceptable
    combinations, outputting "Invalid signature" if an acceptable subset
    can not be found, and then in step 3 only perform verification of the
@@ -689,8 +692,8 @@ Internet-Draft             PQ Composite Certs                  June 2019
    _EDNOTE: This section will talk about practical issue of how these
    certificates will be used.  For example it will talk about the size
    of these certs and cert chains.  It will explain that if a cert in
-   the chain is a Composite cert then the whole chain needs to be of
-   Composite Certs.  It will also explain that the root CA cert does not
+   the chain is a composite cert then the whole chain needs to be of
+   composite Certs.  It will also explain that the root CA cert does not
    have to be of the same algorithms.  The root cert SHOULD NOT be
    transferred in the authentication exchange to save transport overhead
    and thus it can be different than the intermediate and leaf certs.
@@ -719,9 +722,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    When encoding composite private keys, the privateKeyAlgorithm in the
    OneAsymmetricKey SHALL be set to id-alg-composite.
 
-   The parameters of the privateKeyAlgorithm SHALL be a sequence of
-   AlgorithmIdentifier objects, each of which are encoded according to
-
 
 
 
@@ -730,6 +730,8 @@ Ounsworth (Editor) & PalExpires December 25, 2019              [Page 13]
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
+   The parameters of the privateKeyAlgorithm SHALL be a sequence of
+   AlgorithmIdentifier objects, each of which are encoded according to
    the rules defined for each of the different keys in the composite
    private key.
 
@@ -775,8 +777,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
       would be to have the server sign using its composite public key;
       is this sufficient.
 
-   o  Overhead; including certificate size, signature processing time,
-      and size of the signature.
 
 
 
@@ -785,6 +785,9 @@ Ounsworth (Editor) & PalExpires December 25, 2019              [Page 14]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
+
+   o  Overhead; including certificate size, signature processing time,
+      and size of the signature.
 
    o  How to deal with crypto protocols that use public key encryption
       algorithms; this document only lists how to work with signature
@@ -811,7 +814,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
    deprecated (for example, RSA-512, or SHA1), it is obvious that
    structures using that algorithm are implicitly revoked.
 
-   In the Composite model this is less obvious since a single public
+   In the composite model this is less obvious since a single public
    key, certificate, or signature may contain a mixture of deprecated
    and non-depricated algorithms.  Moreover, implementers may decide
    that certain cryptographic algorithms have complementary security
@@ -830,9 +833,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    While intentionally not specified in this document, implementors
    should put careful thought into implementing a meaningfull policy
    mechinism within the context of their signature verification engines.
-
-
-
 
 
 

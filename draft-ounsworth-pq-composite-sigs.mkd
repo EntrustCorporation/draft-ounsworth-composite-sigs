@@ -155,7 +155,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
     enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) }
 ~~~
 
-EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see section {{sec-iana}}.
+EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see {{sec-iana}}.
 
 ## Composite Keys
 
@@ -174,7 +174,7 @@ pk-Composite PUBLIC-KEY ::= {
 {: artwork-name="CompositeAlgorithmObject-asn.1-structures"}
 
 
-EDNOTE: The authors are currently unsure whether the params should be absent (ie this structere simply says "I am a composite algorithm"), or used to duplicate some amount of information about what the component algoritms are. See section {sec-composite-pub-keys} for a longer ENDOTE on this.
+EDNOTE: The authors are currently unsure whether the params should be absent (ie this structere simply says "I am a composite algorithm"), or used to duplicate some amount of information about what the component algoritms are. See {sec-composite-pub-keys} for a longer ENDOTE on this.
 
 ### Key Usage Bits
 
@@ -341,7 +341,15 @@ Signature Generation Procedure:
 ~~~
 {: artwork-name="alg-composite-sig-gen"}
 
-Since recursive composite public keys are disallowed in section {{sec-composite-pub-keys}}, no component signature may itself be composite; ie the signature generation routine MUST fail if one of the private keys K1, K2, .., Kn is composite with the OID id-alg-composite.
+
+Since recursive composite public keys are disallowed in {{sec-composite-pub-keys}}, no component signature may itself be composite; ie the signature generation routine MUST fail if one of the private keys K1, K2, .., Kn is composite with the OID id-alg-composite.
+
+A composite signature MUST produce a signature value for every component key in the corresponding CompositePublicKey.
+
+EDNOTE1: With NIST's position that they will standardize use-case-specific algorihtm suites, the authors are aware of potential use-cases where a PKI entity may want to have many public keys, but only sign with a subset for each given signature. At the present time, this draft does not allow for this because the mechanism for verifying "subset-signatures" in a secure way would be very complex and prone to implementation errors, we but want public opinions on whether this is a valuable enough use-case to justify the complexity.
+
+EDNOTE2: The authors are also aware of a potential use-case of combining signature and KEM keys inside a single public key / certificate. At the present time, this draft does not allow for this because, again, the mechanism for verifying "subset-signatures" in a secure way would be very complex and prone to implementation errors, we but want public opinions on whether this is a valuable enough use-case to justify the complexity.
+
 
 ## Composite Signature Verification {#sec-comp-sig-verify}
 Verification of a composite signature involves applying each component algorithm's verification routine according to its specification, and then outputting "Valid signature" (true) if a sufficient number of component algorithms were valid, and "Invalid signature" (false) otherwise.
@@ -391,7 +399,7 @@ Signature Verification Procedure::
 ~~~
 {: artwork-name="alg-sig-verif"}
 
-Since recursive composite public keys are disallowed in section {{sec-composite-pub-keys}}, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
+Since recursive composite public keys are disallowed in {{sec-composite-pub-keys}}, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
 
 There will be circumstances in which the verifier does not have cryptographic libraries for all of the provided component algorithms, or where the performance gains from omitting algorithms justifies the loss of security. In these cases, an acceptable modification to this algorithm is to produce in step 2 one or more subsets of the algorithms `A1, A2, ..., An` which constitute acceptable combinations, outputting "Invalid signature" if an acceptable subset can not be found, and then in step 3 only perform verification of the necessary component algorithms.
 
@@ -401,7 +409,7 @@ Implementations SHOULD verify all recognized and supported algorithms, and outpu
 <!-- End of Composite Signature Algorithm section -->
 
 # In Practice {#sec-in-pract}
-_EDNOTE: This section will talk about practical issue of how these certificates will be used. For example it will talk about the size of these certs and cert chains. It will explain that if a cert in the chain is a Composite cert then the whole chain needs to be of Composite Certs. It will also explain that the root CA cert does not have to be of the same algorithms. The root cert SHOULD NOT be transferred in the authentication exchange to save transport overhead and thus it can be different than the intermediate and leaf certs. It will talk about overhead (size and processing). It will also discuss backwards compatibility. It could include a subsection about implementation considerations._
+_EDNOTE: This section will talk about practical issue of how these certificates will be used. For example it will talk about the size of these certs and cert chains. It will explain that if a cert in the chain is a composite cert then the whole chain needs to be of composite Certs. It will also explain that the root CA cert does not have to be of the same algorithms. The root cert SHOULD NOT be transferred in the authentication exchange to save transport overhead and thus it can be different than the intermediate and leaf certs. It will talk about overhead (size and processing). It will also discuss backwards compatibility. It could include a subsection about implementation considerations._
 
 
 ## PEM Storage of Composite Private Keys
@@ -471,7 +479,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 
 Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), it is obvious that structures using that algorithm are implicitly revoked.
 
-In the Composite model this is less obvious since a single public key, certificate, or signature may contain a mixture of deprecated and non-depricated algorithms. Moreover, implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though neither algoritm is acceptable by itself.
+In the composite model this is less obvious since a single public key, certificate, or signature may contain a mixture of deprecated and non-depricated algorithms. Moreover, implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though neither algoritm is acceptable by itself.
 
 In {{sec-comp-sig-verify}}, we specify that the signature verification routine must include a step to check that the combination of algorithms is acceptable under local policy:
 
