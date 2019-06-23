@@ -433,20 +433,6 @@ The value of the publicKey (if present) SHALL be set to the DER encoding of the 
 
 The value of the attributes is encoded as usual.
 
-
-<!-- End of In Practice section -->
-
-# Implications for existing standards
-
-## RFC 2986
-_EDNOTE: summarize the updates to RFC 2986 (CSR / PKCS#10)._
-
-
-## RFC 5280
-_EDNOTE: summarize the updates to RFC 5280 (X.509)._
-
-
-
 ## Cryptographic protocols
 This section talks about how protocols like (D)TLS and IKEv2 are affected by this specifications. It will not attempt to solve all these problems, but it will explain the rationale, how things will work and what open problems need to be solved. Obvious issues that need to be discussed.
 
@@ -459,7 +445,7 @@ This section talks about how protocols like (D)TLS and IKEv2 are affected by thi
 - How to deal with crypto protocols that use public key encryption algorithms; this document only lists how to work with signature algorithms.  Encoding composite public keys is straightforward; encoding composite ciphertexts is less so - we decided to put that off to another draft.
 
 
-<!-- End of Implications for existing standards section -->
+<!-- End of In Practice section -->
 
 # IANA Considerations {#sec-iana}
 The ASN.1 module OID is TBD.  The id-alg-composite OID is to be assigned by IANA.  The authors suggest to use the id-pkix arc for this usage:
@@ -600,12 +586,6 @@ However, at time of writing, this is all verbal hearsay; we have yet to find any
 _EDNOTE: This section will explain the differences from {{I-D.truskovsky-lamps-pq-hybrid-x509}}._
 -->
 <!-- End of Comparison with draft-truskovsky-lamps-pq-hybrid-x509 section -->
-
-## Other ideas that were considered
-This section is here to be informative during the review process, to document ideas that were raised and the rationales for not including them in the final draft.
-
-
-
 
 
 # Contributors and Acknowledgements
