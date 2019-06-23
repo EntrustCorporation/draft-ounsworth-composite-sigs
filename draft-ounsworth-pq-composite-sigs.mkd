@@ -33,7 +33,7 @@ author:
       email: mike.ounsworth@entrustdatacard.com
 
     -
-      ins: M. Pala (Editor)
+      ins: M. Pala
       name: Massimiliano Pala
       org: CableLabs
       email: director@openca.org
@@ -161,8 +161,6 @@ EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesti
 
 The ASN.1 algorithm object for composite public and private keys is:
 
-EDNOTE: there has been some discussion of using the parameters to duplicate either the number of component keys, or their algorithm IDs. Unclear at the moment if this is worth the complexity, but it has been proposed.
-
 ~~~ asn.1
 pk-Composite PUBLIC-KEY ::= {
     IDENTIFIER id-alg-composite
@@ -175,20 +173,10 @@ pk-Composite PUBLIC-KEY ::= {
 ~~~
 {: artwork-name="CompositeAlgorithmObject-asn.1-structures"}
 
-## Composite Public Key {#sec-composite-pub-keys}
 
-A composite public key is a sequence of component public keys that are used together.  The AlgorithmIdentifier for a composite public key uses the id-alg-composite object identifier, and the parameters field MUST be absent.  A composite public key MUST contain at least one component public key.  A CompositePublicKey MUST NOT contain a component public key which itself describes a composite key; ie recursive CompositePublicKeys are not allowed.
+EDNOTE: The authors are currently unsure whether the params should be absent (ie this structere simply says "I am a composite algorithm"), or used to duplicate some amount of information about what the component algoritms are. See section {sec-composite-pub-keys} for a longer ENDOTE on this.
 
-Each element of a CompositePublicKey is a SubjectPublicKeyInfo object for a component public key.  When the CompositePublicKey must be provided in octet string or bit string format, the data structure is converted as specified in {{sec-encoding-rules}}.
-
-The composite public key data is represented by the following structure:
-
-~~~ asn.1
-CompositePublicKey ::= SEQUENCE SIZE (1..MAX) OF SubjectPublicKeyInfo
-~~~
-{: artwork-name="CompositePublicKey-asn.1-structures"}
-
-## Key Usage Bits
+### Key Usage Bits
 
 The intended application for the key is indicated in the keyUsage certificate extension and defined in the CERT-KEY-USAGE field of pk-Composite.
 
@@ -211,6 +199,56 @@ If the keyUsage extension is present in a certification authority certificate th
 {: artwork-name="Cert-Key-Usage-2"}
 
 As this draft only covers composite signatures, the key usage bits specified here apply to all component keys within a composite key.
+
+## Composite Public Key {#sec-composite-pub-keys}
+
+A composite public key is a sequence of component public keys that are used together.  The AlgorithmIdentifier for a composite public key uses the id-alg-composite object identifier, and the parameters field MUST be absent.  A composite public key MUST contain at least one component public key.  A CompositePublicKey MUST NOT contain a component public key which itself describes a composite key; ie recursive CompositePublicKeys are not allowed.
+
+Each element of a CompositePublicKey is a SubjectPublicKeyInfo object for a component public key.  When the CompositePublicKey must be provided in octet string or bit string format, the data structure is converted as specified in {{sec-encoding-rules}}.
+
+The composite public key data is represented by the following structure:
+
+~~~ asn.1
+CompositePublicKey ::= SEQUENCE SIZE (1..MAX) OF SubjectPublicKeyInfo
+~~~
+{: artwork-name="CompositePublicKey-asn.1-structures"}
+
+
+
+~~~ Begin EDNOTE ~~~
+
+EDNOTE: there has been a fair amout of discussion among the authors about whether the component public key should contain a full SubjectPublicKeyInfo for each component algorithm, or whether the {algID, and params} should be move to the params of the PUBLIC-KEY, and only the BIT STRINGs of the component public key values contained in the CompositePublicKey.
+
+Using a wonky, simplified notation, the alternatives considered were:
+
+~~~ asn.1
+Current composite:
+    CompositeAlg: {
+       algorithm={id-alg-composite, none}
+       subjectPublicKey=SEQ SPKI[{{algID1, param1}, value1},
+                                  SPKI{{algID2, param2}, value2}, ..]
+    }
+
+Alternative 1:
+    CompositeAlg: {
+       algorithm={id-alg-composite, {{algID1, param1},
+                                        {algID2, param2}, ..}
+       subjectPublicKey=SEQ BIT STRING[value1, value2, ..]
+    }
+
+Alternative 2:
+    CompositeAlg: {
+       algorithm={id-alg-composite, {algID1, algID2, ..}}
+       subjectPublicKey=SEQ SPKI[{{algID1, param1}, value1},
+                                    {{algID2, param2}, value2}, ..]
+    }
+~~~
+{: artwork-name="pubkey_params_alternatives"}
+
+The authors have decided, for the time being, to use the current approach since it promotes ease of modifying existing software whose APIs require SubjectPublicKeyInfos to be passed, without bloating the wire protocols with duplicated information.
+
+~~~ End EDNOTE ~~~
+
 
 ## Composite Private Key
 

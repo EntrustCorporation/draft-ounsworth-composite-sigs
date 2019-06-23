@@ -4,9 +4,9 @@
 
 LAMPS                                              M. Ounsworth (Editor)
 Internet-Draft                                          Entrust Datacard
-Intended status: Standards Track                        M. Pala (Editor)
-Expires: December 20, 2019                                     CableLabs
-                                                           June 18, 2019
+Intended status: Standards Track                                 M. Pala
+Expires: December 25, 2019                                     CableLabs
+                                                           June 23, 2019
 
 
          Composite Keys and Signatures For Use In Internet PKI
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 20, 2019.
+   This Internet-Draft will expire on December 25, 2019.
 
 
 
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019               [Page 1]
+Ounsworth (Editor) & PalExpires December 25, 2019               [Page 1]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -81,45 +81,45 @@ Table of Contents
    2.  Composite Structures  . . . . . . . . . . . . . . . . . . . .   5
      2.1.  Algorithm Identifier  . . . . . . . . . . . . . . . . . .   5
      2.2.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   6
-     2.3.  Composite Public Key  . . . . . . . . . . . . . . . . . .   6
-     2.4.  Key Usage Bits  . . . . . . . . . . . . . . . . . . . . .   6
-     2.5.  Composite Private Key . . . . . . . . . . . . . . . . . .   7
-     2.6.  Composite Signature Algorithm . . . . . . . . . . . . . .   7
-     2.7.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   8
-   3.  Composite Signature Algorithm . . . . . . . . . . . . . . . .   9
-     3.1.  Composite Signature Generation  . . . . . . . . . . . . .   9
-     3.2.  Composite Signature Verification  . . . . . . . . . . . .   9
-   4.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  12
-     4.1.  PEM Storage of Composite Private Keys . . . . . . . . . .  12
-     4.2.  Asymmetric Key Packages (CMS) . . . . . . . . . . . . . .  12
-   5.  Implications for existing standards . . . . . . . . . . . . .  13
-     5.1.  RFC 2986  . . . . . . . . . . . . . . . . . . . . . . . .  13
-     5.2.  RFC 5280  . . . . . . . . . . . . . . . . . . . . . . . .  13
-     5.3.  Cryptographic protocols . . . . . . . . . . . . . . . . .  13
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
-     7.1.  Protection of Private Keys  . . . . . . . . . . . . . . .  14
-     7.2.  Checking for Compromised Key Reuse  . . . . . . . . . . .  14
-     7.3.  Composite Encryption and KEMs . . . . . . . . . . . . . .  14
-   8.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  15
-     8.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  15
-     8.2.  Intellectual Property Considerations  . . . . . . . . . .  16
-     8.3.  Other ideas that were considered  . . . . . . . . . . . .  16
+       2.2.1.  Key Usage Bits  . . . . . . . . . . . . . . . . . . .   6
+     2.3.  Composite Public Key  . . . . . . . . . . . . . . . . . .   7
+     2.4.  Composite Private Key . . . . . . . . . . . . . . . . . .   8
+     2.5.  Composite Signature Algorithm . . . . . . . . . . . . . .   9
+     2.6.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   9
+   3.  Composite Signature Algorithm . . . . . . . . . . . . . . . .  10
+     3.1.  Composite Signature Generation  . . . . . . . . . . . . .  10
+     3.2.  Composite Signature Verification  . . . . . . . . . . . .  11
+   4.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  13
+     4.1.  PEM Storage of Composite Private Keys . . . . . . . . . .  13
+     4.2.  Asymmetric Key Packages (CMS) . . . . . . . . . . . . . .  13
+   5.  Implications for existing standards . . . . . . . . . . . . .  14
+     5.1.  RFC 2986  . . . . . . . . . . . . . . . . . . . . . . . .  14
+     5.2.  RFC 5280  . . . . . . . . . . . . . . . . . . . . . . . .  14
+     5.3.  Cryptographic protocols . . . . . . . . . . . . . . . . .  14
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
+     7.1.  Protection of Private Keys  . . . . . . . . . . . . . . .  15
+     7.2.  Checking for Compromised Key Reuse  . . . . . . . . . . .  15
+     7.3.  Composite Encryption and KEMs . . . . . . . . . . . . . .  15
+   8.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  16
+     8.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  16
+     8.2.  Intellectual Property Considerations  . . . . . . . . . .  17
+     8.3.  Other ideas that were considered  . . . . . . . . . . . .  17
        8.3.1.  Mechanisms to distribute verification policy to
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019               [Page 2]
+Ounsworth (Editor) & PalExpires December 25, 2019               [Page 2]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
-               clients . . . . . . . . . . . . . . . . . . . . . . .  17
-   9.  Contributors and Acknowledgements . . . . . . . . . . . . . .  20
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  20
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  21
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
+               clients . . . . . . . . . . . . . . . . . . . . . . .  18
+   9.  Contributors and Acknowledgements . . . . . . . . . . . . . .  21
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  21
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  21
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  22
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  23
 
 1.  Introduction
 
@@ -165,7 +165,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019               [Page 3]
+Ounsworth (Editor) & PalExpires December 25, 2019               [Page 3]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -184,7 +184,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in BCP
-   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   14 [RFC2119]  [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
    The following terms are used:
@@ -221,7 +221,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019               [Page 4]
+Ounsworth (Editor) & PalExpires December 25, 2019               [Page 4]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -277,7 +277,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019               [Page 5]
+Ounsworth (Editor) & PalExpires December 25, 2019               [Page 5]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -285,11 +285,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
 2.2.  Composite Keys
 
    The ASN.1 algorithm object for composite public and private keys is:
-
-   EDNOTE: there has been some discussion of using the parameters to
-   duplicate either the number of component keys, or their algorithm
-   IDs.  Unclear at the moment if this is worth the complexity, but it
-   has been proposed.
 
    pk-Composite PUBLIC-KEY ::= {
        IDENTIFIER id-alg-composite
@@ -300,27 +295,13 @@ Internet-Draft             PQ Composite Certs                  June 2019
        PRIVATE-KEY CompositePrivateKey
    }
 
-2.3.  Composite Public Key
+   EDNOTE: The authors are currently unsure whether the params should be
+   absent (ie this structere simply says "I am a composite algorithm"),
+   or used to duplicate some amount of information about what the
+   component algoritms are.  See section {sec-composite-pub-keys} for a
+   longer ENDOTE on this.
 
-   A composite public key is a sequence of component public keys that
-   are used together.  The AlgorithmIdentifier for a composite public
-   key uses the id-alg-composite object identifier, and the parameters
-   field MUST be absent.  A composite public key MUST contain at least
-   one component public key.  A CompositePublicKey MUST NOT contain a
-   component public key which itself describes a composite key; ie
-   recursive CompositePublicKeys are not allowed.
-
-   Each element of a CompositePublicKey is a SubjectPublicKeyInfo object
-   for a component public key.  When the CompositePublicKey must be
-   provided in octet string or bit string format, the data structure is
-   converted as specified in Section 2.7.
-
-   The composite public key data is represented by the following
-   structure:
-
-   CompositePublicKey ::= SEQUENCE SIZE (1..MAX) OF SubjectPublicKeyInfo
-
-2.4.  Key Usage Bits
+2.2.1.  Key Usage Bits
 
    The intended application for the key is indicated in the keyUsage
    certificate extension and defined in the CERT-KEY-USAGE field of pk-
@@ -329,14 +310,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    If the keyUsage extension is present in an end-entity certificate
    that indicates id-alg-composite, then the keyUsage extension MUST
    contain one or both of the following values:
-
-
-
-
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019               [Page 6]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
        nonRepudiation; and
        digitalSignature.
@@ -353,7 +326,103 @@ Internet-Draft             PQ Composite Certs                  June 2019
    As this draft only covers composite signatures, the key usage bits
    specified here apply to all component keys within a composite key.
 
-2.5.  Composite Private Key
+
+
+
+
+
+
+
+Ounsworth (Editor) & PalExpires December 25, 2019               [Page 6]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
+2.3.  Composite Public Key
+
+   A composite public key is a sequence of component public keys that
+   are used together.  The AlgorithmIdentifier for a composite public
+   key uses the id-alg-composite object identifier, and the parameters
+   field MUST be absent.  A composite public key MUST contain at least
+   one component public key.  A CompositePublicKey MUST NOT contain a
+   component public key which itself describes a composite key; ie
+   recursive CompositePublicKeys are not allowed.
+
+   Each element of a CompositePublicKey is a SubjectPublicKeyInfo object
+   for a component public key.  When the CompositePublicKey must be
+   provided in octet string or bit string format, the data structure is
+   converted as specified in Section 2.6.
+
+   The composite public key data is represented by the following
+   structure:
+
+   CompositePublicKey ::= SEQUENCE SIZE (1..MAX) OF SubjectPublicKeyInfo
+
+   ~~~ Begin EDNOTE ~~~
+
+   EDNOTE: there has been a fair amout of discussion among the authors
+   about whether the component public key should contain a full
+   SubjectPublicKeyInfo for each component algorithm, or whether the
+   {algID, and params} should be move to the params of the PUBLIC-KEY,
+   and only the BIT STRINGs of the component public key values contained
+   in the CompositePublicKey.
+
+   Using a wonky, simplified notation, the alternatives considered were:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth (Editor) & PalExpires December 25, 2019               [Page 7]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
+   Current composite:
+       CompositeAlg: {
+          algorithm={id-alg-composite, none}
+          subjectPublicKey=SEQ SPKI[{{algID1, param1}, value1},
+                                     SPKI{{algID2, param2}, value2}, ..]
+       }
+
+   Alternative 1:
+       CompositeAlg: {
+          algorithm={id-alg-composite, {{algID1, param1},
+                                           {algID2, param2}, ..}
+          subjectPublicKey=SEQ BIT STRING[value1, value2, ..]
+       }
+
+   Alternative 2:
+       CompositeAlg: {
+          algorithm={id-alg-composite, {algID1, algID2, ..}}
+          subjectPublicKey=SEQ SPKI[{{algID1, param1}, value1},
+                                       {{algID2, param2}, value2}, ..]
+       }
+
+   The authors have decided, for the time being, to use the current
+   approach since it promotes ease of modifying existing software whose
+   APIs require SubjectPublicKeyInfos to be passed, without bloating the
+   wire protocols with duplicated information.
+
+   ~~~ End EDNOTE ~~~
+
+2.4.  Composite Private Key
 
    A composite private key is a sequence of component private keys that
    are used together.  The AlgorithmIdentifier for a composite private
@@ -371,7 +440,17 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
    CompositePrivateKey ::= SEQUENCE SIZE (1..MAX) OF OneAsymmetricKey
 
-2.6.  Composite Signature Algorithm
+
+
+
+
+
+Ounsworth (Editor) & PalExpires December 25, 2019               [Page 8]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
+2.5.  Composite Signature Algorithm
 
    The ASN.1 algorithm object for a composite signature is:
 
@@ -385,14 +464,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
    The id-alg-composite object identifier is used to identify when a
    signature has been created by a composite private key.
-
-
-
-
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019               [Page 7]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
    The following algorithm parameters MUST be included when this
    identifier is used to identify a signature algorithm:
@@ -419,7 +490,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
    contain signatures by the same component algorithms listed in the
    same order as in the associated "CompositeParams".
 
-2.7.  Encoding Rules
+2.6.  Encoding Rules
 
    Many specifications require that the composite public key, composite
    private key, and composite signature data structures be represented
@@ -427,6 +498,13 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
    When an octet string is required, the DER encoding of the composite
    data structure SHALL be used directly.
+
+
+
+Ounsworth (Editor) & PalExpires December 25, 2019               [Page 9]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
 
    When a bit string is required, the octets of the DER encoded
    composite data structure SHALL be used as the bits of the bit string,
@@ -437,18 +515,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    In the interest of simplicity and avoiding compatibility issues,
    implementations that parse these structures MAY accept both BER and
    DER.
-
-
-
-
-
-
-
-
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019               [Page 8]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
 3.  Composite Signature Algorithm
 
@@ -488,6 +554,14 @@ Internet-Draft             PQ Composite Certs                  June 2019
         Let S be the DER encoding of the Signature
       3. Output S
 
+
+
+
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 10]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
    Since recursive composite public keys are disallowed in section
    Section 2.3, no component signature may itself be composite; ie the
    signature generation routine MUST fail if one of the private keys K1,
@@ -498,14 +572,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    Verification of a composite signature involves applying each
    component algorithm's verification routine according to its
    specification, and then outputting "Valid signature" (true) if a
-
-
-
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019               [Page 9]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
-
    sufficient number of component algorithms were valid, and "Invalid
    signature" (false) otherwise.
 
@@ -547,17 +613,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-
-
-
-
-
-
-
-
-
-
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019              [Page 10]
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 11]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -613,7 +669,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019              [Page 11]
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 12]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -669,7 +725,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019              [Page 12]
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 13]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -725,7 +781,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019              [Page 13]
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 14]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -781,7 +837,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019              [Page 14]
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 15]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -837,7 +893,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019              [Page 15]
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 16]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -893,7 +949,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019              [Page 16]
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 17]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -949,7 +1005,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019              [Page 17]
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 18]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -1005,7 +1061,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019              [Page 18]
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 19]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -1061,7 +1117,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019              [Page 19]
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 20]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -1117,7 +1173,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019              [Page 20]
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 21]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -1173,7 +1229,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019              [Page 21]
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 22]
 
 Internet-Draft             PQ Composite Certs                  June 2019
 
@@ -1229,4 +1285,4 @@ Authors' Addresses
 
 
 
-Ounsworth (Editor) & PalExpiresoDecember 20, 2019              [Page 22]
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 23]
