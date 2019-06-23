@@ -98,14 +98,14 @@ Table of Contents
      5.3.  Cryptographic protocols . . . . . . . . . . . . . . . . .  14
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
-     7.1.  Protection of Private Keys  . . . . . . . . . . . . . . .  15
-     7.2.  Checking for Compromised Key Reuse  . . . . . . . . . . .  15
-     7.3.  Composite Encryption and KEMs . . . . . . . . . . . . . .  15
+     7.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  15
+     7.2.  Protection of Private Keys  . . . . . . . . . . . . . . .  16
+     7.3.  Checking for Compromised Key Reuse  . . . . . . . . . . .  16
+     7.4.  Composite Encryption and KEMs . . . . . . . . . . . . . .  16
    8.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  16
      8.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  16
-     8.2.  Intellectual Property Considerations  . . . . . . . . . .  17
-     8.3.  Other ideas that were considered  . . . . . . . . . . . .  17
-       8.3.1.  Mechanisms to distribute verification policy to
+     8.2.  Intellectual Property Considerations  . . . . . . . . . .  18
+     8.3.  Other ideas that were considered  . . . . . . . . . . . .  18
 
 
 
@@ -114,12 +114,11 @@ Ounsworth (Editor) & PalExpires December 25, 2019               [Page 2]
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
-               clients . . . . . . . . . . . . . . . . . . . . . . .  18
-   9.  Contributors and Acknowledgements . . . . . . . . . . . . . .  21
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  21
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  21
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  22
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  23
+   9.  Contributors and Acknowledgements . . . . . . . . . . . . . .  18
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  19
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  20
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
 
 1.  Introduction
 
@@ -162,6 +161,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
    _EDNOTE: While the scope of this document is restricted to
    signatures, we note that the same structure is equally applicable to
    asymmetric encryption keys.  Though a word of warning that the
+   corresponding "encrypt / decrypt with a composite public key" logic
 
 
 
@@ -170,7 +170,6 @@ Ounsworth (Editor) & PalExpires December 25, 2019               [Page 3]
 Internet-Draft             PQ Composite Certs                  June 2019
 
 
-   corresponding "encrypt / decrypt with a composite public key" logic
    is somewhat less obvious; a naive implementer might be tempted to
    follow the same pattern as below and encrypt the message with each
    public key separately and then concatenate the ciphertexts, which is
@@ -216,6 +215,7 @@ Internet-Draft             PQ Composite Certs                  June 2019
 1.2.  Notation
 
    No special notation is used in this document.
+
 
 
 
@@ -587,13 +587,13 @@ Internet-Draft             PQ Composite Certs                  June 2019
    for this document, but this document notes that at least one
    component signature MUST be verified.
 
-   EDNOTE: See the appendix Section 8.3.1 for further discussion of
-   possible standardization of such mechanisms.
-
    This section provides a sample algorithm for validating composite
    signatures.  Compliant implementations MUST return "Invalid
    signature" whenever the sample algorithm does, with the exception of
    the modification noted below.
+
+
+
 
 
 
@@ -804,7 +804,45 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
 7.  Security Considerations
 
-7.1.  Protection of Private Keys
+7.1.  Policy for Deprecated and Acceptable Algorithms
+
+   Traditionally, a public key, certificate, or signature contains a
+   single cryptographic algorithm.  If and when an algorithm becomes
+   deprecated (for example, RSA-512, or SHA1), it is obvious that
+   structures using that algorithm are implicitly revoked.
+
+   In the Composite model this is less obvious since a single public
+   key, certificate, or signature may contain a mixture of deprecated
+   and non-depricated algorithms.  Moreover, implementers may decide
+   that certain cryptographic algorithms have complementary security
+   properties and are acceptable in combination even though neither
+   algoritm is acceptable by itself.
+
+   In Section 3.2, we specify that the signature verification routine
+   must include a step to check that the combination of algorithms is
+   acceptable under local policy:
+
+   2. Check policy to see whether A1, A2, ..., An constitutes a valid
+        combination of algorithms.
+     if not checkPolicy(A1, A2, ..., An), then
+       output "Invalid signature"
+
+   While intentionally not specified in this document, implementors
+   should put careful thought into implementing a meaningfull policy
+   mechinism within the context of their signature verification engines.
+
+
+
+
+
+
+
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 15]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
+7.2.  Protection of Private Keys
 
    This structures described in this document do not protect the private
    keys information in any way unless combined with a security protocol
@@ -819,14 +857,14 @@ Internet-Draft             PQ Composite Certs                  June 2019
    the managed keying material.  The encryption algorithm used in the
    encryption process must be as 'strong' as the key it is protecting.
 
-7.2.  Checking for Compromised Key Reuse
+7.3.  Checking for Compromised Key Reuse
 
    CA implementations need to be careful when checking for compromised
    key reuse, for example as required by WebTrust regulations; when
    checking for compromised keys, you MUST unpack the CompositePublicKey
    structure and compare individual component keys.
 
-7.3.  Composite Encryption and KEMs
+7.4.  Composite Encryption and KEMs
 
    This document deals only with signature keys.  While the
    CompositePublicKey and CompositePrivateKey structures could equally
@@ -834,14 +872,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    are non-trivial design decisions to be made when constructing a
    multi-key public key encryption or KEM algorithm.  Some of these
    design and implementation decisions, if done incorrectly will result
-
-
-
-Ounsworth (Editor) & PalExpires December 25, 2019              [Page 15]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
-
    in a catastrophic loss of security.  We leave it to the community to
    standardize analogous composite encryption and KEM schemes.
 
@@ -860,6 +890,14 @@ Internet-Draft             PQ Composite Certs                  June 2019
 
    IMPORTS
      PUBLIC-KEY, SIGNATURE-ALGORITHM
+
+
+
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 16]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
        FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
          { iso(1) identified-organization(3) dod(6) internet(1)
            security(5) mechanisms(5) pkix(7) id-mod(0)
@@ -890,14 +928,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    pk-Composite PUBLIC-KEY ::= {
        IDENTIFIER id-alg-composite
        KEY CompositePublicKey
-
-
-
-Ounsworth (Editor) & PalExpires December 25, 2019              [Page 16]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
-
        PARAMS ARE absent
        CERT-KEY-USAGE
            { digitalSignature, nonRepudiation, keyCertSign, cRLSign }
@@ -916,6 +946,14 @@ Internet-Draft             PQ Composite Certs                  June 2019
        IDENTIFIER id-alg-composite
        VALUE CompositeSignatureValue
        PARAMS TYPE CompositeParams ARE required
+
+
+
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 17]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
        PUBLIC-KEYS { pk-Composite }
        SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 
@@ -944,195 +982,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
    document ideas that were raised and the rationales for not including
    them in the final draft.
 
-
-
-
-
-
-Ounsworth (Editor) & PalExpires December 25, 2019              [Page 17]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
-
-8.3.1.  Mechanisms to distribute verification policy to clients
-
-   EDNOTE: The authors had extensive discussions about how to handle
-   algorithm revocation / deprication, sepcifically around how to
-   distribute policy information to verifiers.  In the end we decided to
-   remove the whole thing and instead leave this is a responsibility of
-   the implementors of the software performing signature verification.
-
-   EDNOTE: The original content for this section is left for interest's
-   sake, but should be removed in a subsequent version of this draft.
-
-   -
-
-   In the traditional world of single-key public keys and signatures,
-   the semantics of a signature and a verification are straight-forward:
-   if the key is trusted (via public key pinning, a PKIX revocation
-   check, etc) and the signature is valid, then the signed content can
-   be trusted.  However the semantics are less obvious in a world where
-   public keys and signatures are composed of two or more algorithms; it
-   is conceivable that even though one component algorithm fails
-   verification, for example because the algorithm is revoked, a multi-
-   algorithm signature may contain enough other trustworthy component
-   algorithms to still be considered valid.
-
-   This section addresses how a verifier can obtain policy information
-   for which and/or how many component algorithms must be valid in order
-   for the signature as a whole to be valid.  The authors ask for
-   community feedback about whether this needs to be specified, and if
-   so, how best to do it.
-
-   This section lists rough outlines for several such mechanisms that
-   have come up in discussion during the drafting of this document.
-   They are mainly focused around X.509 PKIs, and provided here merely
-   for the purposes of sparking debate.  The authors believe that by
-   specifying such a mechanism, the world will be able to more quickly
-   react to news of algorithm compromise with a lower service disruption
-   compared to the need to revoke and re-issue all certificates using
-   that algorithm.  However, we are not sure if the gains justify the
-   added complexity.
-
-8.3.1.1.  Local verifier policy
-
-   Much as we do today, this is left up to domain administrators and
-   software vendors to implement the guidance of governing bodies on a
-   system-by-system basis.
-
-
-
-
-
-
-Ounsworth (Editor) & PalExpires December 25, 2019              [Page 18]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
-
-8.3.1.2.  Extra metadata in the public key or signature
-
-   This policy information could be specified by the signer at signing
-   time.  Depending on the structure of the databeing signed, this
-   metadata could go into the public key, or an extension to the
-   signature, or some other field provided that it is inside the signed
-   data blob.
-
-8.3.1.3.  Extra metadata in the certificate
-
-   This policy information could be included in a certificate via an
-   X.509 v3 extension.  This gives the Certificate Authority control,
-   but has the drawback that updating the policy requires revoking and
-   reissuing certificates.
-
-8.3.1.4.  Policy certificate issued by the Certificate Authority
-
-   Certificate Authorities have the ability to issue policy certificates
-   that specify the behaviour when verifying signatures performed by
-   keys in certificates within the scope of the policy certificate.
-
-   This method has the advantage that policy is centrally-managed, and
-   can be updated without needing to reissue any certificates, but has
-   the drawback that not all PKI implementations support policy
-   certificates.
-
-8.3.1.5.  Policy constraints in a cross-certificate
-
-   This method behaves similarly to the policy certificate method above,
-   but has better support across PKI implementations.
-
-8.3.1.6.  Revoked Algorithms CRL Extension
-
-   Add an extension to CRLs so that in addition to revoking
-   certificates, they can also revoke algorithms for all certificates
-   within the scope of that CRL.  Implemented with care, this could
-   allow a single PKI to do a staged algorithm migration by only
-   revoking the algorithm for one CRL group at a time.
-
-   id-RevokedAlgorithms OBJECT IDENTIFIER ::= { OID }
-
-   RevokedAlgorithms ::= SEQUENCE OF SEQUENCE  {
-        algorithms              AlgorithmIdentifier,
-        revocationDate          Time,
-        crlEntryExtensions      Extensions OPTIONAL
-                                 -- if present, version MUST be v2
-        }
-
-
-
-
-Ounsworth (Editor) & PalExpires December 25, 2019              [Page 19]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
-
-   _EDNOTE: do we need the crlEntryExtensions field?  If so, which ones
-   from https://tools.ietf.org/html/rfc5280#section-5.3 are allowed
-   here?_
-
-   There may only be one "RevokedAlgorithms" extension in a CRL.  This
-   extension is OPTIONAL.  If a CRL contains only composite
-   certificates, then this extension SHOULD be designated as critical.
-   If a CRL contains a mixture of composite and traditional certificates
-   then it SHOULD be designated as non-critical.
-
-   If the Revoked Algorithms extension is present in a CRL, then a
-   client performing a certificate validation on an otherwise non-
-   revoked certificate within the scope of that CRL MUST skip any
-   signatures corresponding to a revoked algorithm; thus a certificate
-   is valid only if it would have been valid had those Algorithm IDs and
-   Signature Values been omitted from the certificate.
-
-   Once a algorithm has been marked as revoked on a given CRL, it MUST
-   remain revoked on subsequent CRLs.
-
-   _EDNOTE: Is there corresponding wording about cert serial numbers on
-   CRLs from RFC5280?  Or is this unnecessary implied?_
-
-   Note that a similar mechanism could be used on a per-certificate
-   basis via CRL Entry Extensions, however the authors believe that
-   giving operators the ability to perform partial revocation of a
-   certificate (ie revoking some keys or signatures but leaving the
-   certificate as a whole valid) will greatly increase the complexity of
-   certificate validation routines, thus increasing the chance of both
-   human error, and implementation bugs leading to vulnerabilities,
-   without providing a commensurate amount of increased functionality.
-   By not defining a new CRL Entry Extension, the following requirement
-   is implied: if any key within a certificate warrant revocation, the
-   entire certificate MUST be revoked using the existing revocation
-   mechanisms (this does not apply when the algorithm is globally
-   revoked for the entire scope of this CRL).
-
-8.3.1.6.1.  Implicit Revocation
-
-   A Composite Signature Algorithm is considered to be "implicitly
-   revoked" if the certificate is otherwise valid but one of the
-   following conditions are met.
-
-   o  A certificate using a single-key algorithm which is revoked within
-      the scope of its CRL.  In this case, signature verification SHOULD
-      fail when performed by a compliant client, but of course will
-      succeed when performed by a legacy client which is not aware of
-      this CRL extension.
-
-
-
-Ounsworth (Editor) & PalExpires December 25, 2019              [Page 20]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
-
-   o  All of the component algorithms are revoked within the scope if
-      its CRL.  In this case, signature verification MUST fail when
-      performed by a compliant client, regardless of which verification
-      algorithm is used.
-
-   At the time of an algorithm revocation, a certificate authority MAY
-   revoke certificates meeting one ofd the above criteria (by placing
-   them in the traditional "revokedCertificates" list) with a revocation
-   reason of "keyCompromise".  OCSP responders SHOULD designate a
-   certificate as revoked if it meets the above condition.
-
 9.  Contributors and Acknowledgements
 
    This document incorporates contributions and comments from a large
@@ -1152,6 +1001,15 @@ Internet-Draft             PQ Composite Certs                  June 2019
    "Copying always makes things easier and less error prone" -
    [RFC8411].
 
+
+
+
+
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 18]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
 10.  References
 
 10.1.  Normative References
@@ -1170,13 +1028,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
               Request Syntax Specification Version 1.7", RFC 2986,
               DOI 10.17487/RFC2986, November 2000,
               <https://www.rfc-editor.org/info/rfc2986>.
-
-
-
-Ounsworth (Editor) & PalExpires December 25, 2019              [Page 21]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
    [RFC4210]  Adams, C., Farrell, S., Kause, T., and T. Mononen,
               "Internet X.509 Public Key Infrastructure Certificate
@@ -1206,6 +1057,15 @@ Internet-Draft             PQ Composite Certs                  June 2019
               PKCS, and CMS Structures", RFC 7468, DOI 10.17487/RFC7468,
               April 2015, <https://www.rfc-editor.org/info/rfc7468>.
 
+
+
+
+
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 19]
+
+Internet-Draft             PQ Composite Certs                  June 2019
+
+
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
@@ -1221,18 +1081,6 @@ Internet-Draft             PQ Composite Certs                  June 2019
               Pala, M., "Composite Public Keys and Signatures", draft-
               pala-composite-crypto-00 (work in progress), February
               2019.
-
-
-
-
-
-
-
-
-Ounsworth (Editor) & PalExpires December 25, 2019              [Page 22]
-
-Internet-Draft             PQ Composite Certs                  June 2019
-
 
    [I-D.truskovsky-lamps-pq-hybrid-x509]
               Truskovsky, A., Geest, D., Fluhrer, S., Kampanakis, P.,
@@ -1269,20 +1117,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth (Editor) & PalExpires December 25, 2019              [Page 23]
+Ounsworth (Editor) & PalExpires December 25, 2019              [Page 20]
