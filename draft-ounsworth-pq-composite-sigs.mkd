@@ -100,8 +100,6 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 The following terms are used:
 
-EDNOTE: A glossary of terms we define for this document, or terms that we borrow from other RFCs.
-
 ~~~
 ALGORITHM: An information object class for identifying the type of
             cryptographic operation to be performed. This document is
