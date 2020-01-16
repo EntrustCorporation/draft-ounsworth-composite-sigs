@@ -356,7 +356,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    A CompositePublicKey MUST NOT contain a component public key which
    itself describes a composite key; ie recursive CompositePublicKeys
-   are not allowed.
+   are not allowed
 
    Each element of a CompositePublicKey is a SubjectPublicKeyInfo object
    one of the component public keys.  When the CompositePublicKey must
@@ -674,38 +674,39 @@ Ounsworth (Editor) & Pala Expires July 19, 2020                [Page 12]
 Internet-Draft             PQ Composite Certs               January 2020
 
 
-   Input:
-        P    Signer's composite public key
-        M    Message whose signature is to be verified, an octet string
-        S    Composite Signature to be verified
-        A    Composite Algorithm identifier
+Input:
+     P    Signer's composite public key
+     M    Message whose signature is to be verified, an octet string
+     S    Composite Signature to be verified
+     A    Composite Algorithm identifier
 
-   Output:
-       Validity      "Valid signature" (true) if the composite signature
-                     is valid, "Invalid signature" (false) otherwise.
+Output:
+    Validity      "Valid signature" (true) if the composite signature
+                  is valid, "Invalid signature" (false) otherwise.
 
-   Signature Verification Procedure::
-      1. Parse P, S, A into the component public keys, signatures,
-         and algorithm identifiers
+Signature Verification Procedure::
+   1. Parse P, S, A into the component public keys, signatures,
+      and algorithm identifiers
 
-         P1, P2, .., Pn := Desequence( P )
-         S1, S2, .., Sn := Desequence( S )
-         A1, A2, .., An := Desequence( A )
+      P1, P2, .., Pn := Desequence( P )
+      S1, S2, .., Sn := Desequence( S )
+      A1, A2, .., An := Desequence( A )
 
-       If Error during Desequencing, or the three sequences have
-       different numbers of elements, then output "Invalid signature"
-       and stop.
+    If Error during Desequencing, or the three sequences have
+    different numbers of elements, or any of the public keys P1, P2, .., Pn or
+    algorithm identifiers A1, A2, .., An are composite with the OID
+    id-alg-composite then output "Invalid signature" and stop.
 
-      2. Check each component signature individually, according to its
-          algorithm specification.
-          If any fail, then the entire signature validation fails.
+   2. Check each component signature individually, according to its
+       algorithm specification.
+       If any fail, then the entire signature validation fails.
 
-        for i := 1 to n
-             if not verify( Pi, M, Si ), then
-               output "Invalid signature"
+     for i := 1 to n
+          if not verify( Pi, M, Si ), then
+            output "Invalid signature"
 
-         if all succeeded, then
-           output "Valid signature"
+      if all succeeded, then
+        output "Valid signature"
 
    Since recursive composite public keys are disallowed in Section 2.3,
    no component signature may be composite; ie the signature
@@ -718,7 +719,6 @@ Internet-Draft             PQ Composite Certs               January 2020
    the component algorithms have been verified.  Defining this
    verification behaviour is out of scope for this document, and falls
    to an application profile.
-
 
 
 
