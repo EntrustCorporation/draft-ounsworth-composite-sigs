@@ -374,11 +374,13 @@ EDNOTE2: The authors are also aware of a potential use-case of combining signatu
 
 
 ## Composite Signature Verification {#sec-comp-sig-verify}
-Verification of a composite signature involves applying each component algorithm's verification routine according to its specification, and then outputting "Valid signature" (true) if a sufficient number of component algorithms were valid, and "Invalid signature" (false) otherwise.
 
-In order to future-proof implementations of verifiers against evolutions in cryptographic algorithms and attacks against them, implementations SHOULD include a field-updatable policy mechanism for determining which and/or how many component algorithms must be valid in order for the composite signature as a whole to be considered valid. This section assumes the existence of such a policy mechanism, denoted as `checkPolicy(A1, A2, ..., An)` in the algorithm below. The implementation of such a policy mechanism is largely the responsibility of the verifier / client and therefore is out of scope for this document, but at a minimum, one component signature MUST be recognized and validated for the composite signature to be considered valid.
+Verification of a composite signature involves applying each component algorithm's verification routine according to its specification.
 
-Modifications of the provided verification algorithm are permitted, so long as they are strengthening, and not weakening, this algorithm. In other words, any modified versions of this algorithm MUST return "Invalid signature" whenever the sample algorithm does, with the one exception noted below.
+In the absence of an application profile specifying otherwise, compliant applications MUST output "Valid signature" (true) if and only if all component signatures were successfully validated, and "Invalid signature" (false) otherwise.
+
+The following algorithm is used to perform this verification.
+
 
 
 ~~~
@@ -404,13 +406,7 @@ Signature Verification Procedure::
     different numbers of elements, then output "Invalid signature"
     and stop.
 
-   2. Check client policy to see whether A1, A2, .., An constitutes an
-        acceptable combination of algorithms.
-
-     if not checkPolicy(A1, A2, .., An), then
-       output "Invalid signature"
-
-   3. Check each component signature individually, according to its
+   2. Check each component signature individually, according to its
        algorithm specification.
        If any fail, then the entire signature validation fails.
 
@@ -425,9 +421,7 @@ Signature Verification Procedure::
 
 Since recursive composite public keys are disallowed in {{sec-composite-pub-keys}}, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
 
-Exception to this algorithm: There will be circumstances in which the verifier does not have cryptographic libraries for all of the provided component algorithms, or where the performance gains from omitting algorithms justifies the loss of security. In these cases, an acceptable modification to this algorithm is to produce in step 2 one or more subsets of the algorithms `A1, A2, ..., An` which constitute acceptable combinations, outputting "Invalid signature" if an acceptable subset can not be found, and then in step 3 only perform verification of the necessary component algorithms.
-
-Implementations SHOULD verify all recognized and supported algorithms, and output "Invalid signature" if the verification of any component signature fails, but MAY choose to only verify a subset of the algorithms for the reasons stated above.
+It is expected that some use-cases for algorithm migration or high performance will require verifiers to succeed when only a subset of the component algorithms have been verified. Defining this verification behaviour is out of scope for this document, and falls to an application profile.
 
 
 <!-- End of Composite Signature Algorithm section -->
