@@ -296,7 +296,6 @@ Internet-Draft             PQ Composite Certs               January 2020
        PARAMS ARE absent
        CERT-KEY-USAGE
            { digitalSignature, nonRepudiation, keyCertSign, cRLSign }
-       PRIVATE-KEY CompositePrivateKey
    }
 
    EDNOTE1: the authors are currently unsure whether the params should
@@ -978,7 +977,6 @@ Internet-Draft             PQ Composite Certs               January 2020
        PARAMS ARE absent
        CERT-KEY-USAGE
            { digitalSignature, nonRepudiation, keyCertSign, cRLSign }
-       PRIVATE-KEY CompositePrivateKey
    }
 
    CompositePublicKey ::= SEQUENCE SIZE (1..MAX) OF SubjectPublicKeyInfo
