@@ -481,9 +481,9 @@ Internet-Draft             PQ Composite Certs               January 2020
    CompositeSignatureValue ::= SEQUENCE SIZE (1..MAX) OF BIT STRING
 
    Where each BIT STRING within the SEQUENCE is a signature value
-   produced by one of the component keys.  It MUST contain MUST contain
-   one signature value produced by each componet key, and in the same
-   order as in the associated "CompositeParams", CompositePublicKey, and
+   produced by one of the component keys.  It MUST contain one signature
+   value produced by each componet key, and in the same order as in the
+   associated "CompositeParams", CompositePublicKey, and
    CompositePrivateKey objects.
 
    The choice of "SEQUENCE OF BIT STRING", rather than for example a
