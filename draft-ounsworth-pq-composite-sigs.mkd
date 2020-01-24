@@ -499,10 +499,11 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 
 Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), it is obvious that structures using that algorithm are implicitly revoked.
 
-In the composite model this is less obvious since a single public key, certificate, or signature may contain a mixture of deprecated and non-depricated algorithms. Moreover, implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though neither algoritm is acceptable by itself.
+In the composite model this is less obvious since a single public key, certificate, or signature may contain a mixture of deprecated and non-deprecated algorithms. Moreover, implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though neither algorithm is acceptable by itself.
 
-In {{sec-comp-sig-verify}}, we specify that the signature verification routine must include a step to check that the combination of algorithms is acceptable under local policy:
+Specifying a modified verification algorithm to handle these situations is beyond the scope of this draft, but could be desirable as the subject of an application profile document, or to be up to the discretion of implementers.
 
+<<<<<<< HEAD
 ~~~
 2. Check policy to see whether A1, A2, ..., An constitutes a valid
      combination of algorithms.
@@ -511,6 +512,8 @@ In {{sec-comp-sig-verify}}, we specify that the signature verification routine m
 ~~~
 
 While intentionally not specified in this document, implementors should put careful thought into implementing a meaningfull policy mechinism within the context of their signature verification engines.
+=======
+>>>>>>> 8648665... The Security Considerations referenced the older, more complex, verification algorithm, and needed to be updated.
 
 ## Protection of Private Keys
 
@@ -520,7 +523,7 @@ Protection of the private key information is vital to public key cryptography.  
 
 ## Checking for Compromised Key Reuse
 
-CA implementations need to be careful when checking for compromised key reuse, for example as required by WebTrust regulations; when checking for compromised keys, you MUST unpack the CompositePublicKey structure and compare individual component keys.
+CA implementations need to be careful when checking for compromised key reuse, for example as required by WebTrust regulations; when checking for compromised keys, you MUST unpack the CompositePublicKey structure and compare individual component keys. In other words, when marking a key as revoked for key compromise, the individual component keys should be marked, not the composite key as a whole.
 
 
 ## Composite Encryption and KEMs

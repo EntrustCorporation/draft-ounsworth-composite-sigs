@@ -5,8 +5,8 @@
 LAMPS                                              M. Ounsworth (Editor)
 Internet-Draft                                          Entrust Datacard
 Intended status: Standards Track                                 M. Pala
-Expires: July 24, 2020                                         CableLabs
-                                                        January 21, 2020
+Expires: July 26, 2020                                         CableLabs
+                                                        January 23, 2020
 
 
          Composite Keys and Signatures For Use In Internet PKI
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 24, 2020.
+   This Internet-Draft will expire on July 26, 2020.
 
 
 
 
 
 
-Ounsworth (Editor) & Pala Expires July 24, 2020                 [Page 1]
+Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 1]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -95,24 +95,29 @@ Table of Contents
    5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
      6.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  16
-     6.2.  Protection of Private Keys  . . . . . . . . . . . . . . .  16
-     6.3.  Checking for Compromised Key Reuse  . . . . . . . . . . .  17
-     6.4.  Composite Encryption and KEMs . . . . . . . . . . . . . .  17
-   7.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  17
-     7.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  17
-     7.2.  Intellectual Property Considerations  . . . . . . . . . .  19
-   8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  19
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  19
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  21
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
+   7.  While intentionally not specified in this document,
+       implementors should put careful thought into implementing a
+       meaningfull policy mechinism within the context of their
+       signature verification engines. . . . . . . . . . . . . . . .  16
+     7.1.  Protection of Private Keys  . . . . . . . . . . . . . . .  17
+     7.2.  Checking for Compromised Key Reuse  . . . . . . . . . . .  17
+     7.3.  Composite Encryption and KEMs . . . . . . . . . . . . . .  17
+   8.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  17
+     8.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  17
+     8.2.  Intellectual Property Considerations  . . . . . . . . . .  19
+   9.  Contributors and Acknowledgements . . . . . . . . . . . . . .  19
 
 
 
-Ounsworth (Editor) & Pala Expires July 24, 2020                 [Page 2]
+Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 2]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
+
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  20
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  21
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  21
 
 1.  Introduction
 
@@ -157,19 +162,18 @@ Internet-Draft             PQ Composite Certs               January 2020
    applicable to asymmetric encryption keys.  Though a word of warning
    that the corresponding "encrypt / decrypt with a composite public
    key" logic is somewhat less obvious; a naive implementer might be
-   tempted to follow the same pattern as below and encrypt the message
-   with each public key separately and then concatenate the ciphertexts,
-   which is wrong, they need to be nested.  Specifying the correct
-   implementation of such an encryption scheme is out of scope for this
 
 
 
-
-Ounsworth (Editor) & Pala Expires July 24, 2020                 [Page 3]
+Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 3]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
 
+   tempted to follow the same pattern as below and encrypt the message
+   with each public key separately and then concatenate the ciphertexts,
+   which is wrong, they need to be nested.  Specifying the correct
+   implementation of such an encryption scheme is out of scope for this
    document, but would be good work for someone in the standards
    community to pick up.
 
@@ -217,11 +221,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-
-
-
-
-Ounsworth (Editor) & Pala Expires July 24, 2020                 [Page 4]
+Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 4]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -277,7 +277,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 24, 2020                 [Page 5]
+Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 5]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -333,7 +333,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 24, 2020                 [Page 6]
+Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 6]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -389,7 +389,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 24, 2020                 [Page 7]
+Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 7]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -445,7 +445,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 24, 2020                 [Page 8]
+Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 8]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -501,7 +501,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 24, 2020                 [Page 9]
+Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 9]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -557,7 +557,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 24, 2020                [Page 10]
+Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 10]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -613,7 +613,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 24, 2020                [Page 11]
+Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 11]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -669,7 +669,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 24, 2020                [Page 12]
+Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 12]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -725,7 +725,7 @@ Signature Verification Procedure::
 
 
 
-Ounsworth (Editor) & Pala Expires July 24, 2020                [Page 13]
+Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 13]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -781,7 +781,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 24, 2020                [Page 14]
+Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 14]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -837,7 +837,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 24, 2020                [Page 15]
+Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 15]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -863,25 +863,46 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    In the composite model this is less obvious since a single public
    key, certificate, or signature may contain a mixture of deprecated
-   and non-depricated algorithms.  Moreover, implementers may decide
+   and non-deprecated algorithms.  Moreover, implementers may decide
    that certain cryptographic algorithms have complementary security
    properties and are acceptable in combination even though neither
-   algoritm is acceptable by itself.
+   algorithm is acceptable by itself.
 
-   In Section 3.2, we specify that the signature verification routine
-   must include a step to check that the combination of algorithms is
-   acceptable under local policy:
+   Specifying a modified verification algorithm to handle these
+   situations is beyond the scope of this draft, but could be desirable
+   as the subject of an application profile document, or to be up to the
+   discretion of implementers.
 
-   2. Check policy to see whether A1, A2, ..., An constitutes a valid
-        combination of algorithms.
-     if not checkPolicy(A1, A2, ..., An), then
-       output "Invalid signature"
+   <<<<<<< HEAD ~~~ 2.  Check policy to see whether A1, A2, ..., An
+   constitutes a valid combination of algorithms.  if not
+   checkPolicy(A1, A2, ..., An), then output "Invalid signature" ~~~
 
-   While intentionally not specified in this document, implementors
-   should put careful thought into implementing a meaningfull policy
-   mechinism within the context of their signature verification engines.
+7.  While intentionally not specified in this document, implementors
+    should put careful thought into implementing a meaningfull policy
+    mechinism within the context of their signature verification
+    engines.
 
-6.2.  Protection of Private Keys
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 16]
+
+Internet-Draft             PQ Composite Certs               January 2020
+
+
+                        8648665... The Security Considerations
+                        referenced the older, more complex, verification
+                        algorithm, and needed to be updated.
+
+7.1.  Protection of Private Keys
 
    This structures described in this document do not protect the private
    keys information in any way unless combined with a security protocol
@@ -890,28 +911,22 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    Protection of the private key information is vital to public key
    cryptography.  The consequences of disclosure depend on the purpose
-
-
-
-Ounsworth (Editor) & Pala Expires July 24, 2020                [Page 16]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
-
    of the private key.  If a private key is used for signature, then the
    disclosure allows unauthorized signing.  If a private key is used for
    key management, then disclosure allows unauthorized parties to access
    the managed keying material.  The encryption algorithm used in the
    encryption process must be as 'strong' as the key it is protecting.
 
-6.3.  Checking for Compromised Key Reuse
+7.2.  Checking for Compromised Key Reuse
 
    CA implementations need to be careful when checking for compromised
    key reuse, for example as required by WebTrust regulations; when
    checking for compromised keys, you MUST unpack the CompositePublicKey
-   structure and compare individual component keys.
+   structure and compare individual component keys.  In other words,
+   when marking a key as revoked for key compromise, the individual
+   component keys should be marked, not the composite key as a whole.
 
-6.4.  Composite Encryption and KEMs
+7.3.  Composite Encryption and KEMs
 
    This document deals only with signature keys.  While the
    CompositePublicKey and CompositePrivateKey structures could equally
@@ -922,14 +937,22 @@ Internet-Draft             PQ Composite Certs               January 2020
    in a catastrophic loss of security.  We leave it to the community to
    standardize analogous composite encryption and KEM schemes.
 
-7.  Appendices
+8.  Appendices
 
-7.1.  ASN.1 Module
+8.1.  ASN.1 Module
 
    <CODE STARTS>
 
    Composite-Signatures-2019
      { TBD }
+
+
+
+
+Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 17]
+
+Internet-Draft             PQ Composite Certs               January 2020
+
 
    DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
@@ -946,14 +969,6 @@ Internet-Draft             PQ Composite Certs               January 2020
        FROM PKIX1Explicit-2009
          { iso(1) identified-organization(3) dod(6) internet(1)
            security(5) mechanisms(5) pkix(7) id-mod(0)
-
-
-
-Ounsworth (Editor) & Pala Expires July 24, 2020                [Page 17]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
-
            id-mod-pkix1-explicit-02(51) }
 
      OneAsymmetricKey
@@ -987,6 +1002,14 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    --
    -- Signature Algorithm
+
+
+
+Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 18]
+
+Internet-Draft             PQ Composite Certs               January 2020
+
+
    --
 
    sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
@@ -1002,18 +1025,10 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    END
 
-
-
-
-Ounsworth (Editor) & Pala Expires July 24, 2020                [Page 18]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
-
    <CODE ENDS>
 
 
-7.2.  Intellectual Property Considerations
+8.2.  Intellectual Property Considerations
 
    The authors are aware that Massimiliano Pala and CableLabs have
    applied for Intellectual Property Rights around composite key,
@@ -1029,7 +1044,7 @@ Internet-Draft             PQ Composite Certs               January 2020
    EDNOTE: remove this section once the IPR disclosure is posted and
    tagged against this draft.
 
-8.  Contributors and Acknowledgements
+9.  Contributors and Acknowledgements
 
    This document incorporates contributions and comments from a large
    group of experts.  The Editors would especially like to acknowledge
@@ -1042,6 +1057,15 @@ Internet-Draft             PQ Composite Certs               January 2020
    Fluhrer (Cisco Systems), Panos Kampanakis (Cisco Systems), Daniel Van
    Geest (ISARA), and Tim Hollebeek (Digicert).
 
+
+
+
+
+Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 19]
+
+Internet-Draft             PQ Composite Certs               January 2020
+
+
    We are grateful to all, including any contributors who may have been
    inadvertently omitted from this list.
 
@@ -1050,21 +1074,14 @@ Internet-Draft             PQ Composite Certs               January 2020
    "Copying always makes things easier and less error prone" -
    [RFC8411].
 
-9.  References
+10.  References
 
-9.1.  Normative References
+10.1.  Normative References
 
    [RFC1421]  Linn, J., "Privacy Enhancement for Internet Electronic
               Mail: Part I: Message Encryption and Authentication
               Procedures", RFC 1421, DOI 10.17487/RFC1421, February
               1993, <https://www.rfc-editor.org/info/rfc1421>.
-
-
-
-Ounsworth (Editor) & Pala Expires July 24, 2020                [Page 19]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1096,6 +1113,15 @@ Internet-Draft             PQ Composite Certs               January 2020
               RFC 5652, DOI 10.17487/RFC5652, September 2009,
               <https://www.rfc-editor.org/info/rfc5652>.
 
+
+
+
+
+Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 20]
+
+Internet-Draft             PQ Composite Certs               January 2020
+
+
    [RFC5958]  Turner, S., "Asymmetric Key Packages", RFC 5958,
               DOI 10.17487/RFC5958, August 2010,
               <https://www.rfc-editor.org/info/rfc5958>.
@@ -1113,16 +1139,7 @@ Internet-Draft             PQ Composite Certs               January 2020
               RFC 8411, DOI 10.17487/RFC8411, August 2018,
               <https://www.rfc-editor.org/info/rfc8411>.
 
-
-
-
-
-Ounsworth (Editor) & Pala Expires July 24, 2020                [Page 20]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
-
-9.2.  Informative References
+10.2.  Informative References
 
    [I-D.pala-composite-crypto]
               Pala, M., "Composite Public Keys and Signatures", draft-
@@ -1156,21 +1173,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth (Editor) & Pala Expires July 24, 2020                [Page 21]
+Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 21]
