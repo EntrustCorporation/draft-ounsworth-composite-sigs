@@ -50,6 +50,14 @@ normative:
   RFC7468:
   RFC8174:
   RFC8411:
+  X.690:
+      title: "Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)"
+      date: November 2015
+      author:
+        org: ITU-T
+      seriesinfo:
+        ISO/IEC: 8825-1:2015
+
 
 # <!-- EDNOTE: full syntax for this defined here: https://github.com/cabo/kramdown-rfc2629 -->
 
@@ -82,14 +90,14 @@ During the transition to post-quantum cryptography, there will be uncertainty as
 
 The deployment of composite public keys and composite signatures using post-quantum algorithms will face two challenges
 
-- Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will also start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
+- Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
 - Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
 
 This document provides a mechanism to address algorithm strength uncertainty by providing formats for encoding multiple public keys and multiple signature values into existing public key and signature fields, as well as an algorithm for validating a composite signature. The issue of backwards compatibility is left open to be addressed in separate draft(s).
 
 This document is intended for general applicability anywhere that public key structures or digital signatures are used within PKIX structures.
 
-EDNOTE: While the scope of this document is restricted to signatures, we note that the same `CompositePublicKey` structure is equally applicable to asymmetric encryption keys. Though a word of warning that the corresponding "encrypt / decrypt with a composite public key" logic is somewhat less obvious; a naive implementer might be tempted to follow the same pattern as below and encrypt the message with each public key separately and then concatenate the ciphertexts, which is wrong, they need to be nested.  Specifying the correct implementation of such an encryption scheme is out of scope for this document, but would be good work for someone in the standards community to pick up.
+EDNOTE: While the scope of this document is restricted to signatures, we note that the same CompositePublicKey structure is equally applicable to asymmetric encryption keys. Though a word of warning that the corresponding "encrypt / decrypt with a composite public key" logic is somewhat less obvious; a naive implementer might be tempted to follow the same pattern as below and encrypt the message with each public key separately and then concatenate the ciphertexts, which is wrong, they need to be nested.  Specifying the correct implementation of such an encryption scheme is out of scope for this document, but would be good work for someone in the standards community to pick up.
 
 <!-- End of Introduction section -->
 
@@ -99,43 +107,43 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 The following terms are used in this document:
 
-ALGORITHM:  
+ALGORITHM:
           An information object class for identifying the type of
             cryptographic operation to be performed. This document is
             primarily concerned with algorithms for producing digital
             signatures, though the public key structure could just as
             easily hold encryption keys.
 
-BER:  
+BER:
           Basic Encoding Rules (BER) as defined in [X.690].
 
-COMPONENT ALGORITHM:  
+COMPONENT ALGORITHM:
           A single basic algorithm which is contained within a
             composite algorithm.
 
-COMPOSITE ALGORITHM:  
-          An algorithm which is a sequence of one or more basic
-            algorithm, as defined in {{sec-composite-structs}}.
+COMPOSITE ALGORITHM:
+          An algorithm which is a sequence of one or more component
+            algorithms, as defined in {{sec-composite-structs}}.
 
-DER:  
+DER:
           Distinguished Encoding Rules as defined in [X.690].
 
-PUBLIC / PRIVATE KEY:  
+PUBLIC / PRIVATE KEY:
           The public and private portion of an asymmetric cryptographic
             key, making no assumptions about which algorithm.
 
-PRIMITIVE PUBLIC KEY / SIGNATURE:  
+PRIMITIVE PUBLIC KEY / SIGNATURE:
           A public key or signature object of a non-composite algorithm
             type.
 
-SIGNATURE:  
+SIGNATURE:
           A digital cryptographic signature, making no assumptions
             about which algorithm.
 
 
 
 # Composite Structures {#sec-composite-structs}
-In order for public keys and signatures to be composed of multiple algorithms, we define encodings consisting of a sequence of public key and signature primitives (aka "component algorithms") such that these structures can be used an a drop-in compatible way with existing public key or signature fields such as those found in PKCS#10 [RFC2986], CMP [RFC4210], X.509 [RFC5280], CMS [RFC5652].
+In order for public keys and signatures to be composed of multiple algorithms, we define encodings consisting of a sequence of public key and signature primitives (aka "component algorithms") such that these structures can be used as a drop-in replacement for existing public key or signature fields such as those found in PKCS#10 [RFC2986], CMP [RFC4210], X.509 [RFC5280], CMS [RFC5652].
 
 This section defines the following structures:
 
@@ -145,9 +153,9 @@ This section defines the following structures:
 
   - The CompositePrivateKey carries all the private keys associated with an identity within a single private key structure.
 
-  - The CompositeSignatureValue, carries a sequence of signatures that are generated by a CompositePrivateKey, and can be verified with the corresponding compositePublicKey.
+  - The CompositeSignatureValue, carries a sequence of signatures that are generated by a CompositePrivateKey, and can be verified with the corresponding CompositePublicKey.
 
-EDNOTE: the choice to define composite algorithm parameters as a sequence inside the existing fields avoids the exponential proliferation of OIDs that are needed for each pairwise combination of signature algorithms in other schemes for achieving multi-key certificates. This scheme also naturally extends from 2-keypair to n-keypair keys and certificates.
+EDNOTE: the choice to define composite algorithm parameters as a sequence inside the existing fields avoids the exponential proliferation of OIDs that are needed for each combination of signature algorithms in other schemes for achieving multi-key certificates. This scheme also naturally extends from 2-keypair to n-keypair keys and certificates.
 
 ## Algorithm Identifier {#sec-alg-identifier}
 
@@ -295,7 +303,7 @@ sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
 }
 ~~~
 
-The id-alg-composite object identifier MUST be used to identify when a signature has been created by a composite private key, and te following algorithm parameters MUST be included:
+The id-alg-composite object identifier MUST be used to identify when a signature has been created by a CompositePrivateKey and following algorithm parameters MUST be included:
 
 ~~~ asn.1
 CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
@@ -311,7 +319,7 @@ CompositeSignatureValue ::= SEQUENCE SIZE (1..MAX) OF BIT STRING
 ~~~
 {: artwork-name="composite-sig-asn.1"}
 
-Where each BIT STRING within the SEQUENCE is a signature value produced by one of the component keys. It MUST contain MUST contain one signature value produced by each componet key, and in the same order as in the associated `CompositeParams`, CompositePublicKey, and CompositePrivateKey objects.
+Where each BIT STRING within the SEQUENCE is a signature value produced by one of the component keys. It MUST contain one signature value produced by each component algorithm, and in the same order as in the associated CompositeParams object.
 
 The choice of `SEQUENCE OF BIT STRING`, rather than for example a single BIT STRING containing the concatenated signature values, is to gracefully handle variable-length signature values by taking advantage of ASN.1's build-in length fields.
 
@@ -334,39 +342,39 @@ This algorithm addresses algorithm strength uncertainty by providing the verifie
 
 ## Composite Signature Generation {#sec-comp-sig-gen}
 
-Generation of a composite signature involves applying each component algorithm's signature routine to the input message according to its specification, and then placing each component signature value into the `CompositeSignatureValue` structure defined in {{sec-composite-sig-structs}}.
+Generation of a composite signature involves applying each component algorithm's signature routine to the input message according to its specification, and then placing each component signature value into the CompositeSignatureValue structure defined in {{sec-composite-sig-structs}}.
 
 The following algorithm is used to generate composite signature values.
 
 ~~~
 Input:
-     K1, K2, .., Kn    Private keys for the n component signature
-                        algorithms
+     K1, K2, .., Kn     Private keys for the n component signature
+                        algorithms, a CompositePrivateKey
      M                  Message to be signed, an octet string
 
 Output:
-     S                  The signature, a CompositeSignatureValue
+     S                  The signatures, a CompositeSignatureValue
 
 Signature Generation Procedure:
    1. Generate the n component signatures independently,
-      according to their algorithm specifications.  
+      according to their algorithm specifications.
 
         for i := 1 to n
-            Si := Sign( Ki, M )  
+            Si := Sign( Ki, M )
 
    2. Encode each component signature S1, S2, .., Sn into a BIT STRING
-        according to its algorithm specification.
+      according to its algorithm specification.2020-01-21g
 
-        S ::= Sequence { S1, S2, .., Sn }  
+        S ::= Sequence { S1, S2, .., Sn }
 
    3. Output S
 ~~~
 {: artwork-name="alg-composite-sig-gen"}
 
 
-Since recursive composite public keys are disallowed in {{sec-composite-pub-keys}}, no component signature may itself be composite; ie the signature generation routine MUST fail if one of the private keys K1, K2, .., Kn is composite with the OID id-alg-composite.
+Since recursive composite public keys are disallowed in {{sec-composite-pub-keys}}, no component signature may itself be a composite; ie the signature generation routine MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.
 
-A composite signature MUST produce and include in the output a signature value for every component key in the corresponding CompositePublicKey.
+A composite signature MUST produce and include in the output a signature value for every component key in the corresponding CompositePrivateKey.
 
 EDNOTE1: With NIST's position that they will standardize use-case-specific algorithm suites, the authors are aware of potential use-cases where a PKI entity may want to have many public keys, but only sign with a subset for each signature. At the present time, this draft does not allow for this because the algorithm for verifying "subset-signatures" in a way that is secure against algorithm stripping attacks would be very complex and prone to implementation errors (currently, the verifier can detect omitted signatures even if it does not recognize all the algorithm OIDs because the count will be wrong. In a subset-signature algorithm, additional mechanisms would be needed to specify for each component key, whether it is meant to produce a signature or not). The draft-compliant way to achieve a "subset-signature" behaviour would be for each PKI entity to have multiple public keys (and certificates) with overlapping subsets of their component keys. We welcome public opinions on whether this is sufficient, or whether this draft should specify a subset-signature algorithm.
 
@@ -506,20 +514,25 @@ Specifying a modified verification algorithm to handle these situations is beyon
 <<<<<<< HEAD
 ~~~
 2. Check policy to see whether A1, A2, ..., An constitutes a valid
-     combination of algorithms.
-  if not checkPolicy(A1, A2, ..., An), then
-    output "Invalid signature"
+   combination of algorithms.
+
+   if not checkPolicy(A1, A2, ..., An), then
+     output "Invalid signature"
 ~~~
 
+<<<<<<< HEAD
 While intentionally not specified in this document, implementors should put careful thought into implementing a meaningfull policy mechinism within the context of their signature verification engines.
 =======
 >>>>>>> 8648665... The Security Considerations referenced the older, more complex, verification algorithm, and needed to be updated.
+=======
+While intentionally not specified in this document, implementors should put careful thought into implementing a meaningfull policy mechinism within the context of their signature verification engines, for example only algorithms that provide similar security levels should be combined together.
+>>>>>>> kris/editor_fixes
 
 ## Protection of Private Keys
 
-This structures described in this document do not protect the private keys information in any way unless combined with a security protocol or encryption properties of the objects (if any) where the CompositePrivateKey is used (see next Section).
+Structures described in this document do not protect private keys in any way unless combined with a security protocol or encryption properties of the objects (if any) where the CompositePrivateKey is used (see next Section).
 
-Protection of the private key information is vital to public key cryptography.  The consequences of disclosure depend on the purpose of the private key. If a private key is used for signature, then the disclosure allows unauthorized signing.  If a private key is used for key management, then disclosure allows unauthorized parties to access the managed keying material. The encryption algorithm used in the encryption process must be as 'strong' as the key it is protecting.
+Protection of the private keys is vital to public key cryptography. The consequences of disclosure depend on the purpose of the private key. If a private key is used for signature, then the disclosure allows unauthorized signing. If a private key is used for key management, then disclosure allows unauthorized parties to access the managed keying material. The encryption algorithm used in the encryption process must be at least as 'strong' as the key it is protecting.
 
 ## Checking for Compromised Key Reuse
 
