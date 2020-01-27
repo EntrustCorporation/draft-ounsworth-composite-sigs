@@ -5,8 +5,8 @@
 LAMPS                                              M. Ounsworth (Editor)
 Internet-Draft                                          Entrust Datacard
 Intended status: Standards Track                                 M. Pala
-Expires: July 26, 2020                                         CableLabs
-                                                        January 23, 2020
+Expires: July 30, 2020                                         CableLabs
+                                                        January 27, 2020
 
 
          Composite Keys and Signatures For Use In Internet PKI
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 26, 2020.
+   This Internet-Draft will expire on July 30, 2020.
 
 
 
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 1]
+Ounsworth (Editor) & Pala Expires July 30, 2020                 [Page 1]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -95,7 +95,7 @@ Table of Contents
    5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
      6.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  16
-     6.2.  Protection of Private Keys  . . . . . . . . . . . . . . .  17
+     6.2.  Protection of Private Keys  . . . . . . . . . . . . . . .  16
      6.3.  Checking for Compromised Key Reuse  . . . . . . . . . . .  17
      6.4.  Composite Encryption and KEMs . . . . . . . . . . . . . .  17
    7.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  17
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 2]
+Ounsworth (Editor) & Pala Expires July 30, 2020                 [Page 2]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -165,7 +165,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 3]
+Ounsworth (Editor) & Pala Expires July 30, 2020                 [Page 3]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -221,7 +221,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 4]
+Ounsworth (Editor) & Pala Expires July 30, 2020                 [Page 4]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -277,7 +277,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 5]
+Ounsworth (Editor) & Pala Expires July 30, 2020                 [Page 5]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -333,7 +333,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 6]
+Ounsworth (Editor) & Pala Expires July 30, 2020                 [Page 6]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -389,7 +389,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 7]
+Ounsworth (Editor) & Pala Expires July 30, 2020                 [Page 7]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -445,7 +445,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 8]
+Ounsworth (Editor) & Pala Expires July 30, 2020                 [Page 8]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -501,7 +501,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                 [Page 9]
+Ounsworth (Editor) & Pala Expires July 30, 2020                 [Page 9]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -557,7 +557,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 10]
+Ounsworth (Editor) & Pala Expires July 30, 2020                [Page 10]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -613,7 +613,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 11]
+Ounsworth (Editor) & Pala Expires July 30, 2020                [Page 11]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -669,7 +669,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 12]
+Ounsworth (Editor) & Pala Expires July 30, 2020                [Page 12]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -725,7 +725,7 @@ Signature Verification Procedure::
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 13]
+Ounsworth (Editor) & Pala Expires July 30, 2020                [Page 13]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -781,7 +781,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 14]
+Ounsworth (Editor) & Pala Expires July 30, 2020                [Page 14]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -837,7 +837,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 15]
+Ounsworth (Editor) & Pala Expires July 30, 2020                [Page 15]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -873,35 +873,31 @@ Internet-Draft             PQ Composite Certs               January 2020
    as the subject of an application profile document, or to be up to the
    discretion of implementers.
 
-   <<<<<<< HEAD ~~~ 2.  Check policy to see whether A1, A2, ..., An
-   constitutes a valid combination of algorithms.
+   2. Check policy to see whether A1, A2, ..., An constitutes a valid
+      combination of algorithms.
 
-   if not checkPolicy(A1, A2, ..., An), then output "Invalid signature"
-   ~~~
+      if not checkPolicy(A1, A2, ..., An), then
+        output "Invalid signature"
 
-   <<<<<<< HEAD While intentionally not specified in this document,
-   implementors should put careful thought into implementing a
-   meaningfull policy mechinism within the context of their signature
-   verification engines.  ======= >>>>>>> 8648665... The Security
-   Considerations referenced the older, more complex, verification
-   algorithm, and needed to be updated.  ======= While intentionally not
-   specified in this document, implementors should put careful thought
-   into implementing a meaningfull policy mechinism within the context
-   of their signature verification engines, for example only algorithms
-   that provide similar security levels should be combined together.
-   >>>>>>> kris/editor_fixes
-
-
-
-Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 16]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
+   While intentionally not specified in this document, implementors
+   should put careful thought into implementing a meaningfull policy
+   mechinism within the context of their signature verification engines,
+   for example only algorithms that provide similar security levels
+   should be combined together.
 
 6.2.  Protection of Private Keys
 
    Structures described in this document do not protect private keys in
    any way unless combined with a security protocol or encryption
+
+
+
+
+Ounsworth (Editor) & Pala Expires July 30, 2020                [Page 16]
+
+Internet-Draft             PQ Composite Certs               January 2020
+
+
    properties of the objects (if any) where the CompositePrivateKey is
    used (see next Section).
 
@@ -947,16 +943,17 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    EXPORTS ALL;
 
+   IMPORTS
+     PUBLIC-KEY, SIGNATURE-ALGORITHM
+       FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 17]
+
+Ounsworth (Editor) & Pala Expires July 30, 2020                [Page 17]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
 
-   IMPORTS
-     PUBLIC-KEY, SIGNATURE-ALGORITHM
-       FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
          { iso(1) identified-organization(3) dod(6) internet(1)
            security(5) mechanisms(5) pkix(7) id-mod(0)
            id-mod-algorithmInformation-02(58) }
@@ -1002,17 +999,17 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
        IDENTIFIER id-alg-composite
+       VALUE CompositeSignatureValue
+       PARAMS TYPE CompositeParams ARE required
+       PUBLIC-KEYS { pk-Composite }
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 18]
+Ounsworth (Editor) & Pala Expires July 30, 2020                [Page 18]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
 
-       VALUE CompositeSignatureValue
-       PARAMS TYPE CompositeParams ARE required
-       PUBLIC-KEYS { pk-Composite }
        SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 
    CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
@@ -1058,16 +1055,16 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    This document borrows text from similar documents, including those
    referenced below.  Thanks go to the authors of those documents.
+   "Copying always makes things easier and less error prone" -
+   [RFC8411].
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 19]
+
+Ounsworth (Editor) & Pala Expires July 30, 2020                [Page 19]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
-
-   "Copying always makes things easier and less error prone" -
-   [RFC8411].
 
 9.  References
 
@@ -1112,19 +1109,18 @@ Internet-Draft             PQ Composite Certs               January 2020
               DOI 10.17487/RFC5958, August 2010,
               <https://www.rfc-editor.org/info/rfc5958>.
 
-
-
-
-
-
-Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 20]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
-
    [RFC7468]  Josefsson, S. and S. Leonard, "Textual Encodings of PKIX,
               PKCS, and CMS Structures", RFC 7468, DOI 10.17487/RFC7468,
               April 2015, <https://www.rfc-editor.org/info/rfc7468>.
+
+
+
+
+
+Ounsworth (Editor) & Pala Expires July 30, 2020                [Page 20]
+
+Internet-Draft             PQ Composite Certs               January 2020
+
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -1173,4 +1169,8 @@ Authors' Addresses
 
 
 
-Ounsworth (Editor) & Pala Expires July 26, 2020                [Page 21]
+
+
+
+
+Ounsworth (Editor) & Pala Expires July 30, 2020                [Page 21]
