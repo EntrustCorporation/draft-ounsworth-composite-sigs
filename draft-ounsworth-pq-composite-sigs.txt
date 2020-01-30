@@ -87,25 +87,25 @@ Table of Contents
      2.6.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   8
    3.  Composite Signature Algorithm . . . . . . . . . . . . . . . .   8
      3.1.  Composite Signature Generation  . . . . . . . . . . . . .   8
-     3.2.  Composite Signature Verification  . . . . . . . . . . . .  10
-   4.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  12
-     4.1.  PEM Storage of Composite Private Keys . . . . . . . . . .  12
+     3.2.  Composite Signature Verification  . . . . . . . . . . . .   9
+   4.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  11
+     4.1.  PEM Storage of Composite Private Keys . . . . . . . . . .  11
      4.2.  Asymmetric Key Packages (CMS) . . . . . . . . . . . . . .  12
-     4.3.  Cryptographic protocols . . . . . . . . . . . . . . . . .  13
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
-     6.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  14
+     4.3.  Cryptographic protocols . . . . . . . . . . . . . . . . .  12
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
+     6.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  13
      6.2.  Protection of Private Keys  . . . . . . . . . . . . . . .  14
-     6.3.  Checking for Compromised Key Reuse  . . . . . . . . . . .  15
-     6.4.  Composite Encryption and KEMs . . . . . . . . . . . . . .  15
-   7.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  15
-     7.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  15
-     7.2.  Intellectual Property Considerations  . . . . . . . . . .  17
-   8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  17
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  18
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  19
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  19
+     6.3.  Checking for Compromised Key Reuse  . . . . . . . . . . .  14
+     6.4.  Composite Encryption and KEMs . . . . . . . . . . . . . .  14
+   7.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  14
+     7.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  14
+     7.2.  Intellectual Property Considerations  . . . . . . . . . .  16
+   8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  16
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  17
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  18
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
 
 
 
@@ -479,32 +479,10 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    A composite signature MUST produce and include in the output a
    signature value for every component key in the corresponding
-   CompositePrivateKey.
-
-   EDNOTE 8: With NIST's position that they will standardize use-case-
-   specific algorithm suites, the authors are aware of potential use-
-   cases where a PKI entity may want to have many public keys, but only
-   sign with a subset for each signature.  At the present time, this
-   draft does not allow for this because the algorithm for verifying
-   "subset-signatures" in a way that is secure against algorithm
-   stripping attacks would be very complex and prone to implementation
-   errors (currently, the verifier can detect omitted signatures even if
-   it does not recognize all the algorithm OIDs because the count will
-   be wrong.  In a subset-signature algorithm, additional mechanisms
-   would be needed to specify for each component key, whether it is
-   meant to produce a signature or not).  The draft-compliant way to
-   achieve a "subset-signature" behaviour would be for each PKI entity
-   to have multiple public keys (and certificates) with overlapping
-   subsets of their component keys.  We welcome public opinions on
-   whether this is sufficient, or whether this draft should specify a
-   subset-signature algorithm.
-
-
-
-Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 9]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
+   CompositePrivateKey.  While it may be tempting to allow a signer to
+   produce a signature with a subset of their keys, the complexity of
+   securely verifying such a "subset signature" is high and out of scope
+   for this document.
 
    EDNOTE 9: The authors are also aware of a potential use-case of
    combining signature and KEM keys inside a single public key /
@@ -520,47 +498,20 @@ Internet-Draft             PQ Composite Certs               January 2020
    component algorithm's verification routine according to its
    specification.
 
+
+
+
+Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 9]
+
+Internet-Draft             PQ Composite Certs               January 2020
+
+
    In the absence of an application profile specifying otherwise,
    compliant applications MUST output "Valid signature" (true) if and
    only if all component signatures were successfully validated, and
    "Invalid signature" (false) otherwise.
 
    The following algorithm is used to perform this verification.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 10]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
 
 Input:
      P    Signer's composite public key
@@ -602,21 +553,20 @@ Signature Verification Procedure::
    .., Pn or algorithm identifiers A1, A2, .., An are composite with the
    OID id-alg-composite.
 
+
+
+
+
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 10]
+
+Internet-Draft             PQ Composite Certs               January 2020
+
+
    It is expected that some use-cases for algorithm migration or high
    performance will require verifiers to succeed when only a subset of
    the component algorithms have been verified.  Defining this
    verification behaviour is out of scope for this document, and falls
    to an application profile.
-
-
-
-
-
-
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 11]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
 
 4.  In Practice
 
@@ -658,6 +608,16 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    EDNOTE 11: Do we really need this?  Isn't it obvious?
 
+
+
+
+
+
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 11]
+
+Internet-Draft             PQ Composite Certs               January 2020
+
+
 4.2.  Asymmetric Key Packages (CMS)
 
    The Cryptographic Message Syntax (CMS), as defined in [RFC5652], can
@@ -666,13 +626,6 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    When encoding composite private keys, the privateKeyAlgorithm in the
    OneAsymmetricKey SHALL be set to id-alg-composite.
-
-
-
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 12]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
 
    The parameters of the privateKeyAlgorithm SHALL be a sequence of
    AlgorithmIdentifier objects, each of which are encoded according to
@@ -714,21 +667,18 @@ Internet-Draft             PQ Composite Certs               January 2020
    o  Overhead; including certificate size, signature processing time,
       and size of the signature.
 
+
+
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 12]
+
+Internet-Draft             PQ Composite Certs               January 2020
+
+
    o  How to deal with crypto protocols that use public key encryption
       algorithms; this document only lists how to work with signature
       algorithms.  Encoding composite public keys is straightforward;
       encoding composite ciphertexts is less so - we decided to put that
       off to another draft.
-
-
-
-
-
-
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 13]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
 
 5.  IANA Considerations
 
@@ -773,19 +723,17 @@ Internet-Draft             PQ Composite Certs               January 2020
    for example only algorithms that provide similar security levels
    should be combined together.
 
-6.2.  Protection of Private Keys
-
-   Structures described in this document do not protect private keys in
-   any way unless combined with a security protocol or encryption
 
 
-
-
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 14]
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 13]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
 
+6.2.  Protection of Private Keys
+
+   Structures described in this document do not protect private keys in
+   any way unless combined with a security protocol or encryption
    properties of the objects (if any) where the CompositePrivateKey is
    used (see next Section).
 
@@ -831,17 +779,16 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    EXPORTS ALL;
 
-   IMPORTS
-     PUBLIC-KEY, SIGNATURE-ALGORITHM
-       FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
 
 
-
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 15]
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 14]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
 
+   IMPORTS
+     PUBLIC-KEY, SIGNATURE-ALGORITHM
+       FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
          { iso(1) identified-organization(3) dod(6) internet(1)
            security(5) mechanisms(5) pkix(7) id-mod(0)
            id-mod-algorithmInformation-02(58) }
@@ -887,17 +834,17 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
        IDENTIFIER id-alg-composite
-       VALUE CompositeSignatureValue
-       PARAMS TYPE CompositeParams ARE required
-       PUBLIC-KEYS { pk-Composite }
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 16]
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 15]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
 
+       VALUE CompositeSignatureValue
+       PARAMS TYPE CompositeParams ARE required
+       PUBLIC-KEYS { pk-Composite }
        SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 
    CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
@@ -943,16 +890,16 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    This document borrows text from similar documents, including those
    referenced below.  Thanks go to the authors of those documents.
-   "Copying always makes things easier and less error prone" -
-   [RFC8411].
 
 
 
-
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 17]
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 16]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
+
+   "Copying always makes things easier and less error prone" -
+   [RFC8411].
 
 9.  References
 
@@ -998,17 +945,18 @@ Internet-Draft             PQ Composite Certs               January 2020
               RFC 5652, DOI 10.17487/RFC5652, September 2009,
               <https://www.rfc-editor.org/info/rfc5652>.
 
-   [RFC5958]  Turner, S., "Asymmetric Key Packages", RFC 5958,
-              DOI 10.17487/RFC5958, August 2010,
-              <https://www.rfc-editor.org/info/rfc5958>.
 
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 18]
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 17]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
+
+   [RFC5958]  Turner, S., "Asymmetric Key Packages", RFC 5958,
+              DOI 10.17487/RFC5958, August 2010,
+              <https://www.rfc-editor.org/info/rfc5958>.
 
    [RFC7468]  Josefsson, S. and S. Leonard, "Textual Encodings of PKIX,
               PKCS, and CMS Structures", RFC 7468, DOI 10.17487/RFC7468,
@@ -1052,10 +1000,62 @@ Authors' Addresses
    Email: mike.ounsworth@entrustdatacard.com
 
 
+
+
+
+
+
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 18]
+
+Internet-Draft             PQ Composite Certs               January 2020
+
+
    Massimiliano Pala
    CableLabs
 
    Email: director@openca.org
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
