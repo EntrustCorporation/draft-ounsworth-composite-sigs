@@ -511,7 +511,6 @@ In the composite model this is less obvious since a single public key, certifica
 
 Specifying a modified verification algorithm to handle these situations is beyond the scope of this draft, but could be desirable as the subject of an application profile document, or to be up to the discretion of implementers.
 
-<<<<<<< HEAD
 ~~~
 2. Check policy to see whether A1, A2, ..., An constitutes a valid
    combination of algorithms.
@@ -520,13 +519,7 @@ Specifying a modified verification algorithm to handle these situations is beyon
      output "Invalid signature"
 ~~~
 
-<<<<<<< HEAD
-While intentionally not specified in this document, implementors should put careful thought into implementing a meaningfull policy mechinism within the context of their signature verification engines.
-=======
->>>>>>> 8648665... The Security Considerations referenced the older, more complex, verification algorithm, and needed to be updated.
-=======
 While intentionally not specified in this document, implementors should put careful thought into implementing a meaningfull policy mechinism within the context of their signature verification engines, for example only algorithms that provide similar security levels should be combined together.
->>>>>>> kris/editor_fixes
 
 ## Protection of Private Keys
 
