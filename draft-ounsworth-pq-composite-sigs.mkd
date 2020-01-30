@@ -354,7 +354,7 @@ sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
 }
 ~~~
 
-In this case, id-alg-explicit is an algorithm and OID defined elsewhere which explicitly defines the component algorithms. PARAMS are optional as they will likely carry redundant information to ad-alg-explicit. The definition of id-alg-explicit needs to specify the contents of VALUE, PARAMS, and SMIME-CAPS.
+In this case, id-alg-explicit is an algorithm and OID defined elsewhere which explicitly defines the component algorithms. PARAMS are optional as they will likely carry redundant information to id-alg-explicit. The definition of id-alg-explicit needs to specify the contents of VALUE, PARAMS, and SMIME-CAPS.
 
 The output of the composite signature algorithm SHOULD be the DER encoding of the CompositeSignatureValue structure defined in section {{sec-generic-composite-sig}}, but algorithms MAY define their own encoding, for example if a certain combination of algorithms yields a more compact representation of the composite signature value.
 
