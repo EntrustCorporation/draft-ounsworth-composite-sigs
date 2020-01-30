@@ -77,7 +77,7 @@ informative:
 --- abstract
 With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite public keys and composite signature data.
 
-This document defines the structures CompositePublicKey, CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. This document also defines algorithms for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification algorithms are defined.
+This document defines the generic composite structures CompositePublicKey, CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm and agnostic to the choice of algorithms, as well as more compressed structures for cases where algorithm OIDs are defined that explicitly list the component algorithms. This document also defines algorithms for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification algorithms are defined.
 
 <!-- End of Abstract -->
 
@@ -128,6 +128,15 @@ COMPOSITE ALGORITHM:
 DER:
           Distinguished Encoding Rules as defined in [X.690].
 
+EXPLICIT COMPOSITE:
+          Composite structures where the AlgorithmIdentifier OID explicitly
+            defines the component algorithms. This case allows simplification
+            and compression of the data structures.
+
+GENERIC COMPOSITE:
+          Composite structures that are agnostic to the choice of Algorithms
+            that they carry.
+
 PUBLIC / PRIVATE KEY:
           The public and private portion of an asymmetric cryptographic
             key, making no assumptions about which algorithm.
@@ -159,7 +168,7 @@ EDNOTE: the choice to define composite algorithm parameters as a sequence inside
 
 ## Algorithm Identifier {#sec-alg-identifier}
 
-The same algorithm identifier is used for identifying a public key, a private key, and a signature.  Additional encoding information is provided below for each of these objects.
+The same algorithm identifier is used for identifying generic composite public keys, private keys, and signatures.
 
 ~~~ asn.1
 id-alg-composite OBJECT IDENTIFIER ::= {
@@ -167,7 +176,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
     enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) }
 ~~~
 
-EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see {{sec-iana}}.
+EDNOTE: this is a temporary OID for the purposes of prototyping. See {{sec-iana}}.
 
 ## Composite Keys
 
@@ -216,7 +225,7 @@ If the keyUsage extension is present in a certification authority certificate th
 
 As this draft only covers composite signatures, the key usage bits specified here apply to all component keys within a composite key.
 
-## Composite Public Key {#sec-composite-pub-keys}
+### Generic Composite Public Key {#sec-composite-pub-keys}
 
 Composite public key data is represented by the following structure:
 
@@ -239,7 +248,7 @@ Each element of a CompositePublicKey is a SubjectPublicKeyInfo object one of the
 
 ~~~ Begin EDNOTE ~~~
 
-EDNOTE: there has been a fair amout of discussion among the authors about whether the component public key should contain a full SubjectPublicKeyInfo for each component algorithm, or whether the {algID, and algParams} should be move to the params of the PUBLIC-KEY or OID, and only the BIT STRINGs of the component public key values contained in the CompositePublicKey.
+EDNOTE: there has been a fair amount of discussion among the authors about whether the component public key should contain a full SubjectPublicKeyInfo for each component algorithm, or whether the {algID, and algParams} should be move to the params of the PUBLIC-KEY or OID, and only the BIT STRINGs of the component public key values contained in the CompositePublicKey.
 
 Using a wonky, simplified notation, the alternatives considered were:
 
@@ -272,6 +281,11 @@ The authors have decided, for the time being, to use the current approach since 
 We note that the chosen approach means that the algorithm field essentially carries no useful information about the key it's describing. Analysis is required to see if there are any circumstances in which this opens up cryptographic attacks, such as algorithm substitution or stripping attacks.
 ~~~ End EDNOTE ~~~
 
+### Explicit Composite Public Key
+
+If the PUBLIC-KEY's IDENTIFIER is not id-alg-composite, but instead an OID that explicitly defines the component algorithms, then
+the PUBLIC-KEY will contain a KEY according to that algorithm's specification instead of the encoding defined in  {{sec-composite-pub-keys}}.
+
 
 ## Composite Private Key
 
@@ -291,7 +305,9 @@ A CompositePrivateKey MUST contain at least one component private key, and they 
 
 ## Composite Signature {#sec-composite-sig-structs}
 
-The ASN.1 algorithm object for a composite signature is:
+### Generic Composite Signature {#sec-generic-composite-sig}
+
+The ASN.1 algorithm object for a generic composite signature is:
 
 ~~~ asn.1
 sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
@@ -303,7 +319,7 @@ sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
 }
 ~~~
 
-The id-alg-composite object identifier MUST be used to identify when a signature has been created by a CompositePrivateKey and following algorithm parameters MUST be included:
+The id-alg-composite object identifier MUST be used to identify when a signature can be verified with a CompositePublicKey with IDENTIFIER id-alg-composit. The following algorithm parameters MUST be included:
 
 ~~~ asn.1
 CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
@@ -323,7 +339,28 @@ Where each BIT STRING within the SEQUENCE is a signature value produced by one o
 
 The choice of `SEQUENCE OF BIT STRING`, rather than for example a single BIT STRING containing the concatenated signature values, is to gracefully handle variable-length signature values by taking advantage of ASN.1's build-in length fields.
 
+
+### Explicit Composite Signature
+
+The ASN.1 algorithm object for an explicit composite signature is:
+
+~~~ asn.1
+sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
+    IDENTIFIER id-alg-explicit
+    VALUE CompositeSignatureValue
+    PARAMS ARE optional
+    PUBLIC-KEYS { pk-Composite }
+    SMIME-CAPS { IDENTIFIED BY id-alg-explicit } }
+}
+~~~
+
+In this case, id-alg-explicit is an algorithm and OID defined elsewhere which explicitly defines the component algorithms. PARAMS are optional as they will likely carry redundant information to ad-alg-explicit. The definition of id-alg-explicit needs to specify the contents of VALUE, PARAMS, and SMIME-CAPS.
+
+The output of the composite signature algorithm SHOULD be the DER encoding of the CompositeSignatureValue structure defined in section {{sec-generic-composite-sig}}, but algorithms MAY define their own encoding, for example if a certain combination of algorithms yields a more compact representation of the composite signature value.
+
+
 ## Encoding Rules {#sec-encoding-rules}
+
 <!-- EDNOTE: Examples of how other specifications specify how a data structure is converted to a bit string can be found in RFC 2313, section 10.1.4, 3279 section 2.3.5, and RFC 4055, section 3.2. -->
 
 Many protocol specifications will require that the composite public key, composite private key, and composite signature data structures be represented by an octet string or bit string.
