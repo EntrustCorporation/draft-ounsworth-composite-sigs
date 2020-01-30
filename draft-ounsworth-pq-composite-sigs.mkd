@@ -94,7 +94,7 @@ The deployment of composite public keys and composite signatures using post-quan
 - Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
 - Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
 
-This document provides a mechanism to address algorithm strength uncertainty by providing formats for encoding multiple public keys and multiple signature values into existing public key and signature fields, as well as an algorithm for validating a composite signature. The issue of backwards compatibility is left open to be addressed in separate draft(s).
+This document provides a mechanism to address algorithm strength uncertainty by providing formats for encoding multiple public keys and multiple signature values into existing public key and signature fields, as well as an algorithm for validatinfg a composite signature. The issue of backwards compatibility is left open to be addressed in separate draft(s).
 
 This document is intended for general applicability anywhere that public key structures or digital signatures are used within PKIX structures. While the CompositePublicKey structure defined herein is equally applicable to asymmetric encryption keys, this document is intentionally restricted to signatures. The combiner functions for composite encryption and KEMs is being addressed in other drafts such as [I-D.draft-stebila-tls-hybrid-design].
 
@@ -189,8 +189,6 @@ pk-Composite PUBLIC-KEY ::= {
 
 
 EDNOTE 4: the authors are currently unsure whether the params should be absent (ie this structure simply says "I am a composite algorithm"), or used to duplicate some amount of information about what the component algoritms are. See {{sec-composite-pub-keys}} for a longer ENDOTE on this.
-
-EDNOTE 5: In order to reduce complexity, we are intentionally limiting the scope of this draft to signature-type CERT-KEY-USAGEs, but we note that it would be trivial to extend it to encryption-type keys.
 
 ### Key Usage Bits
 

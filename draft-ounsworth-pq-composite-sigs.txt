@@ -82,7 +82,7 @@ Table of Contents
      2.2.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   5
        2.2.1.  Key Usage Bits  . . . . . . . . . . . . . . . . . . .   6
      2.3.  Composite Public Key  . . . . . . . . . . . . . . . . . .   6
-     2.4.  Composite Private Key . . . . . . . . . . . . . . . . . .   8
+     2.4.  Composite Private Key . . . . . . . . . . . . . . . . . .   7
      2.5.  Composite Signature . . . . . . . . . . . . . . . . . . .   8
      2.6.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   9
    3.  Composite Signature Algorithm . . . . . . . . . . . . . . . .   9
@@ -144,9 +144,9 @@ Internet-Draft             PQ Composite Certs               January 2020
    This document provides a mechanism to address algorithm strength
    uncertainty by providing formats for encoding multiple public keys
    and multiple signature values into existing public key and signature
-   fields, as well as an algorithm for validating a composite signature.
-   The issue of backwards compatibility is left open to be addressed in
-   separate draft(s).
+   fields, as well as an algorithm for validatinfg a composite
+   signature.  The issue of backwards compatibility is left open to be
+   addressed in separate draft(s).
 
    This document is intended for general applicability anywhere that
    public key structures or digital signatures are used within PKIX
@@ -282,11 +282,6 @@ Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 5]
 Internet-Draft             PQ Composite Certs               January 2020
 
 
-   EDNOTE 5: In order to reduce complexity, we are intentionally
-   limiting the scope of this draft to signature-type CERT-KEY-USAGEs,
-   but we note that it would be trivial to extend it to encryption-type
-   keys.
-
 2.2.1.  Key Usage Bits
 
    The intended application for the key is indicated in the keyUsage
@@ -329,7 +324,12 @@ Internet-Draft             PQ Composite Certs               January 2020
    itself describes a composite key; ie recursive CompositePublicKeys
    are not allowed
 
+   Each element of a CompositePublicKey is a SubjectPublicKeyInfo object
+   one of the component public keys.  When the CompositePublicKey must
+   be provided in octet string or bit string format, the data structure
+   is encoded as specified in Section 2.6.
 
+   ~~~ Begin EDNOTE 6~~~
 
 
 
@@ -337,13 +337,6 @@ Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 6]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
-
-   Each element of a CompositePublicKey is a SubjectPublicKeyInfo object
-   one of the component public keys.  When the CompositePublicKey must
-   be provided in octet string or bit string format, the data structure
-   is encoded as specified in Section 2.6.
-
-   ~~~ Begin EDNOTE 6~~~
 
    EDNOTE 6: there has been a fair amout of discussion among the authors
    about whether the component public key should contain a full
@@ -386,6 +379,13 @@ Internet-Draft             PQ Composite Certs               January 2020
    circumstances in which this opens up cryptographic attacks, such as
    algorithm substitution or stripping attacks.  ~~~ End EDNOTE 6 ~~~
 
+2.4.  Composite Private Key
+
+   The composite private key data is represented by the following
+   structure:
+
+   CompositePrivateKey ::= SEQUENCE SIZE (1..MAX) OF OneAsymmetricKey
+
 
 
 
@@ -393,13 +393,6 @@ Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 7]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
-
-2.4.  Composite Private Key
-
-   The composite private key data is represented by the following
-   structure:
-
-   CompositePrivateKey ::= SEQUENCE SIZE (1..MAX) OF OneAsymmetricKey
 
    Each element is a OneAsymmetricKey [RFC5958] object for a component
    private key.
@@ -441,6 +434,13 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    Where each BIT STRING within the SEQUENCE is a signature value
    produced by one of the component keys.  It MUST contain one signature
+   value produced by each component algorithm, and in the same order as
+   in the associated CompositeParams object.
+
+   The choice of "SEQUENCE OF BIT STRING", rather than for example a
+   single BIT STRING containing the concatenated signature values, is to
+   gracefully handle variable-length signature values by taking
+   advantage of ASN.1's build-in length fields.
 
 
 
@@ -449,14 +449,6 @@ Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 8]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
-
-   value produced by each component algorithm, and in the same order as
-   in the associated CompositeParams object.
-
-   The choice of "SEQUENCE OF BIT STRING", rather than for example a
-   single BIT STRING containing the concatenated signature values, is to
-   gracefully handle variable-length signature values by taking
-   advantage of ASN.1's build-in length fields.
 
 2.6.  Encoding Rules
 
@@ -496,6 +488,14 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    The following algorithm is used to generate composite signature
    values.
+
+
+
+
+
+
+
+
 
 
 
