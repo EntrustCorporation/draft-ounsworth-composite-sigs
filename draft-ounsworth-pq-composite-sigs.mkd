@@ -574,12 +574,10 @@ END
 
 ## Intellectual Property Considerations
 
-The authors are aware that Massimiliano Pala and CableLabs have applied for Intellectual Property Rights around composite key, signatures, and certificates. We have a verbal agreement with Max that this IP will
-be made freely available to the community.
+The following IPR Disclosure relates to this draft:
 
-As of this version of the draft, the authors have reviewed and provided feedback on the March 24, 2019 version of the IPR disclosure, available at  https://datatracker.ietf.org/ipr/3481/, and are awaiting the posting of an updated version that covers this draft.
+https://datatracker.ietf.org/ipr/3588/
 
-EDNOTE 12: remove this section once the IPR disclosure is posted and tagged against this draft.
 
 <!-- Keep it here only for reference, in case it is needed
 ## Comparison with draft-truskovsky-lamps-pq-hybrid-x509

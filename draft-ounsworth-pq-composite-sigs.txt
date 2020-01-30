@@ -102,8 +102,8 @@ Table of Contents
      7.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  14
      7.2.  Intellectual Property Considerations  . . . . . . . . . .  16
    8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  16
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  17
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  16
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  18
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
 
@@ -855,19 +855,9 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 7.2.  Intellectual Property Considerations
 
-   The authors are aware that Massimiliano Pala and CableLabs have
-   applied for Intellectual Property Rights around composite key,
-   signatures, and certificates.  We have a verbal agreement with Max
-   that this IP will be made freely available to the community.
+   The following IPR Disclosure relates to this draft:
 
-   As of this version of the draft, the authors have reviewed and
-   provided feedback on the March 24, 2019 version of the IPR
-   disclosure, available at https://datatracker.ietf.org/ipr/3481/, and
-   are awaiting the posting of an updated version that covers this
-   draft.
-
-   EDNOTE 12: remove this section once the IPR disclosure is posted and
-   tagged against this draft.
+   https://datatracker.ietf.org/ipr/3588/
 
 8.  Contributors and Acknowledgements
 
@@ -890,14 +880,6 @@ Internet-Draft             PQ Composite Certs               January 2020
    "Copying always makes things easier and less error prone" -
    [RFC8411].
 
-
-
-
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 16]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
-
 9.  References
 
 9.1.  Normative References
@@ -906,6 +888,15 @@ Internet-Draft             PQ Composite Certs               January 2020
               Steblia, D., Fluhrer, S., and S. Gueron, "Design issues
               for hybrid key exchange in TLS 1.3", draft-stebila-tls-
               hybrid-design-01 (work in progress), July 2019.
+
+
+
+
+
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 16]
+
+Internet-Draft             PQ Composite Certs               January 2020
+
 
    [RFC1421]  Linn, J., "Privacy Enhancement for Internet Electronic
               Mail: Part I: Message Encryption and Authentication
@@ -946,14 +937,6 @@ Internet-Draft             PQ Composite Certs               January 2020
               DOI 10.17487/RFC5958, August 2010,
               <https://www.rfc-editor.org/info/rfc5958>.
 
-
-
-
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 17]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
-
    [RFC7468]  Josefsson, S. and S. Leonard, "Textual Encodings of PKIX,
               PKCS, and CMS Structures", RFC 7468, DOI 10.17487/RFC7468,
               April 2015, <https://www.rfc-editor.org/info/rfc7468>.
@@ -961,6 +944,15 @@ Internet-Draft             PQ Composite Certs               January 2020
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+
+
+
+
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 17]
+
+Internet-Draft             PQ Composite Certs               January 2020
+
 
    [RFC8411]  Schaad, J. and R. Andrews, "IANA Registration for the
               Cryptographic Algorithm Object Identifier Range",
@@ -1000,6 +992,14 @@ Authors' Addresses
    CableLabs
 
    Email: director@openca.org
+
+
+
+
+
+
+
+
 
 
 
