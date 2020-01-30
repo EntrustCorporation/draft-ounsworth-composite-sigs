@@ -156,12 +156,12 @@ Internet-Draft             PQ Composite Certs               January 2020
    public key structures or digital signatures are used within PKIX
    structures.
 
-   EDNOTE: While the scope of this document is restricted to signatures,
-   we note that the same CompositePublicKey structure is equally
-   applicable to asymmetric encryption keys.  Though a word of warning
-   that the corresponding "encrypt / decrypt with a composite public
-   key" logic is somewhat less obvious; a naive implementer might be
-   tempted to follow the same pattern as below and encrypt the message
+   EDNOTE 1: While the scope of this document is restricted to
+   signatures, we note that the same CompositePublicKey structure is
+   equally applicable to asymmetric encryption keys.  Though a word of
+   warning that the corresponding "encrypt / decrypt with a composite
+   public key" logic is somewhat less obvious; a naive implementer might
+   be tempted to follow the same pattern as below and encrypt the
 
 
 
@@ -170,11 +170,11 @@ Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 3]
 Internet-Draft             PQ Composite Certs               January 2020
 
 
-   with each public key separately and then concatenate the ciphertexts,
-   which is wrong, they need to be nested.  Specifying the correct
-   implementation of such an encryption scheme is out of scope for this
-   document, but would be good work for someone in the standards
-   community to pick up.
+   message with each public key separately and then concatenate the
+   ciphertexts, which is wrong, they need to be nested.  Specifying the
+   correct implementation of such an encryption scheme is out of scope
+   for this document, but would be good work for someone in the
+   standards community to pick up.
 
 1.1.  Terminology
 
@@ -271,8 +271,8 @@ Internet-Draft             PQ Composite Certs               January 2020
        iso(1)  identified-organization(3) dod(6) internet(1) private(4)
        enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) }
 
-   EDNOTE: this is a temporary OID for the purposes of prototyping.  See
-   Section 5.
+   EDNOTE 3: this is a temporary OID for the purposes of prototyping.
+   We are requesting IANA to assign a permanent OID, see Section 5.
 
 
 
@@ -299,15 +299,16 @@ Internet-Draft             PQ Composite Certs               January 2020
        PRIVATE-KEY CompositePrivateKey
    }
 
-   EDNOTE1: the authors are currently unsure whether the params should
+   EDNOTE 4: the authors are currently unsure whether the params should
    be absent (ie this structure simply says "I am a composite
    algorithm"), or used to duplicate some amount of information about
    what the component algoritms are.  See Section 2.2.2 for a longer
    ENDOTE on this.
 
-   EDNOTE2: In order to reduce complexity, we are intentionally limiting
-   the scope of this draft to signature-type CERT-KEY-USAGEs, but we
-   note that it would be trivial to extend it to encryption-type keys.
+   EDNOTE 5: In order to reduce complexity, we are intentionally
+   limiting the scope of this draft to signature-type CERT-KEY-USAGEs,
+   but we note that it would be trivial to extend it to encryption-type
+   keys.
 
 2.2.1.  Key Usage Bits
 
@@ -326,10 +327,9 @@ Internet-Draft             PQ Composite Certs               January 2020
    certificate that indicates id-alg-composite, then the keyUsage
    extension MUST contain one or more of the following values:
 
-       nonRepudiation;
-       digitalSignature;
-       keyCertSign; and
-       cRLSign.
+
+
+
 
 
 
@@ -337,6 +337,11 @@ Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 6]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
+
+       nonRepudiation;
+       digitalSignature;
+       keyCertSign; and
+       cRLSign.
 
    As this draft only covers composite signatures, the key usage bits
    specified here apply to all component keys within a composite key.
@@ -363,9 +368,9 @@ Internet-Draft             PQ Composite Certs               January 2020
    be provided in octet string or bit string format, the data structure
    is encoded as specified in Section 2.5.
 
-   ~~~ Begin EDNOTE ~~~
+   ~~~ Begin EDNOTE 6~~~
 
-   EDNOTE: there has been a fair amount of discussion among the authors
+   EDNOTE 6: there has been a fair amout of discussion among the authors
    about whether the component public key should contain a full
    SubjectPublicKeyInfo for each component algorithm, or whether the
    {algID, and algParams} should be move to the params of the PUBLIC-KEY
@@ -373,11 +378,6 @@ Internet-Draft             PQ Composite Certs               January 2020
    contained in the CompositePublicKey.
 
    Using a wonky, simplified notation, the alternatives considered were:
-
-
-
-
-
 
 
 
@@ -424,7 +424,7 @@ Internet-Draft             PQ Composite Certs               January 2020
    essentially carries no useful information about the key it's
    describing.  Analysis is required to see if there are any
    circumstances in which this opens up cryptographic attacks, such as
-   algorithm substitution or stripping attacks.  ~~~ End EDNOTE ~~~
+   algorithm substitution or stripping attacks.  ~~~ End EDNOTE 6 ~~~
 
 2.2.3.  Explicit Composite Public Key
 
@@ -520,7 +520,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    In this case, id-alg-explicit is an algorithm and OID defined
    elsewhere which explicitly defines the component algorithms.  PARAMS
-   are optional as they will likely carry redundant information to ad-
+   are optional as they will likely carry redundant information to id-
    alg-explicit.  The definition of id-alg-explicit needs to specify the
    contents of VALUE, PARAMS, and SMIME-CAPS.
 
@@ -608,7 +608,7 @@ Internet-Draft             PQ Composite Certs               January 2020
    signature value for every component key in the corresponding
    CompositePrivateKey.
 
-   EDNOTE1: With NIST's position that they will standardize use-case-
+   EDNOTE 8: With NIST's position that they will standardize use-case-
    specific algorithm suites, the authors are aware of potential use-
 
 
@@ -634,7 +634,7 @@ Internet-Draft             PQ Composite Certs               January 2020
    whether this is sufficient, or whether this draft should specify a
    subset-signature algorithm.
 
-   EDNOTE2: The authors are also aware of a potential use-case of
+   EDNOTE 9: The authors are also aware of a potential use-case of
    combining signature and KEM keys inside a single public key /
    certificate.  This would give us back the "dual-usage key" property
    that was so appealing about RSA.  At the present time, this draft
@@ -735,9 +735,9 @@ Internet-Draft             PQ Composite Certs               January 2020
    This section addresses practical issues of how this draft affects
    other protocols and standards.
 
-   ~~~ BEGIN EDNOTE ~~~
+   ~~~ BEGIN EDNOTE 10~~~
 
-   EDNOTE: Possible topics to address:
+   EDNOTE 10: Possible topics to address:
 
    o  The size of these certs and cert chains.
 
@@ -758,7 +758,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    o  We could include a subsection about implementation considerations.
 
-   ~~~ END EDNOTE ~~~
+   ~~~ END EDNOTE 10~~~
 
 4.1.  PEM Storage of Composite Private Keys
 
@@ -768,7 +768,7 @@ Internet-Draft             PQ Composite Certs               January 2020
    defined in [RFC7468] section 10 and 11 for plaintext and encrypted
    private keys, respectively.
 
-   EDNOTE: Do we really need this?  Isn't it obvious?
+   EDNOTE 11: Do we really need this?  Isn't it obvious?
 
 4.2.  Asymmetric Key Packages (CMS)
 
@@ -845,8 +845,8 @@ Internet-Draft             PQ Composite Certs               January 2020
 5.  IANA Considerations
 
    The ASN.1 module OID is TBD.  The id-alg-composite OID is to be
-   assigned by IANA.  The authors suggest to use the id-pkix arc for
-   this usage:
+   assigned by IANA.  The authors suggest that IANA assign an OID on the
+   id-pkix arc:
 
    id-alg-composite OBJECT IDENTIFIER ::= {
        iso(1) identified-organization(3) dod(6) internet(1) security(5)
@@ -1034,7 +1034,7 @@ Internet-Draft             PQ Composite Certs               January 2020
    are awaiting the posting of an updated version that covers this
    draft.
 
-   EDNOTE: remove this section once the IPR disclosure is posted and
+   EDNOTE 12: remove this section once the IPR disclosure is posted and
    tagged against this draft.
 
 8.  Contributors and Acknowledgements
