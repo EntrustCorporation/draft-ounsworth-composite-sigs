@@ -337,9 +337,6 @@ Since recursive composite public keys are disallowed in {{sec-composite-pub-keys
 A composite signature MUST produce and include in the output a signature value for every component key in the corresponding CompositePrivateKey. While it may be tempting to allow a signer to produce a signature with a subset of their keys, the complexity of securely verifying such a "subset signature" is high and out of scope for this document.
 
 
-EDNOTE 9: The authors are also aware of a potential use-case of combining signature and KEM keys inside a single public key / certificate. This would give us back the "dual-usage key" property that was so appealing about RSA. At the present time, this draft does not allow for this because, again, the algorithm for verifying "subset-signatures" in a secure way would be very complex. We also welcome public opinions on this.
-
-
 ## Composite Signature Verification {#sec-comp-sig-verify}
 
 Verification of a composite signature involves applying each component algorithm's verification routine according to its specification.
