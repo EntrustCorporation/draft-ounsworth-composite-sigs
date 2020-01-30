@@ -845,8 +845,8 @@ Internet-Draft             PQ Composite Certs               January 2020
 5.  IANA Considerations
 
    The ASN.1 module OID is TBD.  The id-alg-composite OID is to be
-   assigned by IANA.  The authors suggest to use the id-pkix arc for
-   this usage:
+   assigned by IANA.  The authors suggest that IANA assign an OID on the
+   id-pkix arc:
 
    id-alg-composite OBJECT IDENTIFIER ::= {
        iso(1) identified-organization(3) dod(6) internet(1) security(5)
