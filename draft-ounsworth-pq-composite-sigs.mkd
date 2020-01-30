@@ -414,8 +414,6 @@ EDNOTE 10: Possible topics to address:
 
 CompositePrivateKeys can be encoded to the PEM format by placing a CompositePrivateKey into the privateKey field of a PrivateKeyInfo or OneAsymmetricKey object, and then applying the PEM encoding rules as defined in [RFC7468] section 10 and 11 for plaintext and encrypted private keys, respectively.
 
-EDNOTE 11: Do we really need this? Isn't it obvious?
-
 
 ## Asymmetric Key Packages (CMS)
 

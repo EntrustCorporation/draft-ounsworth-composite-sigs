@@ -600,8 +600,6 @@ Internet-Draft             PQ Composite Certs               January 2020
    defined in [RFC7468] section 10 and 11 for plaintext and encrypted
    private keys, respectively.
 
-   EDNOTE 11: Do we really need this?  Isn't it obvious?
-
 4.2.  Asymmetric Key Packages (CMS)
 
    The Cryptographic Message Syntax (CMS), as defined in [RFC5652], can
@@ -610,6 +608,8 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    When encoding composite private keys, the privateKeyAlgorithm in the
    OneAsymmetricKey SHALL be set to id-alg-composite.
+
+
 
 
 
