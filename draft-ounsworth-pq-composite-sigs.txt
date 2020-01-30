@@ -83,29 +83,29 @@ Table of Contents
        2.2.1.  Key Usage Bits  . . . . . . . . . . . . . . . . . . .   6
      2.3.  Composite Public Key  . . . . . . . . . . . . . . . . . .   6
      2.4.  Composite Private Key . . . . . . . . . . . . . . . . . .   7
-     2.5.  Composite Signature . . . . . . . . . . . . . . . . . . .   8
-     2.6.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   9
-   3.  Composite Signature Algorithm . . . . . . . . . . . . . . . .   9
-     3.1.  Composite Signature Generation  . . . . . . . . . . . . .   9
-     3.2.  Composite Signature Verification  . . . . . . . . . . . .  11
-   4.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     4.1.  PEM Storage of Composite Private Keys . . . . . . . . . .  13
-     4.2.  Asymmetric Key Packages (CMS) . . . . . . . . . . . . . .  13
-     4.3.  Cryptographic protocols . . . . . . . . . . . . . . . . .  14
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
-     6.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  15
-     6.2.  Protection of Private Keys  . . . . . . . . . . . . . . .  15
-     6.3.  Checking for Compromised Key Reuse  . . . . . . . . . . .  16
-     6.4.  Composite Encryption and KEMs . . . . . . . . . . . . . .  16
-   7.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  16
-     7.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  16
-     7.2.  Intellectual Property Considerations  . . . . . . . . . .  18
-   8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  18
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  19
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  20
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
+     2.5.  Composite Signature . . . . . . . . . . . . . . . . . . .   7
+     2.6.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   8
+   3.  Composite Signature Algorithm . . . . . . . . . . . . . . . .   8
+     3.1.  Composite Signature Generation  . . . . . . . . . . . . .   8
+     3.2.  Composite Signature Verification  . . . . . . . . . . . .  10
+   4.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  12
+     4.1.  PEM Storage of Composite Private Keys . . . . . . . . . .  12
+     4.2.  Asymmetric Key Packages (CMS) . . . . . . . . . . . . . .  12
+     4.3.  Cryptographic protocols . . . . . . . . . . . . . . . . .  13
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
+     6.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  14
+     6.2.  Protection of Private Keys  . . . . . . . . . . . . . . .  14
+     6.3.  Checking for Compromised Key Reuse  . . . . . . . . . . .  15
+     6.4.  Composite Encryption and KEMs . . . . . . . . . . . . . .  15
+   7.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  15
+     7.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  15
+     7.2.  Intellectual Property Considerations  . . . . . . . . . .  17
+   8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  17
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  18
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  19
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  19
 
 
 
@@ -329,7 +329,7 @@ Internet-Draft             PQ Composite Certs               January 2020
    be provided in octet string or bit string format, the data structure
    is encoded as specified in Section 2.6.
 
-   ~~~ Begin EDNOTE 6~~~
+
 
 
 
@@ -338,61 +338,12 @@ Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 6]
 Internet-Draft             PQ Composite Certs               January 2020
 
 
-   EDNOTE 6: there has been a fair amout of discussion among the authors
-   about whether the component public key should contain a full
-   SubjectPublicKeyInfo for each component algorithm, or whether the
-   {algID, and algParams} should be move to the params of the PUBLIC-KEY
-   or OID, and only the BIT STRINGs of the component public key values
-   contained in the CompositePublicKey.
-
-   Using a wonky, simplified notation, the alternatives considered were:
-
-   Current composite:
-       CompositeAlg: {
-          algorithm={id-alg-composite, none}
-          subjectPublicKey=SEQ SPKI[{{algID1, algParams1}, value1},
-                                 SPKI{{algID2, algParams2}, value2}, ..]
-       }
-
-   Alternative 1:
-       CompositeAlg: {
-          algorithm={id-alg-composite, {{algID1, algParams1},
-                                           {algID2, algParams2}, ..}
-          subjectPublicKey=SEQ BIT STRING[value1, value2, ..]
-       }
-
-   Alternative 2:
-       CompositeAlg: {
-          algorithm={id-alg-composite, {algID1, algID2, ..}}
-          subjectPublicKey=SEQ SPKI[{{algID1, algParams1}, value1},
-                                     {{algID2, algParams2}, value2}, ..]
-       }
-
-   The authors have decided, for the time being, to use the current
-   approach since it A) promotes ease of modifying existing software
-   whose APIs require SubjectPublicKeyInfos to be passed, and B) avoids
-   bloating wire protocols with duplicated information.
-
-   We note that the chosen approach means that the algorithm field
-   essentially carries no useful information about the key it's
-   describing.  Analysis is required to see if there are any
-   circumstances in which this opens up cryptographic attacks, such as
-   algorithm substitution or stripping attacks.  ~~~ End EDNOTE 6 ~~~
-
 2.4.  Composite Private Key
 
    The composite private key data is represented by the following
    structure:
 
    CompositePrivateKey ::= SEQUENCE SIZE (1..MAX) OF OneAsymmetricKey
-
-
-
-
-Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 7]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
 
    Each element is a OneAsymmetricKey [RFC5958] object for a component
    private key.
@@ -434,6 +385,15 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    Where each BIT STRING within the SEQUENCE is a signature value
    produced by one of the component keys.  It MUST contain one signature
+
+
+
+
+Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 7]
+
+Internet-Draft             PQ Composite Certs               January 2020
+
+
    value produced by each component algorithm, and in the same order as
    in the associated CompositeParams object.
 
@@ -441,14 +401,6 @@ Internet-Draft             PQ Composite Certs               January 2020
    single BIT STRING containing the concatenated signature values, is to
    gracefully handle variable-length signature values by taking
    advantage of ASN.1's build-in length fields.
-
-
-
-
-Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 8]
-
-Internet-Draft             PQ Composite Certs               January 2020
-
 
 2.6.  Encoding Rules
 
@@ -493,15 +445,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-
-
-
-
-
-
-
-
-Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 9]
+Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 8]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -557,7 +501,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 10]
+Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 9]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -613,7 +557,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 11]
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 10]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -669,7 +613,7 @@ Signature Verification Procedure::
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 12]
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 11]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -725,7 +669,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 13]
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 12]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -781,7 +725,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 14]
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 13]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -837,7 +781,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 15]
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 14]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -893,7 +837,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 16]
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 15]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -949,7 +893,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 17]
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 16]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -1005,7 +949,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 18]
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 17]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -1061,7 +1005,7 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 19]
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 18]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
@@ -1117,4 +1061,4 @@ Authors' Addresses
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 20]
+Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 19]

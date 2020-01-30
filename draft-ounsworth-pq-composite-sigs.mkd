@@ -233,44 +233,6 @@ A CompositePublicKey MUST NOT contain a component public key which itself descri
 Each element of a CompositePublicKey is a SubjectPublicKeyInfo object one of the component public keys. When the CompositePublicKey must be provided in octet string or bit string format, the data structure is encoded as specified in {{sec-encoding-rules}}.
 
 
-
-
-~~~ Begin EDNOTE 6~~~
-
-EDNOTE 6: there has been a fair amout of discussion among the authors about whether the component public key should contain a full SubjectPublicKeyInfo for each component algorithm, or whether the {algID, and algParams} should be move to the params of the PUBLIC-KEY or OID, and only the BIT STRINGs of the component public key values contained in the CompositePublicKey.
-
-Using a wonky, simplified notation, the alternatives considered were:
-
-~~~ asn.1
-Current composite:
-    CompositeAlg: {
-       algorithm={id-alg-composite, none}
-       subjectPublicKey=SEQ SPKI[{{algID1, algParams1}, value1},
-                              SPKI{{algID2, algParams2}, value2}, ..]
-    }
-
-Alternative 1:
-    CompositeAlg: {
-       algorithm={id-alg-composite, {{algID1, algParams1},
-                                        {algID2, algParams2}, ..}
-       subjectPublicKey=SEQ BIT STRING[value1, value2, ..]
-    }
-
-Alternative 2:
-    CompositeAlg: {
-       algorithm={id-alg-composite, {algID1, algID2, ..}}
-       subjectPublicKey=SEQ SPKI[{{algID1, algParams1}, value1},
-                                  {{algID2, algParams2}, value2}, ..]
-    }
-~~~
-{: artwork-name="pubkey_params_alternatives"}
-
-The authors have decided, for the time being, to use the current approach since it A) promotes ease of modifying existing software whose APIs require SubjectPublicKeyInfos to be passed, and B) avoids bloating wire protocols with duplicated information.
-
-We note that the chosen approach means that the algorithm field essentially carries no useful information about the key it's describing. Analysis is required to see if there are any circumstances in which this opens up cryptographic attacks, such as algorithm substitution or stripping attacks.
-~~~ End EDNOTE 6 ~~~
-
-
 ## Composite Private Key
 
 The composite private key data is represented by the following structure:
