@@ -10,7 +10,7 @@ Expires: August 2, 2020                                        CableLabs
 
 
          Composite Keys and Signatures For Use In Internet PKI
-                  draft-ounsworth-pq-composite-sigs-02
+                  draft-ounsworth-pq-composite-sigs-03
 
 Abstract
 
@@ -153,15 +153,15 @@ Internet-Draft             PQ Composite Certs               January 2020
    structures.  While the CompositePublicKey structure defined herein is
    equally applicable to asymmetric encryption keys, this document is
    intentionally restricted to signatures.  The combiner functions for
-   composite encryption and KEMs is being addressed in other drafts.
+   composite encryption and KEMs is being addressed in other drafts such
+   as [I-D.draft-stebila-tls-hybrid-design].
 
 1.1.  Terminology
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in BCP
-   14 [RFC2119] [RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
+
 
 
 
@@ -169,6 +169,9 @@ Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 3]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
+
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
 
    The following terms are used in this document:
 
@@ -215,9 +218,6 @@ Internet-Draft             PQ Composite Certs               January 2020
 
    o  The CompositePrivateKey carries all the private keys associated
       with an identity within a single private key structure.
-
-
-
 
 
 
@@ -1014,6 +1014,11 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 9.1.  Normative References
 
+   [I-D.stebila-tls-hybrid-design]
+              Steblia, D., Fluhrer, S., and S. Gueron, "Design issues
+              for hybrid key exchange in TLS 1.3", draft-stebila-tls-
+              hybrid-design-01 (work in progress), July 2019.
+
    [RFC1421]  Linn, J., "Privacy Enhancement for Internet Electronic
               Mail: Part I: Message Encryption and Authentication
               Procedures", RFC 1421, DOI 10.17487/RFC1421, February
@@ -1053,11 +1058,6 @@ Internet-Draft             PQ Composite Certs               January 2020
               DOI 10.17487/RFC5958, August 2010,
               <https://www.rfc-editor.org/info/rfc5958>.
 
-   [RFC7468]  Josefsson, S. and S. Leonard, "Textual Encodings of PKIX,
-              PKCS, and CMS Structures", RFC 7468, DOI 10.17487/RFC7468,
-              April 2015, <https://www.rfc-editor.org/info/rfc7468>.
-
-
 
 
 
@@ -1065,6 +1065,10 @@ Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 19]
 
 Internet-Draft             PQ Composite Certs               January 2020
 
+
+   [RFC7468]  Josefsson, S. and S. Leonard, "Textual Encodings of PKIX,
+              PKCS, and CMS Structures", RFC 7468, DOI 10.17487/RFC7468,
+              April 2015, <https://www.rfc-editor.org/info/rfc7468>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -1108,10 +1112,6 @@ Authors' Addresses
    CableLabs
 
    Email: director@openca.org
-
-
-
-
 
 
 

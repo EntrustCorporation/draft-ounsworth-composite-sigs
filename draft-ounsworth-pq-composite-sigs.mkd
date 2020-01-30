@@ -2,7 +2,7 @@
 title: Composite Keys and Signatures For Use In Internet PKI
 abbrev: PQ Composite Certs
 # <!-- EDNOTE: Edits the draft name -->
-docname: draft-ounsworth-pq-composite-sigs-02
+docname: draft-ounsworth-pq-composite-sigs-03
 # <!-- date: 2012-01-13 -->
 # <!-- date: 2012-01 -->
 # <!-- date: 2012 -->
@@ -50,6 +50,7 @@ normative:
   RFC7468:
   RFC8174:
   RFC8411:
+  I-D.draft-stebila-tls-hybrid-design-01:
   X.690:
       title: "Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)"
       date: November 2015
@@ -95,7 +96,7 @@ The deployment of composite public keys and composite signatures using post-quan
 
 This document provides a mechanism to address algorithm strength uncertainty by providing formats for encoding multiple public keys and multiple signature values into existing public key and signature fields, as well as an algorithm for validating a composite signature. The issue of backwards compatibility is left open to be addressed in separate draft(s).
 
-This document is intended for general applicability anywhere that public key structures or digital signatures are used within PKIX structures. While the CompositePublicKey structure defined herein is equally applicable to asymmetric encryption keys, this document is intentionally restricted to signatures. The combiner functions for composite encryption and KEMs is being addressed in other drafts.
+This document is intended for general applicability anywhere that public key structures or digital signatures are used within PKIX structures. While the CompositePublicKey structure defined herein is equally applicable to asymmetric encryption keys, this document is intentionally restricted to signatures. The combiner functions for composite encryption and KEMs is being addressed in other drafts such as [I-D.draft-stebila-tls-hybrid-design].
 
 
 <!-- End of Introduction section -->
