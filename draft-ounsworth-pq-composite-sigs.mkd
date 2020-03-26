@@ -321,7 +321,7 @@ sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
 }
 ~~~
 
-The id-alg-composite object identifier MUST be used to identify when a signature can be verified with a CompositePublicKey with IDENTIFIER id-alg-composit. The following algorithm parameters MUST be included:
+The id-alg-composite object identifier MUST be used to identify when a signature can be verified with a CompositePublicKey with IDENTIFIER id-alg-composite. The following algorithm parameters MUST be included:
 
 ~~~ asn.1
 CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
