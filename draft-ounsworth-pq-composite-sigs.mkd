@@ -95,7 +95,7 @@ The deployment of composite public keys and composite signatures using post-quan
 
 This document provides a mechanism to address algorithm strength uncertainty by providing formats for encoding multiple public keys, private keys and signature values into existing public key and signature fields, as well as an algorithm for validating a composite signature. The issue of backwards compatibility is left open to be addressed in separate draft(s).
 
-This document is intended for general applicability anywhere that public key structures or digital signatures are used within PKIX structures. While the CompositePublicKey structure defined herein is equally applicable to asymmetric encryption keys, this document is intentionally restricted to signatures.
+This document is intended for general applicability anywhere that public key structures or digital signatures are used within PKIX structures. While the CompositePublicKey structure defined herein could be used to carry encryption public keys, the semantics are beyond the scope of this document.
 
 
 <!-- End of Introduction section -->
