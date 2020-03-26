@@ -159,9 +159,9 @@ Internet-Draft             PQ Composite Certs                 March 2020
 
    This document is intended for general applicability anywhere that
    public key structures or digital signatures are used within PKIX
-   structures.  While the CompositePublicKey structure defined herein is
-   equally applicable to asymmetric encryption keys, this document is
-   intentionally restricted to signatures.
+   structures.  While the CompositePublicKey structure defined herein
+   could be used to carry encryption public keys, the semantics are
+   beyond the scope of this document.
 
 
 
@@ -351,8 +351,8 @@ Internet-Draft             PQ Composite Certs                 March 2020
 
    Each element of a CompositePublicKey is a SubjectPublicKeyInfo object
    one of the component public keys.  When the CompositePublicKey must
-   be provided in octet string or bit string format, the data structure
-   is encoded as specified in Section 2.5.
+   be provided as an octet string, the data structure is encoded as
+   specified in Section 2.5.
 
 2.2.3.  Explicit Composite Public Key
 
@@ -464,7 +464,7 @@ Internet-Draft             PQ Composite Certs                 March 2020
 
    Many protocol specifications will require that the composite public
    key, composite private key, and composite signature data structures
-   be represented by an octet string or bit string.
+   be represented by an octet string.
 
    When an octet string is required, the DER encoding of the composite
    data structure SHALL be used directly.

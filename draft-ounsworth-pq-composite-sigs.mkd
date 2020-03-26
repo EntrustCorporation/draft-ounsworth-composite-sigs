@@ -240,7 +240,7 @@ A composite public key MUST contain at least one component public key.
 
 A CompositePublicKey MUST NOT contain a component public key which itself describes a composite key; ie recursive CompositePublicKeys are not allowed
 
-Each element of a CompositePublicKey is a SubjectPublicKeyInfo object one of the component public keys. When the CompositePublicKey must be provided in octet string or bit string format, the data structure is encoded as specified in {{sec-encoding-rules}}.
+Each element of a CompositePublicKey is a SubjectPublicKeyInfo object one of the component public keys. When the CompositePublicKey must be provided as an octet string, the data structure is encoded as specified in {{sec-encoding-rules}}.
 
 
 ### Explicit Composite Public Key
@@ -323,7 +323,7 @@ The output of the composite signature algorithm SHOULD be the DER encoding of th
 ## Encoding Rules {#sec-encoding-rules}
 <!-- EDNOTE 7: Examples of how other specifications specify how a data structure is converted to a bit string can be found in RFC 2313, section 10.1.4, 3279 section 2.3.5, and RFC 4055, section 3.2. -->
 
-Many protocol specifications will require that the composite public key, composite private key, and composite signature data structures be represented by an octet string or bit string.
+Many protocol specifications will require that the composite public key, composite private key, and composite signature data structures be represented by an octet string.
 
 When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.
 
