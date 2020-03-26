@@ -5,8 +5,8 @@
 LAMPS                                              M. Ounsworth (Editor)
 Internet-Draft                                          Entrust Datacard
 Intended status: Standards Track                                 M. Pala
-Expires: August 2, 2020                                        CableLabs
-                                                        January 30, 2020
+Expires: September 27, 2020                                    CableLabs
+                                                          March 26, 2020
 
 
          Composite Keys and Signatures For Use In Internet PKI
@@ -46,16 +46,16 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 2, 2020.
+   This Internet-Draft will expire on September 27, 2020.
 
 
 
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 1]
+Ounsworth (Editor) & PaExpires September 27, 2020               [Page 1]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
 Copyright Notice
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 2]
+Ounsworth (Editor) & PaExpires September 27, 2020               [Page 2]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
 1.  Introduction
@@ -142,9 +142,9 @@ Internet-Draft             PQ Composite Certs               January 2020
       quantum algorithms will not be supported by all clients.
 
    This document provides a mechanism to address algorithm strength
-   uncertainty by providing formats for encoding multiple public keys
-   and multiple signature values into existing public key and signature
-   fields, as well as an algorithm for validatinfg a composite
+   uncertainty by providing formats for encoding multiple public keys,
+   private keys and signature values into existing public key and
+   signature fields, as well as an algorithm for validating a composite
    signature.  The issue of backwards compatibility is left open to be
    addressed in separate draft(s).
 
@@ -165,9 +165,9 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 3]
+Ounsworth (Editor) & PaExpires September 27, 2020               [Page 3]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
    14 [RFC2119] [RFC8174] when, and only when, they appear in all
@@ -221,9 +221,9 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 4]
+Ounsworth (Editor) & PaExpires September 27, 2020               [Page 4]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
    o  The CompositeSignatureValue, carries a sequence of signatures that
@@ -277,9 +277,9 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 5]
+Ounsworth (Editor) & PaExpires September 27, 2020               [Page 5]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
 2.2.1.  Key Usage Bits
@@ -333,9 +333,9 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 6]
+Ounsworth (Editor) & PaExpires September 27, 2020               [Page 6]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
 2.4.  Composite Private Key
@@ -389,9 +389,9 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 7]
+Ounsworth (Editor) & PaExpires September 27, 2020               [Page 7]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
    value produced by each component algorithm, and in the same order as
@@ -445,9 +445,9 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 8]
+Ounsworth (Editor) & PaExpires September 27, 2020               [Page 8]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
   Input:
@@ -501,9 +501,9 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                 [Page 9]
+Ounsworth (Editor) & PaExpires September 27, 2020               [Page 9]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
 Input:
@@ -557,9 +557,9 @@ Signature Verification Procedure::
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 10]
+Ounsworth (Editor) & PaExpires September 27, 2020              [Page 10]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
 4.  In Practice
@@ -613,9 +613,9 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 11]
+Ounsworth (Editor) & PaExpires September 27, 2020              [Page 11]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
    The parameters of the privateKeyAlgorithm SHALL be a sequence of
@@ -669,9 +669,9 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 12]
+Ounsworth (Editor) & PaExpires September 27, 2020              [Page 12]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
 5.  IANA Considerations
@@ -725,9 +725,9 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 13]
+Ounsworth (Editor) & PaExpires September 27, 2020              [Page 13]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
    properties of the objects (if any) where the CompositePrivateKey is
@@ -781,9 +781,9 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 14]
+Ounsworth (Editor) & PaExpires September 27, 2020              [Page 14]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
          { iso(1) identified-organization(3) dod(6) internet(1)
@@ -837,9 +837,9 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 15]
+Ounsworth (Editor) & PaExpires September 27, 2020              [Page 15]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
        SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
@@ -893,9 +893,9 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 16]
+Ounsworth (Editor) & PaExpires September 27, 2020              [Page 16]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
    [RFC1421]  Linn, J., "Privacy Enhancement for Internet Electronic
@@ -949,9 +949,9 @@ Internet-Draft             PQ Composite Certs               January 2020
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 17]
+Ounsworth (Editor) & PaExpires September 27, 2020              [Page 17]
 
-Internet-Draft             PQ Composite Certs               January 2020
+Internet-Draft             PQ Composite Certs                 March 2020
 
 
    [RFC8411]  Schaad, J. and R. Andrews, "IANA Registration for the
@@ -1005,4 +1005,4 @@ Authors' Addresses
 
 
 
-Ounsworth (Editor) & PalaExpires August 2, 2020                [Page 18]
+Ounsworth (Editor) & PaExpires September 27, 2020              [Page 18]
