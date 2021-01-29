@@ -1,0 +1,65 @@
+COMPOSITESIGALGS { 1 2 3 4 }
+
+DEFINITIONS IMPLICIT TAGS ::=
+
+BEGIN
+
+-- EXPORTS ALL --
+
+-- faked
+
+id-entrust-sha256RSAwithsha384ECDSA OBJECT IDENTIFIER ::= { 1 2 3 4 }
+
+RSAParameters ::= NULL
+
+ECParameters ::= SEQUENCE {
+    a OCTET STRING,
+    b OCTET STRING,
+    p OCTET STRING,
+    n INTEGER
+}
+
+-- Borrowed from RFC5180
+AlgorithmIdentifier  ::=  SEQUENCE  {
+        algorithm               OBJECT IDENTIFIER,
+        parameters              ANY DEFINED BY algorithm OPTIONAL  }
+
+
+EXPLICIT-COMPOSITE-SIGNATURE-ALGORITHM ::= CLASS {
+   &id        OBJECT IDENTIFIER,
+   &FirstAlgorithmParams OPTIONAL,
+   &SecondAlgorithmParams OPTIONAL
+} WITH SYNTAX {
+  ID &id
+  FIRSTPARAMS &FirstAlgorithmParams
+  SECONDPARAMS &SecondAlgorithmParams
+}
+
+
+-- For testing purposes we define the following pair of RSA and ECDSA,
+-- but we intend for this draft to be extended to add additional pairs to this list
+
+ExplicitCompositeAlgorithms EXPLICIT-COMPOSITE-SIGNATURE-ALGORITHM ::= {
+  {ID id-entrust-sha256RSAwithsha384ECDSA, FIRSTPARAMS RSAParameters, SECONDPARAMS ECParameters}
+}
+
+
+ExplicitCompositeSignatureValue ::= SEQUENCE {
+  firstSignatureValue   OCTET STRING,
+  secondSignatureValue  OCTET STRING
+}
+
+ExplicitCompositeSignatureParams ::= SEQUENCE {
+  firstAlgorithmParams  EXPLICIT-COMPOSITE-SIGNATURE-ALGORITHM.&FirstAlgorithmParams ({ExplicitCompositeAlgorithms}),
+  secondAlgorithmParams EXPLICIT-COMPOSITE-SIGNATURE-ALGORITHM.&SecondAlgorithmParams ({ExplicitCompositeAlgorithms}{@firstAlgorithmParams})
+}
+
+sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
+    IDENTIFIER EXPLICIT-COMPOSITE-SIGNATURE-ALGORITHM.&id
+    VALUE ExplicitCompositeSignatureValue
+    PARAMS ARE optional
+    PUBLIC-KEYS { pk-Composite }
+    SMIME-CAPS { IDENTIFIED BY id-alg-explicit }
+}
+
+END

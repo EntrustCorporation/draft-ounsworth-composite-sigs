@@ -5,8 +5,8 @@
 LAMPS                                              M. Ounsworth (Editor)
 Internet-Draft                                          Entrust Datacard
 Intended status: Standards Track                                 M. Pala
-Expires: January 29, 2021                                      CableLabs
-                                                           July 28, 2020
+Expires: January 23, 2021                                      CableLabs
+                                                           July 22, 2020
 
 
          Composite Keys and Signatures For Use In Internet PKI
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 29, 2021.
+   This Internet-Draft will expire on January 23, 2021.
 
 
 
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021                [Page 1]
+Ounsworth (Editor) & PalExpires January 23, 2021                [Page 1]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021                [Page 2]
+Ounsworth (Editor) & PalExpires January 23, 2021                [Page 2]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -165,7 +165,7 @@ Internet-Draft             PQ Composite Certs                  July 2020
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021                [Page 3]
+Ounsworth (Editor) & PalExpires January 23, 2021                [Page 3]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -221,7 +221,7 @@ Internet-Draft             PQ Composite Certs                  July 2020
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021                [Page 4]
+Ounsworth (Editor) & PalExpires January 23, 2021                [Page 4]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -277,7 +277,7 @@ Internet-Draft             PQ Composite Certs                  July 2020
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021                [Page 5]
+Ounsworth (Editor) & PalExpires January 23, 2021                [Page 5]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -333,7 +333,7 @@ Internet-Draft             PQ Composite Certs                  July 2020
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021                [Page 6]
+Ounsworth (Editor) & PalExpires January 23, 2021                [Page 6]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -389,7 +389,7 @@ Internet-Draft             PQ Composite Certs                  July 2020
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021                [Page 7]
+Ounsworth (Editor) & PalExpires January 23, 2021                [Page 7]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -445,7 +445,7 @@ Internet-Draft             PQ Composite Certs                  July 2020
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021                [Page 8]
+Ounsworth (Editor) & PalExpires January 23, 2021                [Page 8]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -501,7 +501,7 @@ Internet-Draft             PQ Composite Certs                  July 2020
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021                [Page 9]
+Ounsworth (Editor) & PalExpires January 23, 2021                [Page 9]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -557,7 +557,7 @@ Signature Verification Procedure::
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021               [Page 10]
+Ounsworth (Editor) & PalExpires January 23, 2021               [Page 10]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -613,7 +613,7 @@ Internet-Draft             PQ Composite Certs                  July 2020
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021               [Page 11]
+Ounsworth (Editor) & PalExpires January 23, 2021               [Page 11]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -669,7 +669,7 @@ Internet-Draft             PQ Composite Certs                  July 2020
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021               [Page 12]
+Ounsworth (Editor) & PalExpires January 23, 2021               [Page 12]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -725,7 +725,7 @@ Internet-Draft             PQ Composite Certs                  July 2020
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021               [Page 13]
+Ounsworth (Editor) & PalExpires January 23, 2021               [Page 13]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -781,7 +781,7 @@ Internet-Draft             PQ Composite Certs                  July 2020
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021               [Page 14]
+Ounsworth (Editor) & PalExpires January 23, 2021               [Page 14]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -837,7 +837,7 @@ Internet-Draft             PQ Composite Certs                  July 2020
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021               [Page 15]
+Ounsworth (Editor) & PalExpires January 23, 2021               [Page 15]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -893,7 +893,7 @@ Internet-Draft             PQ Composite Certs                  July 2020
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021               [Page 16]
+Ounsworth (Editor) & PalExpires January 23, 2021               [Page 16]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -949,7 +949,7 @@ Internet-Draft             PQ Composite Certs                  July 2020
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021               [Page 17]
+Ounsworth (Editor) & PalExpires January 23, 2021               [Page 17]
 
 Internet-Draft             PQ Composite Certs                  July 2020
 
@@ -1005,4 +1005,4 @@ Authors' Addresses
 
 
 
-Ounsworth (Editor) & PalExpires January 29, 2021               [Page 18]
+Ounsworth (Editor) & PalExpires January 23, 2021               [Page 18]

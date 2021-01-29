@@ -1,0 +1,27 @@
+PKIX1Explicit-2009 { iso(1) identified-organization(3) dod(6) internet(1) security(5) mechanisms(5) pkix(7) id-mod(0) id-mod-pkix1-explicit-02(51) }
+
+DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+PRODUCT ::= CLASS {
+  &code	       INTEGER (1..99999) UNIQUE,
+  &description	VisibleString (SIZE (1..100)),
+  &price	      REAL
+} WITH SYNTAX { CODE &code , DESCRIPTION &description , PRICE &price }
+
+ProductCatalog PRODUCT ::= {
+  {CODE 101, DESCRIPTION "iPhone v4", PRICE 250.00} |
+  {CODE 102, DESCRIPTION "Android Galaxy", PRICE 250.00} |
+  {CODE 103, DESCRIPTION "Win7 Nokia", PRICE 150.00}
+}
+
+Item ::= SEQUENCE {
+  itemCode        PRODUCT.&code ({ProductCatalog}),
+  itemDescription	PRODUCT.&description ({ProductCatalog}{@itemCode}),
+  quantity	       INTEGER (1..1000),
+  unitPrice       PRODUCT.&price ({ProductCatalog}{@itemCode}),
+  itemTotal	      REAL,
+  isTaxable	      BOOLEAN
+}
+
+
+END
