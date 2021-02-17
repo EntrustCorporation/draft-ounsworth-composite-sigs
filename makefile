@@ -27,5 +27,5 @@ all: xml
 
 
 clean:
-	rm -f $(docName).xml $(docName).html # $(docName).txt
-	# Explicitely not deleting the .txt because that should be committed to git for other people's ease of editing.
+	rm -f $(docName).xml #$(docName).html # $(docName).txt
+	# Explicitely not deleting the .html or .txt because that should be committed to git for other people's ease of editing.
