@@ -77,7 +77,7 @@ informative:
 --- abstract
 With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite public keys and composite signature data.
 
-This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. This document also defines algorithms for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification algorithms are defined.
+This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined.
 
 <!-- End of Abstract -->
 
@@ -93,7 +93,7 @@ The deployment of composite public keys and composite signatures using post-quan
 - Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
 - Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
 
-This document provides a mechanism to address algorithm strength uncertainty by buliding on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for encoding multiple signature values into existing public signature fields, as well as an algorithm for validating a composite signature. The issue of backwards compatibility is left open to be addressed in separate draft(s).
+This document provides a mechanism to address algorithm strength uncertainty by buliding on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for encoding multiple signature values into existing public signature fields, as well as a process for validating a composite signature. The issue of backwards compatibility is left open to be addressed in separate draft(s).
 
 This document is intended for general applicability anywhere that digital signatures are used within PKIX structures.
 
@@ -242,17 +242,17 @@ When a bit string is required, the octets of the DER encoded composite data stru
 
 In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.
 
-# Composite Signature Algorithm {#sec-composite-signature-algorithm}
+# Composite Signature Processes {#sec-composite-signature-algorithm}
 
-This section specifies the algorithms for generating and verifying composite signatures.
+This section specifies the processes for generating and verifying composite signatures.
 
-This algorithm addresses algorithm strength uncertainty by providing the verifier with parallel signatures from all the component signature algorithms; thus breaking the composite signature would require breaking all of the component signatures.
+This process addresses algorithm strength uncertainty by providing the verifier with parallel signatures from all the component signature algorithms; thus breaking the composite signature would require breaking all of the component signatures.
 
 ## Composite Signature Generation {#sec-comp-sig-gen}
 
 Generation of a composite signature involves applying each component algorithm's signature routine to the input message according to its specification, and then placing each component signature value into the CompositeSignatureValue structure defined in {{sec-composite-sig-structs}}.
 
-The following algorithm is used to generate composite signature values.
+The following process is used to generate composite signature values.
 
 ~~~
 Input:
@@ -300,7 +300,7 @@ Verification of a composite signature involves applying each component algorithm
 
 In the absence of an application profile specifying otherwise, compliant applications MUST output "Valid signature" (true) if and only if all component signatures were successfully validated, and "Invalid signature" (false) otherwise.
 
-The following algorithm is used to perform this verification.
+The following process is used to perform this verification.
 
 
 
@@ -343,11 +343,10 @@ Signature Verification Procedure::
 
 Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
 
-It is expected that some use-cases for algorithm migration or high performance will require verifiers to succeed when only a subset of the component algorithms have been verified. Defining this verification behaviour is out of scope for this document, and falls to an application profile.
 
 ### Composite-OR Signature Verification {#sec-comp-or-sig-verify}
 
-When the public key associated with the signature being verified has algorithm id-composite-or-key, then an alternate verification algorithms MAY be used, at the discretion of the implementor. In this section we provide some examples of alternate verification processes.
+When the public key associated with the signature being verified has algorithm id-composite-or-key, then an alternate verification processes MAY be used, at the discretion of the implementor. In this section we provide some examples of alternate verification processes.
 
 If the signature is a traditional (non-composite) algorithm and value or a composite signature with a single component, then it MAY be considered valid if it verifies under one of the component keys.
 
@@ -383,6 +382,7 @@ EDNOTE 10: Possible topics to address:
 
 
 ## Cryptographic protocols
+
 This section talks about how protocols like (D)TLS and IKEv2 are affected by this specifications. It will not attempt to solve all these problems, but it will explain the rationale, how things will work and what open problems need to be solved. Obvious issues that need to be discussed.
 
 - How does the protocol declare support for composite signatures?  TLS has hooks for declaring support for specific signature algorithms, however it would need to be extended, because the client would need to declare support for both the composite infrastructure, as well as for the various component signature algorithms.
