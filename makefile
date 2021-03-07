@@ -6,14 +6,14 @@ default: all
 
 txt: $(docName).txt
 
-draft-ounsworth-pq-composite-sigs.txt: $(docName).mkd
+$(docName).txt: $(docName).mkd
 	kdrfc $(docName).mkd
 
 
 
 xml: $(docName).xml
 
-draft-ounsworth-pq-composite-sigs.xml: $(docName).mkd
+$(docName).xml: $(docName).mkd
 	 kramdown-rfc2629 $(docName).mkd > $(docName).xml
 
 
