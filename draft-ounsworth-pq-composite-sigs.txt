@@ -5,8 +5,8 @@
 LAMPS                                              M. Ounsworth (Editor)
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                                 M. Pala
-Expires: August 21, 2021                                       CableLabs
-                                                       February 17, 2021
+Expires: September 8, 2021                                     CableLabs
+                                                          March 07, 2021
 
 
          Composite Keys and Signatures For Use In Internet PKI
@@ -46,16 +46,16 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 21, 2021.
+   This Internet-Draft will expire on September 8, 2021.
 
 
 
 
 
 
-Ounsworth (Editor) & PalaExpires August 21, 2021                [Page 1]
+Ounsworth (Editor) & PalExpires September 8, 2021               [Page 1]
 
-Internet-Draft             PQ Composite Certs              February 2021
+Internet-Draft             PQ Composite Certs                 March 2021
 
 
 Copyright Notice
@@ -75,45 +75,50 @@ Copyright Notice
 
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Composite Structures  . . . . . . . . . . . . . . . . . . . .   4
      2.1.  Algorithm Identifier  . . . . . . . . . . . . . . . . . .   5
      2.2.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   5
        2.2.1.  Key Usage Bits  . . . . . . . . . . . . . . . . . . .   5
      2.3.  Composite Signature . . . . . . . . . . . . . . . . . . .   6
-     2.4.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   6
+     2.4.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   7
    3.  Composite Signature Algorithm . . . . . . . . . . . . . . . .   7
      3.1.  Composite Signature Generation  . . . . . . . . . . . . .   7
-     3.2.  Composite Signature Verification  . . . . . . . . . . . .   8
-   4.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     4.1.  Cryptographic protocols . . . . . . . . . . . . . . . . .  10
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  11
-     6.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  11
-   7.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  12
-     7.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  12
-     7.2.  Intellectual Property Considerations  . . . . . . . . . .  13
-   8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  13
-     8.1.  Making contributions  . . . . . . . . . . . . . . . . . .  14
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  14
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  15
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  16
+       3.1.1.  Composite-OR Signature Generation . . . . . . . . . .   8
+     3.2.  Composite Signature Verification  . . . . . . . . . . . .   9
+       3.2.1.  Composite-OR Signature Verification . . . . . . . . .  11
+   4.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  11
+     4.1.  Cryptographic protocols . . . . . . . . . . . . . . . . .  12
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
+     6.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  13
+   7.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  13
+     7.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  13
+     7.2.  Intellectual Property Considerations  . . . . . . . . . .  15
+   8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  15
+     8.1.  Making contributions  . . . . . . . . . . . . . . . . . .  15
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  16
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  17
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
+
+
+
+
+
+
+
+Ounsworth (Editor) & PalExpires September 8, 2021               [Page 2]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
 
 1.  Introduction
 
    During the transition to post-quantum cryptography, there will be
    uncertainty as to the strength of cryptographic algorithms; we will
    no longer fully trust traditional cryptography such as RSA, Diffie-
-
-
-
-Ounsworth (Editor) & PalaExpires August 21, 2021                [Page 2]
-
-Internet-Draft             PQ Composite Certs              February 2021
-
-
    Hellman, DSA and their elliptic curve variants, but we will also not
    fully trust their post-quantum replacements until they have had
    sufficient scrutiny.  Unlike previous cryptographic algorithm
@@ -156,19 +161,21 @@ Internet-Draft             PQ Composite Certs              February 2021
 
    The following terms are used in this document:
 
+
+
+
+
+Ounsworth (Editor) & PalExpires September 8, 2021               [Page 3]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
+
    ALGORITHM: An information object class for identifying the type of
    cryptographic operation to be performed.  This document is primarily
    concerned with algorithms for producing digital signatures, though
    the public key structure could just as easily hold encryption keys.
 
    BER: Basic Encoding Rules (BER) as defined in [X.690].
-
-
-
-Ounsworth (Editor) & PalaExpires August 21, 2021                [Page 3]
-
-Internet-Draft             PQ Composite Certs              February 2021
-
 
    COMPONENT ALGORITHM: A single basic algorithm which is contained
    within a composite algorithm.
@@ -211,6 +218,14 @@ Internet-Draft             PQ Composite Certs              February 2021
    EDNOTE 2: the choice to define composite algorithm parameters as a
    sequence inside the existing fields avoids the exponential
    proliferation of OIDs that are needed for each combination of
+
+
+
+Ounsworth (Editor) & PalExpires September 8, 2021               [Page 4]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
+
    signature algorithms in other schemes for achieving multi-key
    certificates.  This scheme also naturally extends from 2-keypair to
    n-keypair keys and certificates.
@@ -218,14 +233,6 @@ Internet-Draft             PQ Composite Certs              February 2021
    EDNOTE 2a: We have heard community feedback that the ASN.1 structures
    presented here are too flexible in that allow arbitrary combinations
    of an arbitrary number of signature algorithms.  The feedback is that
-
-
-
-Ounsworth (Editor) & PalaExpires August 21, 2021                [Page 4]
-
-Internet-Draft             PQ Composite Certs              February 2021
-
-
    this is too much of a "footgun" for implementors and sysadmins.  We
    are working on an alternative formulation using ASN.1 information
    object classes that allow for compiling explicit pairs of
@@ -266,21 +273,19 @@ Internet-Draft             PQ Composite Certs              February 2021
        nonRepudiation; and
        digitalSignature.
 
+
+
+
+
+Ounsworth (Editor) & PalExpires September 8, 2021               [Page 5]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
+
    If the keyUsage extension is present in a certification authority
    certificate whose keys are being used with id-alg-composite
    signatures, then the keyUsage extension MUST contain one or more of
    the following values:
-
-
-
-
-
-
-
-Ounsworth (Editor) & PalaExpires August 21, 2021                [Page 5]
-
-Internet-Draft             PQ Composite Certs              February 2021
-
 
        nonRepudiation;
        digitalSignature;
@@ -324,19 +329,20 @@ Internet-Draft             PQ Composite Certs              February 2021
    gracefully handle variable-length signature values by taking
    advantage of ASN.1's build-in length fields.
 
+
+
+
+
+Ounsworth (Editor) & PalExpires September 8, 2021               [Page 6]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
+
 2.4.  Encoding Rules
 
    Many protocol specifications will require that the composite public
    key, composite private key, and composite signature data structures
    be represented by an octet string or bit string.
-
-
-
-
-Ounsworth (Editor) & PalaExpires August 21, 2021                [Page 6]
-
-Internet-Draft             PQ Composite Certs              February 2021
-
 
    When an octet string is required, the DER encoding of the composite
    data structure SHALL be used directly.
@@ -383,15 +389,9 @@ Internet-Draft             PQ Composite Certs              February 2021
 
 
 
-
-
-
-
-
-
-Ounsworth (Editor) & PalaExpires August 21, 2021                [Page 7]
+Ounsworth (Editor) & PalExpires September 8, 2021               [Page 7]
 
-Internet-Draft             PQ Composite Certs              February 2021
+Internet-Draft             PQ Composite Certs                 March 2021
 
 
   Input:
@@ -429,6 +429,37 @@ Internet-Draft             PQ Composite Certs              February 2021
    securely verifying such a "subset signature" is high and out of scope
    for this document.
 
+3.1.1.  Composite-OR Signature Generation
+
+   If the algorithm ID of the public key associated with this signature
+   is id-composite-or-key then the signer MAY use only a subset of the
+   component keys and therefore produce fewer signatures than the number
+   of component keys.
+
+   In the case where only one signature is produced, this MAY be placed
+   into either traditional fields such as signatureAlgorithm and
+   signatureValue as per [RFC5280], or a sa-CompositeSignature and
+   CompositeSignatureValue with a single component.
+
+
+
+
+
+Ounsworth (Editor) & PalExpires September 8, 2021               [Page 8]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
+
+   The design intent of this mode is to support migration scenarios
+   where a end entity has been issued keys on algorithms that either
+   itself or the peer with which it is communicating do not (yet)
+   support.
+
+   EDNOTE: Do we need to specify the semantics of generating an "n of m"
+   subset signature?  I suspect that specifying this in general will be
+   a rat's nest of edge cases, so I propose to "leave this to the
+   implementor".
+
 3.2.  Composite Signature Verification
 
    Verification of a composite signature involves applying each
@@ -445,9 +476,34 @@ Internet-Draft             PQ Composite Certs              February 2021
 
 
 
-Ounsworth (Editor) & PalaExpires August 21, 2021                [Page 8]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth (Editor) & PalExpires September 8, 2021               [Page 9]
 
-Internet-Draft             PQ Composite Certs              February 2021
+Internet-Draft             PQ Composite Certs                 March 2021
 
 
 Input:
@@ -501,10 +557,37 @@ Signature Verification Procedure::
 
 
 
-Ounsworth (Editor) & PalaExpires August 21, 2021                [Page 9]
+Ounsworth (Editor) & PalExpires September 8, 2021              [Page 10]
 
-Internet-Draft             PQ Composite Certs              February 2021
+Internet-Draft             PQ Composite Certs                 March 2021
 
+
+3.2.1.  Composite-OR Signature Verification
+
+   When the public key associated with the signature being verified has
+   algorithm id-composite-or-key, then an alternate verification
+   algorithms MAY be used, at the discretion of the implementor.  In
+   this section we provide some examples of alternate verification
+   processes.
+
+   If the signature is a traditional (non-composite) algorithm and value
+   or a composite signature with a single component, then it MAY be
+   considered valid if it verifies under one of the component keys.
+
+   If the signature is composite, then the implementor MAY implement
+   policy for which combinations are acceptable.
+
+   EDNOTE: Does this mean Composite-OR end entity certificates need to
+   be issued by a PKI that is marked as Composite-OR all the way to the
+   top so that verifiers that do not support all the algorithms don't
+   fail?  Need to think more about the security implications of allowing
+   a Composite-OR in an end entity cert implicitely turning all
+   Composite algIDs into Composite-OR algIDs in its cert chain.
+
+   EDNOTE: Do we need to specify the semantics of verifying an "n of m"
+   subset signature?  I suspect that specifying this in general will be
+   a rat's nest of edge cases, so I propose to "leave this to the
+   implementor".
 
 4.  In Practice
 
@@ -527,6 +610,13 @@ Internet-Draft             PQ Composite Certs              February 2021
       the same algorithms.  The root cert SHOULD NOT be transferred in
       the authentication exchange to save transport overhead and thus it
       can be different than the intermediate and leaf certs.
+
+
+
+Ounsworth (Editor) & PalExpires September 8, 2021              [Page 11]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
 
    o  We could talk about overhead (size and processing).
 
@@ -555,13 +645,6 @@ Internet-Draft             PQ Composite Certs              February 2021
       would be to have the server sign using its composite public key;
       is this sufficient.
 
-
-
-Ounsworth (Editor) & PalaExpires August 21, 2021               [Page 10]
-
-Internet-Draft             PQ Composite Certs              February 2021
-
-
    o  Overhead; including certificate size, signature processing time,
       and size of the signature.
 
@@ -580,6 +663,16 @@ Internet-Draft             PQ Composite Certs              February 2021
    id-alg-composite OBJECT IDENTIFIER ::= {
        iso(1) identified-organization(3) dod(6) internet(1) security(5)
        mechanisms(5) pkix(7) algorithms(6) composite(??) }
+
+
+
+
+
+
+Ounsworth (Editor) & PalExpires September 8, 2021              [Page 12]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
 
 6.  Security Considerations
 
@@ -610,14 +703,6 @@ Internet-Draft             PQ Composite Certs              February 2021
 
    While intentionally not specified in this document, implementors
    should put careful thought into implementing a meaningfull policy
-
-
-
-Ounsworth (Editor) & PalaExpires August 21, 2021               [Page 11]
-
-Internet-Draft             PQ Composite Certs              February 2021
-
-
    mechinism within the context of their signature verification engines,
    for example only algorithms that provide similar security levels
    should be combined together.
@@ -637,6 +722,14 @@ Internet-Draft             PQ Composite Certs              February 2021
 
    IMPORTS
      PUBLIC-KEY, SIGNATURE-ALGORITHM
+
+
+
+Ounsworth (Editor) & PalExpires September 8, 2021              [Page 13]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
+
        FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
          { iso(1) identified-organization(3) dod(6) internet(1)
            security(5) mechanisms(5) pkix(7) id-mod(0)
@@ -666,14 +759,6 @@ Internet-Draft             PQ Composite Certs              February 2021
 
    pk-Composite PUBLIC-KEY ::= {
        IDENTIFIER id-alg-composite
-
-
-
-Ounsworth (Editor) & PalaExpires August 21, 2021               [Page 12]
-
-Internet-Draft             PQ Composite Certs              February 2021
-
-
        KEY CompositePublicKey
        PARAMS ARE absent
        PRIVATE-KEY CompositePrivateKey
@@ -693,6 +778,13 @@ Internet-Draft             PQ Composite Certs              February 2021
        PARAMS TYPE CompositeParams ARE required
        PUBLIC-KEYS { pk-Composite }
        SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
+
+
+
+Ounsworth (Editor) & PalExpires September 8, 2021              [Page 14]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
 
    CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
 
@@ -722,14 +814,6 @@ Internet-Draft             PQ Composite Certs              February 2021
    Systems), Panos Kampanakis (Cisco Systems), Daniel Van Geest (ISARA),
    and Tim Hollebeek (Digicert).
 
-
-
-
-Ounsworth (Editor) & PalaExpires August 21, 2021               [Page 13]
-
-Internet-Draft             PQ Composite Certs              February 2021
-
-
    We are grateful to all, including any contributors who may have been
    inadvertently omitted from this list.
 
@@ -746,6 +830,17 @@ Internet-Draft             PQ Composite Certs              February 2021
    https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs
 
 9.  References
+
+
+
+
+
+
+
+Ounsworth (Editor) & PalExpires September 8, 2021              [Page 15]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
 
 9.1.  Normative References
 
@@ -774,18 +869,6 @@ Internet-Draft             PQ Composite Certs              February 2021
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/info/rfc4648>.
 
-
-
-
-
-
-
-
-Ounsworth (Editor) & PalaExpires August 21, 2021               [Page 14]
-
-Internet-Draft             PQ Composite Certs              February 2021
-
-
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
               Infrastructure Certificate and Certificate Revocation List
@@ -807,6 +890,13 @@ Internet-Draft             PQ Composite Certs              February 2021
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+
+
+Ounsworth (Editor) & PalExpires September 8, 2021              [Page 16]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
 
    [RFC8411]  Schaad, J. and R. Andrews, "IANA Registration for the
               Cryptographic Algorithm Object Identifier Range",
@@ -830,17 +920,6 @@ Internet-Draft             PQ Composite Certs              February 2021
               Ounsworth, M., and S. Mister, "Multiple Public-Key
               Algorithm X.509 Certificates", draft-truskovsky-lamps-pq-
               hybrid-x509-01 (work in progress), August 2018.
-
-
-
-
-
-
-
-Ounsworth (Editor) & PalaExpires August 21, 2021               [Page 15]
-
-Internet-Draft             PQ Composite Certs              February 2021
-
 
 Authors' Addresses
 
@@ -870,27 +949,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth (Editor) & PalaExpires August 21, 2021               [Page 16]
+Ounsworth (Editor) & PalExpires September 8, 2021              [Page 17]

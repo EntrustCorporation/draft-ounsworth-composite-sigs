@@ -284,6 +284,15 @@ Since recursive composite public keys are disallowed in ~~ Reference draft-ounsw
 
 A composite signature MUST produce and include in the output a signature value for every component key in the corresponding CompositePrivateKey. While it may be tempting to allow a signer to produce a signature with a subset of their keys, the complexity of securely verifying such a "subset signature" is high and out of scope for this document.
 
+### Composite-OR Signature Generation {#sec-comp-or-sig-gen}
+
+If the algorithm ID of the public key associated with this signature is id-composite-or-key then the signer MAY use only a subset of the component keys and therefore produce fewer signatures than the number of component keys.
+
+In the case where only one signature is produced, this MAY be placed into either traditional fields such as signatureAlgorithm and signatureValue as per [RFC5280], or a sa-CompositeSignature and CompositeSignatureValue with a single component.
+
+The design intent of this mode is to support migration scenarios where a end entity has been issued keys on algorithms that either itself or the peer with which it is communicating do not (yet) support.
+
+EDNOTE: Do we need to specify the semantics of generating an "n of m" subset signature? I suspect that specifying this in general will be a rat's nest of edge cases, so I propose to "leave this to the implementor".
 
 ## Composite Signature Verification {#sec-comp-sig-verify}
 
@@ -335,6 +344,19 @@ Signature Verification Procedure::
 Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
 
 It is expected that some use-cases for algorithm migration or high performance will require verifiers to succeed when only a subset of the component algorithms have been verified. Defining this verification behaviour is out of scope for this document, and falls to an application profile.
+
+### Composite-OR Signature Verification {#sec-comp-or-sig-verify}
+
+When the public key associated with the signature being verified has algorithm id-composite-or-key, then an alternate verification algorithms MAY be used, at the discretion of the implementor. In this section we provide some examples of alternate verification processes.
+
+If the signature is a traditional (non-composite) algorithm and value or a composite signature with a single component, then it MAY be considered valid if it verifies under one of the component keys.
+
+If the signature is composite, then the implementor MAY implement policy for which combinations are acceptable.
+
+
+EDNOTE: Does this mean Composite-OR end entity certificates need to be issued by a PKI that is marked as Composite-OR all the way to the top so that verifiers that do not support all the algorithms don't fail? Need to think more about the security implications of allowing a Composite-OR in an end entity cert implicitely turning all Composite algIDs into Composite-OR algIDs in its cert chain.
+
+EDNOTE: Do we need to specify the semantics of verifying an "n of m" subset signature? I suspect that specifying this in general will be a rat's nest of edge cases, so I propose to "leave this to the implementor".
 
 
 <!-- End of Composite Signature Algorithm section -->
