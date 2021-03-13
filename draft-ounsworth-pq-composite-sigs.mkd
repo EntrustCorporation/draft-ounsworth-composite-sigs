@@ -141,7 +141,7 @@ SIGNATURE:
 
 
 
-# Composite Structures {#sec-composite-structs}
+# Composite Idintifiers and Structures {#sec-composite-structs}
 In order for public keys and signatures to be composed of multiple algorithms, we define encodings consisting of a sequence of public key and signature primitives (aka "component algorithms") such that these structures can be used as a drop-in replacement for existing public key or signature fields such as those found in PKCS#10 [RFC2986], CMP [RFC4210], X.509 [RFC5280], CMS [RFC5652].
 
 This section defines the following structures:
@@ -248,7 +248,7 @@ This section specifies the processes for generating and verifying composite sign
 
 This process addresses algorithm strength uncertainty by providing the verifier with parallel signatures from all the component signature algorithms; thus breaking the composite signature would require breaking all of the component signatures.
 
-## Composite Signature Generation {#sec-comp-sig-gen}
+## Composite Signature Generation Process {#sec-comp-sig-gen}
 
 Generation of a composite signature involves applying each component algorithm's signature routine to the input message according to its specification, and then placing each component signature value into the CompositeSignatureValue structure defined in {{sec-composite-sig-structs}}.
 
@@ -263,7 +263,7 @@ Input:
 Output:
      S                  The signatures, a CompositeSignatureValue
 
-Signature Generation Procedure:
+Signature Generation Process:
    1. Generate the n component signatures independently,
       according to their algorithm specifications.
 
@@ -271,7 +271,7 @@ Signature Generation Procedure:
             Si := Sign( Ki, M )
 
    2. Encode each component signature S1, S2, .., Sn into a BIT STRING
-      according to its algorithm specification.2020-01-21g
+      according to its algorithm specification.
 
         S ::= Sequence { S1, S2, .., Sn }
 
@@ -284,17 +284,19 @@ Since recursive composite public keys are disallowed in ~~ Reference draft-ounsw
 
 A composite signature MUST produce and include in the output a signature value for every component key in the corresponding CompositePrivateKey. While it may be tempting to allow a signer to produce a signature with a subset of their keys, the complexity of securely verifying such a "subset signature" is high and out of scope for this document.
 
-### Composite-OR Signature Generation {#sec-comp-or-sig-gen}
+### Composite-OR Signature Generation Process {#sec-comp-or-sig-gen}
 
 If the algorithm ID of the public key associated with this signature is id-composite-or-key then the signer MAY use only a subset of the component keys and therefore produce fewer signatures than the number of component keys.
 
-In the case where only one signature is produced, this MAY be placed into either traditional fields such as signatureAlgorithm and signatureValue as per [RFC5280], or a sa-CompositeSignature and CompositeSignatureValue with a single component.
+Composite-OR signature generation uses the same structures and algorithms as Composite, with the difference that the signature generation process may emmit a null instead of a signature value value in step 1 for one or more component algorithms. A Composite-OR MUST NOT be entirely null; it must contain at least one valid signature.
 
-The design intent of this mode is to support migration scenarios where a end entity has been issued keys on algorithms that either itself or the peer with which it is communicating do not (yet) support.
+The design intent of this mode is to support migration scenarios where an end entity has been issued keys on algorithms that either itself or the peer with which it is communicating do not (yet) support.
 
 EDNOTE: Do we need to specify the semantics of generating an "n of m" subset signature? I suspect that specifying this in general will be a rat's nest of edge cases, so I propose to "leave this to the implementor".
 
-## Composite Signature Verification {#sec-comp-sig-verify}
+EDNOTE: Do we want to allow a Composite-OR with only a single signature to produce non-composite signatureAlgorithm and signatureValua as per [RFC5280]? Advantages: bandwidth savings of an extra OID and some sequences with one element. Disadvantages: ambiguous whether a signature is traditional or composite until you look at the corresponding public key.
+
+## Composite Signature Verification Process {#sec-comp-sig-verify}
 
 Verification of a composite signature involves applying each component algorithm's verification routine according to its specification.
 

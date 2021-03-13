@@ -5,8 +5,8 @@
 LAMPS                                              M. Ounsworth (Editor)
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                                 M. Pala
-Expires: September 8, 2021                                     CableLabs
-                                                          March 07, 2021
+Expires: September 13, 2021                                    CableLabs
+                                                          March 12, 2021
 
 
          Composite Keys and Signatures For Use In Internet PKI
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 8, 2021.
+   This Internet-Draft will expire on September 13, 2021.
 
 
 
 
 
 
-Ounsworth (Editor) & PalExpires September 8, 2021               [Page 1]
+Ounsworth (Editor) & PaExpires September 13, 2021               [Page 1]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -77,16 +77,16 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
-   2.  Composite Structures  . . . . . . . . . . . . . . . . . . . .   4
+   2.  Composite Idintifiers and Structures  . . . . . . . . . . . .   4
      2.1.  Algorithm Identifier  . . . . . . . . . . . . . . . . . .   5
      2.2.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   5
        2.2.1.  Key Usage Bits  . . . . . . . . . . . . . . . . . . .   5
      2.3.  Composite Signature . . . . . . . . . . . . . . . . . . .   6
      2.4.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   7
    3.  Composite Signature Processes . . . . . . . . . . . . . . . .   7
-     3.1.  Composite Signature Generation  . . . . . . . . . . . . .   7
-       3.1.1.  Composite-OR Signature Generation . . . . . . . . . .   8
-     3.2.  Composite Signature Verification  . . . . . . . . . . . .   9
+     3.1.  Composite Signature Generation Process  . . . . . . . . .   7
+       3.1.1.  Composite-OR Signature Generation Process . . . . . .   8
+     3.2.  Composite Signature Verification Process  . . . . . . . .   9
        3.2.1.  Composite-OR Signature Verification . . . . . . . . .  10
    4.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  11
      4.1.  Cryptographic protocols . . . . . . . . . . . . . . . . .  12
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth (Editor) & PalExpires September 8, 2021               [Page 2]
+Ounsworth (Editor) & PaExpires September 13, 2021               [Page 2]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -165,7 +165,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PalExpires September 8, 2021               [Page 3]
+Ounsworth (Editor) & PaExpires September 13, 2021               [Page 3]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -194,7 +194,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
    SIGNATURE: A digital cryptographic signature, making no assumptions
    about which algorithm.
 
-2.  Composite Structures
+2.  Composite Idintifiers and Structures
 
    In order for public keys and signatures to be composed of multiple
    algorithms, we define encodings consisting of a sequence of public
@@ -221,7 +221,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PalExpires September 8, 2021               [Page 4]
+Ounsworth (Editor) & PaExpires September 13, 2021               [Page 4]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -277,7 +277,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PalExpires September 8, 2021               [Page 5]
+Ounsworth (Editor) & PaExpires September 13, 2021               [Page 5]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -333,7 +333,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PalExpires September 8, 2021               [Page 6]
+Ounsworth (Editor) & PaExpires September 13, 2021               [Page 6]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -367,7 +367,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
    signature algorithms; thus breaking the composite signature would
    require breaking all of the component signatures.
 
-3.1.  Composite Signature Generation
+3.1.  Composite Signature Generation Process
 
    Generation of a composite signature involves applying each component
    algorithm's signature routine to the input message according to its
@@ -389,7 +389,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PalExpires September 8, 2021               [Page 7]
+Ounsworth (Editor) & PaExpires September 13, 2021               [Page 7]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -402,7 +402,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
   Output:
        S                  The signatures, a CompositeSignatureValue
 
-  Signature Generation Procedure:
+  Signature Generation Process:
      1. Generate the n component signatures independently,
         according to their algorithm specifications.
 
@@ -410,7 +410,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
               Si := Sign( Ki, M )
 
      2. Encode each component signature S1, S2, .., Sn into a BIT STRING
-        according to its algorithm specification.2020-01-21g
+        according to its algorithm specification.
 
           S ::= Sequence { S1, S2, .., Sn }
 
@@ -429,29 +429,29 @@ Internet-Draft             PQ Composite Certs                 March 2021
    securely verifying such a "subset signature" is high and out of scope
    for this document.
 
-3.1.1.  Composite-OR Signature Generation
+3.1.1.  Composite-OR Signature Generation Process
 
    If the algorithm ID of the public key associated with this signature
    is id-composite-or-key then the signer MAY use only a subset of the
    component keys and therefore produce fewer signatures than the number
    of component keys.
 
-   In the case where only one signature is produced, this MAY be placed
-   into either traditional fields such as signatureAlgorithm and
-   signatureValue as per [RFC5280], or a sa-CompositeSignature and
-   CompositeSignatureValue with a single component.
+   Composite-OR signature generation uses the same structures and
+   algorithms as Composite, with the difference that the signature
+   generation process may emmit a null instead of a signature value
+   value in step 1 for one or more component algorithms.  A Composite-OR
+   MUST NOT be entirely null; it must contain at least one valid
+   signature.
 
 
 
-
-
-Ounsworth (Editor) & PalExpires September 8, 2021               [Page 8]
+Ounsworth (Editor) & PaExpires September 13, 2021               [Page 8]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
 
    The design intent of this mode is to support migration scenarios
-   where a end entity has been issued keys on algorithms that either
+   where an end entity has been issued keys on algorithms that either
    itself or the peer with which it is communicating do not (yet)
    support.
 
@@ -460,7 +460,14 @@ Internet-Draft             PQ Composite Certs                 March 2021
    a rat's nest of edge cases, so I propose to "leave this to the
    implementor".
 
-3.2.  Composite Signature Verification
+   EDNOTE: Do we want to allow a Composite-OR with only a single
+   signature to produce non-composite signatureAlgorithm and
+   signatureValua as per [RFC5280]?  Advantages: bandwidth savings of an
+   extra OID and some sequences with one element.  Disadvantages:
+   ambiguous whether a signature is traditional or composite until you
+   look at the corresponding public key.
+
+3.2.  Composite Signature Verification Process
 
    Verification of a composite signature involves applying each
    component algorithm's verification routine according to its
@@ -494,14 +501,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-
-
-
-
-
-
-
-Ounsworth (Editor) & PalExpires September 8, 2021               [Page 9]
+Ounsworth (Editor) & PaExpires September 13, 2021               [Page 9]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -557,7 +557,7 @@ Signature Verification Procedure::
 
 
 
-Ounsworth (Editor) & PalExpires September 8, 2021              [Page 10]
+Ounsworth (Editor) & PaExpires September 13, 2021              [Page 10]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -613,7 +613,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PalExpires September 8, 2021              [Page 11]
+Ounsworth (Editor) & PaExpires September 13, 2021              [Page 11]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -669,7 +669,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PalExpires September 8, 2021              [Page 12]
+Ounsworth (Editor) & PaExpires September 13, 2021              [Page 12]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -725,7 +725,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PalExpires September 8, 2021              [Page 13]
+Ounsworth (Editor) & PaExpires September 13, 2021              [Page 13]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -781,7 +781,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PalExpires September 8, 2021              [Page 14]
+Ounsworth (Editor) & PaExpires September 13, 2021              [Page 14]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -837,7 +837,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PalExpires September 8, 2021              [Page 15]
+Ounsworth (Editor) & PaExpires September 13, 2021              [Page 15]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -893,7 +893,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PalExpires September 8, 2021              [Page 16]
+Ounsworth (Editor) & PaExpires September 13, 2021              [Page 16]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -949,4 +949,4 @@ Authors' Addresses
 
 
 
-Ounsworth (Editor) & PalExpires September 8, 2021              [Page 17]
+Ounsworth (Editor) & PaExpires September 13, 2021              [Page 17]
