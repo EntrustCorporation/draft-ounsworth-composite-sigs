@@ -376,7 +376,7 @@
   <link href="#rfc.toc" rel="Contents">
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.1.1" rel="Chapter" title="1.1 Terminology">
-<link href="#rfc.section.2" rel="Chapter" title="2 Composite Idintifiers and Structures">
+<link href="#rfc.section.2" rel="Chapter" title="2 Composite Identifiers and Structures">
 <link href="#rfc.section.2.1" rel="Chapter" title="2.1 Algorithm Identifier">
 <link href="#rfc.section.2.2" rel="Chapter" title="2.2 Composite Keys">
 <link href="#rfc.section.2.2.1" rel="Chapter" title="2.2.1 Key Usage Bits">
@@ -410,8 +410,8 @@
   <meta name="dct.creator" content="Ounsworth (Editor), M. and M. Pala" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-sigs-05" />
   <meta name="dct.issued" scheme="ISO8601" content="2021-03-15" />
-  <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite public keys and composite signature data. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined. " />
-  <meta name="description" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite public keys and composite signature data. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined. " />
+  <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite signature data. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined. " />
+  <meta name="description" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite signature data. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined. " />
 
 </head>
 
@@ -449,7 +449,7 @@
   <span class="filename">draft-ounsworth-pq-composite-sigs-05</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite public keys and composite signature data.</p>
+<p>With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite signature data.</p>
 <p>This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined.</p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
@@ -469,7 +469,7 @@
 </li>
 <ul><li>1.1.   <a href="#rfc.section.1.1">Terminology</a>
 </li>
-</ul><li>2.   <a href="#rfc.section.2">Composite Idintifiers and Structures</a>
+</ul><li>2.   <a href="#rfc.section.2">Composite Identifiers and Structures</a>
 </li>
 <ul><li>2.1.   <a href="#rfc.section.2.1">Algorithm Identifier</a>
 </li>
@@ -536,8 +536,8 @@
 <li>Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.</li>
 <li>Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.</li>
 </ul>
-<p id="rfc.section.1.p.4">This document provides a mechanism to address algorithm strength uncertainty by buliding on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for encoding multiple signature values into existing public signature fields, as well as a process for validating a composite signature. The issue of backwards compatibility is left open to be addressed in separate draft(s).</p>
-<p id="rfc.section.1.p.5">This document is intended for general applicability anywhere that digital signatures are used within PKIX structures.</p>
+<p id="rfc.section.1.p.4">This document provides a mechanism to address algorithm strength uncertainty by buliding on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for encoding multiple signature values into existing public signature fields, as well as a process for validating a composite signature. Backwards compatibility is addressed via the Composite-OR mechanism described herein.</p>
+<p id="rfc.section.1.p.5">This document is intended for general applicability anywhere that digital signatures are used within PKIX and CMS structures.</p>
 <h1 id="rfc.section.1.1">
 <a href="#rfc.section.1.1">1.1.</a> <a href="#sec-terminology" id="sec-terminology">Terminology</a>
 </h1>
@@ -553,15 +553,14 @@
 <p id="rfc.section.1.1.p.10">PRIMITIVE PUBLIC KEY / SIGNATURE: A public key or signature object of a non-composite algorithm type.</p>
 <p id="rfc.section.1.1.p.11">SIGNATURE: A digital cryptographic signature, making no assumptions about which algorithm.</p>
 <h1 id="rfc.section.2">
-<a href="#rfc.section.2">2.</a> <a href="#sec-composite-structs" id="sec-composite-structs">Composite Idintifiers and Structures</a>
+<a href="#rfc.section.2">2.</a> <a href="#sec-composite-structs" id="sec-composite-structs">Composite Identifiers and Structures</a>
 </h1>
-<p id="rfc.section.2.p.1">In order for public keys and signatures to be composed of multiple algorithms, we define encodings consisting of a sequence of public key and signature primitives (aka "component algorithms") such that these structures can be used as a drop-in replacement for existing public key or signature fields such as those found in PKCS#10 <a href="#RFC2986" class="xref">[RFC2986]</a>, CMP <a href="#RFC4210" class="xref">[RFC4210]</a>, X.509 <a href="#RFC5280" class="xref">[RFC5280]</a>, CMS <a href="#RFC5652" class="xref">[RFC5652]</a>.</p>
+<p id="rfc.section.2.p.1">In order for public signatures to be composed of multiple algorithms, we define encodings consisting of a sequence of public signature primitives (aka "component algorithms") such that these structures can be used as a drop-in replacement for existing public signature fields such as those found in PKCS#10 <a href="#RFC2986" class="xref">[RFC2986]</a>, CMP <a href="#RFC4210" class="xref">[RFC4210]</a>, X.509 <a href="#RFC5280" class="xref">[RFC5280]</a>, CMS <a href="#RFC5652" class="xref">[RFC5652]</a>.</p>
 <p id="rfc.section.2.p.2">This section defines the following structures:</p>
 <p></p>
 
 <ul>
-<li>The id-alg-composite is an OID identifying a composite signature object.</li>
-<li>The CompositePrivateKey carries all the private keys associated with an identity within a single private key structure.</li>
+<li>The id-alg-composite is an AlgorithmIdentifier identifying a composite signature object.  <br><br> The sa-CompositeSignature AlgorithmIdentifier and the corresponding CompositeParams identify the algorithm(s) used in a composite signature.</li>
 <li>The CompositeSignatureValue, carries a sequence of signatures that are generated by a CompositePrivateKey, and can be verified with the corresponding CompositePublicKey.</li>
 </ul>
 <p id="rfc.section.2.p.4">EDNOTE 2: the choice to define composite algorithm parameters as a sequence inside the existing fields avoids the exponential proliferation of OIDs that are needed for each combination of signature algorithms in other schemes for achieving multi-key certificates. This scheme also naturally extends from 2-keypair to n-keypair keys and certificates.</p>
@@ -619,7 +618,7 @@ CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
 CompositeSignatureValue ::= SEQUENCE SIZE (1..MAX) OF BIT STRING
 </pre>
 <p id="rfc.section.2.3.p.5">Where each BIT STRING within the SEQUENCE is a signature value produced by one of the component keys. It MUST contain one signature value produced by each component algorithm, and in the same order as in the associated CompositeParams object.</p>
-<p id="rfc.section.2.3.p.6">The choice of <samp>SEQUENCE OF BIT STRING</samp>, rather than for example a single BIT STRING containing the concatenated signature values, is to gracefully handle variable-length signature values by taking advantage of ASN.1's build-in length fields.</p>
+<p id="rfc.section.2.3.p.6">The choice of <samp>SEQUENCE OF BIT STRING</samp>, rather than for example a single BIT STRING containing the concatenated signature values, is to gracefully handle variable-length signature values by taking advantage of ASN.1's built-in length fields.</p>
 <h1 id="rfc.section.2.4">
 <a href="#rfc.section.2.4">2.4.</a> <a href="#sec-encoding-rules" id="sec-encoding-rules">Encoding Rules</a>
 </h1>
@@ -660,13 +659,13 @@ Signature Generation Process:
 
    3. Output S
 </pre>
-<p id="rfc.section.3.1.p.3">Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may itself be a composite; ie the signature generation routine MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.</p>
-<p id="rfc.section.3.1.p.4">A composite signature MUST produce and include in the output a signature value for every component key in the corresponding CompositePrivateKey. While it may be tempting to allow a signer to produce a signature with a subset of their keys, the complexity of securely verifying such a "subset signature" is high and out of scope for this document.</p>
+<p id="rfc.section.3.1.p.3">Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.</p>
+<p id="rfc.section.3.1.p.4">A composite signature MUST produce and include in the output a signature value for every component key in the corresponding CompositePrivateKey. For this mode, please see Composite-OR in section <a href="#sec-comp-or-sig-gen" class="xref">Section 3.2</a>.</p>
 <h1 id="rfc.section.3.2">
 <a href="#rfc.section.3.2">3.2.</a> <a href="#sec-comp-or-sig-gen" id="sec-comp-or-sig-gen">Composite-OR Signature Generation Process</a>
 </h1>
 <p id="rfc.section.3.2.p.1">If the algorithm ID of the public key associated with this signature is id-composite-or-key then the signer MAY use only a subset of the component keys and therefore produce fewer signatures than the number of component keys.</p>
-<p id="rfc.section.3.2.p.2">Composite-OR signature generation uses the same structures and algorithms as Composite, with the difference that the signature generation process may emmit a null instead of a signature value value in step 1 for one or more component algorithms. A Composite-OR signature MUST NOT be entirely null; it must contain at least one valid signature.</p>
+<p id="rfc.section.3.2.p.2">Composite-OR signature generation uses the same structures and algorithms as Composite, with the difference that the signature generation process may emit a null instead of a signature value in step 1 for one or more component algorithms. A Composite-OR signature MUST NOT be entirely null; it must contain at least one valid signature.</p>
 <p id="rfc.section.3.2.p.3">The design intent of this mode is to support migration scenarios where an end entity has been issued keys on algorithms that either itself or the peer with which it is communicating do not (yet) support. This design allows for both the mode where the signer omits signatures that it knows its peer cannot process in order to save bandwidth and performance, and the mode where it includes all component signatures and allows the verifier to choose how many to verify. The latter is RECOMMENDED for signatures that need both sort-term backwards compatibility as well as long-term security.</p>
 <p id="rfc.section.3.2.p.4">EDNOTE: Do we want to allow a Composite-OR with only a single signature to produce non-composite signatureAlgorithm and signatureValua as per <a href="#RFC5280" class="xref">[RFC5280]</a>? Advantages: bandwidth savings of an extra OID and some sequences with one element. Disadvantages: ambiguous whether a signature is traditional or composite until you look at the corresponding public key.</p>
 <h1 id="rfc.section.3.3">
@@ -736,6 +735,7 @@ CompositeSignatureValue  {legacySignatureValue, null, .., null}
 <p id="rfc.section.3.4.1.p.6">with the correct number of nulls to match the Composite-OR public key that the signature is being verified against. The verification algorithm in section <a href="#sec-comp-or-sig-verify" class="xref">Section 3.4</a> applies.</p>
 <p id="rfc.section.3.4.1.p.7">Security consideration: when implementing Composite-OR Legacy Mode, it is important to catch the edge case of {null, null, .., null} for both AlgorithmIdentifier and SignatureValue and return Invalid Signature.</p>
 <p id="rfc.section.3.4.1.p.8">It is RECOMMENDED that Composite-OR Legacy Mode be implemented as an optional mode in the verifier that can be enabled or disabled by runtime configuration or policy.</p>
+<p id="rfc.section.3.4.1.p.9">EDNOTE: the signing public key is often identified in the signed document by issuer+serialNumber or by an SKI containing a hash of the public key value. Might need X.509 extensions identifying the SKI of the legacy cert it's replacing?</p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#sec-in-pract" id="sec-in-pract">In Practice</a>
 </h1>
