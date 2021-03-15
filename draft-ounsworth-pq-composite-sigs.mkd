@@ -1,5 +1,5 @@
 ---
-title: Composite Keys and Signatures For Use In Internet PKI
+title: Composite Signatures For Use In Internet PKI
 abbrev: PQ Composite Certs
 # <!-- EDNOTE: Edits the draft name -->
 docname: draft-ounsworth-pq-composite-sigs-05
@@ -126,6 +126,9 @@ COMPOSITE ALGORITHM:
 
 DER:
           Distinguished Encoding Rules as defined in [X.690].
+
+LEGACY:   For the purposes of this document, a legacy key or signature is a 
+          non-composite key or signature.
 
 PUBLIC / PRIVATE KEY:
           The public and private portion of an asymmetric cryptographic
@@ -284,15 +287,13 @@ Since recursive composite public keys are disallowed in ~~ Reference draft-ounsw
 
 A composite signature MUST produce and include in the output a signature value for every component key in the corresponding CompositePrivateKey. While it may be tempting to allow a signer to produce a signature with a subset of their keys, the complexity of securely verifying such a "subset signature" is high and out of scope for this document.
 
-### Composite-OR Signature Generation Process {#sec-comp-or-sig-gen}
+## Composite-OR Signature Generation Process {#sec-comp-or-sig-gen}
 
 If the algorithm ID of the public key associated with this signature is id-composite-or-key then the signer MAY use only a subset of the component keys and therefore produce fewer signatures than the number of component keys.
 
-Composite-OR signature generation uses the same structures and algorithms as Composite, with the difference that the signature generation process may emmit a null instead of a signature value value in step 1 for one or more component algorithms. A Composite-OR MUST NOT be entirely null; it must contain at least one valid signature.
+Composite-OR signature generation uses the same structures and algorithms as Composite, with the difference that the signature generation process may emmit a null instead of a signature value value in step 1 for one or more component algorithms. A Composite-OR signature MUST NOT be entirely null; it must contain at least one valid signature.
 
-The design intent of this mode is to support migration scenarios where an end entity has been issued keys on algorithms that either itself or the peer with which it is communicating do not (yet) support.
-
-EDNOTE: Do we need to specify the semantics of generating an "n of m" subset signature? I suspect that specifying this in general will be a rat's nest of edge cases, so I propose to "leave this to the implementor".
+The design intent of this mode is to support migration scenarios where an end entity has been issued keys on algorithms that either itself or the peer with which it is communicating do not (yet) support. This design allows for both the mode where the signer omits signatures that it knows its peer cannot process in order to save bandwidth and performance, and the mode where it includes all component signatures and allows the verifier to choose how many to verify. The latter is RECOMMENDED for signatures that need both sort-term backwards compatibility as well as long-term security.
 
 EDNOTE: Do we want to allow a Composite-OR with only a single signature to produce non-composite signatureAlgorithm and signatureValua as per [RFC5280]? Advantages: bandwidth savings of an extra OID and some sequences with one element. Disadvantages: ambiguous whether a signature is traditional or composite until you look at the corresponding public key.
 
@@ -346,7 +347,7 @@ Signature Verification Procedure::
 Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
 
 
-### Composite-OR Signature Verification {#sec-comp-or-sig-verify}
+## Composite-OR Signature Verification {#sec-comp-or-sig-verify}
 
 When the public key associated with the signature being verified has algorithm id-composite-or-key, then an alternate verification processes MAY be used, at the discretion of the implementor. In this section we provide some examples of alternate verification processes.
 
@@ -355,9 +356,38 @@ If the signature is a traditional (non-composite) algorithm and value or a compo
 If the signature is composite, then the implementor MAY implement policy for which combinations are acceptable.
 
 
-EDNOTE: Does this mean Composite-OR end entity certificates need to be issued by a PKI that is marked as Composite-OR all the way to the top so that verifiers that do not support all the algorithms don't fail? Need to think more about the security implications of allowing a Composite-OR in an end entity cert implicitely turning all Composite algIDs into Composite-OR algIDs in its cert chain.
+EDNOTE: Does this mean Composite-OR end entity certificates need to be issued by a PKI that is marked as Composite-OR all the way to the top so that verifiers that do not support all the algorithms don't fail? Need to think more about the security implications of allowing a Composite-or in an end entity cert implicitely turning all Composite algIDs into Composite-or algIDs in its cert chain.
 
 EDNOTE: Do we need to specify the semantics of verifying an "n of m" subset signature? I suspect that specifying this in general will be a rat's nest of edge cases, so I propose to "leave this to the implementor".
+
+
+### Composite-OR Legacy Mode
+
+The Composite-OR Legacy Mode is provided to facilitate migration by allowing existing PKI entities (including root CAs, intermediate CAs, and end entities) to have their existing keys re-certified inside a Composite-OR structure along with Post-Quantum keys, and for signatures made by that key prior to the migration to remain valid. Note that Composite-OR Legacy Mode is only provided for signature verification, and not for signature generation; legacy signatures SHOULD NOT be produced from a Composite key.
+
+EDNOTE: to further solidify this, we could add a clause that Legacy Mode signatures are to fail if the signature was produced after notBefore date of the Composite-OR certificate?
+
+In Composite-OR Legacy Mode, a legacy signature algorithm and legacy signature value MAY be validated against a Composite-OR public key. The legacy signature algorithm is to be interpreted by the verifier as a sa-CompositeSignature with CompositeParams in the following way:
+
+~~~ asn.1
+CompositeParams {legacyAlgorithmIdentifier, null, .., null}
+~~~
+
+with the correct number of nulls to match the Composite-OR public key that the signature is being verified against. For the purposes of a signature validation under Composite-OR Legacy Mode, a null AlgorithmIdentifier is considered to be a match for the corresponding algorithm in the Composite-OR public key.
+
+The legacy signature value is to be interpreted by the verifier as a sa-CompositeSignature with CompositeParams in the following way:
+
+~~~ asn.1
+CompositeSignatureValue  {legacySignatureValue, null, .., null}
+~~~
+
+with the correct number of nulls to match the Composite-OR public key that the signature is being verified against. The verification algorithm in section {{sec-comp-or-sig-verify}} applies.
+
+
+Security consideration: when implementing Composite-OR Legacy Mode, it is important to catch the edge case of {null, null, .., null} for both AlgorithmIdentifier and SignatureValue and return Invalid Signature.
+
+It is RECOMMENDED that Composite-OR Legacy Mode be implemented as an optional mode in the verifier that can be enabled or disabled by runtime configuration or policy.
+
 
 
 <!-- End of Composite Signature Algorithm section -->

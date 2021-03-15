@@ -5,11 +5,11 @@
 LAMPS                                              M. Ounsworth (Editor)
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                                 M. Pala
-Expires: September 13, 2021                                    CableLabs
-                                                          March 12, 2021
+Expires: September 16, 2021                                    CableLabs
+                                                          March 15, 2021
 
 
-         Composite Keys and Signatures For Use In Internet PKI
+              Composite Signatures For Use In Internet PKI
                   draft-ounsworth-pq-composite-sigs-05
 
 Abstract
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 13, 2021.
+   This Internet-Draft will expire on September 16, 2021.
 
 
 
 
 
 
-Ounsworth (Editor) & PaExpires September 13, 2021               [Page 1]
+Ounsworth (Editor) & PaExpires September 16, 2021               [Page 1]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -85,31 +85,31 @@ Table of Contents
      2.4.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   7
    3.  Composite Signature Processes . . . . . . . . . . . . . . . .   7
      3.1.  Composite Signature Generation Process  . . . . . . . . .   7
-       3.1.1.  Composite-OR Signature Generation Process . . . . . .   8
-     3.2.  Composite Signature Verification Process  . . . . . . . .   9
-       3.2.1.  Composite-OR Signature Verification . . . . . . . . .  10
-   4.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  11
-     4.1.  Cryptographic protocols . . . . . . . . . . . . . . . . .  12
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
-     6.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  12
-   7.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     7.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  13
-     7.2.  Intellectual Property Considerations  . . . . . . . . . .  15
-   8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  15
-     8.1.  Making contributions  . . . . . . . . . . . . . . . . . .  15
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  15
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  17
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
+     3.2.  Composite-OR Signature Generation Process . . . . . . . .   8
+     3.3.  Composite Signature Verification Process  . . . . . . . .   9
+     3.4.  Composite-OR Signature Verification . . . . . . . . . . .  10
+       3.4.1.  Composite-OR Legacy Mode  . . . . . . . . . . . . . .  11
+   4.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  12
+     4.1.  Cryptographic protocols . . . . . . . . . . . . . . . . .  13
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
+     6.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  13
+   7.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  14
+     7.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  14
+     7.2.  Intellectual Property Considerations  . . . . . . . . . .  16
+   8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  16
+     8.1.  Making contributions  . . . . . . . . . . . . . . . . . .  16
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  16
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  18
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
 
 
 
 
 
 
-
-Ounsworth (Editor) & PaExpires September 13, 2021               [Page 2]
+Ounsworth (Editor) & PaExpires September 16, 2021               [Page 2]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -165,7 +165,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 13, 2021               [Page 3]
+Ounsworth (Editor) & PaExpires September 16, 2021               [Page 3]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -184,6 +184,9 @@ Internet-Draft             PQ Composite Certs                 March 2021
    component algorithms, as defined in Section 2.
 
    DER: Distinguished Encoding Rules as defined in [X.690].
+
+   LEGACY: For the purposes of this document, a legacy key or signature
+   is a non-composite key or signature.
 
    PUBLIC / PRIVATE KEY: The public and private portion of an asymmetric
    cryptographic key, making no assumptions about which algorithm.
@@ -215,17 +218,17 @@ Internet-Draft             PQ Composite Certs                 March 2021
       are generated by a CompositePrivateKey, and can be verified with
       the corresponding CompositePublicKey.
 
-   EDNOTE 2: the choice to define composite algorithm parameters as a
-   sequence inside the existing fields avoids the exponential
-   proliferation of OIDs that are needed for each combination of
 
 
 
-Ounsworth (Editor) & PaExpires September 13, 2021               [Page 4]
+Ounsworth (Editor) & PaExpires September 16, 2021               [Page 4]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
 
+   EDNOTE 2: the choice to define composite algorithm parameters as a
+   sequence inside the existing fields avoids the exponential
+   proliferation of OIDs that are needed for each combination of
    signature algorithms in other schemes for achieving multi-key
    certificates.  This scheme also naturally extends from 2-keypair to
    n-keypair keys and certificates.
@@ -270,17 +273,17 @@ Internet-Draft             PQ Composite Certs                 March 2021
    whose keys are being used with id-alg-composite signatures, then the
    keyUsage extension MUST contain one or both of the following values:
 
-       nonRepudiation; and
-       digitalSignature.
 
 
 
 
-
-Ounsworth (Editor) & PaExpires September 13, 2021               [Page 5]
+Ounsworth (Editor) & PaExpires September 16, 2021               [Page 5]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
+
+       nonRepudiation; and
+       digitalSignature.
 
    If the keyUsage extension is present in a certification authority
    certificate whose keys are being used with id-alg-composite
@@ -326,17 +329,17 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
    The choice of "SEQUENCE OF BIT STRING", rather than for example a
    single BIT STRING containing the concatenated signature values, is to
-   gracefully handle variable-length signature values by taking
-   advantage of ASN.1's build-in length fields.
 
 
 
 
-
-Ounsworth (Editor) & PaExpires September 13, 2021               [Page 6]
+Ounsworth (Editor) & PaExpires September 16, 2021               [Page 6]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
+
+   gracefully handle variable-length signature values by taking
+   advantage of ASN.1's build-in length fields.
 
 2.4.  Encoding Rules
 
@@ -386,10 +389,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-
-
-
-Ounsworth (Editor) & PaExpires September 13, 2021               [Page 7]
+Ounsworth (Editor) & PaExpires September 16, 2021               [Page 7]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -429,7 +429,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
    securely verifying such a "subset signature" is high and out of scope
    for this document.
 
-3.1.1.  Composite-OR Signature Generation Process
+3.2.  Composite-OR Signature Generation Process
 
    If the algorithm ID of the public key associated with this signature
    is id-composite-or-key then the signer MAY use only a subset of the
@@ -440,12 +440,12 @@ Internet-Draft             PQ Composite Certs                 March 2021
    algorithms as Composite, with the difference that the signature
    generation process may emmit a null instead of a signature value
    value in step 1 for one or more component algorithms.  A Composite-OR
-   MUST NOT be entirely null; it must contain at least one valid
-   signature.
+   signature MUST NOT be entirely null; it must contain at least one
+   valid signature.
 
 
 
-Ounsworth (Editor) & PaExpires September 13, 2021               [Page 8]
+Ounsworth (Editor) & PaExpires September 16, 2021               [Page 8]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -453,12 +453,12 @@ Internet-Draft             PQ Composite Certs                 March 2021
    The design intent of this mode is to support migration scenarios
    where an end entity has been issued keys on algorithms that either
    itself or the peer with which it is communicating do not (yet)
-   support.
-
-   EDNOTE: Do we need to specify the semantics of generating an "n of m"
-   subset signature?  I suspect that specifying this in general will be
-   a rat's nest of edge cases, so I propose to "leave this to the
-   implementor".
+   support.  This design allows for both the mode where the signer omits
+   signatures that it knows its peer cannot process in order to save
+   bandwidth and performance, and the mode where it includes all
+   component signatures and allows the verifier to choose how many to
+   verify.  The latter is RECOMMENDED for signatures that need both
+   sort-term backwards compatibility as well as long-term security.
 
    EDNOTE: Do we want to allow a Composite-OR with only a single
    signature to produce non-composite signatureAlgorithm and
@@ -467,7 +467,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
    ambiguous whether a signature is traditional or composite until you
    look at the corresponding public key.
 
-3.2.  Composite Signature Verification Process
+3.3.  Composite Signature Verification Process
 
    Verification of a composite signature involves applying each
    component algorithm's verification routine according to its
@@ -501,7 +501,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 13, 2021               [Page 9]
+Ounsworth (Editor) & PaExpires September 16, 2021               [Page 9]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -547,7 +547,7 @@ Signature Verification Procedure::
    algorithm identifiers A1, A2, .., An are composite with the OID id-
    alg-composite.
 
-3.2.1.  Composite-OR Signature Verification
+3.4.  Composite-OR Signature Verification
 
    When the public key associated with the signature being verified has
    algorithm id-composite-or-key, then an alternate verification
@@ -557,7 +557,7 @@ Signature Verification Procedure::
 
 
 
-Ounsworth (Editor) & PaExpires September 13, 2021              [Page 10]
+Ounsworth (Editor) & PaExpires September 16, 2021              [Page 10]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -573,13 +573,68 @@ Internet-Draft             PQ Composite Certs                 March 2021
    be issued by a PKI that is marked as Composite-OR all the way to the
    top so that verifiers that do not support all the algorithms don't
    fail?  Need to think more about the security implications of allowing
-   a Composite-OR in an end entity cert implicitely turning all
-   Composite algIDs into Composite-OR algIDs in its cert chain.
+   a Composite-or in an end entity cert implicitely turning all
+   Composite algIDs into Composite-or algIDs in its cert chain.
 
    EDNOTE: Do we need to specify the semantics of verifying an "n of m"
    subset signature?  I suspect that specifying this in general will be
    a rat's nest of edge cases, so I propose to "leave this to the
    implementor".
+
+3.4.1.  Composite-OR Legacy Mode
+
+   The Composite-OR Legacy Mode is provided to facilitate migration by
+   allowing existing PKI entities (including root CAs, intermediate CAs,
+   and end entities) to have their existing keys re-certified inside a
+   Composite-OR structure along with Post-Quantum keys, and for
+   signatures made by that key prior to the migration to remain valid.
+   Note that Composite-OR Legacy Mode is only provided for signature
+   verification, and not for signature generation; legacy signatures
+   SHOULD NOT be produced from a Composite key.
+
+   EDNOTE: to further solidify this, we could add a clause that Legacy
+   Mode signatures are to fail if the signature was produced after
+   notBefore date of the Composite-OR certificate?
+
+   In Composite-OR Legacy Mode, a legacy signature algorithm and legacy
+   signature value MAY be validated against a Composite-OR public key.
+   The legacy signature algorithm is to be interpreted by the verifier
+   as a sa-CompositeSignature with CompositeParams in the following way:
+
+   CompositeParams {legacyAlgorithmIdentifier, null, .., null}
+
+   with the correct number of nulls to match the Composite-OR public key
+   that the signature is being verified against.  For the purposes of a
+   signature validation under Composite-OR Legacy Mode, a null
+   AlgorithmIdentifier is considered to be a match for the corresponding
+   algorithm in the Composite-OR public key.
+
+
+
+
+
+Ounsworth (Editor) & PaExpires September 16, 2021              [Page 11]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
+
+   The legacy signature value is to be interpreted by the verifier as a
+   sa-CompositeSignature with CompositeParams in the following way:
+
+   CompositeSignatureValue  {legacySignatureValue, null, .., null}
+
+   with the correct number of nulls to match the Composite-OR public key
+   that the signature is being verified against.  The verification
+   algorithm in section Section 3.4 applies.
+
+   Security consideration: when implementing Composite-OR Legacy Mode,
+   it is important to catch the edge case of {null, null, .., null} for
+   both AlgorithmIdentifier and SignatureValue and return Invalid
+   Signature.
+
+   It is RECOMMENDED that Composite-OR Legacy Mode be implemented as an
+   optional mode in the verifier that can be enabled or disabled by
+   runtime configuration or policy.
 
 4.  In Practice
 
@@ -613,7 +668,8 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 13, 2021              [Page 11]
+
+Ounsworth (Editor) & PaExpires September 16, 2021              [Page 12]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -669,7 +725,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 13, 2021              [Page 12]
+Ounsworth (Editor) & PaExpires September 16, 2021              [Page 13]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -725,7 +781,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 13, 2021              [Page 13]
+Ounsworth (Editor) & PaExpires September 16, 2021              [Page 14]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -781,7 +837,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 13, 2021              [Page 14]
+Ounsworth (Editor) & PaExpires September 16, 2021              [Page 15]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -837,7 +893,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 13, 2021              [Page 15]
+Ounsworth (Editor) & PaExpires September 16, 2021              [Page 16]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -893,7 +949,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 13, 2021              [Page 16]
+Ounsworth (Editor) & PaExpires September 16, 2021              [Page 17]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -949,4 +1005,4 @@ Authors' Addresses
 
 
 
-Ounsworth (Editor) & PaExpires September 13, 2021              [Page 17]
+Ounsworth (Editor) & PaExpires September 16, 2021              [Page 18]
