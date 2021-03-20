@@ -179,23 +179,24 @@ A Composite signature MUST be associated with a Composite public key as defined 
 
 ### Key Usage Bits
 
-For protocols such as X.509 [RFC5280] that specify key usage along with the public key, then the composite public key associated with a composite signature MUST have a signing-type key usage. If the keyUsage extension is present in an end-entity certificate whose keys are being used with id-alg-composite signatures, then any combination of the following values MAY be present:
+For protocols such as X.509 [RFC5280] that specify key usage along with the public key, then the composite public key associated with a composite signature MUST have a signing-type key usage.
+
+
+If the keyUsage extension is present in a Certification Authority (CA) certificate that indicates id-composite-key, then any combination of the following values MAY be present:
 
 ~~~
-    nonRepudiation; and
-    digitalSignature.
+digitalSignature;
+nonRepudiation;
+keyCertSign; and
+cRLSign.
 ~~~
-{: artwork-name="Cert-Key-Usage-1"}
 
-If the keyUsage extension is present in a certification authority certificate whose keys are being used with id-alg-composite signatures, then any combination of the following values MAY be present:
+If the keyUsage extension is present in an End Entity (EE) certificate that indicates id-composite-key, then any combination of the following values MAY be present:
 
 ~~~
-    nonRepudiation;
-    digitalSignature;
-    keyCertSign; and
-    cRLSign.
+digitalSignature; and
+nonRepudiation;
 ~~~
-{: artwork-name="Cert-Key-Usage-2"}
 
 
 

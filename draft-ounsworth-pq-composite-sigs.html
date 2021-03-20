@@ -582,17 +582,18 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 <h1 id="rfc.section.2.2.1">
 <a href="#rfc.section.2.2.1">2.2.1.</a> <a href="#key-usage-bits" id="key-usage-bits">Key Usage Bits</a>
 </h1>
-<p id="rfc.section.2.2.1.p.1">For protocols such as X.509 <a href="#RFC5280" class="xref">[RFC5280]</a> that specify key usage along with the public key, then the composite public key associated with a composite signature MUST have a signing-type key usage. If the keyUsage extension is present in an end-entity certificate whose keys are being used with id-alg-composite signatures, then any combination of the following values MAY be present:</p>
+<p id="rfc.section.2.2.1.p.1">For protocols such as X.509 <a href="#RFC5280" class="xref">[RFC5280]</a> that specify key usage along with the public key, then the composite public key associated with a composite signature MUST have a signing-type key usage.</p>
+<p id="rfc.section.2.2.1.p.2">If the keyUsage extension is present in a Certification Authority (CA) certificate that indicates id-composite-key, then any combination of the following values MAY be present:</p>
 <pre>
-    nonRepudiation; and
-    digitalSignature.
+digitalSignature;
+nonRepudiation;
+keyCertSign; and
+cRLSign.
 </pre>
-<p id="rfc.section.2.2.1.p.2">If the keyUsage extension is present in a certification authority certificate whose keys are being used with id-alg-composite signatures, then any combination of the following values MAY be present:</p>
+<p id="rfc.section.2.2.1.p.3">If the keyUsage extension is present in an End Entity (EE) certificate that indicates id-composite-key, then any combination of the following values MAY be present:</p>
 <pre>
-    nonRepudiation;
-    digitalSignature;
-    keyCertSign; and
-    cRLSign.
+digitalSignature; and
+nonRepudiation;
 </pre>
 <h1 id="rfc.section.2.3">
 <a href="#rfc.section.2.3">2.3.</a> <a href="#sec-composite-sig-structs" id="sec-composite-sig-structs">Composite Signature</a>

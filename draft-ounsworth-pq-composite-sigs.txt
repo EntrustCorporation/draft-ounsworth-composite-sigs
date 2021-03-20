@@ -267,13 +267,13 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
    For protocols such as X.509 [RFC5280] that specify key usage along
    with the public key, then the composite public key associated with a
-   composite signature MUST have a signing-type key usage.  If the
-   keyUsage extension is present in an end-entity certificate whose keys
-   are being used with id-alg-composite signatures, then any combination
-   of the following values MAY be present:
+   composite signature MUST have a signing-type key usage.
 
-       nonRepudiation; and
-       digitalSignature.
+   If the keyUsage extension is present in a Certification Authority
+   (CA) certificate that indicates id-composite-key, then any
+   combination of the following values MAY be present:
+
+
 
 
 
@@ -282,15 +282,17 @@ Ounsworth & Pala       Expires September 21, 2021               [Page 5]
 Internet-Draft             PQ Composite Certs                 March 2021
 
 
-   If the keyUsage extension is present in a certification authority
-   certificate whose keys are being used with id-alg-composite
-   signatures, then any combination of the following values MAY be
-   present:
+   digitalSignature;
+   nonRepudiation;
+   keyCertSign; and
+   cRLSign.
 
-       nonRepudiation;
-       digitalSignature;
-       keyCertSign; and
-       cRLSign.
+   If the keyUsage extension is present in an End Entity (EE)
+   certificate that indicates id-composite-key, then any combination of
+   the following values MAY be present:
+
+   digitalSignature; and
+   nonRepudiation;
 
 2.3.  Composite Signature
 
@@ -326,8 +328,6 @@ Internet-Draft             PQ Composite Certs                 March 2021
    single BIT STRING containing the concatenated signature values, is to
    gracefully handle variable-length signature values by taking
    advantage of ASN.1's built-in length fields.
-
-
 
 
 
