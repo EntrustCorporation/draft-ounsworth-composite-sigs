@@ -8,7 +8,7 @@ docname: draft-ounsworth-pq-composite-sigs-05
 # <!-- date: 2012 -->
 
 # <!-- stand_alone: true -->
-<!-- ipr: trust200902 -->
+<!-- ipr: 3481 -->
 area: Security
 wg: LAMPS
 kw: Internet-Draft
@@ -22,7 +22,7 @@ pi:    # can use array (if all yes) or hash here
 
 author:
     -
-      ins: M. Ounsworth (Editor)
+      ins: M. Ounsworth
       name: Mike Ounsworth
       org: Entrust Limited
       abbrev: Entrust
@@ -162,7 +162,7 @@ EDNOTE 2a: We have heard community feedback that the ASN.1 structures presented 
 
 ## Algorithm Identifier {#sec-alg-identifier}
 
-The same algorithm identifier is used for identifying a public key, a private key, and a signature.  Additional encoding information is provided below for each of these objects.
+The same algorithm identifier is used for identifying a public key and a private key.  Additional encoding information is provided below for each of these objects.
 
 ~~~ asn.1
 id-alg-composite OBJECT IDENTIFIER ::= {
@@ -179,9 +179,7 @@ A Composite signature MUST be associated with a Composite public key as defined 
 
 ### Key Usage Bits
 
-For protocols such as X.509 [RFC5280] that specify key usage along with the public key, then the composite public key associated with a composite signature MUST have a signing-type key usage.
-
-If the keyUsage extension is present in an end-entity certificate whose keys are being used with id-alg-composite signatures, then the keyUsage extension MUST contain one or both of the following values:
+For protocols such as X.509 [RFC5280] that specify key usage along with the public key, then the composite public key associated with a composite signature MUST have a signing-type key usage. If the keyUsage extension is present in an end-entity certificate whose keys are being used with id-alg-composite signatures, then any combination of the following values MAY be present:
 
 ~~~
     nonRepudiation; and
@@ -189,7 +187,7 @@ If the keyUsage extension is present in an end-entity certificate whose keys are
 ~~~
 {: artwork-name="Cert-Key-Usage-1"}
 
-If the keyUsage extension is present in a certification authority certificate whose keys are being used with id-alg-composite signatures, then the keyUsage extension MUST contain one or more of the following values:
+If the keyUsage extension is present in a certification authority certificate whose keys are being used with id-alg-composite signatures, then any combination of the following values MAY be present:
 
 ~~~
     nonRepudiation;
@@ -215,7 +213,7 @@ sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
 }
 ~~~
 
-The id-alg-composite object identifier MUST be used to identify when a signature has been created by a CompositePrivateKey and following algorithm parameters MUST be included:
+The following algorithm parameters MUST be included:
 
 ~~~ asn.1
 CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier

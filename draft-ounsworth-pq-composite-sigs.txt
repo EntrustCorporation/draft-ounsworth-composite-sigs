@@ -2,11 +2,11 @@
 
 
 
-LAMPS                                              M. Ounsworth (Editor)
+LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                                 M. Pala
-Expires: September 16, 2021                                    CableLabs
-                                                          March 15, 2021
+Expires: September 21, 2021                                    CableLabs
+                                                          March 20, 2021
 
 
               Composite Signatures For Use In Internet PKI
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 16, 2021.
+   This Internet-Draft will expire on September 21, 2021.
 
 
 
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021               [Page 1]
+Ounsworth & Pala       Expires September 21, 2021               [Page 1]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021               [Page 2]
+Ounsworth & Pala       Expires September 21, 2021               [Page 2]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -165,7 +165,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021               [Page 3]
+Ounsworth & Pala       Expires September 21, 2021               [Page 3]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -221,7 +221,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021               [Page 4]
+Ounsworth & Pala       Expires September 21, 2021               [Page 4]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -247,9 +247,9 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 2.1.  Algorithm Identifier
 
-   The same algorithm identifier is used for identifying a public key, a
-   private key, and a signature.  Additional encoding information is
-   provided below for each of these objects.
+   The same algorithm identifier is used for identifying a public key
+   and a private key.  Additional encoding information is provided below
+   for each of these objects.
 
    id-alg-composite OBJECT IDENTIFIER ::= {
        iso(1)  identified-organization(3) dod(6) internet(1) private(4)
@@ -267,28 +267,25 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
    For protocols such as X.509 [RFC5280] that specify key usage along
    with the public key, then the composite public key associated with a
-   composite signature MUST have a signing-type key usage.
-
-   If the keyUsage extension is present in an end-entity certificate
-   whose keys are being used with id-alg-composite signatures, then the
-   keyUsage extension MUST contain one or both of the following values:
-
-
-
-
-
-Ounsworth (Editor) & PaExpires September 16, 2021               [Page 5]
-
-Internet-Draft             PQ Composite Certs                 March 2021
-
+   composite signature MUST have a signing-type key usage.  If the
+   keyUsage extension is present in an end-entity certificate whose keys
+   are being used with id-alg-composite signatures, then any combination
+   of the following values MAY be present:
 
        nonRepudiation; and
        digitalSignature.
 
+
+
+Ounsworth & Pala       Expires September 21, 2021               [Page 5]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
+
    If the keyUsage extension is present in a certification authority
    certificate whose keys are being used with id-alg-composite
-   signatures, then the keyUsage extension MUST contain one or more of
-   the following values:
+   signatures, then any combination of the following values MAY be
+   present:
 
        nonRepudiation;
        digitalSignature;
@@ -307,9 +304,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
        SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
    }
 
-   The id-alg-composite object identifier MUST be used to identify when
-   a signature has been created by a CompositePrivateKey and following
-   algorithm parameters MUST be included:
+   The following algorithm parameters MUST be included:
 
    CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
 
@@ -329,17 +324,19 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
    The choice of "SEQUENCE OF BIT STRING", rather than for example a
    single BIT STRING containing the concatenated signature values, is to
+   gracefully handle variable-length signature values by taking
+   advantage of ASN.1's built-in length fields.
 
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021               [Page 6]
+
+
+
+Ounsworth & Pala       Expires September 21, 2021               [Page 6]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
-
-   gracefully handle variable-length signature values by taking
-   advantage of ASN.1's built-in length fields.
 
 2.4.  Encoding Rules
 
@@ -389,7 +386,10 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021               [Page 7]
+
+
+
+Ounsworth & Pala       Expires September 21, 2021               [Page 7]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -445,7 +445,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021               [Page 8]
+Ounsworth & Pala       Expires September 21, 2021               [Page 8]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -501,7 +501,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021               [Page 9]
+Ounsworth & Pala       Expires September 21, 2021               [Page 9]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -557,7 +557,7 @@ Signature Verification Procedure::
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021              [Page 10]
+Ounsworth & Pala       Expires September 21, 2021              [Page 10]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -613,7 +613,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021              [Page 11]
+Ounsworth & Pala       Expires September 21, 2021              [Page 11]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -669,7 +669,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021              [Page 12]
+Ounsworth & Pala       Expires September 21, 2021              [Page 12]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -725,7 +725,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021              [Page 13]
+Ounsworth & Pala       Expires September 21, 2021              [Page 13]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -781,7 +781,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021              [Page 14]
+Ounsworth & Pala       Expires September 21, 2021              [Page 14]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -837,7 +837,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021              [Page 15]
+Ounsworth & Pala       Expires September 21, 2021              [Page 15]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -893,7 +893,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021              [Page 16]
+Ounsworth & Pala       Expires September 21, 2021              [Page 16]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -949,7 +949,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021              [Page 17]
+Ounsworth & Pala       Expires September 21, 2021              [Page 17]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -1005,4 +1005,4 @@ Authors' Addresses
 
 
 
-Ounsworth (Editor) & PaExpires September 16, 2021              [Page 18]
+Ounsworth & Pala       Expires September 21, 2021              [Page 18]
