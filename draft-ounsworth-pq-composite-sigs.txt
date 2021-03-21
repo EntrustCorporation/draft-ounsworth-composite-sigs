@@ -5,8 +5,8 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                                 M. Pala
-Expires: September 21, 2021                                    CableLabs
-                                                          March 20, 2021
+Expires: September 22, 2021                                    CableLabs
+                                                          March 21, 2021
 
 
               Composite Signatures For Use In Internet PKI
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 21, 2021.
+   This Internet-Draft will expire on September 22, 2021.
 
 
 
 
 
 
-Ounsworth & Pala       Expires September 21, 2021               [Page 1]
+Ounsworth & Pala       Expires September 22, 2021               [Page 1]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -92,7 +92,7 @@ Table of Contents
    4.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  12
      4.1.  Cryptographic protocols . . . . . . . . . . . . . . . . .  13
    5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
      6.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  14
    7.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  14
      7.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  14
@@ -100,7 +100,7 @@ Table of Contents
    8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  16
      8.1.  Making contributions  . . . . . . . . . . . . . . . . . .  16
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  16
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  17
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  18
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth & Pala       Expires September 21, 2021               [Page 2]
+Ounsworth & Pala       Expires September 22, 2021               [Page 2]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -165,7 +165,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 21, 2021               [Page 3]
+Ounsworth & Pala       Expires September 22, 2021               [Page 3]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -221,7 +221,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 21, 2021               [Page 4]
+Ounsworth & Pala       Expires September 22, 2021               [Page 4]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -277,7 +277,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 21, 2021               [Page 5]
+Ounsworth & Pala       Expires September 22, 2021               [Page 5]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -333,7 +333,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 21, 2021               [Page 6]
+Ounsworth & Pala       Expires September 22, 2021               [Page 6]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -389,7 +389,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 21, 2021               [Page 7]
+Ounsworth & Pala       Expires September 22, 2021               [Page 7]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -429,10 +429,26 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 3.2.  Composite-OR Signature Generation Process
 
+   EDNOTE: This section was written with the intention of keeping the
+   primary Composite OID reserved for the simple and strict mode; if you
+   want to do either a simple OR, or a custom policy then we have given
+   a different OID.  We are still debating whether this is useful to
+   specify at issuing time, or whether this is adding needless
+   complexity to the draft.
+
    If the algorithm ID of the public key associated with this signature
    is id-composite-or-key then the signer MAY use only a subset of the
    component keys and therefore produce fewer signatures than the number
    of component keys.
+
+
+
+
+
+Ounsworth & Pala       Expires September 22, 2021               [Page 8]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
 
    Composite-OR signature generation uses the same structures and
    algorithms as Composite, with the difference that the signature
@@ -440,15 +456,6 @@ Internet-Draft             PQ Composite Certs                 March 2021
    step 1 for one or more component algorithms.  A Composite-OR
    signature MUST NOT be entirely null; it must contain at least one
    valid signature.
-
-
-
-
-
-Ounsworth & Pala       Expires September 21, 2021               [Page 8]
-
-Internet-Draft             PQ Composite Certs                 March 2021
-
 
    The design intent of this mode is to support migration scenarios
    where an end entity has been issued keys on algorithms that either
@@ -494,14 +501,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-
-
-
-
-
-
-
-Ounsworth & Pala       Expires September 21, 2021               [Page 9]
+Ounsworth & Pala       Expires September 22, 2021               [Page 9]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -549,18 +549,26 @@ Signature Verification Procedure::
 
 3.4.  Composite-OR Signature Verification
 
+   EDNOTE: This section was written with the intention of keeping the
+   primary Composite OID reserved for the simple and strict mode; if you
+   want to do either a simple OR, or a custom policy then we have given
+   a different OID.  We are still debating whether this is useful to
+
+
+
+
+Ounsworth & Pala       Expires September 22, 2021              [Page 10]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
+
+   specify at issuing time, or whether this is adding needless
+   complexity to the draft.
+
    When the public key associated with the signature being verified has
    algorithm id-composite-or-key, then an alternate verification
    processes MAY be used, at the discretion of the implementor.  In this
    section we provide some examples of alternate verification processes.
-
-
-
-
-Ounsworth & Pala       Expires September 21, 2021              [Page 10]
-
-Internet-Draft             PQ Composite Certs                 March 2021
-
 
    If the signature is a traditional (non-composite) algorithm and value
    or a composite signature with a single component, then it MAY be
@@ -603,20 +611,18 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
    CompositeParams {legacyAlgorithmIdentifier, null, .., null}
 
+
+
+Ounsworth & Pala       Expires September 22, 2021              [Page 11]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
+
    with the correct number of nulls to match the Composite-OR public key
    that the signature is being verified against.  For the purposes of a
    signature validation under Composite-OR Legacy Mode, a null
    AlgorithmIdentifier is considered to be a match for the corresponding
    algorithm in the Composite-OR public key.
-
-
-
-
-
-Ounsworth & Pala       Expires September 21, 2021              [Page 11]
-
-Internet-Draft             PQ Composite Certs                 March 2021
-
 
    The legacy signature value is to be interpreted by the verifier as a
    sa-CompositeSignature with CompositeParams in the following way:
@@ -660,19 +666,20 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
    o  We could also explain that the root CA cert does not have to be of
       the same algorithms.  The root cert SHOULD NOT be transferred in
+
+
+
+Ounsworth & Pala       Expires September 22, 2021              [Page 12]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
+
       the authentication exchange to save transport overhead and thus it
       can be different than the intermediate and leaf certs.
 
    o  We could talk about overhead (size and processing).
 
    o  We could also discuss backwards compatibility.
-
-
-
-Ounsworth & Pala       Expires September 21, 2021              [Page 12]
-
-Internet-Draft             PQ Composite Certs                 March 2021
-
 
    o  We could include a subsection about implementation considerations.
 
@@ -716,19 +723,14 @@ Internet-Draft             PQ Composite Certs                 March 2021
        iso(1) identified-organization(3) dod(6) internet(1) security(5)
        mechanisms(5) pkix(7) algorithms(6) composite(??) }
 
-6.  Security Considerations
 
 
-
-
-
-
-
-
-Ounsworth & Pala       Expires September 21, 2021              [Page 13]
+Ounsworth & Pala       Expires September 22, 2021              [Page 13]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
+
+6.  Security Considerations
 
 6.1.  Policy for Deprecated and Acceptable Algorithms
 
@@ -776,16 +778,16 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
    IMPORTS
      PUBLIC-KEY, SIGNATURE-ALGORITHM
-       FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
-         { iso(1) identified-organization(3) dod(6) internet(1)
 
 
 
-Ounsworth & Pala       Expires September 21, 2021              [Page 14]
+Ounsworth & Pala       Expires September 22, 2021              [Page 14]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
 
+       FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
+         { iso(1) identified-organization(3) dod(6) internet(1)
            security(5) mechanisms(5) pkix(7) id-mod(0)
            id-mod-algorithmInformation-02(58) }
 
@@ -833,14 +835,14 @@ Internet-Draft             PQ Composite Certs                 March 2021
        PUBLIC-KEYS { pk-Composite }
        SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 
-   CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
 
 
-
-Ounsworth & Pala       Expires September 21, 2021              [Page 15]
+Ounsworth & Pala       Expires September 22, 2021              [Page 15]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
+
+   CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
 
    CompositeSignatureValue ::= SEQUENCE SIZE (1..MAX) OF BIT STRING
 
@@ -885,18 +887,18 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 9.  References
 
-9.1.  Normative References
 
 
 
 
 
 
-
-Ounsworth & Pala       Expires September 21, 2021              [Page 16]
+Ounsworth & Pala       Expires September 22, 2021              [Page 16]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
+
+9.1.  Normative References
 
    [RFC1421]  Linn, J., "Privacy Enhancement for Internet Electronic
               Mail: Part I: Message Encryption and Authentication
@@ -947,9 +949,7 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 
 
-
-
-Ounsworth & Pala       Expires September 21, 2021              [Page 17]
+Ounsworth & Pala       Expires September 22, 2021              [Page 17]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
@@ -1005,4 +1005,4 @@ Authors' Addresses
 
 
 
-Ounsworth & Pala       Expires September 21, 2021              [Page 18]
+Ounsworth & Pala       Expires September 22, 2021              [Page 18]
