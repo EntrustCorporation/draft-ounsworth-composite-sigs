@@ -549,8 +549,9 @@ John Gray (Entrust),
 Serge Mister (Entrust),
 Scott Fluhrer (Cisco Systems),
 Panos Kampanakis (Cisco Systems),
-Daniel Van Geest (ISARA), and
-Tim Hollebeek (Digicert).
+Daniel Van Geest (ISARA),
+Tim Hollebeek (Digicert), and
+François Rousseau.
 
 We are grateful to all, including any contributors who may have
 been inadvertently omitted from this list.

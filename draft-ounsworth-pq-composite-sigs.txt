@@ -5,8 +5,8 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                                 M. Pala
-Expires: September 22, 2021                                    CableLabs
-                                                          March 21, 2021
+Expires: September 24, 2021                                    CableLabs
+                                                          March 23, 2021
 
 
               Composite Signatures For Use In Internet PKI
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 22, 2021.
+   This Internet-Draft will expire on September 24, 2021.
 
 
 
 
 
 
-Ounsworth & Pala       Expires September 22, 2021               [Page 1]
+Ounsworth & Pala       Expires September 24, 2021               [Page 1]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth & Pala       Expires September 22, 2021               [Page 2]
+Ounsworth & Pala       Expires September 24, 2021               [Page 2]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -165,7 +165,7 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 22, 2021               [Page 3]
+Ounsworth & Pala       Expires September 24, 2021               [Page 3]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -221,7 +221,7 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 22, 2021               [Page 4]
+Ounsworth & Pala       Expires September 24, 2021               [Page 4]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -277,7 +277,7 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 22, 2021               [Page 5]
+Ounsworth & Pala       Expires September 24, 2021               [Page 5]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -333,7 +333,7 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 22, 2021               [Page 6]
+Ounsworth & Pala       Expires September 24, 2021               [Page 6]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -389,7 +389,7 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 22, 2021               [Page 7]
+Ounsworth & Pala       Expires September 24, 2021               [Page 7]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -445,7 +445,7 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 22, 2021               [Page 8]
+Ounsworth & Pala       Expires September 24, 2021               [Page 8]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -501,7 +501,7 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 22, 2021               [Page 9]
+Ounsworth & Pala       Expires September 24, 2021               [Page 9]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -557,7 +557,7 @@ Signature Verification Procedure::
 
 
 
-Ounsworth & Pala       Expires September 22, 2021              [Page 10]
+Ounsworth & Pala       Expires September 24, 2021              [Page 10]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -613,7 +613,7 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 22, 2021              [Page 11]
+Ounsworth & Pala       Expires September 24, 2021              [Page 11]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -669,7 +669,7 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 22, 2021              [Page 12]
+Ounsworth & Pala       Expires September 24, 2021              [Page 12]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -725,7 +725,7 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 22, 2021              [Page 13]
+Ounsworth & Pala       Expires September 24, 2021              [Page 13]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -781,7 +781,7 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 22, 2021              [Page 14]
+Ounsworth & Pala       Expires September 24, 2021              [Page 14]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -837,7 +837,7 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 22, 2021              [Page 15]
+Ounsworth & Pala       Expires September 24, 2021              [Page 15]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -868,7 +868,7 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
    John Gray (Entrust), Serge Mister (Entrust), Scott Fluhrer (Cisco
    Systems), Panos Kampanakis (Cisco Systems), Daniel Van Geest (ISARA),
-   and Tim Hollebeek (Digicert).
+   Tim Hollebeek (Digicert), and Francois Rousseau.
 
    We are grateful to all, including any contributors who may have been
    inadvertently omitted from this list.
@@ -893,7 +893,7 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 22, 2021              [Page 16]
+Ounsworth & Pala       Expires September 24, 2021              [Page 16]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -949,7 +949,7 @@ Authors' Addresses
 
 
 
-Ounsworth & Pala       Expires September 22, 2021              [Page 17]
+Ounsworth & Pala       Expires September 24, 2021              [Page 17]
 
 Internet-Draft              PQ Composite Sigs                 March 2021
 
@@ -1005,4 +1005,4 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 22, 2021              [Page 18]
+Ounsworth & Pala       Expires September 24, 2021              [Page 18]
