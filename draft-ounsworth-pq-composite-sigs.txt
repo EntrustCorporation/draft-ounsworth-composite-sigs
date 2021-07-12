@@ -5,8 +5,8 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                                 M. Pala
-Expires: September 24, 2021                                    CableLabs
-                                                          March 23, 2021
+Expires: January 13, 2022                                      CableLabs
+                                                           July 12, 2021
 
 
               Composite Signatures For Use In Internet PKI
@@ -46,16 +46,16 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 24, 2021.
+   This Internet-Draft will expire on January 13, 2022.
 
 
 
 
 
 
-Ounsworth & Pala       Expires September 24, 2021               [Page 1]
+Ounsworth & Pala        Expires January 13, 2022                [Page 1]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
 Copyright Notice
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Ounsworth & Pala       Expires September 24, 2021               [Page 2]
+Ounsworth & Pala        Expires January 13, 2022                [Page 2]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 24, 2021               [Page 3]
+Ounsworth & Pala        Expires January 13, 2022                [Page 3]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
    ALGORITHM: An information object class for identifying the type of
@@ -221,9 +221,9 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 24, 2021               [Page 4]
+Ounsworth & Pala        Expires January 13, 2022                [Page 4]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
    signature algorithms in other schemes for achieving multi-key
@@ -277,9 +277,9 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 24, 2021               [Page 5]
+Ounsworth & Pala        Expires January 13, 2022                [Page 5]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
    If the keyUsage extension is present in an End Entity (EE)
@@ -333,9 +333,9 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 24, 2021               [Page 6]
+Ounsworth & Pala        Expires January 13, 2022                [Page 6]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
    When an octet string is required, the DER encoding of the composite
@@ -389,9 +389,9 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 24, 2021               [Page 7]
+Ounsworth & Pala        Expires January 13, 2022                [Page 7]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
   Input:
@@ -445,9 +445,9 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 24, 2021               [Page 8]
+Ounsworth & Pala        Expires January 13, 2022                [Page 8]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
    Composite-OR signature generation uses the same structures and
@@ -501,9 +501,9 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 24, 2021               [Page 9]
+Ounsworth & Pala        Expires January 13, 2022                [Page 9]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
 Input:
@@ -557,9 +557,9 @@ Signature Verification Procedure::
 
 
 
-Ounsworth & Pala       Expires September 24, 2021              [Page 10]
+Ounsworth & Pala        Expires January 13, 2022               [Page 10]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
    specify at issuing time, or whether this is adding needless
@@ -613,9 +613,9 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 24, 2021              [Page 11]
+Ounsworth & Pala        Expires January 13, 2022               [Page 11]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
    with the correct number of nulls to match the Composite-OR public key
@@ -669,9 +669,9 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 24, 2021              [Page 12]
+Ounsworth & Pala        Expires January 13, 2022               [Page 12]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
       the authentication exchange to save transport overhead and thus it
@@ -725,9 +725,9 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 24, 2021              [Page 13]
+Ounsworth & Pala        Expires January 13, 2022               [Page 13]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
 6.  Security Considerations
@@ -781,9 +781,9 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 24, 2021              [Page 14]
+Ounsworth & Pala        Expires January 13, 2022               [Page 14]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
        FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
@@ -837,9 +837,9 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 24, 2021              [Page 15]
+Ounsworth & Pala        Expires January 13, 2022               [Page 15]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
    CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
@@ -893,9 +893,9 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 24, 2021              [Page 16]
+Ounsworth & Pala        Expires January 13, 2022               [Page 16]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -949,15 +949,15 @@ Authors' Addresses
 
 
 
-Ounsworth & Pala       Expires September 24, 2021              [Page 17]
+Ounsworth & Pala        Expires January 13, 2022               [Page 17]
 
-Internet-Draft              PQ Composite Sigs                 March 2021
+Internet-Draft              PQ Composite Sigs                  July 2021
 
 
    Mike Ounsworth
    Entrust Limited
-   1000 Innovation Drive
-   Ottawa, Ontario  K2K 1E3
+   2500 Solandt Road -- Suite 100
+   Ottawa, Ontario  K2K 3G5
    Canada
 
    Email: mike.ounsworth@entrust.com
@@ -1005,4 +1005,4 @@ Internet-Draft              PQ Composite Sigs                 March 2021
 
 
 
-Ounsworth & Pala       Expires September 24, 2021              [Page 18]
+Ounsworth & Pala        Expires January 13, 2022               [Page 18]

@@ -26,10 +26,10 @@ author:
       name: Mike Ounsworth
       org: Entrust Limited
       abbrev: Entrust
-      street: 1000 Innovation Drive
+      street: 2500 Solandt Road – Suite 100
       city: Ottawa, Ontario
       country: Canada
-      code: K2K 1E3
+      code: K2K 3G5
       email: mike.ounsworth@entrust.com
 
     -
