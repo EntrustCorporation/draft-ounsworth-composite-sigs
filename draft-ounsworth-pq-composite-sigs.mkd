@@ -2,13 +2,10 @@
 title: Composite Signatures For Use In Internet PKI
 abbrev: PQ Composite Sigs
 # <!-- EDNOTE: Edits the draft name -->
-docname: draft-ounsworth-pq-composite-sigs-05
-# <!-- date: 2012-01-13 -->
-# <!-- date: 2012-01 -->
-# <!-- date: 2012 -->
+docname: draft-ounsworth-pq-composite-sigs-06
 
 # <!-- stand_alone: true -->
-<!-- ipr: 3481 -->
+ipr: trust200902
 area: Security
 wg: LAMPS
 kw: Internet-Draft
@@ -187,6 +184,7 @@ If the keyUsage extension is present in an End Entity (EE) certificate that indi
 digitalSignature; and
 nonRepudiation;
 ~~~
+
 
 
 
