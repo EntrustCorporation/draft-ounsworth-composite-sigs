@@ -5,8 +5,8 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                                 M. Pala
-Expires: August 12, 2022                                       CableLabs
-                                                       February 08, 2022
+Expires: September 21, 2022                                    CableLabs
+                                                          March 20, 2022
 
 
               Composite Signatures For Use In Internet PKI
@@ -46,16 +46,16 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 12, 2022.
+   This Internet-Draft will expire on September 21, 2022.
 
 
 
 
 
 
-Ounsworth & Pala         Expires August 12, 2022                [Page 1]
+Ounsworth & Pala       Expires September 21, 2022               [Page 1]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
 
 Copyright Notice
@@ -99,19 +99,19 @@ Table of Contents
      7.2.  Intellectual Property Considerations  . . . . . . . . . .  16
    8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  16
      8.1.  Making contributions  . . . . . . . . . . . . . . . . . .  16
-   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  16
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  17
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  17
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  17
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
 
 
 
 
 
 
-
-
-Ounsworth & Pala         Expires August 12, 2022                [Page 2]
+Ounsworth & Pala       Expires September 21, 2022               [Page 2]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-Draft              PQ Composite Sigs              February 2022
 
 
 
-Ounsworth & Pala         Expires August 12, 2022                [Page 3]
+Ounsworth & Pala       Expires September 21, 2022               [Page 3]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
 
    ALGORITHM: An information object class for identifying the type of
@@ -221,9 +221,9 @@ Internet-Draft              PQ Composite Sigs              February 2022
 
 
 
-Ounsworth & Pala         Expires August 12, 2022                [Page 4]
+Ounsworth & Pala       Expires September 21, 2022               [Page 4]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
 
    signature algorithms in other schemes for achieving multi-key
@@ -277,9 +277,9 @@ Internet-Draft              PQ Composite Sigs              February 2022
 
 
 
-Ounsworth & Pala         Expires August 12, 2022                [Page 5]
+Ounsworth & Pala       Expires September 21, 2022               [Page 5]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
 
    If the keyUsage extension is present in an End Entity (EE)
@@ -333,9 +333,9 @@ Internet-Draft              PQ Composite Sigs              February 2022
 
 
 
-Ounsworth & Pala         Expires August 12, 2022                [Page 6]
+Ounsworth & Pala       Expires September 21, 2022               [Page 6]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
 
    When an octet string is required, the DER encoding of the composite
@@ -389,9 +389,9 @@ Internet-Draft              PQ Composite Sigs              February 2022
 
 
 
-Ounsworth & Pala         Expires August 12, 2022                [Page 7]
+Ounsworth & Pala       Expires September 21, 2022               [Page 7]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
 
   Input:
@@ -445,9 +445,9 @@ Internet-Draft              PQ Composite Sigs              February 2022
 
 
 
-Ounsworth & Pala         Expires August 12, 2022                [Page 8]
+Ounsworth & Pala       Expires September 21, 2022               [Page 8]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
 
    Composite-OR signature generation uses the same structures and
@@ -501,9 +501,9 @@ Internet-Draft              PQ Composite Sigs              February 2022
 
 
 
-Ounsworth & Pala         Expires August 12, 2022                [Page 9]
+Ounsworth & Pala       Expires September 21, 2022               [Page 9]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
 
 Input:
@@ -557,9 +557,9 @@ Signature Verification Procedure::
 
 
 
-Ounsworth & Pala         Expires August 12, 2022               [Page 10]
+Ounsworth & Pala       Expires September 21, 2022              [Page 10]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
 
    specify at issuing time, or whether this is adding needless
@@ -613,9 +613,9 @@ Internet-Draft              PQ Composite Sigs              February 2022
 
 
 
-Ounsworth & Pala         Expires August 12, 2022               [Page 11]
+Ounsworth & Pala       Expires September 21, 2022              [Page 11]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
 
    with the correct number of nulls to match the Composite-OR public key
@@ -669,9 +669,9 @@ Internet-Draft              PQ Composite Sigs              February 2022
 
 
 
-Ounsworth & Pala         Expires August 12, 2022               [Page 12]
+Ounsworth & Pala       Expires September 21, 2022              [Page 12]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
 
       the authentication exchange to save transport overhead and thus it
@@ -725,9 +725,9 @@ Internet-Draft              PQ Composite Sigs              February 2022
 
 
 
-Ounsworth & Pala         Expires August 12, 2022               [Page 13]
+Ounsworth & Pala       Expires September 21, 2022              [Page 13]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
 
 6.  Security Considerations
@@ -781,9 +781,9 @@ Internet-Draft              PQ Composite Sigs              February 2022
 
 
 
-Ounsworth & Pala         Expires August 12, 2022               [Page 14]
+Ounsworth & Pala       Expires September 21, 2022              [Page 14]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
 
        FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
@@ -837,9 +837,9 @@ Internet-Draft              PQ Composite Sigs              February 2022
 
 
 
-Ounsworth & Pala         Expires August 12, 2022               [Page 15]
+Ounsworth & Pala       Expires September 21, 2022              [Page 15]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
 
    CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
@@ -885,7 +885,7 @@ Internet-Draft              PQ Composite Sigs              February 2022
 
    https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs
 
-9.  Normative References
+9.  References
 
 
 
@@ -893,10 +893,12 @@ Internet-Draft              PQ Composite Sigs              February 2022
 
 
 
-Ounsworth & Pala         Expires August 12, 2022               [Page 16]
+Ounsworth & Pala       Expires September 21, 2022              [Page 16]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
+
+9.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -938,7 +940,7 @@ Internet-Draft              PQ Composite Sigs              February 2022
               Encoding Rules (CER) and Distinguished Encoding Rules
               (DER)", ISO/IEC 8825-1:2015, November 2015.
 
-Authors' Addresses
+9.2.  Informative References
 
 
 
@@ -947,12 +949,23 @@ Authors' Addresses
 
 
 
-
-
-Ounsworth & Pala         Expires August 12, 2022               [Page 17]
+Ounsworth & Pala       Expires September 21, 2022              [Page 17]
 
-Internet-Draft              PQ Composite Sigs              February 2022
+Internet-Draft              PQ Composite Sigs                 March 2022
 
+
+   [Bindel2017]
+              Bindel, N., Herath, U., McKague, M., and D. Stebila,
+              "Transitioning to a quantum-resistant public key
+              infrastructure", 2017, <https://link.springer.com/
+              chapter/10.1007/978-3-319-59879-6_22>.
+
+   [I-D.ounsworth-pq-composite-sigs]
+              Ounsworth, M. and M. Pala, "Composite Signatures For Use
+              In Internet PKI", draft-ounsworth-pq-composite-sigs-05
+              (work in progress), July 2021.
+
+Authors' Addresses
 
    Mike Ounsworth
    Entrust Limited
@@ -992,17 +1005,4 @@ Internet-Draft              PQ Composite Sigs              February 2022
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth & Pala         Expires August 12, 2022               [Page 18]
+Ounsworth & Pala       Expires September 21, 2022              [Page 18]

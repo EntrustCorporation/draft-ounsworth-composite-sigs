@@ -15,6 +15,8 @@ xml: $(docName).xml
 
 draft-ounsworth-pq-composite-sigs.xml: $(docName).mkd
 	 kramdown-rfc2629 $(docName).mkd > $(docName).xml
+	 # for some reason the kramdown tool seems to be creating invalid xml, so let's fix it
+	 sed -i 's/consensus="true">/>/g' $(docName).xml 
 
 
 

@@ -55,6 +55,24 @@ normative:
 # <!-- EDNOTE: full syntax for this defined here: https://github.com/cabo/kramdown-rfc2629 -->
 
 informative:
+  I-D.draft-ounsworth-pq-composite-sigs-05:
+  Bindel2017:
+    title: "Transitioning to a quantum-resistant public key infrastructure"
+    target: "https://link.springer.com/chapter/10.1007/978-3-319-59879-6_22"
+    author:
+      -
+        ins: N. Bindel
+        name: Nina Bindel
+      -
+        ins: U. Herath
+        name: Udyani Herath
+      -
+        ins: M. McKague
+        name: Matthew McKague
+      -
+        ins: D. Stebila
+        name: Douglas Stebila
+    date: 2017
 
 <!--updates:
   RFC2986
