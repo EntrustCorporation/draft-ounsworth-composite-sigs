@@ -2,7 +2,7 @@
 title: Composite Signatures For Use In Internet PKI
 abbrev: PQ Composite Sigs
 # <!-- EDNOTE: Edits the draft name -->
-docname: draft-ounsworth-pq-composite-sigs-06
+docname: draft-ounsworth-pq-composite-sigs-07
 
 # <!-- stand_alone: true -->
 ipr: trust200902
@@ -55,7 +55,8 @@ normative:
 # <!-- EDNOTE: full syntax for this defined here: https://github.com/cabo/kramdown-rfc2629 -->
 
 informative:
-  I-D.draft-ounsworth-pq-composite-sigs-05:
+  I-D.draft-ounsworth-pq-composite-keys-00:
+  I-D.draft-becker-guthrie-noncomposite-hybrid-auth-00:
   Bindel2017:
     title: "Transitioning to a quantum-resistant public key infrastructure"
     target: "https://link.springer.com/chapter/10.1007/978-3-319-59879-6_22"
@@ -86,7 +87,7 @@ informative:
 --- abstract
 With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite signature data.
 
-This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined.
+This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm and allows for both explicitely-defined combinations of algorithms as well generic runtime-flexible signature algorithms. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined.
 
 <!-- End of Abstract -->
 
@@ -102,7 +103,7 @@ The deployment of composite signatures using post-quantum algorithms will face t
 - Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
 - Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
 
-This document provides a mechanism to address algorithm strength uncertainty by building on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for encoding multiple signature values into existing public signature fields, as well as the process for validating a composite signature. Backwards compatibility is addressed via the Composite-OR mechanism described herein.
+This document provides a mechanism to address algorithm strength uncertainty by building on [draft-ounsworth-pq-composite-keys-00] (NOTE: need kramdown formatting help with this ref) by providing formats for encoding multiple signature values into existing public signature fields, as well as the process for validating a composite signature. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in [draft-becker-guthrie-noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help with this ref).
 
 This document is intended for general applicability anywhere that digital signatures are used within PKIX and CMS structures.
 
@@ -149,7 +150,9 @@ SIGNATURE:
 
 
 
-# Composite Identifiers and Structures {#sec-composite-structs}
+# Composite Structures {#sec-composite-structs}
+
+REMOVE THIS ENTIRE SECTION
 
 In order for signatures to be composed of multiple algorithms, we define encodings consisting of a sequence of signature primitives (aka "component algorithms") such that these structures can be used as a drop-in replacement for existing signature fields such as those found in PKCS#10 [RFC2986], CMP [RFC4210], X.509 [RFC5280], CMS [RFC5652].
 
@@ -165,21 +168,10 @@ EDNOTE 2: the choice to define composite algorithm parameters as a sequence insi
 
 EDNOTE 2a: We have heard community feedback that the ASN.1 structures presented here are too flexible in that allow arbitrary combinations of an arbitrary number of signature algorithms. The feedback is that this is too much of a "footgun" for implementors and sysadmins. We are working on an alternative formulation using ASN.1 information object classes that allow for compiling explicit pairs of algorithmIDs. We would love community feedback on which approach is preferred. See slide 30 of this presentation: https://datatracker.ietf.org/meeting/interim-2021-lamps-01/materials/slides-interim-2021-lamps-01-sessa-position-presentation-by-mike-ounsworth-00.pdf
 
-## Algorithm Identifier {#sec-alg-identifier}
-
-The following object identifier is used for identifying a composite signature.  Additional encoding information is provided below for each of these objects.
-
-~~~ asn.1
-id-alg-composite OBJECT IDENTIFIER ::= {
-    iso(1)  identified-organization(3) dod(6) internet(1) private(4)
-    enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) }
-~~~
-
-EDNOTE 3: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see {{sec-iana}}.
 
 ## Composite Keys
 
-A Composite signature MUST be associated with a Composite public key as defined in ~~ reference draft-ounsworth-pq-composite-pubkey ~~. 
+A Composite signature MUST be associated with a Composite public key as defined in draft-ounsworth-pq-composite-keys-00] (NOTE: need kramdown formatting help with this ref).
 
 
 ### Key Usage Bits
@@ -204,30 +196,19 @@ nonRepudiation;
 ~~~
 
 
-
-
 ## Composite Signature {#sec-composite-sig-structs}
 
 The ASN.1 algorithm object for a composite signature is:
 
 ~~~ asn.1
 sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
-    IDENTIFIER id-alg-composite
+    IDENTIFIER identifier
     VALUE CompositeSignatureValue
-    PARAMS TYPE CompositeParams ARE required
+    PARAMS ANY DEFINED BY ALGORITHM
     PUBLIC-KEYS { pk-Composite }
     SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 }
 ~~~
-
-The following algorithm parameters MUST be included:
-
-~~~ asn.1
-CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
-~~~
-{: artwork-name="CompositeSignatureParams-asn.1-structures"}
-
-The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePrivateKey and CompositePublicKey.
 
 The output of the composite signature algorithm is the DER encoding of the following structure:
 
@@ -250,6 +231,41 @@ When an octet string is required, the DER encoding of the composite data structu
 When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.
 
 In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.
+
+# Algorithm Identifiers
+
+## id-alg-composite
+
+This algorithm is often referred to as "generic composite signatures". This algorithm allows for runtime agents to use arbitrary combinations of algorithms -- ie it does not need pre-defined OIDs for specific combinations.
+
+The following object identifier is used for identifying a composite signature. This identifier MUST be used in sa-CompositeSignature.identifier.
+
+~~~ asn.1
+id-alg-composite OBJECT IDENTIFIER ::= {
+    iso(1)  identified-organization(3) dod(6) internet(1) private(4)
+    enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) }
+~~~
+
+EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see {{sec-iana}}.
+
+
+The following algorithm parameters MUST be included:
+
+~~~ asn.1
+CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
+~~~
+{: artwork-name="CompositeSignatureParams-asn.1-structures"}
+
+The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePrivateKey and CompositePublicKey.
+
+
+## Other Explicit Algorithms
+
+It is expected that other standards will define algorithms that specify which component algorithms are to be contained within them.
+
+Explicit algorithms must define an OID to be used in sa-CompositeSignature.identifier.
+
+For explicit algorithms, it is not necessary to carry the list of component algorithms in the signature algorithm params because clients can infer the expected component algorithms from the algorithm identifier.
 
 # Composite Signature Processes {#sec-composite-signature-algorithm}
 
@@ -291,19 +307,8 @@ Signature Generation Process:
 
 Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.
 
-A composite signature MUST produce and include in the output a signature value for every component key in the corresponding CompositePrivateKey. For this mode, please see Composite-OR in section {{sec-comp-or-sig-gen}}.
+A composite signature MUST produce, and include in the output, a signature value for every component key in the corresponding CompositePrivateKey.
 
-## Composite-OR Signature Generation Process {#sec-comp-or-sig-gen}
-
-EDNOTE: This section was written with the intention of keeping the primary Composite OID reserved for the simple and strict mode; if you want to do either a simple OR, or a custom policy then we have given a different OID. We are still debating whether this is useful to specify at issuing time, or whether this is adding needless complexity to the draft. 
-
-If the algorithm ID of the public key associated with this signature is id-composite-or-key then the signer MAY use only a subset of the component keys and therefore produce fewer signatures than the number of component keys.
-
-Composite-OR signature generation uses the same structures and algorithms as Composite, with the difference that the signature generation process may emit a null instead of a signature value in step 1 for one or more component algorithms. A Composite-OR signature MUST NOT be entirely null; it must contain at least one valid signature.
-
-The design intent of this mode is to support migration scenarios where an end entity has been issued keys on algorithms that either itself or the peer with which it is communicating do not (yet) support. This design allows for both the mode where the signer omits signatures that it knows its peer cannot process in order to save bandwidth and performance, and the mode where it includes all component signatures and allows the verifier to choose how many to verify. The latter is RECOMMENDED for signatures that need both sort-term backwards compatibility as well as long-term security.
-
-EDNOTE: Do we want to allow a Composite-OR with only a single signature to produce non-composite signatureAlgorithm and signatureValua as per [RFC5280]? Advantages: bandwidth savings of an extra OID and some sequences with one element. Disadvantages: ambiguous whether a signature is traditional or composite until you look at the corresponding public key.
 
 ## Composite Signature Verification Process {#sec-comp-sig-verify}
 
@@ -354,51 +359,10 @@ Signature Verification Procedure::
 
 Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-keys sec-composite-pub-keys ~~, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
 
+Some verification clients may include a policy mechanism for specifying acceptable subsets of alorithms. In these cases, implementors MAY, in the interest of performance, modify the above proess to skip one or more signature validations as per their local client policy. See {{sec-cons-OR-modes}} for a discussion of associated risks.
 
-## Composite-OR Signature Verification {#sec-comp-or-sig-verify}
+In the absence of such a policy machanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here.
 
-EDNOTE: This section was written with the intention of keeping the primary Composite OID reserved for the simple and strict mode; if you want to do either a simple OR, or a custom policy then we have given a different OID. We are still debating whether this is useful to specify at issuing time, or whether this is adding needless complexity to the draft. 
-
-When the public key associated with the signature being verified has algorithm id-composite-or-key, then an alternate verification processes MAY be used, at the discretion of the implementor. In this section we provide some examples of alternate verification processes.
-
-If the signature is a traditional (non-composite) algorithm and value or a composite signature with a single component, then it MAY be considered valid if it verifies under one of the component keys.
-
-If the signature is composite, then the implementor MAY implement policy for which combinations are acceptable.
-
-
-EDNOTE: Does this mean Composite-OR end entity certificates need to be issued by a PKI that is marked as Composite-OR all the way to the top so that verifiers that do not support all the algorithms don't fail? Need to think more about the security implications of allowing a Composite-or in an end entity cert implicitely turning all Composite algIDs into Composite-or algIDs in its cert chain.
-
-EDNOTE: Do we need to specify the semantics of verifying an "n of m" subset signature? I suspect that specifying this in general will be a rat's nest of edge cases, so I propose to "leave this to the implementor".
-
-
-### Composite-OR Legacy Mode
-
-The Composite-OR Legacy Mode is provided to facilitate migration by allowing existing PKI entities (including root CAs, intermediate CAs, and end entities) to have their existing keys re-certified inside a Composite-OR structure along with Post-Quantum keys, and for signatures made by that key prior to the migration to remain valid. Note that Composite-OR Legacy Mode is only provided for signature verification, and not for signature generation; legacy signatures SHOULD NOT be produced from a Composite key.
-
-EDNOTE: to further solidify this, we could add a clause that Legacy Mode signatures are to fail if the signature was produced after notBefore date of the Composite-OR certificate?
-
-In Composite-OR Legacy Mode, a legacy signature algorithm and legacy signature value MAY be validated against a Composite-OR public key. The legacy signature algorithm is to be interpreted by the verifier as a sa-CompositeSignature with CompositeParams in the following way:
-
-~~~ asn.1
-CompositeParams {legacyAlgorithmIdentifier, null, .., null}
-~~~
-
-with the correct number of nulls to match the Composite-OR public key that the signature is being verified against. For the purposes of a signature validation under Composite-OR Legacy Mode, a null AlgorithmIdentifier is considered to be a match for the corresponding algorithm in the Composite-OR public key.
-
-The legacy signature value is to be interpreted by the verifier as a sa-CompositeSignature with CompositeParams in the following way:
-
-~~~ asn.1
-CompositeSignatureValue  {legacySignatureValue, null, .., null}
-~~~
-
-with the correct number of nulls to match the Composite-OR public key that the signature is being verified against. The verification algorithm in section {{sec-comp-or-sig-verify}} applies.
-
-
-Security consideration: when implementing Composite-OR Legacy Mode, it is important to catch the edge case of {null, null, .., null} for both AlgorithmIdentifier and SignatureValue and return Invalid Signature.
-
-It is RECOMMENDED that Composite-OR Legacy Mode be implemented as an optional mode in the verifier that can be enabled or disabled by runtime configuration or policy.
-
-EDNOTE: the signing public key is often identified in the signed document by issuer+serialNumber or by an SKI containing a hash of the public key value. Might need X.509 extensions identifying the SKI of the legacy cert it's replacing?
 
 <!-- End of Composite Signature Algorithm section -->
 
@@ -470,7 +434,21 @@ Specifying a modified verification algorithm to handle these situations is beyon
 
 While intentionally not specified in this document, implementors should put careful thought into implementing a meaningfull policy mechinism within the context of their signature verification engines, for example only algorithms that provide similar security levels should be combined together.
 
+## OR Modes {#sec-cons-OR-modes}
 
+As defined in this document, signers MUST produce a signature value with each of their component private keys, this providing full protection of the content under all available component algorithms. 
+
+This document defines a composite signature verification process {{sec-comp-sig-verify}} where the verifier verifies all component signatures and fails if any component fails. The authors recognize that there will be scenarios where the verifier considers a single component algorithm -- or subset of component algorithms -- to provide sufficient security, and therefore for performance reasons wishes to skip the verification of one or more component signatures.
+
+-- harmonize this with Serge's blurb --
+
+
+
+Risks:
+
+- Failing to update client verification policy in response to advances in cryptanalysis
+- Verifications of a subset of signatures leads to ambiguity in the security strength of the signature verification; ie if a message carries two signatures, one at 128 bits and the other at 112 bits of security and clients are verifying in an OR mode with flexible policy, then it becomes difficult to audit the security strength used at runtime.
+- Moreover, verifying multiple algorithms provides security even in the event that one of the algorithms has already been broken, but knowledge of the break has not been made public yet.
 
 <!-- End of Security Considerations section -->
 
