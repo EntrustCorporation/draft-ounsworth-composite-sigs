@@ -376,11 +376,12 @@
   <link href="#rfc.toc" rel="Contents">
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.1.1" rel="Chapter" title="1.1 Terminology">
-<link href="#rfc.section.2" rel="Chapter" title="2 Composite Structures">
+<link href="#rfc.section.2" rel="Chapter" title="2 Composite Signature Structures">
 <link href="#rfc.section.2.1" rel="Chapter" title="2.1 Composite Keys">
 <link href="#rfc.section.2.1.1" rel="Chapter" title="2.1.1 Key Usage Bits">
-<link href="#rfc.section.2.2" rel="Chapter" title="2.2 Composite Signature">
-<link href="#rfc.section.2.3" rel="Chapter" title="2.3 Encoding Rules">
+<link href="#rfc.section.2.2" rel="Chapter" title="2.2 sa-CompositeSignature">
+<link href="#rfc.section.2.3" rel="Chapter" title="2.3 CompositeSignatureValue">
+<link href="#rfc.section.2.4" rel="Chapter" title="2.4 Encoding Rules">
 <link href="#rfc.section.3" rel="Chapter" title="3 Algorithm Identifiers">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 id-alg-composite">
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 Other Explicit Algorithms">
@@ -393,14 +394,17 @@
 <link href="#rfc.section.7" rel="Chapter" title="7 Security Considerations">
 <link href="#rfc.section.7.1" rel="Chapter" title="7.1 Policy for Deprecated and Acceptable Algorithms">
 <link href="#rfc.section.7.2" rel="Chapter" title="7.2 OR Modes">
-<link href="#rfc.section.8" rel="Chapter" title="8 Appendices">
-<link href="#rfc.section.8.1" rel="Chapter" title="8.1 ASN.1 Module">
-<link href="#rfc.section.8.2" rel="Chapter" title="8.2 Intellectual Property Considerations">
-<link href="#rfc.section.9" rel="Chapter" title="9 Contributors and Acknowledgements">
-<link href="#rfc.section.9.1" rel="Chapter" title="9.1 Making contributions">
-<link href="#rfc.references" rel="Chapter" title="10 References">
-<link href="#rfc.references.1" rel="Chapter" title="10.1 Normative References">
-<link href="#rfc.references.2" rel="Chapter" title="10.2 Informative References">
+<link href="#rfc.references" rel="Chapter" title="8 References">
+<link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References">
+<link href="#rfc.references.2" rel="Chapter" title="8.2 Informative References">
+<link href="#rfc.appendix.A" rel="Chapter" title="A Creating explicit combinations">
+<link href="#rfc.appendix.B" rel="Chapter" title="B Examples">
+<link href="#rfc.appendix.B.1" rel="Chapter" title="B.1 Generic Composite Signature Examples">
+<link href="#rfc.appendix.B.2" rel="Chapter" title="B.2 Explicit Composite Signature Examples">
+<link href="#rfc.appendix.C" rel="Chapter" title="C ASN.1 Module">
+<link href="#rfc.appendix.D" rel="Chapter" title="D Intellectual Property Considerations">
+<link href="#rfc.appendix.E" rel="Chapter" title="E Contributors and Acknowledgements">
+<link href="#rfc.appendix.E.1" rel="Chapter" title="E.1 Making contributions">
 <link href="#rfc.authors" rel="Chapter">
 
 
@@ -409,7 +413,7 @@
 
   <meta name="dct.creator" content="Ounsworth, M. and M. Pala" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-sigs-07" />
-  <meta name="dct.issued" scheme="ISO8601" content="2022-05-06" />
+  <meta name="dct.issued" scheme="ISO8601" content="2022-05-07" />
   <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite signature data. This document defines a structure generic enough to be useful beyond the post-quantum transition for any situation where a widely-supported but untrusted algorithm is being migrated to newer cryptography. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm and allows for both explicitely-defined combinations of algorithms as well generic runtime-flexible signature algorithms. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined. " />
   <meta name="description" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite signature data. This document defines a structure generic enough to be useful beyond the post-quantum transition for any situation where a widely-supported but untrusted algorithm is being migrated to newer cryptography. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm and allows for both explicitely-defined combinations of algorithms as well generic runtime-flexible signature algorithms. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined. " />
 
@@ -433,12 +437,12 @@
 <td class="right">M. Pala</td>
 </tr>
 <tr>
-<td class="left">Expires: November 7, 2022</td>
+<td class="left">Expires: November 8, 2022</td>
 <td class="right">CableLabs</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">May 06, 2022</td>
+<td class="right">May 07, 2022</td>
 </tr>
 
     	
@@ -455,7 +459,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 7, 2022.</p>
+<p>This Internet-Draft will expire on November 8, 2022.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2022 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -469,15 +473,17 @@
 </li>
 <ul><li>1.1.   <a href="#rfc.section.1.1">Terminology</a>
 </li>
-</ul><li>2.   <a href="#rfc.section.2">Composite Structures</a>
+</ul><li>2.   <a href="#rfc.section.2">Composite Signature Structures</a>
 </li>
 <ul><li>2.1.   <a href="#rfc.section.2.1">Composite Keys</a>
 </li>
 <ul><li>2.1.1.   <a href="#rfc.section.2.1.1">Key Usage Bits</a>
 </li>
-</ul><li>2.2.   <a href="#rfc.section.2.2">Composite Signature</a>
+</ul><li>2.2.   <a href="#rfc.section.2.2">sa-CompositeSignature</a>
 </li>
-<li>2.3.   <a href="#rfc.section.2.3">Encoding Rules</a>
+<li>2.3.   <a href="#rfc.section.2.3">CompositeSignatureValue</a>
+</li>
+<li>2.4.   <a href="#rfc.section.2.4">Encoding Rules</a>
 </li>
 </ul><li>3.   <a href="#rfc.section.3">Algorithm Identifiers</a>
 </li>
@@ -503,21 +509,27 @@
 </li>
 <li>7.2.   <a href="#rfc.section.7.2">OR Modes</a>
 </li>
-</ul><li>8.   <a href="#rfc.section.8">Appendices</a>
+</ul><li>8.   <a href="#rfc.references">References</a>
 </li>
-<ul><li>8.1.   <a href="#rfc.section.8.1">ASN.1 Module</a>
+<ul><li>8.1.   <a href="#rfc.references.1">Normative References</a>
 </li>
-<li>8.2.   <a href="#rfc.section.8.2">Intellectual Property Considerations</a>
+<li>8.2.   <a href="#rfc.references.2">Informative References</a>
 </li>
-</ul><li>9.   <a href="#rfc.section.9">Contributors and Acknowledgements</a>
+</ul><li>Appendix A.   <a href="#rfc.appendix.A">Creating explicit combinations</a>
 </li>
-<ul><li>9.1.   <a href="#rfc.section.9.1">Making contributions</a>
+<li>Appendix B.   <a href="#rfc.appendix.B">Examples</a>
 </li>
-</ul><li>10.   <a href="#rfc.references">References</a>
+<ul><li>B.1.   <a href="#rfc.appendix.B.1">Generic Composite Signature Examples</a>
 </li>
-<ul><li>10.1.   <a href="#rfc.references.1">Normative References</a>
+<li>B.2.   <a href="#rfc.appendix.B.2">Explicit Composite Signature Examples</a>
 </li>
-<li>10.2.   <a href="#rfc.references.2">Informative References</a>
+</ul><li>Appendix C.   <a href="#rfc.appendix.C">ASN.1 Module</a>
+</li>
+<li>Appendix D.   <a href="#rfc.appendix.D">Intellectual Property Considerations</a>
+</li>
+<li>Appendix E.   <a href="#rfc.appendix.E">Contributors and Acknowledgements</a>
+</li>
+<ul><li>E.1.   <a href="#rfc.appendix.E.1">Making contributions</a>
 </li>
 </ul><li><a href="#rfc.authors">Authors' Addresses</a>
 </li>
@@ -545,26 +557,17 @@
 <p id="rfc.section.1.1.p.2">The following terms are used in this document:</p>
 <p id="rfc.section.1.1.p.3">ALGORITHM: An information object class for identifying the type of cryptographic operation to be performed. This document is primarily concerned with algorithms for producing digital signatures.</p>
 <p id="rfc.section.1.1.p.4">BER: Basic Encoding Rules (BER) as defined in <a href="#X.690" class="xref">[X.690]</a>.</p>
-<p id="rfc.section.1.1.p.5">COMPONENT ALGORITHM: A single basic algorithm which is contained within a composite algorithm.</p>
-<p id="rfc.section.1.1.p.6">COMPOSITE ALGORITHM: An algorithm which is a sequence of two or more component algorithms, as defined in <a href="#sec-composite-structs" class="xref">Section 2</a>.</p>
-<p id="rfc.section.1.1.p.7">DER: Distinguished Encoding Rules as defined in <a href="#X.690" class="xref">[X.690]</a>.</p>
-<p id="rfc.section.1.1.p.8">LEGACY:   For the purposes of this document, a legacy key or signature is a non-composite key or signature.</p>
-<p id="rfc.section.1.1.p.9">PUBLIC / PRIVATE KEY: The public and private portion of an asymmetric cryptographic key, making no assumptions about which algorithm.</p>
-<p id="rfc.section.1.1.p.10">SIGNATURE: A digital cryptographic signature, making no assumptions about which algorithm.</p>
+<p id="rfc.section.1.1.p.5">CLIENT: Any software that is making use of a key at runtime.  This includes a signer, verifier, encryptor, decryptor.</p>
+<p id="rfc.section.1.1.p.6">COMPONENT ALGORITHM: A single basic algorithm which is contained within a composite algorithm.</p>
+<p id="rfc.section.1.1.p.7">COMPOSITE ALGORITHM: An algorithm which is a sequence of two or more component algorithms, as defined in <a href="#sec-composite-structs" class="xref">Section 2</a>.</p>
+<p id="rfc.section.1.1.p.8">DER: Distinguished Encoding Rules as defined in <a href="#X.690" class="xref">[X.690]</a>.</p>
+<p id="rfc.section.1.1.p.9">LEGACY:   For the purposes of this document, a legacy key or signature is a non-composite key or signature.</p>
+<p id="rfc.section.1.1.p.10">PUBLIC / PRIVATE KEY: The public and private portion of an asymmetric cryptographic key, making no assumptions about which algorithm.</p>
+<p id="rfc.section.1.1.p.11">SIGNATURE: A digital cryptographic signature, making no assumptions about which algorithm.</p>
 <h1 id="rfc.section.2">
-<a href="#rfc.section.2">2.</a> <a href="#sec-composite-structs" id="sec-composite-structs">Composite Structures</a>
+<a href="#rfc.section.2">2.</a> <a href="#sec-composite-structs" id="sec-composite-structs">Composite Signature Structures</a>
 </h1>
-<p id="rfc.section.2.p.1">REMOVE THIS ENTIRE SECTION</p>
-<p id="rfc.section.2.p.2">In order for signatures to be composed of multiple algorithms, we define encodings consisting of a sequence of signature primitives (aka "component algorithms") such that these structures can be used as a drop-in replacement for existing signature fields such as those found in PKCS#10 <a href="#RFC2986" class="xref">[RFC2986]</a>, CMP <a href="#RFC4210" class="xref">[RFC4210]</a>, X.509 <a href="#RFC5280" class="xref">[RFC5280]</a>, CMS <a href="#RFC5652" class="xref">[RFC5652]</a>.</p>
-<p id="rfc.section.2.p.3">This section defines the following structures:</p>
-<p></p>
-
-<ul>
-<li>The id-alg-composite is an AlgorithmIdentifier identifying a composite signature object.  <br><br> The sa-CompositeSignature AlgorithmIdentifier and the corresponding CompositeParams identify the algorithm(s) used in a composite signature.</li>
-<li>The CompositeSignatureValue, carries a sequence of signatures that are generated by a CompositePrivateKey, and can be verified with the corresponding CompositePublicKey.</li>
-</ul>
-<p id="rfc.section.2.p.5">EDNOTE 2: the choice to define composite algorithm parameters as a sequence inside the existing fields avoids the exponential proliferation of OIDs that are needed for each combination of signature algorithms in other schemes for achieving multi-key certificates. This scheme also naturally extends from 2-keypair to n-keypair keys and certificates.</p>
-<p id="rfc.section.2.p.6">EDNOTE 2a: We have heard community feedback that the ASN.1 structures presented here are too flexible in that allow arbitrary combinations of an arbitrary number of signature algorithms. The feedback is that this is too much of a "footgun" for implementors and sysadmins. We are working on an alternative formulation using ASN.1 information object classes that allow for compiling explicit pairs of algorithmIDs. We would love community feedback on which approach is preferred. See slide 30 of this presentation: https://datatracker.ietf.org/meeting/interim-2021-lamps-01/materials/slides-interim-2021-lamps-01-sessa-position-presentation-by-mike-ounsworth-00.pdf</p>
+<p id="rfc.section.2.p.1">In order for signatures to be composed of multiple algorithms, we define encodings consisting of a sequence of signature primitives (aka "component algorithms") such that these structures can be used as a drop-in replacement for existing signature fields such as those found in PKCS#10 <a href="#RFC2986" class="xref">[RFC2986]</a>, CMP <a href="#RFC4210" class="xref">[RFC4210]</a>, X.509 <a href="#RFC5280" class="xref">[RFC5280]</a>, CMS <a href="#RFC5652" class="xref">[RFC5652]</a>.</p>
 <h1 id="rfc.section.2.1">
 <a href="#rfc.section.2.1">2.1.</a> <a href="#composite-keys" id="composite-keys">Composite Keys</a>
 </h1>
@@ -586,7 +589,7 @@ digitalSignature; and
 nonRepudiation;
 </pre>
 <h1 id="rfc.section.2.2">
-<a href="#rfc.section.2.2">2.2.</a> <a href="#sec-composite-sig-structs" id="sec-composite-sig-structs">Composite Signature</a>
+<a href="#rfc.section.2.2">2.2.</a> <a href="#sec-composite-sig-structs" id="sec-composite-sig-structs">sa-CompositeSignature</a>
 </h1>
 <p id="rfc.section.2.2.p.1">The ASN.1 algorithm object for a composite signature is:</p>
 <pre>
@@ -598,44 +601,60 @@ sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
     SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 }
 </pre>
-<p id="rfc.section.2.2.p.2">The output of the composite signature algorithm is the DER encoding of the following structure:</p>
+<p id="rfc.section.2.2.p.2">The identifier specifies the type of composite signature and the component algorithms. This document defines a generic composite algorithm id-alg-composite in <a href="#sec-generic-composite" class="xref">Section 3.1</a>, and allows for other standards that will define explicit algorithms that specify which component algorithms are to be contained within them.</p>
+<h1 id="rfc.section.2.3">
+<a href="#rfc.section.2.3">2.3.</a> <a href="#sec-compositeSignatureValue" id="sec-compositeSignatureValue">CompositeSignatureValue</a>
+</h1>
+<p id="rfc.section.2.3.p.1">The output of the composite signature algorithm is the DER encoding of the following structure:</p>
 <pre>
 CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
 </pre>
-<p id="rfc.section.2.2.p.3">Where each BIT STRING within the SEQUENCE is a signature value produced by one of the component keys. It MUST contain one signature value produced by each component algorithm, and in the same order as in the associated CompositeParams object.</p>
-<p id="rfc.section.2.2.p.4">The choice of <samp>SEQUENCE OF BIT STRING</samp>, rather than for example a single BIT STRING containing the concatenated signature values, is to gracefully handle variable-length signature values by taking advantage of ASN.1's built-in length fields.</p>
-<h1 id="rfc.section.2.3">
-<a href="#rfc.section.2.3">2.3.</a> <a href="#sec-encoding-rules" id="sec-encoding-rules">Encoding Rules</a>
+<p id="rfc.section.2.3.p.2">Where each BIT STRING within the SEQUENCE is a signature value produced by one of the component keys. It MUST contain one signature value produced by each component algorithm, and in the same order as in the associated CompositeParams object.</p>
+<p id="rfc.section.2.3.p.3">A CompositeSignatureValue MUST contain the same number of component signatures as the corresponding public and private keys, and the order of component signature values MUST correspond to the component public keys.</p>
+<p id="rfc.section.2.3.p.4">The choice of <samp>SEQUENCE OF BIT STRING</samp>, rather than for example a single BIT STRING containing the concatenated signature values, is to gracefully handle variable-length signature values by taking advantage of ASN.1's built-in length fields.</p>
+<h1 id="rfc.section.2.4">
+<a href="#rfc.section.2.4">2.4.</a> <a href="#sec-encoding-rules" id="sec-encoding-rules">Encoding Rules</a>
 </h1>
-<p id="rfc.section.2.3.p.1">Many protocol specifications will require that composite signature data structures be represented by an octet string or bit string.</p>
-<p id="rfc.section.2.3.p.2">When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.</p>
-<p id="rfc.section.2.3.p.3">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.</p>
-<p id="rfc.section.2.3.p.4">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.</p>
+<p id="rfc.section.2.4.p.1">Many protocol specifications will require that composite signature data structures be represented by an octet string or bit string.</p>
+<p id="rfc.section.2.4.p.2">When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.</p>
+<p id="rfc.section.2.4.p.3">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.</p>
+<p id="rfc.section.2.4.p.4">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#algorithm-identifiers" id="algorithm-identifiers">Algorithm Identifiers</a>
 </h1>
+<p id="rfc.section.3.p.1">Some use-cases desire the flexibility of choosing any combination of supported algorithms at runtime, while others desire the rigidity of explicitely-specified combinations of algorithms.</p>
 <h1 id="rfc.section.3.1">
-<a href="#rfc.section.3.1">3.1.</a> <a href="#id-alg-composite" id="id-alg-composite">id-alg-composite</a>
+<a href="#rfc.section.3.1">3.1.</a> <a href="#sec-generic-composite" id="sec-generic-composite">id-alg-composite</a>
 </h1>
-<p id="rfc.section.3.1.p.1">This algorithm is often referred to as "generic composite signatures". This algorithm allows for runtime agents to use arbitrary combinations of algorithms -- ie it does not need pre-defined OIDs for specific combinations.</p>
-<p id="rfc.section.3.1.p.2">The following object identifier is used for identifying a composite signature. This identifier MUST be used in sa-CompositeSignature.identifier.</p>
+<p id="rfc.section.3.1.p.1">The id-alg-composite algorithm identifier is used for identifying a generic composite signature. This algorithm allows for runtime agents to use arbitrary combinations of algorithms -- ie it does not need pre-defined OIDs for specific combinations. This identifier MUST be used in sa-CompositeSignature.identifier.</p>
 <pre>
 id-alg-composite OBJECT IDENTIFIER ::= {
     iso(1)  identified-organization(3) dod(6) internet(1) private(4)
     enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) }
 </pre>
-<p id="rfc.section.3.1.p.3">EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see <a href="#sec-iana" class="xref">Section 6</a>.</p>
-<p id="rfc.section.3.1.p.4">The following algorithm parameters MUST be included:</p>
+<p id="rfc.section.3.1.p.2">EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see <a href="#sec-iana" class="xref">Section 6</a>.</p>
+<p id="rfc.section.3.1.p.3">The following algorithm parameters MUST be included:</p>
 <pre>
 CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 </pre>
-<p id="rfc.section.3.1.p.5">The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePrivateKey and CompositePublicKey.</p>
+<p id="rfc.section.3.1.p.4">The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePrivateKey and CompositePublicKey.</p>
+<p id="rfc.section.3.1.p.5">The motivation for this variant is primarily for prototyping work prior to the standardization of algorithm identifiers for explicit combinations of algorithms. However, the authors envision that this variant will remain relevant beyond full standardization for example in environments requiring very high levels of crypto agility, for example where clients support a large number of algorithms or where a large number of keys will be used at a time and it is therefore prohibitive to define algorithm identifiers for every combination of pairs, triples, quadtuples, etc of algorithms.</p>
 <h1 id="rfc.section.3.2">
 <a href="#rfc.section.3.2">3.2.</a> <a href="#other-explicit-algorithms" id="other-explicit-algorithms">Other Explicit Algorithms</a>
 </h1>
-<p id="rfc.section.3.2.p.1">It is expected that other standards will define algorithms that specify which component algorithms are to be contained within them.</p>
-<p id="rfc.section.3.2.p.2">Explicit algorithms must define an OID to be used in sa-CompositeSignature.identifier.</p>
-<p id="rfc.section.3.2.p.3">For explicit algorithms, it is not necessary to carry the list of component algorithms in the signature algorithm params because clients can infer the expected component algorithms from the algorithm identifier.</p>
+<p id="rfc.section.3.2.p.1">This variant provides a rigid way of specifying supported combinations of algorithms.</p>
+<p id="rfc.section.3.2.p.2">The motivation for this variant is to make it easier to reference and enforce specific combinations of algorithms. The authors envision this being useful for client-server negotiated protocols, protocol designers who wish to place constraints on allowable algorithm combinations in the protocol specification, as well as audited environments that wish to prove that only certain combinations will be supported by clients.</p>
+<p id="rfc.section.3.2.p.3">Explicit algorithms must define a new signature algorithm which consists of:</p>
+<p></p>
+
+<ul>
+<li>A new algorithm identifier OID for the explicit algorithm.</li>
+<li>The algorithm identifier OID and PUBLIC-KEY type of each component algorithm.</li>
+<li>Signature parameters either declared ABSENT, or defined with a type and encoding.</li>
+</ul>
+<p id="rfc.section.3.2.p.5">See <a href="#appdx-creatingExplicitCombinations" class="xref">Appendix A</a> for guidance on creating and registering OIDs for specific explicit combinations.</p>
+<p id="rfc.section.3.2.p.6">For explicit algorithms, it is not necessary to carry a CompositeParams with the list of component algorithms in the signature algorithm params because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in <a href="#RFC8017" class="xref">[RFC8017]</a>. Explicit algorithms specifications MUST either define parameters as ABSENT, or define a type and encoding for parameters.</p>
+<p id="rfc.section.3.2.p.7">In this variant, the signature is encoded as defined in <a href="#sec-composite-sig-structs" class="xref">Section 2.2</a>, however the sa-CompositeSignature.identifier SHALL be an OID which is registered to represent a specific combination of component signature algorithms. See <a href="#appdx-examples" class="xref">Appendix B</a> for examples.</p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#sec-composite-signature-algorithm" id="sec-composite-signature-algorithm">Composite Signature Processes</a>
 </h1>
@@ -785,11 +804,94 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 <li>Verifications of a subset of signatures leads to ambiguity in the security strength of the signature verification; ie if a message carries two signatures, one at 128 bits and the other at 112 bits of security and clients are verifying in an OR mode with flexible policy, then it becomes difficult to audit the security strength used at runtime.</li>
 <li>Moreover, verifying multiple algorithms provides security even in the event that one of the algorithms has already been broken, but knowledge of the break has not been made public yet.</li>
 </ul>
-<h1 id="rfc.section.8">
-<a href="#rfc.section.8">8.</a> <a href="#appendices" id="appendices">Appendices</a>
+<h1 id="rfc.references">
+<a href="#rfc.references">8.</a> References</h1>
+<h1 id="rfc.references.1">
+<a href="#rfc.references.1">8.1.</a> Normative References</h1>
+<table><tbody>
+<tr>
+<td class="reference"><b id="RFC2119">[RFC2119]</b></td>
+<td class="top">
+<a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC2986">[RFC2986]</b></td>
+<td class="top">
+<a>Nystrom, M.</a> and <a>B. Kaliski</a>, "<a href="https://tools.ietf.org/html/rfc2986">PKCS #10: Certification Request Syntax Specification Version 1.7</a>", RFC 2986, DOI 10.17487/RFC2986, November 2000.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC4210">[RFC4210]</b></td>
+<td class="top">
+<a>Adams, C.</a>, <a>Farrell, S.</a>, <a>Kause, T.</a> and <a>T. Mononen</a>, "<a href="https://tools.ietf.org/html/rfc4210">Internet X.509 Public Key Infrastructure Certificate Management Protocol (CMP)</a>", RFC 4210, DOI 10.17487/RFC4210, September 2005.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC5280">[RFC5280]</b></td>
+<td class="top">
+<a>Cooper, D.</a>, <a>Santesson, S.</a>, <a>Farrell, S.</a>, <a>Boeyen, S.</a>, <a>Housley, R.</a> and <a>W. Polk</a>, "<a href="https://tools.ietf.org/html/rfc5280">Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</a>", RFC 5280, DOI 10.17487/RFC5280, May 2008.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC5652">[RFC5652]</b></td>
+<td class="top">
+<a>Housley, R.</a>, "<a href="https://tools.ietf.org/html/rfc5652">Cryptographic Message Syntax (CMS)</a>", STD 70, RFC 5652, DOI 10.17487/RFC5652, September 2009.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8174">[RFC8174]</b></td>
+<td class="top">
+<a>Leiba, B.</a>, "<a href="https://tools.ietf.org/html/rfc8174">Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</a>", BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8411">[RFC8411]</b></td>
+<td class="top">
+<a>Schaad, J.</a> and <a>R. Andrews</a>, "<a href="https://tools.ietf.org/html/rfc8411">IANA Registration for the Cryptographic Algorithm Object Identifier Range</a>", RFC 8411, DOI 10.17487/RFC8411, August 2018.</td>
+</tr>
+<tr>
+<td class="reference"><b id="X.690">[X.690]</b></td>
+<td class="top">
+<a>ITU-T</a>, "<a>Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)</a>", ISO/IEC 8825-1:2015, November 2015.</td>
+</tr>
+</tbody></table>
+<h1 id="rfc.references.2">
+<a href="#rfc.references.2">8.2.</a> Informative References</h1>
+<table><tbody>
+<tr>
+<td class="reference"><b id="Bindel2017">[Bindel2017]</b></td>
+<td class="top">
+<a>Bindel, N.</a>, <a>Herath, U.</a>, <a>McKague, M.</a> and <a>D. Stebila</a>, "<a href="https://link.springer.com/chapter/10.1007/978-3-319-59879-6_22">Transitioning to a quantum-resistant public key infrastructure</a>", 2017.</td>
+</tr>
+<tr>
+<td class="reference"><b id="I-D.becker-guthrie-noncomposite-hybrid-auth">[I-D.becker-guthrie-noncomposite-hybrid-auth]</b></td>
+<td class="top">
+<a title="National Security Agency">Becker, A.</a>, <a title="National Security Agency">Guthrie, R.</a> and <a title="National Security Agency">M. Jenkins</a>, "<a href="https://tools.ietf.org/html/draft-becker-guthrie-noncomposite-hybrid-auth-00">Non-Composite Hybrid Authentication in PKIX and Applications to Internet Protocols</a>", Internet-Draft draft-becker-guthrie-noncomposite-hybrid-auth-00, March 2022.</td>
+</tr>
+<tr>
+<td class="reference"><b id="I-D.ounsworth-pq-composite-keys">[I-D.ounsworth-pq-composite-keys]</b></td>
+<td class="top">
+<a title="Entrust Limited">Ounsworth, M.</a> and <a title="CableLabs">M. Pala</a>, "<a href="https://tools.ietf.org/html/draft-ounsworth-pq-composite-keys-00">Composite Public and Private Keys For Use In Internet PKI</a>", Internet-Draft draft-ounsworth-pq-composite-keys-00, July 2021.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8017">[RFC8017]</b></td>
+<td class="top">
+<a>Moriarty, K.</a>, <a>Kaliski, B.</a>, <a>Jonsson, J.</a> and <a>A. Rusch</a>, "<a href="https://tools.ietf.org/html/rfc8017">PKCS #1: RSA Cryptography Specifications Version 2.2</a>", RFC 8017, DOI 10.17487/RFC8017, November 2016.</td>
+</tr>
+</tbody></table>
+<h1 id="rfc.appendix.A">
+<a href="#rfc.appendix.A">Appendix A.</a> <a href="#appdx-creatingExplicitCombinations" id="appdx-creatingExplicitCombinations">Creating explicit combinations</a>
 </h1>
-<h1 id="rfc.section.8.1">
-<a href="#rfc.section.8.1">8.1.</a> <a href="#asn1-module" id="asn1-module">ASN.1 Module</a>
+<p id="rfc.section.A.p.1">The following ASN.1 Information Objects may be useful in defining and parsing explicit pairs of signature algoritms.</p>
+<p id="rfc.section.A.p.2">... TODO ... copy &amp; adapt from the keys draft.</p>
+<h1 id="rfc.appendix.B">
+<a href="#rfc.appendix.B">Appendix B.</a> <a href="#appdx-examples" id="appdx-examples">Examples</a>
+</h1>
+<h1 id="rfc.appendix.B.1">
+<a href="#rfc.appendix.B.1">B.1.</a> <a href="#appdx-genComposite-examples" id="appdx-genComposite-examples">Generic Composite Signature Examples</a>
+</h1>
+<p id="rfc.section.B.1.p.1">TODO</p>
+<h1 id="rfc.appendix.B.2">
+<a href="#rfc.appendix.B.2">B.2.</a> <a href="#appdx-expComposite-examples" id="appdx-expComposite-examples">Explicit Composite Signature Examples</a>
+</h1>
+<p id="rfc.section.B.2.p.1">TODO</p>
+<h1 id="rfc.appendix.C">
+<a href="#rfc.appendix.C">Appendix C.</a> <a href="#asn1-module" id="asn1-module">ASN.1 Module</a>
 </h1>
 <pre>
 &lt;CODE STARTS&gt;
@@ -861,88 +963,23 @@ END
 &lt;CODE ENDS&gt;
 
 </pre>
-<h1 id="rfc.section.8.2">
-<a href="#rfc.section.8.2">8.2.</a> <a href="#intellectual-property-considerations" id="intellectual-property-considerations">Intellectual Property Considerations</a>
+<h1 id="rfc.appendix.D">
+<a href="#rfc.appendix.D">Appendix D.</a> <a href="#intellectual-property-considerations" id="intellectual-property-considerations">Intellectual Property Considerations</a>
 </h1>
-<p id="rfc.section.8.2.p.1">The following IPR Disclosure relates to this draft:</p>
-<p id="rfc.section.8.2.p.2">https://datatracker.ietf.org/ipr/3588/</p>
-<h1 id="rfc.section.9">
-<a href="#rfc.section.9">9.</a> <a href="#contributors-and-acknowledgements" id="contributors-and-acknowledgements">Contributors and Acknowledgements</a>
+<p id="rfc.section.D.p.1">The following IPR Disclosure relates to this draft:</p>
+<p id="rfc.section.D.p.2">https://datatracker.ietf.org/ipr/3588/</p>
+<h1 id="rfc.appendix.E">
+<a href="#rfc.appendix.E">Appendix E.</a> <a href="#contributors-and-acknowledgements" id="contributors-and-acknowledgements">Contributors and Acknowledgements</a>
 </h1>
-<p id="rfc.section.9.p.1">This document incorporates contributions and comments from a large group of experts. The Editors would especially like to acknowledge the expertise and tireless dedication of the following people, who attended many long meetings and generated millions of bytes of electronic mail and VOIP traffic over the past year in pursuit of this document:</p>
-<p id="rfc.section.9.p.2">John Gray (Entrust), Serge Mister (Entrust), Scott Fluhrer (Cisco Systems), Panos Kampanakis (Cisco Systems), Daniel Van Geest (ISARA), Tim Hollebeek (Digicert), and Francois Rousseau.</p>
-<p id="rfc.section.9.p.3">We are grateful to all, including any contributors who may have been inadvertently omitted from this list.</p>
-<p id="rfc.section.9.p.4">This document borrows text from similar documents, including those referenced below. Thanks go to the authors of those documents.  "Copying always makes things easier and less error prone" - <a href="#RFC8411" class="xref">[RFC8411]</a>.</p>
-<h1 id="rfc.section.9.1">
-<a href="#rfc.section.9.1">9.1.</a> <a href="#making-contributions" id="making-contributions">Making contributions</a>
+<p id="rfc.section.E.p.1">This document incorporates contributions and comments from a large group of experts. The Editors would especially like to acknowledge the expertise and tireless dedication of the following people, who attended many long meetings and generated millions of bytes of electronic mail and VOIP traffic over the past year in pursuit of this document:</p>
+<p id="rfc.section.E.p.2">John Gray (Entrust), Serge Mister (Entrust), Scott Fluhrer (Cisco Systems), Panos Kampanakis (Cisco Systems), Daniel Van Geest (ISARA), Tim Hollebeek (Digicert), and Francois Rousseau.</p>
+<p id="rfc.section.E.p.3">We are grateful to all, including any contributors who may have been inadvertently omitted from this list.</p>
+<p id="rfc.section.E.p.4">This document borrows text from similar documents, including those referenced below. Thanks go to the authors of those documents.  "Copying always makes things easier and less error prone" - <a href="#RFC8411" class="xref">[RFC8411]</a>.</p>
+<h1 id="rfc.appendix.E.1">
+<a href="#rfc.appendix.E.1">E.1.</a> <a href="#making-contributions" id="making-contributions">Making contributions</a>
 </h1>
-<p id="rfc.section.9.1.p.1">Additional contributions to this draft are weclome. Please see the working copy of this draft at, as well as open issues at:</p>
-<p id="rfc.section.9.1.p.2">https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs</p>
-<h1 id="rfc.references">
-<a href="#rfc.references">10.</a> References</h1>
-<h1 id="rfc.references.1">
-<a href="#rfc.references.1">10.1.</a> Normative References</h1>
-<table><tbody>
-<tr>
-<td class="reference"><b id="RFC2119">[RFC2119]</b></td>
-<td class="top">
-<a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC2986">[RFC2986]</b></td>
-<td class="top">
-<a>Nystrom, M.</a> and <a>B. Kaliski</a>, "<a href="https://tools.ietf.org/html/rfc2986">PKCS #10: Certification Request Syntax Specification Version 1.7</a>", RFC 2986, DOI 10.17487/RFC2986, November 2000.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC4210">[RFC4210]</b></td>
-<td class="top">
-<a>Adams, C.</a>, <a>Farrell, S.</a>, <a>Kause, T.</a> and <a>T. Mononen</a>, "<a href="https://tools.ietf.org/html/rfc4210">Internet X.509 Public Key Infrastructure Certificate Management Protocol (CMP)</a>", RFC 4210, DOI 10.17487/RFC4210, September 2005.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC5280">[RFC5280]</b></td>
-<td class="top">
-<a>Cooper, D.</a>, <a>Santesson, S.</a>, <a>Farrell, S.</a>, <a>Boeyen, S.</a>, <a>Housley, R.</a> and <a>W. Polk</a>, "<a href="https://tools.ietf.org/html/rfc5280">Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</a>", RFC 5280, DOI 10.17487/RFC5280, May 2008.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC5652">[RFC5652]</b></td>
-<td class="top">
-<a>Housley, R.</a>, "<a href="https://tools.ietf.org/html/rfc5652">Cryptographic Message Syntax (CMS)</a>", STD 70, RFC 5652, DOI 10.17487/RFC5652, September 2009.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC8174">[RFC8174]</b></td>
-<td class="top">
-<a>Leiba, B.</a>, "<a href="https://tools.ietf.org/html/rfc8174">Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</a>", BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC8411">[RFC8411]</b></td>
-<td class="top">
-<a>Schaad, J.</a> and <a>R. Andrews</a>, "<a href="https://tools.ietf.org/html/rfc8411">IANA Registration for the Cryptographic Algorithm Object Identifier Range</a>", RFC 8411, DOI 10.17487/RFC8411, August 2018.</td>
-</tr>
-<tr>
-<td class="reference"><b id="X.690">[X.690]</b></td>
-<td class="top">
-<a>ITU-T</a>, "<a>Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)</a>", ISO/IEC 8825-1:2015, November 2015.</td>
-</tr>
-</tbody></table>
-<h1 id="rfc.references.2">
-<a href="#rfc.references.2">10.2.</a> Informative References</h1>
-<table><tbody>
-<tr>
-<td class="reference"><b id="Bindel2017">[Bindel2017]</b></td>
-<td class="top">
-<a>Bindel, N.</a>, <a>Herath, U.</a>, <a>McKague, M.</a> and <a>D. Stebila</a>, "<a href="https://link.springer.com/chapter/10.1007/978-3-319-59879-6_22">Transitioning to a quantum-resistant public key infrastructure</a>", 2017.</td>
-</tr>
-<tr>
-<td class="reference"><b id="I-D.becker-guthrie-noncomposite-hybrid-auth">[I-D.becker-guthrie-noncomposite-hybrid-auth]</b></td>
-<td class="top">
-<a title="National Security Agency">Becker, A.</a>, <a title="National Security Agency">Guthrie, R.</a> and <a title="National Security Agency">M. Jenkins</a>, "<a href="https://tools.ietf.org/html/draft-becker-guthrie-noncomposite-hybrid-auth-00">Non-Composite Hybrid Authentication in PKIX and Applications to Internet Protocols</a>", Internet-Draft draft-becker-guthrie-noncomposite-hybrid-auth-00, March 2022.</td>
-</tr>
-<tr>
-<td class="reference"><b id="I-D.ounsworth-pq-composite-keys">[I-D.ounsworth-pq-composite-keys]</b></td>
-<td class="top">
-<a title="Entrust Limited">Ounsworth, M.</a> and <a title="CableLabs">M. Pala</a>, "<a href="https://tools.ietf.org/html/draft-ounsworth-pq-composite-keys-00">Composite Public and Private Keys For Use In Internet PKI</a>", Internet-Draft draft-ounsworth-pq-composite-keys-00, July 2021.</td>
-</tr>
-</tbody></table>
+<p id="rfc.section.E.1.p.1">Additional contributions to this draft are weclome. Please see the working copy of this draft at, as well as open issues at:</p>
+<p id="rfc.section.E.1.p.2">https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs</p>
 <h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
 <div class="avoidbreak">
   <address class="vcard">
