@@ -5,8 +5,8 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                                 M. Pala
-Expires: November 8, 2022                                      CableLabs
-                                                            May 07, 2022
+Expires: November 11, 2022                                     CableLabs
+                                                            May 10, 2022
 
 
               Composite Signatures For Use In Internet PKI
@@ -53,12 +53,12 @@ Status of This Memo
 
 
 
-Ounsworth & Pala        Expires November 8, 2022                [Page 1]
+Ounsworth & Pala        Expires November 11, 2022               [Page 1]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
 
-   This Internet-Draft will expire on November 8, 2022.
+   This Internet-Draft will expire on November 11, 2022.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth & Pala        Expires November 8, 2022                [Page 2]
+Ounsworth & Pala        Expires November 11, 2022               [Page 2]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -165,7 +165,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 8, 2022                [Page 3]
+Ounsworth & Pala        Expires November 11, 2022               [Page 3]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -221,7 +221,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 8, 2022                [Page 4]
+Ounsworth & Pala        Expires November 11, 2022               [Page 4]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -277,7 +277,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 8, 2022                [Page 5]
+Ounsworth & Pala        Expires November 11, 2022               [Page 5]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -333,7 +333,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 8, 2022                [Page 6]
+Ounsworth & Pala        Expires November 11, 2022               [Page 6]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -389,7 +389,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 8, 2022                [Page 7]
+Ounsworth & Pala        Expires November 11, 2022               [Page 7]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -445,7 +445,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 8, 2022                [Page 8]
+Ounsworth & Pala        Expires November 11, 2022               [Page 8]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -501,7 +501,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 8, 2022                [Page 9]
+Ounsworth & Pala        Expires November 11, 2022               [Page 9]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -548,16 +548,16 @@ Signature Verification Procedure::
    alg-composite.
 
    Some verification clients may include a policy mechanism for
-   specifying acceptable subsets of alorithms.  In these cases,
+   specifying acceptable subsets of algorithms.  In these cases,
    implementors MAY, in the interest of performance, modify the above
-   proess to skip one or more signature validations as per their local
+   process to skip one or more signature validations as per their local
    client policy.  See Section 7.2 for a discussion of associated risks.
 
 
 
 
 
-Ounsworth & Pala        Expires November 8, 2022               [Page 10]
+Ounsworth & Pala        Expires November 11, 2022              [Page 10]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -613,7 +613,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 8, 2022               [Page 11]
+Ounsworth & Pala        Expires November 11, 2022              [Page 11]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -669,7 +669,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 8, 2022               [Page 12]
+Ounsworth & Pala        Expires November 11, 2022              [Page 12]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -725,7 +725,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 8, 2022               [Page 13]
+Ounsworth & Pala        Expires November 11, 2022              [Page 13]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -781,7 +781,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 8, 2022               [Page 14]
+Ounsworth & Pala        Expires November 11, 2022              [Page 14]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -837,7 +837,7 @@ Appendix C.  ASN.1 Module
 
 
 
-Ounsworth & Pala        Expires November 8, 2022               [Page 15]
+Ounsworth & Pala        Expires November 11, 2022              [Page 15]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -893,7 +893,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 8, 2022               [Page 16]
+Ounsworth & Pala        Expires November 11, 2022              [Page 16]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -949,7 +949,7 @@ E.1.  Making contributions
 
 
 
-Ounsworth & Pala        Expires November 8, 2022               [Page 17]
+Ounsworth & Pala        Expires November 11, 2022              [Page 17]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -1005,4 +1005,4 @@ Authors' Addresses
 
 
 
-Ounsworth & Pala        Expires November 8, 2022               [Page 18]
+Ounsworth & Pala        Expires November 11, 2022              [Page 18]
