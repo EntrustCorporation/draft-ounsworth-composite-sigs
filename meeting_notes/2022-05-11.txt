@@ -1,0 +1,41 @@
+Serge Mister, Mike Ounsworth, Jan, Scott Fluhrer, Max Pala, Tim Hollebeek.
+
+
+Discussion: 
+Is there sufficient need to support subset signatures (ie where the signer produces fewer signatures than there are public keys).
+
+DECISION: let's leave it removed. Maybe a security consideration.
+
+What about coupling composite with multi-cert?
+Tim: I think if you combine them, then you get the worst of both worlds.
+
+Jan & Tim: complexity argument: multi-cert is much more complicated code than composite.
+
+
+
+
+
+Discussion: AND / OR / KofN
+This boils down to: "Who is authoritative for crypto policy?"
+
+Possible answers:
+
+1. The sending client (signer).
+2. The receiving client (verifier).
+3. The CA.
+4. All of them together form an ecosystem and need to be in agreement.
+
+.. the answer probably needs to be 4.
+Which sorta implies that some ecosystems will want something that looks like 1, others that look like 2, others that look like 3.
+The question then is: "Does this policy info belong in a certificate?"
+
+The obvious argument is that putting crypto policy in a cert is inherently anti-agile because you can't change it without revoke-reissue'ing the fleet of certs (which may be appropriate for non-repudiation certs, but likely not for other types of certs).
+
+Reference: RFC 3125 Electronic Signature Policies.
+
+RFC3125's philosophy implies that it does not belong in a certificate (and certainly not in a public key).
+
+
+Jan: another option is to handle this within an algorithm; meaning that you define via the OID what algorithm / combiner mode you mean. For example, sa-rsa_pss-with-dilithium and sa-rsa_pss-with-dilithium-kofn-2 are different OIDs.
+
+This is elegant because it allows an ecosystem to support the OIDs it wants, but it is complex because it requires, for example BouncyCastle to support all these obscure OIDs.

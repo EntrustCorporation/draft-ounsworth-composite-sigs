@@ -97,14 +97,15 @@ This document defines the structures CompositeSignatureValue, and CompositeParam
 
 # Introduction {#sec-intro}
 
-During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not fully trust their post-quantum replacements until they have had sufficient scrutiny. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
+During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not
+   fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
 
 The deployment of composite signatures using post-quantum algorithms will face two challenges
 
 - Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
 - Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
 
-This document provides a mechanism to address algorithm strength uncertainty by building on [draft-ounsworth-pq-composite-keys-00] (NOTE: need kramdown formatting help with this ref) by providing formats for encoding multiple signature values into existing public signature fields, as well as the process for validating a composite signature. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in [draft-becker-guthrie-noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help with this ref).
+This document provides a mechanism to address algorithm strength uncertainty concerns by building on [draft-ounsworth-pq-composite-keys-00] (NOTE: need kramdown formatting help with this ref) by providing formats for encoding multiple signature values into existing public signature fields, as well as the process for validating a composite signature. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in [draft-becker-guthrie-noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help with this ref).
 
 This document is intended for general applicability anywhere that digital signatures are used within PKIX and CMS structures.
 
@@ -148,11 +149,17 @@ PUBLIC / PRIVATE KEY:
           The public and private portion of an asymmetric cryptographic
             key, making no assumptions about which algorithm.
 
-
 SIGNATURE:
           A digital cryptographic signature, making no assumptions
             about which algorithm.
 
+STRIPPING ATTACK:
+          An attack in which the attacker is able to downgrade the 
+          cryptographic object to an attacker-chosen subset of
+          original set of component algorithms in such a way that
+          it is not detectable by the receiver. For example, 
+          substituting a composite public key or signature for a
+          version with fewer components.
 
 
 # Composite Signature Structures {#sec-composite-structs}
@@ -320,7 +327,7 @@ Signature Generation Process:
 
 Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.
 
-A composite signature MUST produce, and include in the output, a signature value for every component key in the corresponding CompositePrivateKey.
+A composite signature MUST produce, and include in the output, a signature value for every component key in the corresponding CompositePrivateKey. The authors recognize that there may be valid use cases for "subset signature generation"; see {{sec-subset-sig-gen}} for further discussion.
 
 
 ## Composite Signature Verification Process {#sec-comp-sig-verify}
@@ -374,7 +381,7 @@ Since recursive composite public keys are disallowed in ~~ Reference draft-ounsw
 
 Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementors MAY, in the interest of performance, modify the above process to skip one or more signature validations as per their local client policy. See {{sec-cons-OR-modes}} for a discussion of associated risks.
 
-In the absence of such a policy machanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here.
+In the absence of such a policy machanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here. Further discussion of the security implications of subset signature verifications can be found in {{sec-subset-sig-verif}}.
 
 
 <!-- End of Composite Signature Algorithm section -->
@@ -449,13 +456,22 @@ While intentionally not specified in this document, implementors should put care
 
 ## OR Modes {#sec-cons-OR-modes}
 
-As defined in this document, signers MUST produce a signature value with each of their component private keys, this providing full protection of the content under all available component algorithms. 
+### Subset Signature Generation {#sec-subset-sig-gen}
 
-This document defines a composite signature verification process {{sec-comp-sig-verify}} where the verifier verifies all component signatures and fails if any component fails. The authors recognize that there will be scenarios where the verifier considers a single component algorithm -- or subset of component algorithms -- to provide sufficient security, and therefore for performance reasons wishes to skip the verification of one or more component signatures.
+This document defines a composite signature generation process in {{sec-comp-sig-gen}} wherethe signer MUST produce a signature value with each of their component private keys, this providing full protection of the content under all available component algorithms. 
+
+The authors recognize that there may be cases where a client may wish to generate a composite signature that only uses a subset of the available component algorithms, for example to save bandwidth, or because a client has been issued a key for which it does not (yet) have implementations of all component algorithms. This could be easily encoded by placing a NULL value into the corresponding field of the CompositeSignatureValue. However, this mode was intentionally omitted from this specification as it trivially allows for stripping attacks where an attacker replaces a valid component signature value with NULL, thus reducing the security of the composite signature to the weakest of the available component algorithms.
+
+Implementors who wish to perform subset signature generations are advised to couple it with an out-of-band policy mechanism that limits the potential for stripping attacks. Note that, in an effort to keep compliant implementations simple and secure, implementations claiming to be compliant with this draft MUST NOT generate subset signatures in this way, and MUST reject during verification any subset signatures that they encounter.
+
+
+### Subset Signature Verification {#sec-subset-sig-verif}
+
+This document defines a composite signature verification process in {{sec-comp-sig-verify}} where the verifier verifies all component signatures and fails if any component fails. The authors recognize that there will be scenarios where the verifier considers a single component algorithm -- or subset of component algorithms -- to provide sufficient security, and therefore for performance reasons wishes to skip the verification of one or more component signatures.
 
 -- harmonize this with Serge's blurb --
 
-
+Implementors who wish to perform subset signature verifications are advised to couple it with an out-of-band policy mechanism that can control the list of acceptable algorithm combinations, and keep this list up to date as new cryptanalytic advances are made.
 
 Risks:
 

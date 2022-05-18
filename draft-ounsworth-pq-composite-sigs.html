@@ -394,6 +394,8 @@
 <link href="#rfc.section.7" rel="Chapter" title="7 Security Considerations">
 <link href="#rfc.section.7.1" rel="Chapter" title="7.1 Policy for Deprecated and Acceptable Algorithms">
 <link href="#rfc.section.7.2" rel="Chapter" title="7.2 OR Modes">
+<link href="#rfc.section.7.2.1" rel="Chapter" title="7.2.1 Subset Signature Generation">
+<link href="#rfc.section.7.2.2" rel="Chapter" title="7.2.2 Subset Signature Verification">
 <link href="#rfc.references" rel="Chapter" title="8 References">
 <link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References">
 <link href="#rfc.references.2" rel="Chapter" title="8.2 Informative References">
@@ -413,7 +415,7 @@
 
   <meta name="dct.creator" content="Ounsworth, M. and M. Pala" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-sigs-07" />
-  <meta name="dct.issued" scheme="ISO8601" content="2022-05-10" />
+  <meta name="dct.issued" scheme="ISO8601" content="2022-05-18" />
   <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite signature data. This document defines a structure generic enough to be useful beyond the post-quantum transition for any situation where a widely-supported but untrusted algorithm is being migrated to newer cryptography. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm and allows for both explicitely-defined combinations of algorithms as well generic runtime-flexible signature algorithms. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined. " />
   <meta name="description" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite signature data. This document defines a structure generic enough to be useful beyond the post-quantum transition for any situation where a widely-supported but untrusted algorithm is being migrated to newer cryptography. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm and allows for both explicitely-defined combinations of algorithms as well generic runtime-flexible signature algorithms. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined. " />
 
@@ -437,12 +439,12 @@
 <td class="right">M. Pala</td>
 </tr>
 <tr>
-<td class="left">Expires: November 11, 2022</td>
+<td class="left">Expires: November 19, 2022</td>
 <td class="right">CableLabs</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">May 10, 2022</td>
+<td class="right">May 18, 2022</td>
 </tr>
 
     	
@@ -459,7 +461,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 11, 2022.</p>
+<p>This Internet-Draft will expire on November 19, 2022.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2022 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -509,7 +511,11 @@
 </li>
 <li>7.2.   <a href="#rfc.section.7.2">OR Modes</a>
 </li>
-</ul><li>8.   <a href="#rfc.references">References</a>
+<ul><li>7.2.1.   <a href="#rfc.section.7.2.1">Subset Signature Generation</a>
+</li>
+<li>7.2.2.   <a href="#rfc.section.7.2.2">Subset Signature Verification</a>
+</li>
+</ul></ul><li>8.   <a href="#rfc.references">References</a>
 </li>
 <ul><li>8.1.   <a href="#rfc.references.1">Normative References</a>
 </li>
@@ -540,7 +546,7 @@
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#sec-intro" id="sec-intro">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not fully trust their post-quantum replacements until they have had sufficient scrutiny. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.</p>
+<p id="rfc.section.1.p.1">During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.</p>
 <p id="rfc.section.1.p.2">The deployment of composite signatures using post-quantum algorithms will face two challenges</p>
 <p></p>
 
@@ -548,7 +554,7 @@
 <li>Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.</li>
 <li>Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.</li>
 </ul>
-<p id="rfc.section.1.p.4">This document provides a mechanism to address algorithm strength uncertainty by building on [draft-ounsworth-pq-composite-keys-00] (NOTE: need kramdown formatting help with this ref) by providing formats for encoding multiple signature values into existing public signature fields, as well as the process for validating a composite signature. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in [draft-becker-guthrie-noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help with this ref).</p>
+<p id="rfc.section.1.p.4">This document provides a mechanism to address algorithm strength uncertainty concerns by building on [draft-ounsworth-pq-composite-keys-00] (NOTE: need kramdown formatting help with this ref) by providing formats for encoding multiple signature values into existing public signature fields, as well as the process for validating a composite signature. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in [draft-becker-guthrie-noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help with this ref).</p>
 <p id="rfc.section.1.p.5">This document is intended for general applicability anywhere that digital signatures are used within PKIX and CMS structures.</p>
 <h1 id="rfc.section.1.1">
 <a href="#rfc.section.1.1">1.1.</a> <a href="#sec-terminology" id="sec-terminology">Terminology</a>
@@ -564,6 +570,7 @@
 <p id="rfc.section.1.1.p.9">LEGACY:   For the purposes of this document, a legacy key or signature is a non-composite key or signature.</p>
 <p id="rfc.section.1.1.p.10">PUBLIC / PRIVATE KEY: The public and private portion of an asymmetric cryptographic key, making no assumptions about which algorithm.</p>
 <p id="rfc.section.1.1.p.11">SIGNATURE: A digital cryptographic signature, making no assumptions about which algorithm.</p>
+<p id="rfc.section.1.1.p.12">STRIPPING ATTACK: An attack in which the attacker is able to downgrade the cryptographic object to an attacker-chosen subset of original set of component algorithms in such a way that it is not detectable by the receiver. For example, substituting a composite public key or signature for a version with fewer components.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#sec-composite-structs" id="sec-composite-structs">Composite Signature Structures</a>
 </h1>
@@ -689,7 +696,7 @@ Signature Generation Process:
    3. Output S
 </pre>
 <p id="rfc.section.4.1.p.3">Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.</p>
-<p id="rfc.section.4.1.p.4">A composite signature MUST produce, and include in the output, a signature value for every component key in the corresponding CompositePrivateKey.</p>
+<p id="rfc.section.4.1.p.4">A composite signature MUST produce, and include in the output, a signature value for every component key in the corresponding CompositePrivateKey. The authors recognize that there may be valid use cases for "subset signature generation"; see <a href="#sec-subset-sig-gen" class="xref">Section 7.2.1</a> for further discussion.</p>
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#sec-comp-sig-verify" id="sec-comp-sig-verify">Composite Signature Verification Process</a>
 </h1>
@@ -733,7 +740,7 @@ Signature Verification Procedure::
 </pre>
 <p id="rfc.section.4.2.p.4">Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-keys sec-composite-pub-keys ~~, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.</p>
 <p id="rfc.section.4.2.p.5">Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementors MAY, in the interest of performance, modify the above process to skip one or more signature validations as per their local client policy. See <a href="#sec-cons-OR-modes" class="xref">Section 7.2</a> for a discussion of associated risks.</p>
-<p id="rfc.section.4.2.p.6">In the absence of such a policy machanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here.</p>
+<p id="rfc.section.4.2.p.6">In the absence of such a policy machanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here. Further discussion of the security implications of subset signature verifications can be found in <a href="#sec-subset-sig-verif" class="xref">Section 7.2.2</a>.</p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#sec-in-pract" id="sec-in-pract">In Practice</a>
 </h1>
@@ -793,10 +800,19 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 <h1 id="rfc.section.7.2">
 <a href="#rfc.section.7.2">7.2.</a> <a href="#sec-cons-OR-modes" id="sec-cons-OR-modes">OR Modes</a>
 </h1>
-<p id="rfc.section.7.2.p.1">As defined in this document, signers MUST produce a signature value with each of their component private keys, this providing full protection of the content under all available component algorithms.</p>
-<p id="rfc.section.7.2.p.2">This document defines a composite signature verification process <a href="#sec-comp-sig-verify" class="xref">Section 4.2</a> where the verifier verifies all component signatures and fails if any component fails. The authors recognize that there will be scenarios where the verifier considers a single component algorithm -- or subset of component algorithms -- to provide sufficient security, and therefore for performance reasons wishes to skip the verification of one or more component signatures.</p>
-<p id="rfc.section.7.2.p.3">-- harmonize this with Serge's blurb --</p>
-<p id="rfc.section.7.2.p.4">Risks:</p>
+<h1 id="rfc.section.7.2.1">
+<a href="#rfc.section.7.2.1">7.2.1.</a> <a href="#sec-subset-sig-gen" id="sec-subset-sig-gen">Subset Signature Generation</a>
+</h1>
+<p id="rfc.section.7.2.1.p.1">This document defines a composite signature generation process in <a href="#sec-comp-sig-gen" class="xref">Section 4.1</a> wherethe signer MUST produce a signature value with each of their component private keys, this providing full protection of the content under all available component algorithms.</p>
+<p id="rfc.section.7.2.1.p.2">The authors recognize that there may be cases where a client may wish to generate a composite signature that only uses a subset of the available component algorithms, for example to save bandwidth, or because a client has been issued a key for which it does not (yet) have implementations of all component algorithms. This could be easily encoded by placing a NULL value into the corresponding field of the CompositeSignatureValue. However, this mode was intentionally omitted from this specification as it trivially allows for stripping attacks where an attacker replaces a valid component signature value with NULL, thus reducing the security of the composite signature to the weakest of the available component algorithms.</p>
+<p id="rfc.section.7.2.1.p.3">Implementors who wish to perform subset signature generations are advised to couple it with an out-of-band policy mechanism that limits the potential for stripping attacks. Note that, in an effort to keep compliant implementations simple and secure, implementations claiming to be compliant with this draft MUST NOT generate subset signatures in this way, and MUST reject during verification any subset signatures that they encounter.</p>
+<h1 id="rfc.section.7.2.2">
+<a href="#rfc.section.7.2.2">7.2.2.</a> <a href="#sec-subset-sig-verif" id="sec-subset-sig-verif">Subset Signature Verification</a>
+</h1>
+<p id="rfc.section.7.2.2.p.1">This document defines a composite signature verification process in <a href="#sec-comp-sig-verify" class="xref">Section 4.2</a> where the verifier verifies all component signatures and fails if any component fails. The authors recognize that there will be scenarios where the verifier considers a single component algorithm -- or subset of component algorithms -- to provide sufficient security, and therefore for performance reasons wishes to skip the verification of one or more component signatures.</p>
+<p id="rfc.section.7.2.2.p.2">-- harmonize this with Serge's blurb --</p>
+<p id="rfc.section.7.2.2.p.3">Implementors who wish to perform subset signature verifications are advised to couple it with an out-of-band policy mechanism that can control the list of acceptable algorithm combinations, and keep this list up to date as new cryptanalytic advances are made.</p>
+<p id="rfc.section.7.2.2.p.4">Risks:</p>
 <p></p>
 
 <ul>
