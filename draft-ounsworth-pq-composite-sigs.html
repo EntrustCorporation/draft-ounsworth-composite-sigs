@@ -389,8 +389,11 @@
 <link href="#rfc.section.4" rel="Chapter" title="4 Composite Signature Processes">
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 Composite Signature Generation Process">
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 Composite Signature Verification Process">
-<link href="#rfc.section.5" rel="Chapter" title="5 In Practice">
+<link href="#rfc.section.5" rel="Chapter" title="5 Implementation Considerations">
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 Cryptographic protocols">
+<link href="#rfc.section.5.2" rel="Chapter" title="5.2 Backwards Compabilitity">
+<link href="#rfc.section.5.2.1" rel="Chapter" title="5.2.1 OR modes">
+<link href="#rfc.section.5.2.2" rel="Chapter" title="5.2.2 Parallel PKIs">
 <link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations">
 <link href="#rfc.section.7" rel="Chapter" title="7 Security Considerations">
 <link href="#rfc.section.7.1" rel="Chapter" title="7.1 Policy for Deprecated and Acceptable Algorithms">
@@ -502,11 +505,17 @@
 </li>
 <li>4.2.   <a href="#rfc.section.4.2">Composite Signature Verification Process</a>
 </li>
-</ul><li>5.   <a href="#rfc.section.5">In Practice</a>
+</ul><li>5.   <a href="#rfc.section.5">Implementation Considerations</a>
 </li>
 <ul><li>5.1.   <a href="#rfc.section.5.1">Cryptographic protocols</a>
 </li>
-</ul><li>6.   <a href="#rfc.section.6">IANA Considerations</a>
+<li>5.2.   <a href="#rfc.section.5.2">Backwards Compabilitity</a>
+</li>
+<ul><li>5.2.1.   <a href="#rfc.section.5.2.1">OR modes</a>
+</li>
+<li>5.2.2.   <a href="#rfc.section.5.2.2">Parallel PKIs</a>
+</li>
+</ul></ul><li>6.   <a href="#rfc.section.6">IANA Considerations</a>
 </li>
 <li>7.   <a href="#rfc.section.7">Security Considerations</a>
 </li>
@@ -571,15 +580,19 @@
 <p id="rfc.section.1.1.p.7">COMPOSITE ALGORITHM: An algorithm which is a sequence of two or more component algorithms, as defined in <a href="#sec-composite-structs" class="xref">Section 2</a>.</p>
 <p id="rfc.section.1.1.p.8">DER: Distinguished Encoding Rules as defined in <a href="#X.690" class="xref">[X.690]</a>.</p>
 <p id="rfc.section.1.1.p.9">LEGACY:   For the purposes of this document, a legacy key or signature is a non-composite key or signature.</p>
-<p id="rfc.section.1.1.p.10">PUBLIC / PRIVATE KEY: The public and private portion of an asymmetric cryptographic key, making no assumptions about which algorithm.</p>
-<p id="rfc.section.1.1.p.11">SIGNATURE: A digital cryptographic signature, making no assumptions about which algorithm.</p>
-<p id="rfc.section.1.1.p.12">STRIPPING ATTACK: An attack in which the attacker is able to downgrade the cryptographic object to an attacker-chosen subset of original set of component algorithms in such a way that it is not detectable by the receiver. For example, substituting a composite public key or signature for a version with fewer components.</p>
+<p id="rfc.section.1.1.p.10">PKI: Public Key Infrastructure, as defined in <a href="#RFC5280" class="xref">[RFC5280]</a>.</p>
+<p id="rfc.section.1.1.p.11">PUBLIC / PRIVATE KEY: The public and private portion of an asymmetric cryptographic key, making no assumptions about which algorithm.</p>
+<p id="rfc.section.1.1.p.12">SIGNATURE: A digital cryptographic signature, making no assumptions about which algorithm.</p>
+<p id="rfc.section.1.1.p.13">STRIPPING ATTACK: An attack in which the attacker is able to downgrade the cryptographic object to an attacker-chosen subset of original set of component algorithms in such a way that it is not detectable by the receiver. For example, substituting a composite public key or signature for a version with fewer components.</p>
 <h1 id="rfc.section.1.2">
 <a href="#rfc.section.1.2">1.2.</a> <a href="#changes-in-version-07" id="changes-in-version-07">Changes in version -07</a>
 </h1>
 <p></p>
 
-<ul><li>Removed combiner modes (AND, OR, etc)</li></ul>
+<ul>
+<li>Removed combiner modes (AND, OR, etc)</li>
+<li>Added <a href="#sec-backwards-compat" class="xref">Section 5.2</a> addressing backwards compatibility and ease of migration concerns.</li>
+</ul>
 <p id="rfc.section.1.2.p.2">TODO diff this against the public version and see if there are any more changes.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#sec-composite-structs" id="sec-composite-structs">Composite Signature Structures</a>
@@ -637,7 +650,7 @@ CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
 <p id="rfc.section.2.4.p.3">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.</p>
 <p id="rfc.section.2.4.p.4">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.</p>
 <h1 id="rfc.section.3">
-<a href="#rfc.section.3">3.</a> <a href="#algorithm-identifiers" id="algorithm-identifiers">Algorithm Identifiers</a>
+<a href="#rfc.section.3">3.</a> <a href="#sec-alg-idents" id="sec-alg-idents">Algorithm Identifiers</a>
 </h1>
 <p id="rfc.section.3.p.1">Some use-cases desire the flexibility of choosing any combination of supported algorithms at runtime, while others desire the rigidity of explicitely-specified combinations of algorithms.</p>
 <h1 id="rfc.section.3.1">
@@ -706,7 +719,7 @@ Signature Generation Process:
    3. Output S
 </pre>
 <p id="rfc.section.4.1.p.3">Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.</p>
-<p id="rfc.section.4.1.p.4">A composite signature MUST produce, and include in the output, a signature value for every component key in the corresponding CompositePrivateKey. The authors recognize that there may be valid use cases for "subset signature generation"; see <a href="#sec-subset-sig-gen" class="xref">Section 7.2.1</a> for further discussion.</p>
+<p id="rfc.section.4.1.p.4">A composite signature MUST produce, and include in the output, a signature value for every component key in the corresponding CompositePrivateKey. The authors recognize that there may be valid use cases for "subset signature generation"; see <a href="#sec-subset-sig-gen" class="xref">Section 7.2.1</a> for further discussion of security implications, and <a href="#sec-backwards-compat" class="xref">Section 5.2</a> for further discussion of backwards compatibility implications.</p>
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#sec-comp-sig-verify" id="sec-comp-sig-verify">Composite Signature Verification Process</a>
 </h1>
@@ -750,9 +763,9 @@ Signature Verification Procedure::
 </pre>
 <p id="rfc.section.4.2.p.4">Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-keys sec-composite-pub-keys ~~, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.</p>
 <p id="rfc.section.4.2.p.5">Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementors MAY, in the interest of performance, modify the above process to skip one or more signature validations as per their local client policy. See <a href="#sec-cons-OR-modes" class="xref">Section 7.2</a> for a discussion of associated risks.</p>
-<p id="rfc.section.4.2.p.6">In the absence of such a policy machanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here. Further discussion of the security implications of subset signature verifications can be found in <a href="#sec-subset-sig-verif" class="xref">Section 7.2.2</a>.</p>
+<p id="rfc.section.4.2.p.6">In the absence of such a policy machanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here. See <a href="#sec-subset-sig-gen" class="xref">Section 7.2.1</a> for further discussion of security implications of subset signature verificationns, and <a href="#sec-backwards-compat" class="xref">Section 5.2</a> for further discussion of backwards compatibility implications.</p>
 <h1 id="rfc.section.5">
-<a href="#rfc.section.5">5.</a> <a href="#sec-in-pract" id="sec-in-pract">In Practice</a>
+<a href="#rfc.section.5">5.</a> <a href="#sec-imp-considers" id="sec-imp-considers">Implementation Considerations</a>
 </h1>
 <p id="rfc.section.5.p.1">This section addresses practical issues of how this draft affects other protocols and standards.</p>
 <p id="rfc.section.5.p.2">~~~ BEGIN EDNOTE 10~~~</p>
@@ -781,6 +794,23 @@ Signature Verification Procedure::
 <li>Overhead; including certificate size, signature processing time, and size of the signature.</li>
 <li>How to deal with crypto protocols that use public key encryption algorithms; this document only lists how to work with signature algorithms.  Encoding composite public keys is straightforward; encoding composite ciphertexts is less so - we decided to put that off to another draft.</li>
 </ul>
+<h1 id="rfc.section.5.2">
+<a href="#rfc.section.5.2">5.2.</a> <a href="#sec-backwards-compat" id="sec-backwards-compat">Backwards Compabilitity</a>
+</h1>
+<p id="rfc.section.5.2.p.1">As noted in the introduction, the post-quantum cryptographic migration will face challenges in both guaraneeing cryptographic stength against adversaries of unknown capabilities, as well as providing ease of magritation. The composite mechanisms defined in this document primarily address cryptographic strength, however this secion contains notes on how backwards compatibility may be obtained.</p>
+<p id="rfc.section.5.2.p.2">The term "ease of migration" is used here to mean that existing systems can be gracefully transitioned to the new technology without requiring large service disruptions or expensive upgrades. The term "backwards compatibility" is used here to mean something more specific; that existing systems as they are deployed today can interoperate with the upgraded systems of the future.</p>
+<p id="rfc.section.5.2.p.3">These migration and interoperability concerns need to be thought about in the context of various types of protocols that make use of X.509 and PKIX with relation to digital signature objects, from online negotiated protocols such as TLS 1.3 [RFC8446] and IKEv2 [RFC7296], to non-negotiated asyncronous protocols such as S&#8288;/&#8288;MIME signed email [RFC8551], document signing such as in the context of the European eIDAS regulations [eIDAS2014], and publicly trusted code signing [codeSigningBRsv2.8], as well as myriad other standardized and proprietary protocols and applications that leverage CMS <a href="#RFC5652" class="xref">[RFC5652]</a> signed structures.</p>
+<h1 id="rfc.section.5.2.1">
+<a href="#rfc.section.5.2.1">5.2.1.</a> <a href="#or-modes" id="or-modes">OR modes</a>
+</h1>
+<p><a href="#sec-comp-sig-gen" class="xref">Section 4.1</a> and <a href="#sec-comp-sig-verify" class="xref">Section 4.2</a> make reference to subset signature generation and verification modes to achieve an OR relation between component signatures, where senders and / or receivers are permitted to ignore some component keys. Some envisioned uses of this include environments where the client encounters a component signature algorithm for which it does not posess a compatible implementation but wishes to proceed with the signature verification using the subset of component signatures for which it does have compatible implementations. Such a mechanism could be designed to provide ease of migration by allowing for composite keys to be distributed and used before all clients in the environment are fully upgraded, but it does not allow for full backwards compatibility since clients would at least need to be upgraded from their current state to be able to parse the composite structures.</p>
+<h1 id="rfc.section.5.2.2">
+<a href="#rfc.section.5.2.2">5.2.2.</a> <a href="#parallel-pkis" id="parallel-pkis">Parallel PKIs</a>
+</h1>
+<p id="rfc.section.5.2.2.p.1">We present the term "Parallel PKI" to refer to the setup where a PKI end entity posesses two or more distinct public keys or certificates for the same identity (name), but containing keys for different cryptographic algorithms. One could imagine a set of parallel PKIs where an existing PKI using legacy algorithms (RSA, ECC) is left operational during the post-quantum migration but is shadowed by one or more paralel PKIs using pure post quantum algorithms or composite algorithms (legacy and post-quantum).</p>
+<p id="rfc.section.5.2.2.p.2">Equipped with a set of parallel public keys in this way, a runtime client would have the flexibility to choose which public key(s) or certifiate(s) to use in a given signature operation.</p>
+<p id="rfc.section.5.2.2.p.3">For negotiated protocols, the runtime client could choose which public key(s) or certificate(s) to use based on the negotiated algorithms, or could combine two of the public keys for example in a non-composite hybrid method such as [draft-becker-guthrie-noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help with this ref) or [draft-guthrie-ipsecme-ikev2-hybrid-auth-00]. Note that it is possible to use the signature algorithms defined in <a href="#sec-alg-idents" class="xref">Section 3</a> as a way to carry the multiple signature values generated by one of the non-composite public mechanism in protocols where it is easier to support the composite signature algorithms than to implement such a mechanism in the protocol itself. There is also nothing precluding a composite public key from being one of the components used within a non-composite authentication operation; this may lead to greater convenience in setting up parallel PKI hierarchies that need to service a range of clients implementing different styles of post-quantum migration strategies.</p>
+<p id="rfc.section.5.2.2.p.4">For non-negotiated protocols, the details for obtaining backwards compatibility will vary by protocol, but for example in CMS <a href="#RFC5652" class="xref">[RFC5652]</a>, the inclusion of multiple SignerInfo objects is often already treated as an OR relationship, so including one for each of the signer's parallel PKI public keys would, in many cases, have the desired effect of allowing the reciever to choose one they are compatible with and ignore the others, thus achieving full backwards compatibility.</p>
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#sec-iana" id="sec-iana">IANA Considerations</a>
 </h1>
