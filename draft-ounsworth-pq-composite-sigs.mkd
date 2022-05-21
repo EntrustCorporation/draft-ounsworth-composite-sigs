@@ -162,6 +162,14 @@ STRIPPING ATTACK:
           version with fewer components.
 
 
+## Changes in version -07
+
+- Removed combiner modes (AND, OR, etc)
+
+TODO diff this against the public version and see if there are any more changes.
+
+
+
 # Composite Signature Structures {#sec-composite-structs}
 
 In order for signatures to be composed of multiple algorithms, we define encodings consisting of a sequence of signature primitives (aka "component algorithms") such that these structures can be used as a drop-in replacement for existing signature fields such as those found in PKCS#10 [RFC2986], CMP [RFC4210], X.509 [RFC5280], CMS [RFC5652].
