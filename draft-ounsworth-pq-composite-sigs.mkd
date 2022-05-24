@@ -163,6 +163,7 @@ STRIPPING ATTACK:
 
 - Removed combiner modes (AND, OR, etc)
 - Added {{sec-backwards-compat}} addressing backwards compatibility and ease of migration concerns.
+- Added CompositeParams := Alg1, Alg2, .. Algn as an input parameter to the sig gen and verification processes.
 
 TODO diff this against the public version and see if there are any more changes.
 
@@ -214,7 +215,7 @@ sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
 }
 ~~~
 
-The identifier specifies the type of composite signature and the component algorithms. This document defines a generic composite algorithm id-alg-composite in {{sec-generic-composite}}, and allows for other standards that will define explicit algorithms that specify which component algorithms are to be contained within them.
+The identifier specifies the type of composite signature and the component algorithms. This document defines a generic composite algorithm, identified by id-alg-composite, in {{sec-generic-composite}}, and allows for other standards that will define explicit algorithms that specify which component algorithms are to be contained within them.
 
 ## CompositeSignatureValue {#sec-compositeSignatureValue}
 
@@ -248,7 +249,7 @@ Some use-cases desire the flexibility of choosing any combination of supported a
 
 ## id-alg-composite {#sec-generic-composite}
 
-The id-alg-composite algorithm identifier is used for identifying a generic composite signature. This algorithm allows for runtime agents to use arbitrary combinations of algorithms -- ie it does not need pre-defined OIDs for specific combinations. This identifier MUST be used in sa-CompositeSignature.identifier.
+The id-alg-composite object identifier is used for identifying a generic composite signature. This algorithm allows for runtime agents to use arbitrary combinations of algorithms -- ie it does not need pre-defined OIDs for specific combinations. This identifier MUST be used in sa-CompositeSignature.identifier.
 
 ~~~ asn.1
 id-alg-composite OBJECT IDENTIFIER ::= {
@@ -266,7 +267,7 @@ CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 ~~~
 {: artwork-name="CompositeSignatureParams-asn.1-structures"}
 
-The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePrivateKey and CompositePublicKey.
+The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.
 
 The motivation for this variant is primarily for prototyping work prior to the standardization of algorithm identifiers for explicit combinations of algorithms. However, the authors envision that this variant will remain relevant beyond full standardization for example in environments requiring very high levels of crypto agility, for example where clients support a large number of algorithms or where a large number of keys will be used at a time and it is therefore prohibitive to define algorithm identifiers for every combination of pairs, triples, quadtuples, etc of algorithms.
 
@@ -297,7 +298,7 @@ In this variant, the signature is encoded as defined in {{sec-composite-sig-stru
 
 This section specifies the processes for generating and verifying composite signatures.
 
-This process addresses algorithm strength uncertainty by providing the verifier with parallel signatures from all the component signature algorithms; thus breaking the composite signature would require breaking all of the component signatures.
+This process addresses algorithm strength uncertainty by providing the verifier with parallel signatures from all the component signature algorithms; thus forging the composite signature would require forging all of the component signatures.
 
 ## Composite Signature Generation Process {#sec-comp-sig-gen}
 
@@ -308,7 +309,14 @@ The following process is used to generate composite signature values.
 ~~~
 Input:
      K1, K2, .., Kn     Private keys for the n component signature
-                        algorithms, a CompositePrivateKey
+                        algorithms, which may be a CompositePrivateKey
+                        or other private key structure.
+
+     A1, A2, ... An
+                        A list of component signature algorithms,
+                        which may be a CompositeParams or other
+                        structure.
+
      M                  Message to be signed, an octet string
 
 Output:
@@ -319,7 +327,7 @@ Signature Generation Process:
       according to their algorithm specifications.
 
         for i := 1 to n
-            Si := Sign( Ki, M )
+            Si := Sign_Ai( Ki, M )
 
    2. Encode each component signature S1, S2, .., Sn into a BIT STRING
       according to its algorithm specification.
@@ -333,8 +341,9 @@ Signature Generation Process:
 
 Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.
 
-A composite signature MUST produce, and include in the output, a signature value for every component key in the corresponding CompositePrivateKey. The authors recognize that there may be valid use cases for "subset signature generation"; see {{sec-subset-sig-gen}} for further discussion of security implications, and {{sec-backwards-compat}} for further discussion of backwards compatibility implications.
+A composite signature MUST produce, and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2, etc. The authors recognize that there may be valid use cases for "subset signature generation"; see {{sec-subset-sig-gen}} for further discussion of security implications, and {{sec-backwards-compat}} for further discussion of backwards compatibility implications.
 
+For security when using a generic composite signature algorithm as defined in {{sec-generic-composite}}, the list of component signature algorithms A1, A2, .., An, which may be carried in a CompositeParams object, SHOULD be included in the signed message M to prevent an attacker from substituting a weaker algorithm which is compatible with the same public key. This attack is not unique or new to the composite format.
 
 ## Composite Signature Verification Process {#sec-comp-sig-verify}
 
@@ -345,13 +354,16 @@ In the absence of an application profile specifying otherwise, compliant applica
 The following process is used to perform this verification.
 
 
-
 ~~~
 Input:
      P    Signer's composite public key
+
      M    Message whose signature is to be verified, an octet string
+     
      S    Composite Signature to be verified
-     A    Composite Algorithm identifier
+     
+     A    Component Algorithm identifiers, which may be a 
+            CompositeParams or other object
 
 Output:
     Validity      "Valid signature" (true) if the composite signature
@@ -375,7 +387,7 @@ Signature Verification Procedure::
        If any fail, then the entire signature validation fails.
 
      for i := 1 to n
-          if not verify( Pi, M, Si ), then
+          if not verify_Ai( Pi, M, Si ), then
             output "Invalid signature"
 
       if all succeeded, then
@@ -410,20 +422,6 @@ EDNOTE 10: Possible topics to address:
   - We could include a subsection about implementation considerations.
 
 ~~~ END EDNOTE 10~~~
-
-
-
-## Cryptographic protocols
-
-This section talks about how protocols like (D)TLS and IKEv2 are affected by this specifications. It will not attempt to solve all these problems, but it will explain the rationale, how things will work and what open problems need to be solved. Obvious issues that need to be discussed.
-
-- How does the protocol declare support for composite signatures?  TLS has hooks for declaring support for specific signature algorithms, however it would need to be extended, because the client would need to declare support for both the composite infrastructure, as well as for the various component signature algorithms.
-
-- How does the protocol use the multiple keys.  The obvious way would be to have the server sign using its composite public key; is this sufficient.
-
-- Overhead; including certificate size, signature processing time, and size of the signature.
-
-- How to deal with crypto protocols that use public key encryption algorithms; this document only lists how to work with signature algorithms.  Encoding composite public keys is straightforward; encoding composite ciphertexts is less so - we decided to put that off to another draft.
 
 
 ## Backwards Compabilitity {#sec-backwards-compat}
@@ -469,7 +467,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 
 ## Policy for Deprecated and Acceptable Algorithms
 
-Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), it is obvious that structures using that algorithm are implicitly revoked.
+Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), it is obvious that clients performing signature verifications should be updated to fail to validate signatures using these algorithms.
 
 In the composite model this is less obvious since a single public key, certificate, or signature may contain a mixture of deprecated and non-deprecated algorithms. Moreover, implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though neither algorithm is acceptable by itself.
 
@@ -482,6 +480,8 @@ Specifying a modified verification algorithm to handle these situations is beyon
    if not checkPolicy(A1, A2, ..., An), then
      output "Invalid signature"
 ~~~
+
+
 
 While intentionally not specified in this document, implementors should put careful thought into implementing a meaningfull policy mechinism within the context of their signature verification engines, for example only algorithms that provide similar security levels should be combined together.
 
