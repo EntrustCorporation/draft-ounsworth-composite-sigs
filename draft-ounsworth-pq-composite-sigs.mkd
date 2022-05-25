@@ -161,6 +161,7 @@ STRIPPING ATTACK:
 
 ## Changes in version -07
 
+- Merged Generic Composite ({{sec-generic-composite}}) and Explicit Composite ({{sec-explicit}}) into one document and made them share a wire encoding (only differing by the OIDs used).
 - Removed combiner modes (AND, OR, etc)
 - Added {{sec-backwards-compat}} addressing backwards compatibility and ease of migration concerns.
 - Added CompositeParams := Alg1, Alg2, .. Algn as an input parameter to the sig gen and verification processes.
@@ -272,7 +273,7 @@ The signature's CompositeParams sequence MUST contain the same component algorit
 The motivation for this variant is primarily for prototyping work prior to the standardization of algorithm identifiers for explicit combinations of algorithms. However, the authors envision that this variant will remain relevant beyond full standardization for example in environments requiring very high levels of crypto agility, for example where clients support a large number of algorithms or where a large number of keys will be used at a time and it is therefore prohibitive to define algorithm identifiers for every combination of pairs, triples, quadtuples, etc of algorithms.
 
 
-## Other Explicit Algorithms
+## Other Explicit Algorithms {#sec-explicit}
 
 This variant provides a rigid way of specifying supported combinations of algorithms.
 

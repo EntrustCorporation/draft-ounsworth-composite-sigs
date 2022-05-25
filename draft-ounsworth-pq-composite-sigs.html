@@ -418,7 +418,7 @@
 
   <meta name="dct.creator" content="Ounsworth, M. and M. Pala" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-sigs-07" />
-  <meta name="dct.issued" scheme="ISO8601" content="2022-05-24" />
+  <meta name="dct.issued" scheme="ISO8601" content="2022-05-25" />
   <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite signature data. This document defines a structure generic enough to be useful beyond the post-quantum transition for any situation where a widely-supported but untrusted algorithm is being migrated to newer cryptography. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm and allows for both explicitely-defined combinations of algorithms as well generic runtime-flexible signature algorithms. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined. " />
   <meta name="description" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite signature data. This document defines a structure generic enough to be useful beyond the post-quantum transition for any situation where a widely-supported but untrusted algorithm is being migrated to newer cryptography. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm and allows for both explicitely-defined combinations of algorithms as well generic runtime-flexible signature algorithms. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined. " />
 
@@ -442,12 +442,12 @@
 <td class="right">M. Pala</td>
 </tr>
 <tr>
-<td class="left">Expires: November 25, 2022</td>
+<td class="left">Expires: November 26, 2022</td>
 <td class="right">CableLabs</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">May 24, 2022</td>
+<td class="right">May 25, 2022</td>
 </tr>
 
     	
@@ -464,7 +464,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 25, 2022.</p>
+<p>This Internet-Draft will expire on November 26, 2022.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2022 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -587,6 +587,7 @@
 <p></p>
 
 <ul>
+<li>Merged Generic Composite (<a href="#sec-generic-composite" class="xref">Section 3.1</a>) and Explicit Composite (<a href="#sec-explicit" class="xref">Section 3.2</a>) into one document and made them share a wire encoding (only differing by the OIDs used).</li>
 <li>Removed combiner modes (AND, OR, etc)</li>
 <li>Added <a href="#sec-backwards-compat" class="xref">Section 5.1</a> addressing backwards compatibility and ease of migration concerns.</li>
 <li>Added CompositeParams := Alg1, Alg2, .. Algn as an input parameter to the sig gen and verification processes.</li>
@@ -668,7 +669,7 @@ CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 <p id="rfc.section.3.1.p.4">The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.</p>
 <p id="rfc.section.3.1.p.5">The motivation for this variant is primarily for prototyping work prior to the standardization of algorithm identifiers for explicit combinations of algorithms. However, the authors envision that this variant will remain relevant beyond full standardization for example in environments requiring very high levels of crypto agility, for example where clients support a large number of algorithms or where a large number of keys will be used at a time and it is therefore prohibitive to define algorithm identifiers for every combination of pairs, triples, quadtuples, etc of algorithms.</p>
 <h1 id="rfc.section.3.2">
-<a href="#rfc.section.3.2">3.2.</a> <a href="#other-explicit-algorithms" id="other-explicit-algorithms">Other Explicit Algorithms</a>
+<a href="#rfc.section.3.2">3.2.</a> <a href="#sec-explicit" id="sec-explicit">Other Explicit Algorithms</a>
 </h1>
 <p id="rfc.section.3.2.p.1">This variant provides a rigid way of specifying supported combinations of algorithms.</p>
 <p id="rfc.section.3.2.p.2">The motivation for this variant is to make it easier to reference and enforce specific combinations of algorithms. The authors envision this being useful for client-server negotiated protocols, protocol designers who wish to place constraints on allowable algorithm combinations in the protocol specification, as well as audited environments that wish to prove that only certain combinations will be supported by clients.</p>
