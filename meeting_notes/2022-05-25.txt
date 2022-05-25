@@ -1,0 +1,36 @@
+Mike Ounsworth, John Gray, Jon Klaussner, Scott Fluhrer, Serge Mister
+
+
+Since last time, I have:
+
+- Removed AND, OR, KofN from -keys
+
+- Largely removed them from -sigs, except for a MAY paragraph at the bottom of "4.2. Composite Signature Verification Process" 
+    ... which Panos still had comments about, so we should review.
+- Written an Implementation Consideration > Backwards Compatibility
+- Addressed Carl Wallace's comments (we can go through them)
+
+
+
+Discussions:
+
+There are two types of signatures: 1) authentication, and 2) content commitment. Examples of content commitment:
+
+- Non-repudiation (the signer is declaring something legally-binding in the signed document)
+- CRLsign (the CA is declaring some certificates to be revoked)
+
+For content commitment cases, the signer will care if they are held accountable if their signature is forgeable.
+
+
+Thought experiment: composite signature: {rsa, dilithium, rainbow}
+
+now we know that rainbow is busted (forgeable). Question: does that raise repudiation concerns? IE can an attacker make 
+it look like the signer signed something that in fact they did not? Comparing AND vs 2of3
+
+
+How do acheive KofN for non-repudiation cases:
+
+Define a signature algorithm (ex.: "sa-rsa-pss-sphincs-kofn{2}" ) that uses the public "key key-rsa-sphincs"
+
+DECISIONS:
+- Add a "Future Works" type secion to the draft saying that we are still working on this.

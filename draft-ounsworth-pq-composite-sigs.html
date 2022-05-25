@@ -402,14 +402,16 @@
 <link href="#rfc.references" rel="Chapter" title="8 References">
 <link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References">
 <link href="#rfc.references.2" rel="Chapter" title="8.2 Informative References">
-<link href="#rfc.appendix.A" rel="Chapter" title="A Creating explicit combinations">
-<link href="#rfc.appendix.B" rel="Chapter" title="B Examples">
-<link href="#rfc.appendix.B.1" rel="Chapter" title="B.1 Generic Composite Signature Examples">
-<link href="#rfc.appendix.B.2" rel="Chapter" title="B.2 Explicit Composite Signature Examples">
-<link href="#rfc.appendix.C" rel="Chapter" title="C ASN.1 Module">
-<link href="#rfc.appendix.D" rel="Chapter" title="D Intellectual Property Considerations">
-<link href="#rfc.appendix.E" rel="Chapter" title="E Contributors and Acknowledgements">
-<link href="#rfc.appendix.E.1" rel="Chapter" title="E.1 Making contributions">
+<link href="#rfc.appendix.A" rel="Chapter" title="A Work in Progress">
+<link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 Combiner modes (KofN)">
+<link href="#rfc.appendix.B" rel="Chapter" title="B Creating explicit combinations">
+<link href="#rfc.appendix.C" rel="Chapter" title="C Examples">
+<link href="#rfc.appendix.C.1" rel="Chapter" title="C.1 Generic Composite Signature Examples">
+<link href="#rfc.appendix.C.2" rel="Chapter" title="C.2 Explicit Composite Signature Examples">
+<link href="#rfc.appendix.D" rel="Chapter" title="D ASN.1 Module">
+<link href="#rfc.appendix.E" rel="Chapter" title="E Intellectual Property Considerations">
+<link href="#rfc.appendix.F" rel="Chapter" title="F Contributors and Acknowledgements">
+<link href="#rfc.appendix.F.1" rel="Chapter" title="F.1 Making contributions">
 <link href="#rfc.authors" rel="Chapter">
 
 
@@ -530,21 +532,25 @@
 </li>
 <li>8.2.   <a href="#rfc.references.2">Informative References</a>
 </li>
-</ul><li>Appendix A.   <a href="#rfc.appendix.A">Creating explicit combinations</a>
+</ul><li>Appendix A.   <a href="#rfc.appendix.A">Work in Progress</a>
 </li>
-<li>Appendix B.   <a href="#rfc.appendix.B">Examples</a>
+<ul><li>A.1.   <a href="#rfc.appendix.A.1">Combiner modes (KofN)</a>
 </li>
-<ul><li>B.1.   <a href="#rfc.appendix.B.1">Generic Composite Signature Examples</a>
+</ul><li>Appendix B.   <a href="#rfc.appendix.B">Creating explicit combinations</a>
 </li>
-<li>B.2.   <a href="#rfc.appendix.B.2">Explicit Composite Signature Examples</a>
+<li>Appendix C.   <a href="#rfc.appendix.C">Examples</a>
 </li>
-</ul><li>Appendix C.   <a href="#rfc.appendix.C">ASN.1 Module</a>
+<ul><li>C.1.   <a href="#rfc.appendix.C.1">Generic Composite Signature Examples</a>
 </li>
-<li>Appendix D.   <a href="#rfc.appendix.D">Intellectual Property Considerations</a>
+<li>C.2.   <a href="#rfc.appendix.C.2">Explicit Composite Signature Examples</a>
 </li>
-<li>Appendix E.   <a href="#rfc.appendix.E">Contributors and Acknowledgements</a>
+</ul><li>Appendix D.   <a href="#rfc.appendix.D">ASN.1 Module</a>
 </li>
-<ul><li>E.1.   <a href="#rfc.appendix.E.1">Making contributions</a>
+<li>Appendix E.   <a href="#rfc.appendix.E">Intellectual Property Considerations</a>
+</li>
+<li>Appendix F.   <a href="#rfc.appendix.F">Contributors and Acknowledgements</a>
+</li>
+<ul><li>F.1.   <a href="#rfc.appendix.F.1">Making contributions</a>
 </li>
 </ul><li><a href="#rfc.authors">Authors' Addresses</a>
 </li>
@@ -588,7 +594,7 @@
 
 <ul>
 <li>Merged Generic Composite (<a href="#sec-generic-composite" class="xref">Section 3.1</a>) and Explicit Composite (<a href="#sec-explicit" class="xref">Section 3.2</a>) into one document and made them share a wire encoding (only differing by the OIDs used).</li>
-<li>Removed combiner modes (AND, OR, etc)</li>
+<li>Removed Composite-OR signature mode.</li>
 <li>Added <a href="#sec-backwards-compat" class="xref">Section 5.1</a> addressing backwards compatibility and ease of migration concerns.</li>
 <li>Added CompositeParams := Alg1, Alg2, .. Algn as an input parameter to the sig gen and verification processes.</li>
 </ul>
@@ -681,9 +687,9 @@ CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 <li>The algorithm identifier OID and PUBLIC-KEY type of each component algorithm.</li>
 <li>Signature parameters either declared ABSENT, or defined with a type and encoding.</li>
 </ul>
-<p id="rfc.section.3.2.p.5">See <a href="#appdx-creatingExplicitCombinations" class="xref">Appendix A</a> for guidance on creating and registering OIDs for specific explicit combinations.</p>
+<p id="rfc.section.3.2.p.5">See <a href="#appdx-creatingExplicitCombinations" class="xref">Appendix B</a> for guidance on creating and registering OIDs for specific explicit combinations.</p>
 <p id="rfc.section.3.2.p.6">For explicit algorithms, it is not necessary to carry a CompositeParams with the list of component algorithms in the signature algorithm params because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in <a href="#RFC8017" class="xref">[RFC8017]</a>. Explicit algorithms specifications MUST either define parameters as ABSENT, or define a type and encoding for parameters.</p>
-<p id="rfc.section.3.2.p.7">In this variant, the signature is encoded as defined in <a href="#sec-composite-sig-structs" class="xref">Section 2.2</a>, however the sa-CompositeSignature.identifier SHALL be an OID which is registered to represent a specific combination of component signature algorithms. See <a href="#appdx-examples" class="xref">Appendix B</a> for examples.</p>
+<p id="rfc.section.3.2.p.7">In this variant, the signature is encoded as defined in <a href="#sec-composite-sig-structs" class="xref">Section 2.2</a>, however the sa-CompositeSignature.identifier SHALL be an OID which is registered to represent a specific combination of component signature algorithms. See <a href="#appdx-examples" class="xref">Appendix C</a> for examples.</p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#sec-composite-signature-algorithm" id="sec-composite-signature-algorithm">Composite Signature Processes</a>
 </h1>
@@ -930,23 +936,31 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 </tr>
 </tbody></table>
 <h1 id="rfc.appendix.A">
-<a href="#rfc.appendix.A">Appendix A.</a> <a href="#appdx-creatingExplicitCombinations" id="appdx-creatingExplicitCombinations">Creating explicit combinations</a>
+<a href="#rfc.appendix.A">Appendix A.</a> <a href="#work-in-progress" id="work-in-progress">Work in Progress</a>
 </h1>
-<p id="rfc.section.A.p.1">The following ASN.1 Information Objects may be useful in defining and parsing explicit pairs of signature algoritms.</p>
-<p id="rfc.section.A.p.2">... TODO ... copy &amp; adapt from the keys draft.</p>
+<h1 id="rfc.appendix.A.1">
+<a href="#rfc.appendix.A.1">A.1.</a> <a href="#combiner-modes-kofn" id="combiner-modes-kofn">Combiner modes (KofN)</a>
+</h1>
+<p id="rfc.section.A.1.p.1">For content commitment use-cases, such as legally-binding non-repudiation, the signer (whether it be a CA or an end entity) needs to be able to specify how its signature is to be interpreted and verified.</p>
+<p id="rfc.section.A.1.p.2">For now we have removed combiner modes (AND, OR, KofN) from this draft, but we are still discussing how to incorporate this for the cases where it is needed (maybe a X.509 v3 extension, or a signature algorithm param).</p>
 <h1 id="rfc.appendix.B">
-<a href="#rfc.appendix.B">Appendix B.</a> <a href="#appdx-examples" id="appdx-examples">Examples</a>
+<a href="#rfc.appendix.B">Appendix B.</a> <a href="#appdx-creatingExplicitCombinations" id="appdx-creatingExplicitCombinations">Creating explicit combinations</a>
 </h1>
-<h1 id="rfc.appendix.B.1">
-<a href="#rfc.appendix.B.1">B.1.</a> <a href="#appdx-genComposite-examples" id="appdx-genComposite-examples">Generic Composite Signature Examples</a>
-</h1>
-<p id="rfc.section.B.1.p.1">TODO</p>
-<h1 id="rfc.appendix.B.2">
-<a href="#rfc.appendix.B.2">B.2.</a> <a href="#appdx-expComposite-examples" id="appdx-expComposite-examples">Explicit Composite Signature Examples</a>
-</h1>
-<p id="rfc.section.B.2.p.1">TODO</p>
+<p id="rfc.section.B.p.1">The following ASN.1 Information Objects may be useful in defining and parsing explicit pairs of signature algoritms.</p>
+<p id="rfc.section.B.p.2">... TODO ... copy &amp; adapt from the keys draft.</p>
 <h1 id="rfc.appendix.C">
-<a href="#rfc.appendix.C">Appendix C.</a> <a href="#asn1-module" id="asn1-module">ASN.1 Module</a>
+<a href="#rfc.appendix.C">Appendix C.</a> <a href="#appdx-examples" id="appdx-examples">Examples</a>
+</h1>
+<h1 id="rfc.appendix.C.1">
+<a href="#rfc.appendix.C.1">C.1.</a> <a href="#appdx-genComposite-examples" id="appdx-genComposite-examples">Generic Composite Signature Examples</a>
+</h1>
+<p id="rfc.section.C.1.p.1">TODO</p>
+<h1 id="rfc.appendix.C.2">
+<a href="#rfc.appendix.C.2">C.2.</a> <a href="#appdx-expComposite-examples" id="appdx-expComposite-examples">Explicit Composite Signature Examples</a>
+</h1>
+<p id="rfc.section.C.2.p.1">TODO</p>
+<h1 id="rfc.appendix.D">
+<a href="#rfc.appendix.D">Appendix D.</a> <a href="#asn1-module" id="asn1-module">ASN.1 Module</a>
 </h1>
 <pre>
 &lt;CODE STARTS&gt;
@@ -1018,23 +1032,23 @@ END
 &lt;CODE ENDS&gt;
 
 </pre>
-<h1 id="rfc.appendix.D">
-<a href="#rfc.appendix.D">Appendix D.</a> <a href="#intellectual-property-considerations" id="intellectual-property-considerations">Intellectual Property Considerations</a>
-</h1>
-<p id="rfc.section.D.p.1">The following IPR Disclosure relates to this draft:</p>
-<p id="rfc.section.D.p.2">https://datatracker.ietf.org/ipr/3588/</p>
 <h1 id="rfc.appendix.E">
-<a href="#rfc.appendix.E">Appendix E.</a> <a href="#contributors-and-acknowledgements" id="contributors-and-acknowledgements">Contributors and Acknowledgements</a>
+<a href="#rfc.appendix.E">Appendix E.</a> <a href="#intellectual-property-considerations" id="intellectual-property-considerations">Intellectual Property Considerations</a>
 </h1>
-<p id="rfc.section.E.p.1">This document incorporates contributions and comments from a large group of experts. The Editors would especially like to acknowledge the expertise and tireless dedication of the following people, who attended many long meetings and generated millions of bytes of electronic mail and VOIP traffic over the past year in pursuit of this document:</p>
-<p id="rfc.section.E.p.2">John Gray (Entrust), Serge Mister (Entrust), Scott Fluhrer (Cisco Systems), Panos Kampanakis (Cisco Systems), Daniel Van Geest (ISARA), Tim Hollebeek (Digicert), and Francois Rousseau.</p>
-<p id="rfc.section.E.p.3">We are grateful to all, including any contributors who may have been inadvertently omitted from this list.</p>
-<p id="rfc.section.E.p.4">This document borrows text from similar documents, including those referenced below. Thanks go to the authors of those documents.  "Copying always makes things easier and less error prone" - <a href="#RFC8411" class="xref">[RFC8411]</a>.</p>
-<h1 id="rfc.appendix.E.1">
-<a href="#rfc.appendix.E.1">E.1.</a> <a href="#making-contributions" id="making-contributions">Making contributions</a>
+<p id="rfc.section.E.p.1">The following IPR Disclosure relates to this draft:</p>
+<p id="rfc.section.E.p.2">https://datatracker.ietf.org/ipr/3588/</p>
+<h1 id="rfc.appendix.F">
+<a href="#rfc.appendix.F">Appendix F.</a> <a href="#contributors-and-acknowledgements" id="contributors-and-acknowledgements">Contributors and Acknowledgements</a>
 </h1>
-<p id="rfc.section.E.1.p.1">Additional contributions to this draft are weclome. Please see the working copy of this draft at, as well as open issues at:</p>
-<p id="rfc.section.E.1.p.2">https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs</p>
+<p id="rfc.section.F.p.1">This document incorporates contributions and comments from a large group of experts. The Editors would especially like to acknowledge the expertise and tireless dedication of the following people, who attended many long meetings and generated millions of bytes of electronic mail and VOIP traffic over the past year in pursuit of this document:</p>
+<p id="rfc.section.F.p.2">John Gray (Entrust), Serge Mister (Entrust), Scott Fluhrer (Cisco Systems), Panos Kampanakis (Cisco Systems), Daniel Van Geest (ISARA), Tim Hollebeek (Digicert), and Francois Rousseau.</p>
+<p id="rfc.section.F.p.3">We are grateful to all, including any contributors who may have been inadvertently omitted from this list.</p>
+<p id="rfc.section.F.p.4">This document borrows text from similar documents, including those referenced below. Thanks go to the authors of those documents.  "Copying always makes things easier and less error prone" - <a href="#RFC8411" class="xref">[RFC8411]</a>.</p>
+<h1 id="rfc.appendix.F.1">
+<a href="#rfc.appendix.F.1">F.1.</a> <a href="#making-contributions" id="making-contributions">Making contributions</a>
+</h1>
+<p id="rfc.section.F.1.p.1">Additional contributions to this draft are weclome. Please see the working copy of this draft at, as well as open issues at:</p>
+<p id="rfc.section.F.1.p.2">https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs</p>
 <h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
 <div class="avoidbreak">
   <address class="vcard">

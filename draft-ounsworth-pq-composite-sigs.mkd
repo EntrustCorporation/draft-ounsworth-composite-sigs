@@ -162,7 +162,7 @@ STRIPPING ATTACK:
 ## Changes in version -07
 
 - Merged Generic Composite ({{sec-generic-composite}}) and Explicit Composite ({{sec-explicit}}) into one document and made them share a wire encoding (only differing by the OIDs used).
-- Removed combiner modes (AND, OR, etc)
+- Removed Composite-OR signature mode.
 - Added {{sec-backwards-compat}} addressing backwards compatibility and ease of migration concerns.
 - Added CompositeParams := Alg1, Alg2, .. Algn as an input parameter to the sig gen and verification processes.
 
@@ -515,6 +515,15 @@ Risks:
 
 <!-- Start of Appendices -->
 --- back
+
+# Work in Progress
+
+## Combiner modes (KofN)
+
+For content commitment use-cases, such as legally-binding non-repudiation, the signer (whether it be a CA or an end entity) needs to be able to specify how its signature is to be interpreted and verified.
+
+For now we have removed combiner modes (AND, OR, KofN) from this draft, but we are still discussing how to incorporate this for the cases where it is needed (maybe a X.509 v3 extension, or a signature algorithm param).
+
 
 # Creating explicit combinations {#appdx-creatingExplicitCombinations}
 
