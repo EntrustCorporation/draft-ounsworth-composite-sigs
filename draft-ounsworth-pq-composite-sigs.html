@@ -420,7 +420,7 @@
 
   <meta name="dct.creator" content="Ounsworth, M. and M. Pala" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-sigs-07" />
-  <meta name="dct.issued" scheme="ISO8601" content="2022-05-25" />
+  <meta name="dct.issued" scheme="ISO8601" content="2022-05-31" />
   <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite signature data. This document defines a structure generic enough to be useful beyond the post-quantum transition for any situation where a widely-supported but untrusted algorithm is being migrated to newer cryptography. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm and allows for both explicitely-defined combinations of algorithms as well generic runtime-flexible signature algorithms. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined. " />
   <meta name="description" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite signature data. This document defines a structure generic enough to be useful beyond the post-quantum transition for any situation where a widely-supported but untrusted algorithm is being migrated to newer cryptography. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm and allows for both explicitely-defined combinations of algorithms as well generic runtime-flexible signature algorithms. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined. " />
 
@@ -444,12 +444,12 @@
 <td class="right">M. Pala</td>
 </tr>
 <tr>
-<td class="left">Expires: November 26, 2022</td>
+<td class="left">Expires: December 2, 2022</td>
 <td class="right">CableLabs</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">May 25, 2022</td>
+<td class="right">May 31, 2022</td>
 </tr>
 
     	
@@ -466,7 +466,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 26, 2022.</p>
+<p>This Internet-Draft will expire on December 2, 2022.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2022 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -702,14 +702,11 @@ CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 <p id="rfc.section.4.1.p.2">The following process is used to generate composite signature values.</p>
 <pre>
 Input:
-     K1, K2, .., Kn     Private keys for the n component signature
-                        algorithms, which may be a CompositePrivateKey
-                        or other private key structure.
+     K1, K2, .., Kn     Signing private keys. See note below on 
+                        composite inputs.
 
-     A1, A2, ... An
-                        A list of component signature algorithms,
-                        which may be a CompositeParams or other
-                        structure.
+     A1, A2, ... An     Component signature algorithms. See note below on 
+                        composite inputs.
 
      M                  Message to be signed, an octet string
 
@@ -721,7 +718,7 @@ Signature Generation Process:
       according to their algorithm specifications.
 
         for i := 1 to n
-            Si := Sign_Ai( Ki, M )
+            Si := Sign( Ki, Ai, M )
 
    2. Encode each component signature S1, S2, .., Sn into a BIT STRING
       according to its algorithm specification.
@@ -730,9 +727,10 @@ Signature Generation Process:
 
    3. Output S
 </pre>
-<p id="rfc.section.4.1.p.3">Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.</p>
-<p id="rfc.section.4.1.p.4">A composite signature MUST produce, and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2, etc. The authors recognize that there may be valid use cases for "subset signature generation"; see <a href="#sec-subset-sig-gen" class="xref">Section 7.2.1</a> for further discussion of security implications, and <a href="#sec-backwards-compat" class="xref">Section 5.1</a> for further discussion of backwards compatibility implications.</p>
-<p id="rfc.section.4.1.p.5">For security when using a generic composite signature algorithm as defined in <a href="#sec-generic-composite" class="xref">Section 3.1</a>, the list of component signature algorithms A1, A2, .., An, which may be carried in a CompositeParams object, SHOULD be included in the signed message M to prevent an attacker from substituting a weaker algorithm which is compatible with the same public key. This attack is not unique or new to the composite format.</p>
+<p id="rfc.section.4.1.p.3">Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePrivateKey and CompositeParams structures. It is also possible to genarate a composite signature that combines signatures from distinct keys stored in separate software or hardware keystores. Variations in the process to accomodate particular private key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.</p>
+<p id="rfc.section.4.1.p.4">Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.</p>
+<p id="rfc.section.4.1.p.5">A composite signature MUST produce, and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2, etc. The authors recognize that there may be valid use cases for "subset signature generation"; see <a href="#sec-subset-sig-gen" class="xref">Section 7.2.1</a> for further discussion of security implications, and <a href="#sec-backwards-compat" class="xref">Section 5.1</a> for further discussion of backwards compatibility implications.</p>
+<p id="rfc.section.4.1.p.6">For security when using a generic composite signature algorithm as defined in <a href="#sec-generic-composite" class="xref">Section 3.1</a>, the list of component signature algorithms A1, A2, .., An, which may be carried in a CompositeParams object, SHOULD be included in the signed message M to prevent an attacker from substituting a weaker algorithm which is compatible with the same public key. This attack is not unique or new to the composite format.</p>
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#sec-comp-sig-verify" id="sec-comp-sig-verify">Composite Signature Verification Process</a>
 </h1>
@@ -741,46 +739,47 @@ Signature Generation Process:
 <p id="rfc.section.4.2.p.3">The following process is used to perform this verification.</p>
 <pre>
 Input:
-     P    Signer's composite public key
+     P1, P2, .., Pn     Public verification keys. See note below on 
+                        composite inputs.
 
-     M    Message whose signature is to be verified, an octet string
+     M                  Message whose signature is to be verified, 
+                        an octet string
      
-     S    Composite Signature to be verified
+     S1, S2, .., Sn    Component signature values to be verified.
+                       See note below on composite inputs.
      
-     A    Component Algorithm identifiers, which may be a 
-            CompositeParams or other object
+     A1, A2, ... An     Component signature algorithms. See note 
+                        below on composite inputs.
 
 Output:
-    Validity      "Valid signature" (true) if the composite signature
-                  is valid, "Invalid signature" (false) otherwise.
+    Validity (bool)    "Valid signature" (true) if the composite 
+                        signature is valid, "Invalid signature" 
+                        (false) otherwise.
 
 Signature Verification Procedure::
-   1. Parse P, S, A into the component public keys, signatures,
-      and algorithm identifiers
+   1. Check keys, signatures, and algorithms lists for consistency.
 
-      P1, P2, .., Pn := Desequence( P )
-      S1, S2, .., Sn := Desequence( S )
-      A1, A2, .., An := Desequence( A )
-
-    If Error during Desequencing, or the three sequences have
-    different numbers of elements, or any of the public keys P1, P2, .., Pn or
-    algorithm identifiers A1, A2, .., An are composite with the OID
-    id-alg-composite then output "Invalid signature" and stop.
+      If Error during Desequencing, or the three sequences have
+      different numbers of elements, or any of the public keys 
+      P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are 
+      composite with the OID id-alg-composite or an explic composite
+      OID then output "Invalid signature" and stop.
 
    2. Check each component signature individually, according to its
        algorithm specification.
        If any fail, then the entire signature validation fails.
 
      for i := 1 to n
-          if not verify_Ai( Pi, M, Si ), then
+          if not verify( Pi, M, Si, Ai ), then
             output "Invalid signature"
 
       if all succeeded, then
         output "Valid signature"
 </pre>
-<p id="rfc.section.4.2.p.4">Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-keys sec-composite-pub-keys ~~, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.</p>
-<p id="rfc.section.4.2.p.5">Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementors MAY, in the interest of performance, modify the above process to skip one or more signature validations as per their local client policy. See <a href="#sec-cons-OR-modes" class="xref">Section 7.2</a> for a discussion of associated risks.</p>
-<p id="rfc.section.4.2.p.6">In the absence of such a policy machanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here. See <a href="#sec-subset-sig-gen" class="xref">Section 7.2.1</a> for further discussion of security implications of subset signature verificationns, and <a href="#sec-backwards-compat" class="xref">Section 5.1</a> for further discussion of backwards compatibility implications.</p>
+<p id="rfc.section.4.2.p.4">Note on composite inputs: the method of providing the list of component keys, algorithms and signatures is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey, CompositeParams, and compositesignaturevalue structures. It is also possible to verify a composite signature where the component public verification keys belong, for example, to separate X.509 certificates or cryptographic modules. Variations in the process to accomodate particular public verification key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.</p>
+<p id="rfc.section.4.2.p.5">Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-keys sec-composite-pub-keys ~~, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.</p>
+<p id="rfc.section.4.2.p.6">Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementors MAY, in the interest of performance, modify the above process to skip one or more signature validations as per their local client policy. See <a href="#sec-cons-OR-modes" class="xref">Section 7.2</a> for a discussion of associated risks.</p>
+<p id="rfc.section.4.2.p.7">In the absence of such a policy machanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here. See <a href="#sec-subset-sig-gen" class="xref">Section 7.2.1</a> for further discussion of security implications of subset signature verificationns, and <a href="#sec-backwards-compat" class="xref">Section 5.1</a> for further discussion of backwards compatibility implications.</p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#sec-imp-considers" id="sec-imp-considers">Implementation Considerations</a>
 </h1>

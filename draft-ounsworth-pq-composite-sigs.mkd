@@ -309,14 +309,11 @@ The following process is used to generate composite signature values.
 
 ~~~
 Input:
-     K1, K2, .., Kn     Private keys for the n component signature
-                        algorithms, which may be a CompositePrivateKey
-                        or other private key structure.
+     K1, K2, .., Kn     Signing private keys. See note below on 
+                        composite inputs.
 
-     A1, A2, ... An
-                        A list of component signature algorithms,
-                        which may be a CompositeParams or other
-                        structure.
+     A1, A2, ... An     Component signature algorithms. See note below on 
+                        composite inputs.
 
      M                  Message to be signed, an octet string
 
@@ -328,7 +325,7 @@ Signature Generation Process:
       according to their algorithm specifications.
 
         for i := 1 to n
-            Si := Sign_Ai( Ki, M )
+            Si := Sign( Ki, Ai, M )
 
    2. Encode each component signature S1, S2, .., Sn into a BIT STRING
       according to its algorithm specification.
@@ -339,6 +336,7 @@ Signature Generation Process:
 ~~~
 {: artwork-name="alg-composite-sig-gen"}
 
+Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePrivateKey and CompositeParams structures. It is also possible to genarate a composite signature that combines signatures from distinct keys stored in separate software or hardware keystores. Variations in the process to accomodate particular private key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
 
 Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.
 
@@ -357,44 +355,46 @@ The following process is used to perform this verification.
 
 ~~~
 Input:
-     P    Signer's composite public key
+     P1, P2, .., Pn     Public verification keys. See note below on 
+                        composite inputs.
 
-     M    Message whose signature is to be verified, an octet string
+     M                  Message whose signature is to be verified, 
+                        an octet string
      
-     S    Composite Signature to be verified
+     S1, S2, .., Sn    Component signature values to be verified.
+                       See note below on composite inputs.
      
-     A    Component Algorithm identifiers, which may be a 
-            CompositeParams or other object
+     A1, A2, ... An     Component signature algorithms. See note 
+                        below on composite inputs.
 
 Output:
-    Validity      "Valid signature" (true) if the composite signature
-                  is valid, "Invalid signature" (false) otherwise.
+    Validity (bool)    "Valid signature" (true) if the composite 
+                        signature is valid, "Invalid signature" 
+                        (false) otherwise.
 
 Signature Verification Procedure::
-   1. Parse P, S, A into the component public keys, signatures,
-      and algorithm identifiers
+   1. Check keys, signatures, and algorithms lists for consistency.
 
-      P1, P2, .., Pn := Desequence( P )
-      S1, S2, .., Sn := Desequence( S )
-      A1, A2, .., An := Desequence( A )
-
-    If Error during Desequencing, or the three sequences have
-    different numbers of elements, or any of the public keys P1, P2, .., Pn or
-    algorithm identifiers A1, A2, .., An are composite with the OID
-    id-alg-composite then output "Invalid signature" and stop.
+      If Error during Desequencing, or the three sequences have
+      different numbers of elements, or any of the public keys 
+      P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are 
+      composite with the OID id-alg-composite or an explic composite
+      OID then output "Invalid signature" and stop.
 
    2. Check each component signature individually, according to its
        algorithm specification.
        If any fail, then the entire signature validation fails.
 
      for i := 1 to n
-          if not verify_Ai( Pi, M, Si ), then
+          if not verify( Pi, M, Si, Ai ), then
             output "Invalid signature"
 
       if all succeeded, then
         output "Valid signature"
 ~~~
 {: artwork-name="alg-sig-verif"}
+
+Note on composite inputs: the method of providing the list of component keys, algorithms and signatures is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey, CompositeParams, and compositesignaturevalue structures. It is also possible to verify a composite signature where the component public verification keys belong, for example, to separate X.509 certificates or cryptographic modules. Variations in the process to accomodate particular public verification key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
 
 Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-keys sec-composite-pub-keys ~~, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
 

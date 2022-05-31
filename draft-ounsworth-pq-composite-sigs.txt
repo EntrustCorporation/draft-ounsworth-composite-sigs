@@ -5,8 +5,8 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                                 M. Pala
-Expires: November 26, 2022                                     CableLabs
-                                                            May 25, 2022
+Expires: December 2, 2022                                      CableLabs
+                                                            May 31, 2022
 
 
               Composite Signatures For Use In Internet PKI
@@ -53,12 +53,12 @@ Status of This Memo
 
 
 
-Ounsworth & Pala        Expires November 26, 2022               [Page 1]
+Ounsworth & Pala        Expires December 2, 2022                [Page 1]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
 
-   This Internet-Draft will expire on November 26, 2022.
+   This Internet-Draft will expire on December 2, 2022.
 
 Copyright Notice
 
@@ -93,32 +93,32 @@ Table of Contents
      4.1.  Composite Signature Generation Process  . . . . . . . . .   9
      4.2.  Composite Signature Verification Process  . . . . . . . .  11
    5.  Implementation Considerations . . . . . . . . . . . . . . . .  13
-     5.1.  Backwards Compabilitity . . . . . . . . . . . . . . . . .  13
+     5.1.  Backwards Compabilitity . . . . . . . . . . . . . . . . .  14
        5.1.1.  OR modes  . . . . . . . . . . . . . . . . . . . . . .  14
-       5.1.2.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  14
+       5.1.2.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  15
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
-     7.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  15
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
+     7.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  16
      7.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  16
        7.2.1.  Subset Signature Generation . . . . . . . . . . . . .  16
        7.2.2.  Subset Signature Verification . . . . . . . . . . . .  17
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  17
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  18
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  18
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  19
    Appendix A.  Work in Progress . . . . . . . . . . . . . . . . . .  19
 
 
 
-Ounsworth & Pala        Expires November 26, 2022               [Page 2]
+Ounsworth & Pala        Expires December 2, 2022                [Page 2]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
 
      A.1.  Combiner modes (KofN) . . . . . . . . . . . . . . . . . .  19
    Appendix B.  Creating explicit combinations . . . . . . . . . . .  19
-   Appendix C.  Examples . . . . . . . . . . . . . . . . . . . . . .  19
-     C.1.  Generic Composite Signature Examples  . . . . . . . . . .  19
-     C.2.  Explicit Composite Signature Examples . . . . . . . . . .  19
+   Appendix C.  Examples . . . . . . . . . . . . . . . . . . . . . .  20
+     C.1.  Generic Composite Signature Examples  . . . . . . . . . .  20
+     C.2.  Explicit Composite Signature Examples . . . . . . . . . .  20
    Appendix D.  ASN.1 Module . . . . . . . . . . . . . . . . . . . .  20
    Appendix E.  Intellectual Property Considerations . . . . . . . .  21
    Appendix F.  Contributors and Acknowledgements  . . . . . . . . .  21
@@ -165,7 +165,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 26, 2022               [Page 3]
+Ounsworth & Pala        Expires December 2, 2022                [Page 3]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -221,7 +221,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 26, 2022               [Page 4]
+Ounsworth & Pala        Expires December 2, 2022                [Page 4]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -277,7 +277,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 26, 2022               [Page 5]
+Ounsworth & Pala        Expires December 2, 2022                [Page 5]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -333,7 +333,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 26, 2022               [Page 6]
+Ounsworth & Pala        Expires December 2, 2022                [Page 6]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -389,7 +389,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 26, 2022               [Page 7]
+Ounsworth & Pala        Expires December 2, 2022                [Page 7]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -445,7 +445,7 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 26, 2022               [Page 8]
+Ounsworth & Pala        Expires December 2, 2022                [Page 8]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
@@ -501,39 +501,46 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-Ounsworth & Pala        Expires November 26, 2022               [Page 9]
+Ounsworth & Pala        Expires December 2, 2022                [Page 9]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
 
-  Input:
-       K1, K2, .., Kn     Private keys for the n component signature
-                          algorithms, which may be a CompositePrivateKey
-                          or other private key structure.
+Input:
+     K1, K2, .., Kn     Signing private keys. See note below on
+                        composite inputs.
 
-       A1, A2, ... An
-                          A list of component signature algorithms,
-                          which may be a CompositeParams or other
-                          structure.
+     A1, A2, ... An     Component signature algorithms. See note below on
+                        composite inputs.
 
-       M                  Message to be signed, an octet string
+     M                  Message to be signed, an octet string
 
-  Output:
-       S                  The signatures, a CompositeSignatureValue
+Output:
+     S                  The signatures, a CompositeSignatureValue
 
-  Signature Generation Process:
-     1. Generate the n component signatures independently,
-        according to their algorithm specifications.
+Signature Generation Process:
+   1. Generate the n component signatures independently,
+      according to their algorithm specifications.
 
-          for i := 1 to n
-              Si := Sign_Ai( Ki, M )
+        for i := 1 to n
+            Si := Sign( Ki, Ai, M )
 
-     2. Encode each component signature S1, S2, .., Sn into a BIT STRING
-        according to its algorithm specification.
+   2. Encode each component signature S1, S2, .., Sn into a BIT STRING
+      according to its algorithm specification.
 
-          S ::= Sequence { S1, S2, .., Sn }
+        S ::= Sequence { S1, S2, .., Sn }
 
-     3. Output S
+   3. Output S
+
+   Note on composite inputs: the method of providing the list of
+   component keys and algorithms is flexible and beyond the scope of
+   this pseudo-code, for example they may be carried in
+   CompositePrivateKey and CompositeParams structures.  It is also
+   possible to genarate a composite signature that combines signatures
+   from distinct keys stored in separate software or hardware keystores.
+   Variations in the process to accomodate particular private key
+   storage mechanisms are considered to be conformant to this document
+   so long as it produces the same output as the process sketched above.
 
    Since recursive composite public keys are disallowed in ~~ Reference
    draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no
@@ -547,6 +554,14 @@ Internet-Draft              PQ Composite Sigs                   May 2022
    output, S1 MUST correspond to K1, S2 to K2, etc.  The authors
    recognize that there may be valid use cases for "subset signature
    generation"; see Section 7.2.1 for further discussion of security
+
+
+
+Ounsworth & Pala        Expires December 2, 2022               [Page 10]
+
+Internet-Draft              PQ Composite Sigs                   May 2022
+
+
    implications, and Section 5.1 for further discussion of backwards
    compatibility implications.
 
@@ -554,14 +569,6 @@ Internet-Draft              PQ Composite Sigs                   May 2022
    defined in Section 3.1, the list of component signature algorithms
    A1, A2, .., An, which may be carried in a CompositeParams object,
    SHOULD be included in the signed message M to prevent an attacker
-
-
-
-Ounsworth & Pala        Expires November 26, 2022              [Page 10]
-
-Internet-Draft              PQ Composite Sigs                   May 2022
-
-
    from substituting a weaker algorithm which is compatible with the
    same public key.  This attack is not unique or new to the composite
    format.
@@ -606,55 +613,66 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
 
 
-
-
-
-
-
-
-
-Ounsworth & Pala        Expires November 26, 2022              [Page 11]
+Ounsworth & Pala        Expires December 2, 2022               [Page 11]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
 
-Input:
-     P    Signer's composite public key
+   Input:
+        P1, P2, .., Pn     Public verification keys. See note below on
+                           composite inputs.
 
-     M    Message whose signature is to be verified, an octet string
+        M                  Message whose signature is to be verified,
+                           an octet string
 
-     S    Composite Signature to be verified
+        S1, S2, .., Sn    Component signature values to be verified.
+                          See note below on composite inputs.
 
-     A    Component Algorithm identifiers, which may be a
-            CompositeParams or other object
+        A1, A2, ... An     Component signature algorithms. See note
+                           below on composite inputs.
 
-Output:
-    Validity      "Valid signature" (true) if the composite signature
-                  is valid, "Invalid signature" (false) otherwise.
+   Output:
+       Validity (bool)    "Valid signature" (true) if the composite
+                           signature is valid, "Invalid signature"
+                           (false) otherwise.
 
-Signature Verification Procedure::
-   1. Parse P, S, A into the component public keys, signatures,
-      and algorithm identifiers
+   Signature Verification Procedure::
+      1. Check keys, signatures, and algorithms lists for consistency.
 
-      P1, P2, .., Pn := Desequence( P )
-      S1, S2, .., Sn := Desequence( S )
-      A1, A2, .., An := Desequence( A )
+         If Error during Desequencing, or the three sequences have
+         different numbers of elements, or any of the public keys
+         P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are
+         composite with the OID id-alg-composite or an explic composite
+         OID then output "Invalid signature" and stop.
 
-    If Error during Desequencing, or the three sequences have
-    different numbers of elements, or any of the public keys P1, P2, .., Pn or
-    algorithm identifiers A1, A2, .., An are composite with the OID
-    id-alg-composite then output "Invalid signature" and stop.
+      2. Check each component signature individually, according to its
+          algorithm specification.
+          If any fail, then the entire signature validation fails.
 
-   2. Check each component signature individually, according to its
-       algorithm specification.
-       If any fail, then the entire signature validation fails.
+        for i := 1 to n
+             if not verify( Pi, M, Si, Ai ), then
+               output "Invalid signature"
 
-     for i := 1 to n
-          if not verify_Ai( Pi, M, Si ), then
-            output "Invalid signature"
+         if all succeeded, then
+           output "Valid signature"
 
-      if all succeeded, then
-        output "Valid signature"
+   Note on composite inputs: the method of providing the list of
+   component keys, algorithms and signatures is flexible and beyond the
+   scope of this pseudo-code, for example they may be carried in
+   CompositePublicKey, CompositeParams, and compositesignaturevalue
+   structures.  It is also possible to verify a composite signature
+   where the component public verification keys belong, for example, to
+   separate X.509 certificates or cryptographic modules.  Variations in
+   the process to accomodate particular public verification key storage
+   mechanisms are considered to be conformant to this document so long
+   as it produces the same output as the process sketched above.
+
+
+
+Ounsworth & Pala        Expires December 2, 2022               [Page 12]
+
+Internet-Draft              PQ Composite Sigs                   May 2022
+
 
    Since recursive composite public keys are disallowed in ~~ Reference
    draft-ounsworth-pq-composite-keys sec-composite-pub-keys ~~, no
@@ -666,14 +684,6 @@ Signature Verification Procedure::
    Some verification clients may include a policy mechanism for
    specifying acceptable subsets of algorithms.  In these cases,
    implementors MAY, in the interest of performance, modify the above
-
-
-
-Ounsworth & Pala        Expires November 26, 2022              [Page 12]
-
-Internet-Draft              PQ Composite Sigs                   May 2022
-
-
    process to skip one or more signature validations as per their local
    client policy.  See Section 7.2 for a discussion of associated risks.
 
@@ -712,6 +722,14 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 
    o  We could include a subsection about implementation considerations.
 
+
+
+
+Ounsworth & Pala        Expires December 2, 2022               [Page 13]
+
+Internet-Draft              PQ Composite Sigs                   May 2022
+
+
    ~~~ END EDNOTE 10~~~
 
 5.1.  Backwards Compabilitity
@@ -722,13 +740,6 @@ Internet-Draft              PQ Composite Sigs                   May 2022
    providing ease of magritation.  The composite mechanisms defined in
    this document primarily address cryptographic strength, however this
    secion contains notes on how backwards compatibility may be obtained.
-
-
-
-Ounsworth & Pala        Expires November 26, 2022              [Page 13]
-
-Internet-Draft              PQ Composite Sigs                   May 2022
-
 
    The term "ease of migration" is used here to mean that existing
    systems can be gracefully transitioned to the new technology without
@@ -765,6 +776,16 @@ Internet-Draft              PQ Composite Sigs                   May 2022
    at least need to be upgraded from their current state to be able to
    parse the composite structures.
 
+
+
+
+
+
+Ounsworth & Pala        Expires December 2, 2022               [Page 14]
+
+Internet-Draft              PQ Composite Sigs                   May 2022
+
+
 5.1.2.  Parallel PKIs
 
    We present the term "Parallel PKI" to refer to the setup where a PKI
@@ -775,16 +796,6 @@ Internet-Draft              PQ Composite Sigs                   May 2022
    operational during the post-quantum migration but is shadowed by one
    or more paralel PKIs using pure post quantum algorithms or composite
    algorithms (legacy and post-quantum).
-
-
-
-
-
-
-Ounsworth & Pala        Expires November 26, 2022              [Page 14]
-
-Internet-Draft              PQ Composite Sigs                   May 2022
-
 
    Equipped with a set of parallel public keys in this way, a runtime
    client would have the flexibility to choose which public key(s) or
@@ -822,6 +833,15 @@ Internet-Draft              PQ Composite Sigs                   May 2022
    assigned by IANA.  The authors suggest that IANA assign an OID on the
    id-pkix arc:
 
+
+
+
+
+Ounsworth & Pala        Expires December 2, 2022               [Page 15]
+
+Internet-Draft              PQ Composite Sigs                   May 2022
+
+
    id-alg-composite OBJECT IDENTIFIER ::= {
        iso(1) identified-organization(3) dod(6) internet(1) security(5)
        mechanisms(5) pkix(7) algorithms(6) composite(??) }
@@ -833,15 +853,6 @@ Internet-Draft              PQ Composite Sigs                   May 2022
    Traditionally, a public key, certificate, or signature contains a
    single cryptographic algorithm.  If and when an algorithm becomes
    deprecated (for example, RSA-512, or SHA1), it is obvious that
-
-
-
-
-Ounsworth & Pala        Expires November 26, 2022              [Page 15]
-
-Internet-Draft              PQ Composite Sigs                   May 2022
-
-
    clients performing signature verifications should be updated to fail
    to validate signatures using these algorithms.
 
@@ -878,6 +889,15 @@ Internet-Draft              PQ Composite Sigs                   May 2022
    of their component private keys, this providing full protection of
    the content under all available component algorithms.
 
+
+
+
+
+Ounsworth & Pala        Expires December 2, 2022               [Page 16]
+
+Internet-Draft              PQ Composite Sigs                   May 2022
+
+
    The authors recognize that there may be cases where a client may wish
    to generate a composite signature that only uses a subset of the
    available component algorithms, for example to save bandwidth, or
@@ -889,14 +909,6 @@ Internet-Draft              PQ Composite Sigs                   May 2022
    attacks where an attacker replaces a valid component signature value
    with NULL, thus reducing the security of the composite signature to
    the weakest of the available component algorithms.
-
-
-
-
-Ounsworth & Pala        Expires November 26, 2022              [Page 16]
-
-Internet-Draft              PQ Composite Sigs                   May 2022
-
 
    Implementors who wish to perform subset signature generations are
    advised to couple it with an out-of-band policy mechanism that limits
@@ -935,6 +947,13 @@ Internet-Draft              PQ Composite Sigs                   May 2022
       policy, then it becomes difficult to audit the security strength
       used at runtime.
 
+
+
+Ounsworth & Pala        Expires December 2, 2022               [Page 17]
+
+Internet-Draft              PQ Composite Sigs                   May 2022
+
+
    o  Moreover, verifying multiple algorithms provides security even in
       the event that one of the algorithms has already been broken, but
       knowledge of the break has not been made public yet.
@@ -942,17 +961,6 @@ Internet-Draft              PQ Composite Sigs                   May 2022
 8.  References
 
 8.1.  Normative References
-
-
-
-
-
-
-
-Ounsworth & Pala        Expires November 26, 2022              [Page 17]
-
-Internet-Draft              PQ Composite Sigs                   May 2022
-
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -994,6 +1002,14 @@ Internet-Draft              PQ Composite Sigs                   May 2022
               Encoding Rules (CER) and Distinguished Encoding Rules
               (DER)", ISO/IEC 8825-1:2015, November 2015.
 
+
+
+
+Ounsworth & Pala        Expires December 2, 2022               [Page 18]
+
+Internet-Draft              PQ Composite Sigs                   May 2022
+
+
 8.2.  Informative References
 
    [Bindel2017]
@@ -1001,14 +1017,6 @@ Internet-Draft              PQ Composite Sigs                   May 2022
               "Transitioning to a quantum-resistant public key
               infrastructure", 2017, <https://link.springer.com/
               chapter/10.1007/978-3-319-59879-6_22>.
-
-
-
-
-Ounsworth & Pala        Expires November 26, 2022              [Page 18]
-
-Internet-Draft              PQ Composite Sigs                   May 2022
-
 
    [I-D.becker-guthrie-noncomposite-hybrid-auth]
               Becker, A., Guthrie, R., and M. Jenkins, "Non-Composite
@@ -1047,6 +1055,17 @@ Appendix B.  Creating explicit combinations
 
    ... TODO ... copy & adapt from the keys draft.
 
+
+
+
+
+
+
+Ounsworth & Pala        Expires December 2, 2022               [Page 19]
+
+Internet-Draft              PQ Composite Sigs                   May 2022
+
+
 Appendix C.  Examples
 
 C.1.  Generic Composite Signature Examples
@@ -1056,15 +1075,6 @@ C.1.  Generic Composite Signature Examples
 C.2.  Explicit Composite Signature Examples
 
    TODO
-
-
-
-
-
-Ounsworth & Pala        Expires November 26, 2022              [Page 19]
-
-Internet-Draft              PQ Composite Sigs                   May 2022
-
 
 Appendix D.  ASN.1 Module
 
@@ -1104,6 +1114,14 @@ Appendix D.  ASN.1 Module
 
    --
    -- Public Key
+
+
+
+Ounsworth & Pala        Expires December 2, 2022               [Page 20]
+
+Internet-Draft              PQ Composite Sigs                   May 2022
+
+
    --
 
    pk-Composite PUBLIC-KEY ::= {
@@ -1114,13 +1132,6 @@ Appendix D.  ASN.1 Module
    }
 
    CompositePublicKey ::= SEQUENCE SIZE (2..MAX) OF SubjectPublicKeyInfo
-
-
-
-Ounsworth & Pala        Expires November 26, 2022              [Page 20]
-
-Internet-Draft              PQ Composite Sigs                   May 2022
-
 
    CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
 
@@ -1159,6 +1170,14 @@ Appendix F.  Contributors and Acknowledgements
    electronic mail and VOIP traffic over the past year in pursuit of
    this document:
 
+
+
+
+Ounsworth & Pala        Expires December 2, 2022               [Page 21]
+
+Internet-Draft              PQ Composite Sigs                   May 2022
+
+
    John Gray (Entrust), Serge Mister (Entrust), Scott Fluhrer (Cisco
    Systems), Panos Kampanakis (Cisco Systems), Daniel Van Geest (ISARA),
    Tim Hollebeek (Digicert), and Francois Rousseau.
@@ -1170,13 +1189,6 @@ Appendix F.  Contributors and Acknowledgements
    referenced below.  Thanks go to the authors of those documents.
    "Copying always makes things easier and less error prone" -
    [RFC8411].
-
-
-
-Ounsworth & Pala        Expires November 26, 2022              [Page 21]
-
-Internet-Draft              PQ Composite Sigs                   May 2022
-
 
 F.1.  Making contributions
 
@@ -1217,16 +1229,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth & Pala        Expires November 26, 2022              [Page 22]
+Ounsworth & Pala        Expires December 2, 2022               [Page 22]
