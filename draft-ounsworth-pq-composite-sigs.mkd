@@ -483,9 +483,6 @@ Specifying a modified verification algorithm to handle these situations is beyon
 ~~~
 
 
-
-While intentionally not specified in this document, implementors should put careful thought into implementing a meaningfull policy mechinism within the context of their signature verification engines, for example only algorithms that provide similar security levels should be combined together.
-
 ## OR Modes {#sec-cons-OR-modes}
 
 ### Subset Signature Generation {#sec-subset-sig-gen}

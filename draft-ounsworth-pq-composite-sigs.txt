@@ -874,12 +874,6 @@ Internet-Draft              PQ Composite Sigs                   May 2022
       if not checkPolicy(A1, A2, ..., An), then
         output "Invalid signature"
 
-   While intentionally not specified in this document, implementors
-   should put careful thought into implementing a meaningfull policy
-   mechinism within the context of their signature verification engines,
-   for example only algorithms that provide similar security levels
-   should be combined together.
-
 7.2.  OR Modes
 
 7.2.1.  Subset Signature Generation
@@ -889,7 +883,13 @@ Internet-Draft              PQ Composite Sigs                   May 2022
    of their component private keys, this providing full protection of
    the content under all available component algorithms.
 
-
+   The authors recognize that there may be cases where a client may wish
+   to generate a composite signature that only uses a subset of the
+   available component algorithms, for example to save bandwidth, or
+   because a client has been issued a key for which it does not (yet)
+   have implementations of all component algorithms.  This could be
+   easily encoded by placing a NULL value into the corresponding field
+   of the CompositeSignatureValue.  However, this mode was intentionally
 
 
 
@@ -898,13 +898,6 @@ Ounsworth & Pala        Expires December 2, 2022               [Page 16]
 Internet-Draft              PQ Composite Sigs                   May 2022
 
 
-   The authors recognize that there may be cases where a client may wish
-   to generate a composite signature that only uses a subset of the
-   available component algorithms, for example to save bandwidth, or
-   because a client has been issued a key for which it does not (yet)
-   have implementations of all component algorithms.  This could be
-   easily encoded by placing a NULL value into the corresponding field
-   of the CompositeSignatureValue.  However, this mode was intentionally
    omitted from this specification as it trivially allows for stripping
    attacks where an attacker replaces a valid component signature value
    with NULL, thus reducing the security of the composite signature to
@@ -947,16 +940,19 @@ Internet-Draft              PQ Composite Sigs                   May 2022
       policy, then it becomes difficult to audit the security strength
       used at runtime.
 
+   o  Moreover, verifying multiple algorithms provides security even in
+      the event that one of the algorithms has already been broken, but
+      knowledge of the break has not been made public yet.
+
+
+
+
 
 
 Ounsworth & Pala        Expires December 2, 2022               [Page 17]
 
 Internet-Draft              PQ Composite Sigs                   May 2022
 
-
-   o  Moreover, verifying multiple algorithms provides security even in
-      the event that one of the algorithms has already been broken, but
-      knowledge of the break has not been made public yet.
 
 8.  References
 
@@ -1001,6 +997,10 @@ Internet-Draft              PQ Composite Sigs                   May 2022
               Specification of Basic Encoding Rules (BER), Canonical
               Encoding Rules (CER) and Distinguished Encoding Rules
               (DER)", ISO/IEC 8825-1:2015, November 2015.
+
+
+
+
 
 
 
