@@ -81,11 +81,11 @@ informative:
 
 --- abstract
 
-The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, because of quantum cryptalanysis, and the incoming post-quantum algorithms because the underlying mathematics and well as hardware and software implementations have not had sufficient maturing time and so new cryptanalytic and bug-based attacks are expected.
+The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, due to quantum cryptalanysis, and the incoming post-quantum algorithms since the underlying mathematics as well as hardware and software implementations have not had sufficient maturing time to gain confidence against cryptanalytic attacks and implementation bugs in the short to medium term future.
 
-Cautious implementors will wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data. For digital signatures, this is referred to as "dual", and for encryption key establishment this as reffered to as "hybrid". This document, and its companions --LINKS-- defines a specific instantiation of the dual and hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as an integral object at the protocol level.
+Cautious implementors will wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as "dual", and for encryption key establishment this as reffered to as "hybrid". This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a singal atomic object at the protocol level.
 
-This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm and allows for both explicitely-defined combinations of algorithms as well generic runtime-flexible signature algorithms. This document also defines processes for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification processes are defined.
+This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. The generic composite variant is defined which allows runtime-flexibility about what the component signature algorithms are, provided that they have defined algorithm identifiers. The explicit variant is also defined which allows for a set of signature algorithm identifier OIDs to be registered together as an explicit composite signature algorithm and assigned an OID.
 
 This document is intended to be coupled with corresponding documents that define the structure and semantics of composite public and private keys and encryption [I-D.draft-ounsworth-pq-composite-keys-01], however may also be used with non-composite keys, such as when a protocol combines multiple certificates into a single cryptographic operation.
 
@@ -93,6 +93,16 @@ This document is intended to be coupled with corresponding documents that define
 
 
 --- middle
+
+# Changes in version -07
+
+- Merged Generic Composite ({{sec-generic-composite}}) and Explicit Composite ({{sec-explicit}}) into one document and made them share a wire encoding (only differing by the OIDs used).
+- Removed Composite-OR signature mode.
+- Added {{sec-backwards-compat}} addressing backwards compatibility and ease of migration concerns.
+- Added CompositeParams := Alg1, Alg2, .. Algn as an input parameter to the sig gen and verification processes.
+
+TODO diff this against the public version and see if there are any more changes.
+
 
 # Introduction {#sec-intro}
 
@@ -118,10 +128,11 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 The following terms are used in this document:
 
 ALGORITHM:
-          An information object class for identifying the type of
-            cryptographic operation to be performed. This document is
-            primarily concerned with algorithms for producing digital
-            signatures.
+          A standardized cryptographic primitive, as well as 
+          any ASN.1 structures needed for encoding data and 
+          metadata needed to use the algorithm. This document is
+          primarily concerned with algorithms for producing digital
+          signatures.
 
 BER:
           Basic Encoding Rules (BER) as defined in [X.690].
@@ -141,11 +152,17 @@ COMPOSITE ALGORITHM:
 DER:
           Distinguished Encoding Rules as defined in [X.690].
 
-LEGACY:   For the purposes of this document, a legacy key or signature is a 
-          non-composite key or signature.
+LEGACY:   For the purposes of this document, a legacy algorithm is
+          any cryptographic algorithm currently is use which is 
+          not believe to be resistant to quantum cryptanalysis.
 
 PKI:
           Public Key Infrastructure, as defined in [RFC5280].
+
+POST-QUANTUM:
+          Any cryptographic algorithm which is believed to be resistant
+          to quantum cryptanalysis, such as those being considered by
+          NIST.
 
 PUBLIC / PRIVATE KEY:
           The public and private portion of an asymmetric cryptographic
@@ -164,15 +181,6 @@ STRIPPING ATTACK:
           version with fewer components.
 
 
-## Changes in version -07
-
-- Merged Generic Composite ({{sec-generic-composite}}) and Explicit Composite ({{sec-explicit}}) into one document and made them share a wire encoding (only differing by the OIDs used).
-- Removed Composite-OR signature mode.
-- Added {{sec-backwards-compat}} addressing backwards compatibility and ease of migration concerns.
-- Added CompositeParams := Alg1, Alg2, .. Algn as an input parameter to the sig gen and verification processes.
-
-TODO diff this against the public version and see if there are any more changes.
-
 
 
 # Composite Signature Structures {#sec-composite-structs}
@@ -182,7 +190,7 @@ In order for signatures to be composed of multiple algorithms, we define encodin
 
 ## Composite Keys
 
-A Composite signature MUST be associated with a Composite public key as defined in draft-ounsworth-pq-composite-keys-00] (NOTE: need kramdown formatting help with this ref).
+A composite signature MAY be associated with a composite public key as defined in [draft-ounsworth-pq-composite-keys-00] (NOTE: need kramdown formatting help with this ref), but MAY also be associated with multilple public keys from different sources, for example multiple X.509 certificates, or multiple cryptographic modules. In the latter case, composite signatures MAY be used as the mechanism for carrying multiple signatures in a non-composite authentication mechanism such as those described in [draft-becker-guthrie-noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help with this ref).
 
 
 ### Key Usage Bits
@@ -251,9 +259,11 @@ In the interests of simplicity and avoiding compatibility issues, implementation
 
 # Algorithm Identifiers {#sec-alg-idents}
 
+This section defines the algorithm identifier for generic composite, as well as a framework for defining explicit combinations. This section is not intended to be exhaustive and other authors may define others so long as they are compatible with the sctructures and processes defined in this and companion public and private key documents.
+
 Some use-cases desire the flexibility of choosing any combination of supported algorithms at runtime, while others desire the rigidity of explicitely-specified combinations of algorithms.
 
-## id-alg-composite {#sec-generic-composite}
+## id-alg-composite (Generic Composite) {#sec-generic-composite}
 
 The id-alg-composite object identifier is used for identifying a generic composite signature. This algorithm allows for runtime agents to use arbitrary combinations of algorithms -- ie it does not need pre-defined OIDs for specific combinations. This identifier MUST be used in sa-CompositeSignature.identifier.
 
@@ -278,7 +288,8 @@ The signature's CompositeParams sequence MUST contain the same component algorit
 The motivation for this variant is primarily for prototyping work prior to the standardization of algorithm identifiers for explicit combinations of algorithms. However, the authors envision that this variant will remain relevant beyond full standardization for example in environments requiring very high levels of crypto agility, for example where clients support a large number of algorithms or where a large number of keys will be used at a time and it is therefore prohibitive to define algorithm identifiers for every combination of pairs, triples, quadtuples, etc of algorithms.
 
 
-## Other Explicit Algorithms {#sec-explicit}
+
+## Explicit Composite Algorithms {#sec-explicit}
 
 This variant provides a rigid way of specifying supported combinations of algorithms.
 
@@ -294,7 +305,7 @@ Explicit algorithms must define a new signature algorithm which consists of:
 
 See {{appdx-creatingExplicitCombinations}} for guidance on creating and registering OIDs for specific explicit combinations.
 
-For explicit algorithms, it is not necessary to carry a CompositeParams with the list of component algorithms in the signature algorithm params because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in [RFC8017]. Explicit algorithms specifications MUST either define parameters as ABSENT, or define a type and encoding for parameters.
+For explicit algorithms, it is not necessary to carry a CompositeParams with the list of component algorithms in the signature algorithm params because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in [RFC8017]. {{sec-composite-sig-structs}} defines `PARAMS ANY DEFINED BY ALGORITHM` so that explicit algorithms may define params as ABSENT, use `CompositeParams` defined in {{sec-generic-composite}} or use any other encoding that is appropriate.
 
 In this variant, the signature is encoded as defined in {{sec-composite-sig-structs}}, however the sa-CompositeSignature.identifier SHALL be an OID which is registered to represent a specific combination of component signature algorithms. See {{appdx-examples}} for examples.
 

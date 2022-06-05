@@ -18,38 +18,38 @@ Abstract
    of modern digital cryptography in that neither the old outgoing nor
    the new incoming algorithms are fully trusted to protect data for the
    required data lifetimes.  The outgoing algorithms, such as RSA and
-   elliptic curve, because of quantum cryptalanysis, and the incoming
-   post-quantum algorithms because the underlying mathematics and well
-   as hardware and software implementations have not had sufficient
-   maturing time and so new cryptanalytic and bug-based attacks are
-   expected.
+   elliptic curve, due to quantum cryptalanysis, and the incoming post-
+   quantum algorithms since the underlying mathematics as well as
+   hardware and software implementations have not had sufficient
+   maturing time to gain confidence against cryptanalytic attacks and
+   implementation bugs in the short to medium term future.
 
    Cautious implementors will wish to layer cryptographic algorithms
    such that an attacker would need to break all of them in order to
-   compromise the data.  For digital signatures, this is referred to as
-   "dual", and for encryption key establishment this as reffered to as
-   "hybrid".  This document, and its companions --LINKS-- defines a
-   specific instantiation of the dual and hybrid paradigm called
+   compromise the data being protected.  For digital signatures, this is
+   referred to as "dual", and for encryption key establishment this as
+   reffered to as "hybrid".  This document, and its companions, defines
+   a specific instantiation of the dual and hybrid paradigm called
    "composite" where multiple cryptographic algorithms are combined to
    form a single key, signature, or key encapsulation mechanism (KEM)
-   such that they can be treated as an integral object at the protocol
-   level.
+   such that they can be treated as a singal atomic object at the
+   protocol level.
 
    This document defines the structures CompositeSignatureValue, and
    CompositeParams, which are sequences of the respective structure for
-   each component algorithm and allows for both explicitely-defined
-   combinations of algorithms as well generic runtime-flexible signature
-   algorithms.  This document also defines processes for generating and
-   verifying composite signatures.  This document makes no assumptions
-   about what the component algorithms are, provided that their
-   algorithm identifiers and signature generation and verification
-   processes are defined.
+   each component algorithm.  The generic composite variant is defined
+   which allows runtime-flexibility about what the component signature
+   algorithms are, provided that they have defined algorithm
+   identifiers.  The explicit variant is also defined which allows for a
+   set of signature algorithm identifier OIDs to be registered together
+   as an explicit composite signature algorithm and assigned an OID.
 
    This document is intended to be coupled with corresponding documents
    that define the structure and semantics of composite public and
    private keys and encryption [I-D.draft-ounsworth-pq-composite-keys-
    01], however may also be used with non-composite keys, such as when a
-
+   protocol combines multiple certificates into a single cryptographic
+   operation.
 
 
 
@@ -57,9 +57,6 @@ Ounsworth & Pala        Expires December 7, 2022                [Page 1]
 
 Internet-Draft              PQ Composite Sigs                  June 2022
 
-
-   protocol combines multiple certificates into a single cryptographic
-   operation.
 
 Status of This Memo
 
@@ -95,17 +92,20 @@ Copyright Notice
 
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
-     1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   4
-     1.2.  Changes in version -07  . . . . . . . . . . . . . . . . .   5
-   2.  Composite Signature Structures  . . . . . . . . . . . . . . .   5
-     2.1.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   6
-       2.1.1.  Key Usage Bits  . . . . . . . . . . . . . . . . . . .   6
-     2.2.  sa-CompositeSignature . . . . . . . . . . . . . . . . . .   6
-     2.3.  CompositeSignatureValue . . . . . . . . . . . . . . . . .   7
-     2.4.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   7
-   3.  Algorithm Identifiers . . . . . . . . . . . . . . . . . . . .   7
-     3.1.  id-alg-composite  . . . . . . . . . . . . . . . . . . . .   8
+   1.  Changes in version -07  . . . . . . . . . . . . . . . . . . .   3
+   2.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
+     2.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   4
+   3.  Composite Signature Structures  . . . . . . . . . . . . . . .   5
+     3.1.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   6
+       3.1.1.  Key Usage Bits  . . . . . . . . . . . . . . . . . . .   6
+     3.2.  sa-CompositeSignature . . . . . . . . . . . . . . . . . .   6
+     3.3.  CompositeSignatureValue . . . . . . . . . . . . . . . . .   7
+     3.4.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   7
+   4.  Algorithm Identifiers . . . . . . . . . . . . . . . . . . . .   8
+     4.1.  id-alg-composite (Generic Composite)  . . . . . . . . . .   8
+     4.2.  Explicit Composite Algorithms . . . . . . . . . . . . . .   9
+   5.  Composite Signature Processes . . . . . . . . . . . . . . . .   9
+     5.1.  Composite Signature Generation Process  . . . . . . . . .  10
 
 
 
@@ -114,23 +114,20 @@ Ounsworth & Pala        Expires December 7, 2022                [Page 2]
 Internet-Draft              PQ Composite Sigs                  June 2022
 
 
-     3.2.  Other Explicit Algorithms . . . . . . . . . . . . . . . .   8
-   4.  Composite Signature Processes . . . . . . . . . . . . . . . .   9
-     4.1.  Composite Signature Generation Process  . . . . . . . . .   9
-     4.2.  Composite Signature Verification Process  . . . . . . . .  11
-   5.  Implementation Considerations . . . . . . . . . . . . . . . .  13
-     5.1.  Backwards Compatibility . . . . . . . . . . . . . . . . .  14
-       5.1.1.  OR modes  . . . . . . . . . . . . . . . . . . . . . .  14
-       5.1.2.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  15
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
-     7.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  16
-     7.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  16
-       7.2.1.  Subset Signature Generation . . . . . . . . . . . . .  16
-       7.2.2.  Subset Signature Verification . . . . . . . . . . . .  17
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  18
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  19
+     5.2.  Composite Signature Verification Process  . . . . . . . .  11
+   6.  Implementation Considerations . . . . . . . . . . . . . . . .  13
+     6.1.  Backwards Compatibility . . . . . . . . . . . . . . . . .  14
+       6.1.1.  OR modes  . . . . . . . . . . . . . . . . . . . . . .  14
+       6.1.2.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  15
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
+     8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  16
+     8.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  16
+       8.2.1.  Subset Signature Generation . . . . . . . . . . . . .  16
+       8.2.2.  Subset Signature Verification . . . . . . . . . . . .  17
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  18
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  19
    Appendix A.  Work in Progress . . . . . . . . . . . . . . . . . .  19
      A.1.  Combiner modes (KofN) . . . . . . . . . . . . . . . . . .  19
    Appendix B.  Creating explicit combinations . . . . . . . . . . .  19
@@ -143,11 +140,36 @@ Internet-Draft              PQ Composite Sigs                  June 2022
      F.1.  Making contributions  . . . . . . . . . . . . . . . . . .  22
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
 
-1.  Introduction
+1.  Changes in version -07
+
+   o  Merged Generic Composite (Section 4.1) and Explicit Composite
+      (Section 4.2) into one document and made them share a wire
+      encoding (only differing by the OIDs used).
+
+   o  Removed Composite-OR signature mode.
+
+   o  Added Section 6.1 addressing backwards compatibility and ease of
+      migration concerns.
+
+   o  Added CompositeParams := Alg1, Alg2, .. Algn as an input parameter
+      to the sig gen and verification processes.
+
+   TODO diff this against the public version and see if there are any
+   more changes.
+
+2.  Introduction
 
    During the transition to post-quantum cryptography, there will be
    uncertainty as to the strength of cryptographic algorithms; we will
    no longer fully trust traditional cryptography such as RSA, Diffie-
+
+
+
+Ounsworth & Pala        Expires December 7, 2022                [Page 3]
+
+Internet-Draft              PQ Composite Sigs                  June 2022
+
+
    Hellman, DSA and their elliptic curve variants, but we will also not
    fully trust their post-quantum replacements until they have had
    sufficient scrutiny and time to discover and fix implementation bugs.
@@ -162,14 +184,6 @@ Internet-Draft              PQ Composite Sigs                  June 2022
 
    o  Algorithm strength uncertainty: During the transition period, some
       post-quantum signature and encryption algorithms will not be fully
-
-
-
-Ounsworth & Pala        Expires December 7, 2022                [Page 3]
-
-Internet-Draft              PQ Composite Sigs                  June 2022
-
-
       trusted, while also the trust in legacy public key algorithms will
       start to erode.  A relying party may learn some time after
       deployment that a public key algorithm has become untrustworthy,
@@ -193,7 +207,7 @@ Internet-Draft              PQ Composite Sigs                  June 2022
    This document is intended for general applicability anywhere that
    digital signatures are used within PKIX and CMS structures.
 
-1.1.  Terminology
+2.1.  Terminology
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
@@ -203,9 +217,19 @@ Internet-Draft              PQ Composite Sigs                  June 2022
 
    The following terms are used in this document:
 
-   ALGORITHM: An information object class for identifying the type of
-   cryptographic operation to be performed.  This document is primarily
-   concerned with algorithms for producing digital signatures.
+
+
+
+
+Ounsworth & Pala        Expires December 7, 2022                [Page 4]
+
+Internet-Draft              PQ Composite Sigs                  June 2022
+
+
+   ALGORITHM: A standardized cryptographic primitive, as well as any
+   ASN.1 structures needed for encoding data and metadata needed to use
+   the algorithm.  This document is primarily concerned with algorithms
+   for producing digital signatures.
 
    BER: Basic Encoding Rules (BER) as defined in [X.690].
 
@@ -216,22 +240,19 @@ Internet-Draft              PQ Composite Sigs                  June 2022
    within a composite algorithm.
 
    COMPOSITE ALGORITHM: An algorithm which is a sequence of two or more
-   component algorithms, as defined in Section 2.
-
-
-
-
-Ounsworth & Pala        Expires December 7, 2022                [Page 4]
-
-Internet-Draft              PQ Composite Sigs                  June 2022
-
+   component algorithms, as defined in Section 3.
 
    DER: Distinguished Encoding Rules as defined in [X.690].
 
-   LEGACY: For the purposes of this document, a legacy key or signature
-   is a non-composite key or signature.
+   LEGACY: For the purposes of this document, a legacy algorithm is any
+   cryptographic algorithm currently is use which is not believe to be
+   resistant to quantum cryptanalysis.
 
    PKI: Public Key Infrastructure, as defined in [RFC5280].
+
+   POST-QUANTUM: Any cryptographic algorithm which is believed to be
+   resistant to quantum cryptanalysis, such as those being considered by
+   NIST.
 
    PUBLIC / PRIVATE KEY: The public and private portion of an asymmetric
    cryptographic key, making no assumptions about which algorithm.
@@ -245,24 +266,7 @@ Internet-Draft              PQ Composite Sigs                  June 2022
    detectable by the receiver.  For example, substituting a composite
    public key or signature for a version with fewer components.
 
-1.2.  Changes in version -07
-
-   o  Merged Generic Composite (Section 3.1) and Explicit Composite
-      (Section 3.2) into one document and made them share a wire
-      encoding (only differing by the OIDs used).
-
-   o  Removed Composite-OR signature mode.
-
-   o  Added Section 5.1 addressing backwards compatibility and ease of
-      migration concerns.
-
-   o  Added CompositeParams := Alg1, Alg2, .. Algn as an input parameter
-      to the sig gen and verification processes.
-
-   TODO diff this against the public version and see if there are any
-   more changes.
-
-2.  Composite Signature Structures
+3.  Composite Signature Structures
 
    In order for signatures to be composed of multiple algorithms, we
    define encodings consisting of a sequence of signature primitives
@@ -273,22 +277,25 @@ Internet-Draft              PQ Composite Sigs                  June 2022
 
 
 
-
-
-
-
 Ounsworth & Pala        Expires December 7, 2022                [Page 5]
 
 Internet-Draft              PQ Composite Sigs                  June 2022
 
 
-2.1.  Composite Keys
+3.1.  Composite Keys
 
-   A Composite signature MUST be associated with a Composite public key
-   as defined in draft-ounsworth-pq-composite-keys-00] (NOTE: need
-   kramdown formatting help with this ref).
+   A composite signature MAY be associated with a composite public key
+   as defined in [draft-ounsworth-pq-composite-keys-00] (NOTE: need
+   kramdown formatting help with this ref), but MAY also be associated
+   with multilple public keys from different sources, for example
+   multiple X.509 certificates, or multiple cryptographic modules.  In
+   the latter case, composite signatures MAY be used as the mechanism
+   for carrying multiple signatures in a non-composite authentication
+   mechanism such as those described in [draft-becker-guthrie-
+   noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help
+   with this ref).
 
-2.1.1.  Key Usage Bits
+3.1.1.  Key Usage Bits
 
    For protocols such as X.509 [RFC5280] that specify key usage along
    with the public key, then the composite public key associated with a
@@ -310,7 +317,7 @@ Internet-Draft              PQ Composite Sigs                  June 2022
    digitalSignature; and
    nonRepudiation;
 
-2.2.  sa-CompositeSignature
+3.2.  sa-CompositeSignature
 
    The ASN.1 algorithm object for a composite signature is:
 
@@ -322,13 +329,6 @@ Internet-Draft              PQ Composite Sigs                  June 2022
        SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
    }
 
-   The identifier specifies the type of composite signature and the
-   component algorithms.  This document defines a generic composite
-   algorithm, identified by id-alg-composite, in Section 3.1, and allows
-   for other standards that will define explicit algorithms that specify
-   which component algorithms are to be contained within them.
-
-
 
 
 
@@ -338,7 +338,13 @@ Ounsworth & Pala        Expires December 7, 2022                [Page 6]
 Internet-Draft              PQ Composite Sigs                  June 2022
 
 
-2.3.  CompositeSignatureValue
+   The identifier specifies the type of composite signature and the
+   component algorithms.  This document defines a generic composite
+   algorithm, identified by id-alg-composite, in Section 4.1, and allows
+   for other standards that will define explicit algorithms that specify
+   which component algorithms are to be contained within them.
+
+3.3.  CompositeSignatureValue
 
    The output of the composite signature algorithm is the DER encoding
    of the following structure:
@@ -360,7 +366,7 @@ Internet-Draft              PQ Composite Sigs                  June 2022
    gracefully handle variable-length signature values by taking
    advantage of ASN.1's built-in length fields.
 
-2.4.  Encoding Rules
+3.4.  Encoding Rules
 
    Many protocol specifications will require that composite signature
    data structures be represented by an octet string or bit string.
@@ -378,12 +384,6 @@ Internet-Draft              PQ Composite Sigs                  June 2022
    implementations that parse these structures MAY accept both BER and
    DER.
 
-3.  Algorithm Identifiers
-
-   Some use-cases desire the flexibility of choosing any combination of
-   supported algorithms at runtime, while others desire the rigidity of
-   explicitely-specified combinations of algorithms.
-
 
 
 
@@ -394,7 +394,20 @@ Ounsworth & Pala        Expires December 7, 2022                [Page 7]
 Internet-Draft              PQ Composite Sigs                  June 2022
 
 
-3.1.  id-alg-composite
+4.  Algorithm Identifiers
+
+   This section defines the algorithm identifier for generic composite,
+   as well as a framework for defining explicit combinations.  This
+   section is not intended to be exhaustive and other authors may define
+   others so long as they are compatible with the sctructures and
+   processes defined in this and companion public and private key
+   documents.
+
+   Some use-cases desire the flexibility of choosing any combination of
+   supported algorithms at runtime, while others desire the rigidity of
+   explicitely-specified combinations of algorithms.
+
+4.1.  id-alg-composite (Generic Composite)
 
    The id-alg-composite object identifier is used for identifying a
    generic composite signature.  This algorithm allows for runtime
@@ -407,7 +420,7 @@ Internet-Draft              PQ Composite Sigs                  June 2022
        enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) }
 
    EDNOTE: this is a temporary OID for the purposes of prototyping.  We
-   are requesting IANA to assign a permanent OID, see Section 6.
+   are requesting IANA to assign a permanent OID, see Section 7.
 
    The following algorithm parameters MUST be included:
 
@@ -427,7 +440,17 @@ Internet-Draft              PQ Composite Sigs                  June 2022
    prohibitive to define algorithm identifiers for every combination of
    pairs, triples, quadtuples, etc of algorithms.
 
-3.2.  Other Explicit Algorithms
+
+
+
+
+
+Ounsworth & Pala        Expires December 7, 2022                [Page 8]
+
+Internet-Draft              PQ Composite Sigs                  June 2022
+
+
+4.2.  Explicit Composite Algorithms
 
    This variant provides a rigid way of specifying supported
    combinations of algorithms.
@@ -442,13 +465,6 @@ Internet-Draft              PQ Composite Sigs                  June 2022
 
    Explicit algorithms must define a new signature algorithm which
    consists of:
-
-
-
-Ounsworth & Pala        Expires December 7, 2022                [Page 8]
-
-Internet-Draft              PQ Composite Sigs                  June 2022
-
 
    o  A new algorithm identifier OID for the explicit algorithm.
 
@@ -467,36 +483,20 @@ Internet-Draft              PQ Composite Sigs                  June 2022
    component algorithms from the algorithm identifier.  The PARAMS is
    left optional because some types of component algorithms will require
    parameters to be carried, such as RSASSA-PSS-params as defined in
-   [RFC8017].  Explicit algorithms specifications MUST either define
-   parameters as ABSENT, or define a type and encoding for parameters.
+   [RFC8017].  Section 3.2 defines "PARAMS ANY DEFINED BY ALGORITHM" so
+   that explicit algorithms may define params as ABSENT, use
+   "CompositeParams" defined in Section 4.1 or use any other encoding
+   that is appropriate.
 
-   In this variant, the signature is encoded as defined in Section 2.2,
+   In this variant, the signature is encoded as defined in Section 3.2,
    however the sa-CompositeSignature.identifier SHALL be an OID which is
    registered to represent a specific combination of component signature
    algorithms.  See Appendix C for examples.
 
-4.  Composite Signature Processes
+5.  Composite Signature Processes
 
    This section specifies the processes for generating and verifying
    composite signatures.
-
-   This process addresses algorithm strength uncertainty by providing
-   the verifier with parallel signatures from all the component
-   signature algorithms; thus forging the composite signature would
-   require forging all of the component signatures.
-
-4.1.  Composite Signature Generation Process
-
-   Generation of a composite signature involves applying each component
-   algorithm's signature process to the input message according to its
-   specification, and then placing each component signature value into
-   the CompositeSignatureValue structure defined in Section 2.2.
-
-   The following process is used to generate composite signature values.
-
-
-
-
 
 
 
@@ -505,6 +505,20 @@ Ounsworth & Pala        Expires December 7, 2022                [Page 9]
 
 Internet-Draft              PQ Composite Sigs                  June 2022
 
+
+   This process addresses algorithm strength uncertainty by providing
+   the verifier with parallel signatures from all the component
+   signature algorithms; thus forging the composite signature would
+   require forging all of the component signatures.
+
+5.1.  Composite Signature Generation Process
+
+   Generation of a composite signature involves applying each component
+   algorithm's signature process to the input message according to its
+   specification, and then placing each component signature value into
+   the CompositeSignatureValue structure defined in Section 3.2.
+
+   The following process is used to generate composite signature values.
 
 Input:
      K1, K2, .., Kn     Signing private keys. See note below on
@@ -539,6 +553,15 @@ Signature Generation Process:
    possible to genarate a composite signature that combines signatures
    from distinct keys stored in separate software or hardware keystores.
    Variations in the process to accomodate particular private key
+
+
+
+
+Ounsworth & Pala        Expires December 7, 2022               [Page 10]
+
+Internet-Draft              PQ Composite Sigs                  June 2022
+
+
    storage mechanisms are considered to be conformant to this document
    so long as it produces the same output as the process sketched above.
 
@@ -553,27 +576,19 @@ Signature Generation Process:
    CompositePublicKey, and they MUST be in the same order; ie in the
    output, S1 MUST correspond to K1, S2 to K2, etc.  The authors
    recognize that there may be valid use cases for "subset signature
-   generation"; see Section 7.2.1 for further discussion of security
-
-
-
-Ounsworth & Pala        Expires December 7, 2022               [Page 10]
-
-Internet-Draft              PQ Composite Sigs                  June 2022
-
-
-   implications, and Section 5.1 for further discussion of backwards
+   generation"; see Section 8.2.1 for further discussion of security
+   implications, and Section 6.1 for further discussion of backwards
    compatibility implications.
 
    For security when using a generic composite signature algorithm as
-   defined in Section 3.1, the list of component signature algorithms
+   defined in Section 4.1, the list of component signature algorithms
    A1, A2, .., An, which may be carried in a CompositeParams object,
    SHOULD be included in the signed message M to prevent an attacker
    from substituting a weaker algorithm which is compatible with the
    same public key.  This attack is not unique or new to the composite
    format.
 
-4.2.  Composite Signature Verification Process
+5.2.  Composite Signature Verification Process
 
    Verification of a composite signature involves applying each
    component algorithm's verification process according to its
@@ -585,21 +600,6 @@ Internet-Draft              PQ Composite Sigs                  June 2022
    "Invalid signature" (false) otherwise.
 
    The following process is used to perform this verification.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -685,16 +685,16 @@ Internet-Draft              PQ Composite Sigs                  June 2022
    specifying acceptable subsets of algorithms.  In these cases,
    implementors MAY, in the interest of performance, modify the above
    process to skip one or more signature validations as per their local
-   client policy.  See Section 7.2 for a discussion of associated risks.
+   client policy.  See Section 8.2 for a discussion of associated risks.
 
    In the absence of such a policy machanism that can be easily updated
    to reflect new cryptanalytic breakthroughs, clients MUST perform
    signature verifications in the AND mode defined here.  See
-   Section 7.2.1 for further discussion of security implications of
-   subset signature verificationns, and Section 5.1 for further
+   Section 8.2.1 for further discussion of security implications of
+   subset signature verificationns, and Section 6.1 for further
    discussion of backwards compatibility implications.
 
-5.  Implementation Considerations
+6.  Implementation Considerations
 
    This section addresses practical issues of how this draft affects
    other protocols and standards.
@@ -732,7 +732,7 @@ Internet-Draft              PQ Composite Sigs                  June 2022
 
    ~~~ END EDNOTE 10~~~
 
-5.1.  Backwards Compatibility
+6.1.  Backwards Compatibility
 
    As noted in the introduction, the post-quantum cryptographic
    migration will face challenges in both guaraneeing cryptographic
@@ -759,9 +759,9 @@ Internet-Draft              PQ Composite Sigs                  June 2022
    and proprietary protocols and applications that leverage CMS
    [RFC5652] signed structures.
 
-5.1.1.  OR modes
+6.1.1.  OR modes
 
-   Section 4.1 and Section 4.2 make reference to subset signature
+   Section 5.1 and Section 5.2 make reference to subset signature
    generation and verification modes to achieve an OR relation between
    component signatures, where senders and / or receivers are permitted
    to ignore some component keys.  Some envisioned uses of this include
@@ -786,7 +786,7 @@ Ounsworth & Pala        Expires December 7, 2022               [Page 14]
 Internet-Draft              PQ Composite Sigs                  June 2022
 
 
-5.1.2.  Parallel PKIs
+6.1.2.  Parallel PKIs
 
    We present the term "Parallel PKI" to refer to the setup where a PKI
    end entity posesses two or more distinct public keys or certificates
@@ -808,7 +808,7 @@ Internet-Draft              PQ Composite Sigs                  June 2022
    noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help
    with this ref) or [draft-guthrie-ipsecme-ikev2-hybrid-auth-00].  Note
    that it is possible to use the signature algorithms defined in
-   Section 3 as a way to carry the multiple signature values generated
+   Section 4 as a way to carry the multiple signature values generated
    by one of the non-composite public mechanism in protocols where it is
    easier to support the composite signature algorithms than to
    implement such a mechanism in the protocol itself.  There is also
@@ -827,7 +827,7 @@ Internet-Draft              PQ Composite Sigs                  June 2022
    compatible with and ignore the others, thus achieving full backwards
    compatibility.
 
-6.  IANA Considerations
+7.  IANA Considerations
 
    The ASN.1 module OID is TBD.  The id-alg-composite OID is to be
    assigned by IANA.  The authors suggest that IANA assign an OID on the
@@ -846,9 +846,9 @@ Internet-Draft              PQ Composite Sigs                  June 2022
        iso(1) identified-organization(3) dod(6) internet(1) security(5)
        mechanisms(5) pkix(7) algorithms(6) composite(??) }
 
-7.  Security Considerations
+8.  Security Considerations
 
-7.1.  Policy for Deprecated and Acceptable Algorithms
+8.1.  Policy for Deprecated and Acceptable Algorithms
 
    Traditionally, a public key, certificate, or signature contains a
    single cryptographic algorithm.  If and when an algorithm becomes
@@ -874,12 +874,12 @@ Internet-Draft              PQ Composite Sigs                  June 2022
       if not checkPolicy(A1, A2, ..., An), then
         output "Invalid signature"
 
-7.2.  OR Modes
+8.2.  OR Modes
 
-7.2.1.  Subset Signature Generation
+8.2.1.  Subset Signature Generation
 
    This document defines a composite signature generation process in
-   Section 4.1 wherethe signer MUST produce a signature value with each
+   Section 5.1 wherethe signer MUST produce a signature value with each
    of their component private keys, this providing full protection of
    the content under all available component algorithms.
 
@@ -911,10 +911,10 @@ Internet-Draft              PQ Composite Sigs                  June 2022
    in this way, and MUST reject during verification any subset
    signatures that they encounter.
 
-7.2.2.  Subset Signature Verification
+8.2.2.  Subset Signature Verification
 
    This document defines a composite signature verification process in
-   Section 4.2 where the verifier verifies all component signatures and
+   Section 5.2 where the verifier verifies all component signatures and
    fails if any component fails.  The authors recognize that there will
    be scenarios where the verifier considers a single component
    algorithm -- or subset of component algorithms -- to provide
@@ -954,9 +954,9 @@ Ounsworth & Pala        Expires December 7, 2022               [Page 17]
 Internet-Draft              PQ Composite Sigs                  June 2022
 
 
-8.  References
+9.  References
 
-8.1.  Normative References
+9.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1010,7 +1010,7 @@ Ounsworth & Pala        Expires December 7, 2022               [Page 18]
 Internet-Draft              PQ Composite Sigs                  June 2022
 
 
-8.2.  Informative References
+9.2.  Informative References
 
    [Bindel2017]
               Bindel, N., Herath, U., McKague, M., and D. Stebila,
