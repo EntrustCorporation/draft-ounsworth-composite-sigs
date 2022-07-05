@@ -374,18 +374,18 @@
   </style>
 
   <link href="#rfc.toc" rel="Contents">
-<link href="#rfc.section.1" rel="Chapter" title="1 Changes in version -07">
+<link href="#rfc.section.1" rel="Chapter" title="1 Changes in version -08">
 <link href="#rfc.section.2" rel="Chapter" title="2 Introduction">
 <link href="#rfc.section.2.1" rel="Chapter" title="2.1 Terminology">
 <link href="#rfc.section.3" rel="Chapter" title="3 Composite Signature Structures">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 Composite Keys">
 <link href="#rfc.section.3.1.1" rel="Chapter" title="3.1.1 Key Usage Bits">
-<link href="#rfc.section.3.2" rel="Chapter" title="3.2 sa-CompositeSignature">
-<link href="#rfc.section.3.3" rel="Chapter" title="3.3 CompositeSignatureValue">
-<link href="#rfc.section.3.4" rel="Chapter" title="3.4 Encoding Rules">
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 CompositeSignatureValue">
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Encoding Rules">
 <link href="#rfc.section.4" rel="Chapter" title="4 Algorithm Identifiers">
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 id-alg-composite (Generic Composite Signatures)">
-<link href="#rfc.section.4.2" rel="Chapter" title="4.2 Explicit Composite Signatures">
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 sa-CompositeSignature">
+<link href="#rfc.section.4.3" rel="Chapter" title="4.3 Explicit Composite Signatures">
 <link href="#rfc.section.5" rel="Chapter" title="5 Composite Signature Processes">
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 Composite Signature Generation Process">
 <link href="#rfc.section.5.2" rel="Chapter" title="5.2 Composite Signature Verification Process">
@@ -419,8 +419,8 @@
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Ounsworth, M. and M. Pala" />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-sigs-07" />
-  <meta name="dct.issued" scheme="ISO8601" content="2022-06-07" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-sigs-08" />
+  <meta name="dct.issued" scheme="ISO8601" content="2022-07-04" />
   <meta name="dct.abstract" content="The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs. Cautious implementer may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as &quot;dual&quot;, and for encryption key establishment this as referred to as &quot;hybrid&quot;. This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called &quot;composite&quot; where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. EDNOTE: the terms &quot;dual&quot; and &quot;hybrid&quot; are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. The generic composite variant is defined which allows arbitrary combinations of signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or pre-agreed. The explicit variant is also defined which allows for a set of signature algorithm identifier OIDs to be registered together as an explicit composite signature algorithm and assigned an OID. This document is intended to be coupled with corresponding documents that define the structure and semantics of composite public and private keys and encryption [I-D.draft-ounsworth-pq-composite-keys-01], however may also be used with non-composite keys, such as when a protocol combines multiple certificates into a single cryptographic operation. " />
   <meta name="description" content="The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs. Cautious implementer may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as &quot;dual&quot;, and for encryption key establishment this as referred to as &quot;hybrid&quot;. This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called &quot;composite&quot; where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. EDNOTE: the terms &quot;dual&quot; and &quot;hybrid&quot; are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. The generic composite variant is defined which allows arbitrary combinations of signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or pre-agreed. The explicit variant is also defined which allows for a set of signature algorithm identifier OIDs to be registered together as an explicit composite signature algorithm and assigned an OID. This document is intended to be coupled with corresponding documents that define the structure and semantics of composite public and private keys and encryption [I-D.draft-ounsworth-pq-composite-keys-01], however may also be used with non-composite keys, such as when a protocol combines multiple certificates into a single cryptographic operation. " />
 
@@ -444,12 +444,12 @@
 <td class="right">M. Pala</td>
 </tr>
 <tr>
-<td class="left">Expires: December 9, 2022</td>
+<td class="left">Expires: January 5, 2023</td>
 <td class="right">CableLabs</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">June 07, 2022</td>
+<td class="right">July 04, 2022</td>
 </tr>
 
     	
@@ -457,7 +457,7 @@
   </table>
 
   <p class="title">Composite Signatures For Use In Internet PKI<br />
-  <span class="filename">draft-ounsworth-pq-composite-sigs-07</span></p>
+  <span class="filename">draft-ounsworth-pq-composite-sigs-08</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
 <p>The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs.</p>
@@ -469,7 +469,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 9, 2022.</p>
+<p>This Internet-Draft will expire on January 5, 2023.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2022 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -479,7 +479,7 @@
   <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
   <ul class="toc">
 
-  	<li>1.   <a href="#rfc.section.1">Changes in version -07</a>
+  	<li>1.   <a href="#rfc.section.1">Changes in version -08</a>
 </li>
 <li>2.   <a href="#rfc.section.2">Introduction</a>
 </li>
@@ -491,17 +491,17 @@
 </li>
 <ul><li>3.1.1.   <a href="#rfc.section.3.1.1">Key Usage Bits</a>
 </li>
-</ul><li>3.2.   <a href="#rfc.section.3.2">sa-CompositeSignature</a>
+</ul><li>3.2.   <a href="#rfc.section.3.2">CompositeSignatureValue</a>
 </li>
-<li>3.3.   <a href="#rfc.section.3.3">CompositeSignatureValue</a>
-</li>
-<li>3.4.   <a href="#rfc.section.3.4">Encoding Rules</a>
+<li>3.3.   <a href="#rfc.section.3.3">Encoding Rules</a>
 </li>
 </ul><li>4.   <a href="#rfc.section.4">Algorithm Identifiers</a>
 </li>
 <ul><li>4.1.   <a href="#rfc.section.4.1">id-alg-composite (Generic Composite Signatures)</a>
 </li>
-<li>4.2.   <a href="#rfc.section.4.2">Explicit Composite Signatures</a>
+<li>4.2.   <a href="#rfc.section.4.2">sa-CompositeSignature</a>
+</li>
+<li>4.3.   <a href="#rfc.section.4.3">Explicit Composite Signatures</a>
 </li>
 </ul><li>5.   <a href="#rfc.section.5">Composite Signature Processes</a>
 </li>
@@ -562,17 +562,8 @@
   </ul>
 
   <h1 id="rfc.section.1">
-<a href="#rfc.section.1">1.</a> <a href="#changes-in-version-07" id="changes-in-version-07">Changes in version -07</a>
+<a href="#rfc.section.1">1.</a> <a href="#changes-in-version-08" id="changes-in-version-08">Changes in version -08</a>
 </h1>
-<p></p>
-
-<ul>
-<li>Merged Generic Composite (<a href="#sec-generic-composite" class="xref">Section 4.1</a>) and Explicit Composite (<a href="#sec-explicit" class="xref">Section 4.2</a>) into one document and made them share a wire encoding (only differing by the OIDs used).</li>
-<li>Removed Composite-OR signature mode.</li>
-<li>Added <a href="#sec-backwards-compat" class="xref">Section 6.1</a> addressing backwards compatibility and ease of migration concerns.</li>
-<li>Added CompositeParams := Alg1, Alg2, .. Algn as an input parameter to the sig gen and verification processes.</li>
-</ul>
-<p id="rfc.section.1.p.2">TODO diff this against the public version and see if there are any more changes.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#sec-intro" id="sec-intro">Introduction</a>
 </h1>
@@ -628,37 +619,23 @@ digitalSignature; and
 nonRepudiation;
 </pre>
 <h1 id="rfc.section.3.2">
-<a href="#rfc.section.3.2">3.2.</a> <a href="#sec-composite-sig-structs" id="sec-composite-sig-structs">sa-CompositeSignature</a>
+<a href="#rfc.section.3.2">3.2.</a> <a href="#sec-compositeSignatureValue" id="sec-compositeSignatureValue">CompositeSignatureValue</a>
 </h1>
-<p id="rfc.section.3.2.p.1">The ASN.1 algorithm object for a composite signature is:</p>
-<pre>
-sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
-    IDENTIFIER identifier
-    VALUE CompositeSignatureValue
-    PARAMS ANY DEFINED BY ALGORITHM
-    PUBLIC-KEYS { pk-Composite }
-    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-}
-</pre>
-<p id="rfc.section.3.2.p.2">The identifier specifies the type of composite signature and the component algorithms. This document defines a generic composite algorithm, identified by id-alg-composite, in <a href="#sec-generic-composite" class="xref">Section 4.1</a>, and allows for other standards that will define explicit algorithms that specify which component algorithms are to be contained within them.</p>
-<h1 id="rfc.section.3.3">
-<a href="#rfc.section.3.3">3.3.</a> <a href="#sec-compositeSignatureValue" id="sec-compositeSignatureValue">CompositeSignatureValue</a>
-</h1>
-<p id="rfc.section.3.3.p.1">The output of the composite signature algorithm is the DER encoding of the following structure:</p>
+<p id="rfc.section.3.2.p.1">The output of the composite signature algorithm is the DER encoding of the following structure:</p>
 <pre>
 CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
 </pre>
-<p id="rfc.section.3.3.p.2">Where each BIT STRING within the SEQUENCE is a signature value produced by one of the component keys. It MUST contain one signature value produced by each component algorithm, and in the same order as in the associated CompositeParams object.</p>
-<p id="rfc.section.3.3.p.3">A CompositeSignatureValue MUST contain the same number of component signatures as the corresponding public and private keys, and the order of component signature values MUST correspond to the component public keys.</p>
-<p id="rfc.section.3.3.p.4">The choice of <samp>SEQUENCE OF BIT STRING</samp>, rather than for example a single BIT STRING containing the concatenated signature values, is to gracefully handle variable-length signature values by taking advantage of ASN.1's built-in length fields.</p>
-<h1 id="rfc.section.3.4">
-<a href="#rfc.section.3.4">3.4.</a> <a href="#sec-encoding-rules" id="sec-encoding-rules">Encoding Rules</a>
+<p id="rfc.section.3.2.p.2">Where each BIT STRING within the SEQUENCE is a signature value produced by one of the component keys. It MUST contain one signature value produced by each component algorithm, and in the same order as in the associated CompositeParams object.</p>
+<p id="rfc.section.3.2.p.3">A CompositeSignatureValue MUST contain the same number of component signatures as the corresponding public and private keys, and the order of component signature values MUST correspond to the component public keys.</p>
+<p id="rfc.section.3.2.p.4">The choice of <samp>SEQUENCE OF BIT STRING</samp>, rather than for example a single BIT STRING containing the concatenated signature values, is to gracefully handle variable-length signature values by taking advantage of ASN.1's built-in length fields.</p>
+<h1 id="rfc.section.3.3">
+<a href="#rfc.section.3.3">3.3.</a> <a href="#sec-encoding-rules" id="sec-encoding-rules">Encoding Rules</a>
 </h1>
-<p id="rfc.section.3.4.p.1">Many protocol specifications will require that composite signature data structures be represented by an octet string or bit string.</p>
-<p id="rfc.section.3.4.p.2">When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.</p>
-<p id="rfc.section.3.4.p.3">EDNOTE: will this definition include an ASN.1 tag and length byte inside the OCTET STRING object? If so, that's probably an extra unnecessary layer.</p>
-<p id="rfc.section.3.4.p.4">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.</p>
-<p id="rfc.section.3.4.p.5">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.</p>
+<p id="rfc.section.3.3.p.1">Many protocol specifications will require that composite signature data structures be represented by an octet string or bit string.</p>
+<p id="rfc.section.3.3.p.2">When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.</p>
+<p id="rfc.section.3.3.p.3">EDNOTE: will this definition include an ASN.1 tag and length byte inside the OCTET STRING object? If so, that's probably an extra unnecessary layer.</p>
+<p id="rfc.section.3.3.p.4">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.</p>
+<p id="rfc.section.3.3.p.5">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.</p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#sec-alg-idents" id="sec-alg-idents">Algorithm Identifiers</a>
 </h1>
@@ -679,13 +656,26 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 </pre>
 <p id="rfc.section.4.1.p.4">The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.</p>
-<p id="rfc.section.4.1.p.5">The motivation for this variant is primarily for prototyping work prior to the standardization of algorithm identifiers for explicit combinations of algorithms. However, the authors envision that this variant will remain relevant beyond full standardization for example in environments requiring very high levels of crypto agility, for example where clients support a large number of algorithms or where a large number of keys will be used at a time and it is therefore prohibitive to define algorithm identifiers for every combination of pairs, triples, quadruples, etc of algorithms.</p>
 <h1 id="rfc.section.4.2">
-<a href="#rfc.section.4.2">4.2.</a> <a href="#sec-explicit" id="sec-explicit">Explicit Composite Signatures</a>
+<a href="#rfc.section.4.2">4.2.</a> <a href="#sec-composite-sig-structs" id="sec-composite-sig-structs">sa-CompositeSignature</a>
 </h1>
-<p id="rfc.section.4.2.p.1">This variant provides a rigid way of specifying supported combinations of algorithms.</p>
-<p id="rfc.section.4.2.p.2">The motivation for this variant is to make it easier to reference and enforce specific combinations of algorithms. The authors envision this being useful for client-server negotiated protocols, protocol designers who wish to place constraints on allowable algorithm combinations in the protocol specification, as well as audited environments that wish to prove that only certain combinations will be supported by clients.</p>
-<p id="rfc.section.4.2.p.3">Explicit algorithms must define a new signature algorithm which consists of:</p>
+<p id="rfc.section.4.2.p.1">The ASN.1 algorithm object for a composite signature is:</p>
+<pre>
+sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
+    IDENTIFIER id-alg-composite,
+    VALUE CompositeSignatureValue,
+    PARAMS ANY DEFINED BY ALGORITHM,
+    PUBLIC-KEYS { pk-Composite },
+    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
+}
+</pre>
+<p id="rfc.section.4.2.p.2">The motivation for this variant is primarily for prototyping work prior to the standardization of algorithm identifiers for explicit combinations of algorithms. However, the authors envision that this variant will remain relevant beyond full standardization for example in environments requiring very high levels of crypto agility, for example where clients support a large number of algorithms or where a large number of keys will be used at a time and it is therefore prohibitive to define algorithm identifiers for every combination of pairs, triples, quadruples, etc of algorithms.</p>
+<h1 id="rfc.section.4.3">
+<a href="#rfc.section.4.3">4.3.</a> <a href="#sec-explicit" id="sec-explicit">Explicit Composite Signatures</a>
+</h1>
+<p id="rfc.section.4.3.p.1">This variant provides a rigid way of specifying supported combinations of algorithms.</p>
+<p id="rfc.section.4.3.p.2">The motivation for this variant is to make it easier to reference and enforce specific combinations of algorithms. The authors envision this being useful for client-server negotiated protocols, protocol designers who wish to place constraints on allowable algorithm combinations in the protocol specification, as well as audited environments that wish to prove that only certain combinations will be supported by clients.</p>
+<p id="rfc.section.4.3.p.3">Explicit algorithms must define a new signature algorithm which consists of:</p>
 <p></p>
 
 <ul>
@@ -693,9 +683,9 @@ CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 <li>The algorithm identifier OID and PUBLIC-KEY type of each component algorithm.</li>
 <li>Signature parameters either declared ABSENT, or defined with a type and encoding.</li>
 </ul>
-<p id="rfc.section.4.2.p.5">See <a href="#appdx-creatingExplicitCombinations" class="xref">Appendix B</a> for guidance on creating and registering OIDs for specific explicit combinations.</p>
-<p id="rfc.section.4.2.p.6">For explicit algorithms, it is not necessary to carry a CompositeParams with the list of component algorithms in the signature algorithm parameters because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in <a href="#RFC8017" class="xref">[RFC8017]</a>. <a href="#sec-composite-sig-structs" class="xref">Section 3.2</a> defines <samp>PARAMS ANY DEFINED BY ALGORITHM</samp> so that explicit algorithms may define params as ABSENT, use <samp>CompositeParams</samp> defined in <a href="#sec-generic-composite" class="xref">Section 4.1</a> or use any other encoding that is appropriate.</p>
-<p id="rfc.section.4.2.p.7">In this variant, the signature is encoded as defined in <a href="#sec-composite-sig-structs" class="xref">Section 3.2</a>, however the sa-CompositeSignature.identifier SHALL be an OID which is registered to represent a specific combination of component signature algorithms. See <a href="#appdx-examples" class="xref">Appendix C</a> for examples.</p>
+<p id="rfc.section.4.3.p.5">See <a href="#appdx-creatingExplicitCombinations" class="xref">Appendix B</a> for guidance on creating and registering OIDs for specific explicit combinations.</p>
+<p id="rfc.section.4.3.p.6">For explicit algorithms, it is not necessary to carry a CompositeParams with the list of component algorithms in the signature algorithm parameters because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in <a href="#RFC8017" class="xref">[RFC8017]</a>. <a href="#sec-composite-sig-structs" class="xref">Section 4.2</a> defines <samp>PARAMS ANY DEFINED BY ALGORITHM</samp> so that explicit algorithms may define params as ABSENT, use <samp>CompositeParams</samp> defined in <a href="#sec-generic-composite" class="xref">Section 4.1</a> or use any other encoding that is appropriate.</p>
+<p id="rfc.section.4.3.p.7">In this variant, the signature is encoded as defined in <a href="#sec-composite-sig-structs" class="xref">Section 4.2</a>, however the sa-CompositeSignature.identifier SHALL be an OID which is registered to represent a specific combination of component signature algorithms. See <a href="#appdx-examples" class="xref">Appendix C</a> for examples.</p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#sec-composite-signature-algorithm" id="sec-composite-signature-algorithm">Composite Signature Processes</a>
 </h1>
@@ -704,7 +694,7 @@ CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 <h1 id="rfc.section.5.1">
 <a href="#rfc.section.5.1">5.1.</a> <a href="#sec-comp-sig-gen" id="sec-comp-sig-gen">Composite Signature Generation Process</a>
 </h1>
-<p id="rfc.section.5.1.p.1">Generation of a composite signature involves applying each component algorithm's signature process to the input message according to its specification, and then placing each component signature value into the CompositeSignatureValue structure defined in <a href="#sec-composite-sig-structs" class="xref">Section 3.2</a>.</p>
+<p id="rfc.section.5.1.p.1">Generation of a composite signature involves applying each component algorithm's signature process to the input message according to its specification, and then placing each component signature value into the CompositeSignatureValue structure defined in <a href="#sec-composite-sig-structs" class="xref">Section 4.2</a>.</p>
 <p id="rfc.section.5.1.p.2">The following process is used to generate composite signature values.</p>
 <pre>
 Input:
@@ -784,7 +774,7 @@ Signature Verification Procedure::
 </pre>
 <p id="rfc.section.5.2.p.4">Note on composite inputs: the method of providing the list of component keys, algorithms and signatures is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey, CompositeParams, and compositesignaturevalue structures. It is also possible to verify a composite signature where the component public verification keys belong, for example, to separate X.509 certificates or cryptographic modules. Variations in the process to accommodate particular public verification key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.</p>
 <p id="rfc.section.5.2.p.5">Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-keys sec-composite-pub-keys ~~, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.</p>
-<p id="rfc.section.5.2.p.6">Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementer MAY, in the interest of performance, modify the above process to skip one or more signature validations as per their local client policy. See <a href="#sec-cons-OR-modes" class="xref">Section 8.2</a> for a discussion of associated risks.</p>
+<p id="rfc.section.5.2.p.6">Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementer MAY, in the interest of performance of compatibility, modify the above process to skip one or more signature validations as per their local client policy. See <a href="#sec-cons-OR-modes" class="xref">Section 8.2</a> for a discussion of associated risks.</p>
 <p id="rfc.section.5.2.p.7">In the absence of such a policy mechanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here. See <a href="#sec-subset-sig-gen" class="xref">Section 8.2.1</a> for further discussion of security implications of subset signature verifications, and <a href="#sec-backwards-compat" class="xref">Section 6.1</a> for further discussion of backwards compatibility implications.</p>
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#sec-imp-considers" id="sec-imp-considers">Implementation Considerations</a>

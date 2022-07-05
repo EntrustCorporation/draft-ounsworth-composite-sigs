@@ -2,7 +2,7 @@
 title: Composite Signatures For Use In Internet PKI
 abbrev: PQ Composite Sigs
 # <!-- EDNOTE: Edits the draft name -->
-docname: draft-ounsworth-pq-composite-sigs-07
+docname: draft-ounsworth-pq-composite-sigs-08
 
 # <!-- stand_alone: true -->
 ipr: trust200902
@@ -96,14 +96,8 @@ This document is intended to be coupled with corresponding documents that define
 
 --- middle
 
-# Changes in version -07
+# Changes in version -08
 
-- Merged Generic Composite ({{sec-generic-composite}}) and Explicit Composite ({{sec-explicit}}) into one document and made them share a wire encoding (only differing by the OIDs used).
-- Removed Composite-OR signature mode.
-- Added {{sec-backwards-compat}} addressing backwards compatibility and ease of migration concerns.
-- Added CompositeParams := Alg1, Alg2, .. Algn as an input parameter to the sig gen and verification processes.
-
-TODO diff this against the public version and see if there are any more changes.
 
 
 # Introduction {#sec-intro}
@@ -216,22 +210,6 @@ nonRepudiation;
 ~~~
 
 
-## sa-CompositeSignature {#sec-composite-sig-structs}
-
-The ASN.1 algorithm object for a composite signature is:
-
-~~~ asn.1
-sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
-    IDENTIFIER identifier
-    VALUE CompositeSignatureValue
-    PARAMS ANY DEFINED BY ALGORITHM
-    PUBLIC-KEYS { pk-Composite }
-    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-}
-~~~
-
-The identifier specifies the type of composite signature and the component algorithms. This document defines a generic composite algorithm, identified by id-alg-composite, in {{sec-generic-composite}}, and allows for other standards that will define explicit algorithms that specify which component algorithms are to be contained within them.
-
 ## CompositeSignatureValue {#sec-compositeSignatureValue}
 
 The output of the composite signature algorithm is the DER encoding of the following structure:
@@ -287,6 +265,22 @@ CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 {: artwork-name="CompositeSignatureParams-asn.1-structures"}
 
 The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.
+
+
+## sa-CompositeSignature {#sec-composite-sig-structs}
+
+The ASN.1 algorithm object for a composite signature is:
+
+~~~ asn.1
+sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
+    IDENTIFIER id-alg-composite,
+    VALUE CompositeSignatureValue,
+    PARAMS ANY DEFINED BY ALGORITHM,
+    PUBLIC-KEYS { pk-Composite },
+    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
+}
+~~~
+
 
 The motivation for this variant is primarily for prototyping work prior to the standardization of algorithm identifiers for explicit combinations of algorithms. However, the authors envision that this variant will remain relevant beyond full standardization for example in environments requiring very high levels of crypto agility, for example where clients support a large number of algorithms or where a large number of keys will be used at a time and it is therefore prohibitive to define algorithm identifiers for every combination of pairs, triples, quadruples, etc of algorithms.
 
@@ -417,7 +411,7 @@ Note on composite inputs: the method of providing the list of component keys, al
 
 Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-keys sec-composite-pub-keys ~~, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
 
-Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementer MAY, in the interest of performance, modify the above process to skip one or more signature validations as per their local client policy. See {{sec-cons-OR-modes}} for a discussion of associated risks.
+Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementer MAY, in the interest of performance of compatibility, modify the above process to skip one or more signature validations as per their local client policy. See {{sec-cons-OR-modes}} for a discussion of associated risks.
 
 In the absence of such a policy mechanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here. See {{sec-subset-sig-gen}} for further discussion of security implications of subset signature verifications, and {{sec-backwards-compat}} for further discussion of backwards compatibility implications.
 
