@@ -5,8 +5,8 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                                 M. Pala
-Expires: January 5, 2023                                       CableLabs
-                                                           July 04, 2022
+Expires: January 9, 2023                                       CableLabs
+                                                           July 08, 2022
 
 
               Composite Signatures For Use In Internet PKI
@@ -53,15 +53,15 @@ Abstract
 
 
 
-Ounsworth & Pala         Expires January 5, 2023                [Page 1]
+Ounsworth & Pala         Expires January 9, 2023                [Page 1]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
 
    This document is intended to be coupled with corresponding documents
    that define the structure and semantics of composite public and
-   private keys and encryption [I-D.draft-ounsworth-pq-composite-keys-
-   01], however may also be used with non-composite keys, such as when a
+   private keys and encryption [I-D.ounsworth-pq-composite-keys],
+   however may also be used with non-composite keys, such as when a
    protocol combines multiple certificates into a single cryptographic
    operation.
 
@@ -80,7 +80,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 5, 2023.
+   This Internet-Draft will expire on January 9, 2023.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth & Pala         Expires January 5, 2023                [Page 2]
+Ounsworth & Pala         Expires January 9, 2023                [Page 2]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -165,7 +165,7 @@ Internet-Draft              PQ Composite Sigs                  July 2022
 
 
 
-Ounsworth & Pala         Expires January 5, 2023                [Page 3]
+Ounsworth & Pala         Expires January 9, 2023                [Page 3]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -185,15 +185,13 @@ Internet-Draft              PQ Composite Sigs                  July 2022
       quantum algorithms will not be supported by all clients.
 
    This document provides a mechanism to address algorithm strength
-   uncertainty concerns by building on [draft-ounsworth-pq-composite-
-   keys-00] (NOTE: need kramdown formatting help with this ref) by
-   providing formats for encoding multiple signature values into
+   uncertainty concerns by building on [I-D.ounsworth-pq-composite-keys]
+   by providing formats for encoding multiple signature values into
    existing public signature fields, as well as the process for
    validating a composite signature.  Backwards compatibility is
    addressed via using composite in conjunction with a non-composite
-   hybrid mode such as that described in [draft-becker-guthrie-
-   noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help
-   with this ref).
+   hybrid mode such as that described in
+   [I-D.becker-guthrie-noncomposite-hybrid-auth].
 
    This document is intended for general applicability anywhere that
    digital signatures are used within PKIX and CMS structures.
@@ -218,16 +216,15 @@ Internet-Draft              PQ Composite Sigs                  July 2022
    CLIENT: Any software that is making use of a cryptographic key.  This
    includes a signer, verifier, encrypter, decrypter.
 
+   COMPONENT ALGORITHM: A single basic algorithm which is contained
+   within a composite algorithm.
 
 
 
-Ounsworth & Pala         Expires January 5, 2023                [Page 4]
+Ounsworth & Pala         Expires January 9, 2023                [Page 4]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
-
-   COMPONENT ALGORITHM: A single basic algorithm which is contained
-   within a composite algorithm.
 
    COMPOSITE ALGORITHM: An algorithm which is a sequence of two or more
    component algorithms, as defined in Section 3.
@@ -268,23 +265,22 @@ Internet-Draft              PQ Composite Sigs                  July 2022
 3.1.  Composite Keys
 
    A composite signature MAY be associated with a composite public key
-   as defined in [draft-ounsworth-pq-composite-keys-00] (NOTE: need
-   kramdown formatting help with this ref), but MAY also be associated
-   with multiple public keys from different sources, for example
-   multiple X.509 certificates, or multiple cryptographic modules.  In
-   the latter case, composite signatures MAY be used as the mechanism
-   for carrying multiple signatures in a non-composite authentication
+   as defined in [I-D.ounsworth-pq-composite-keys], but MAY also be
+   associated with multiple public keys from different sources, for
+   example multiple X.509 certificates, or multiple cryptographic
+   modules.  In the latter case, composite signatures MAY be used as the
+   mechanism for carrying multiple signatures in a non-composite
+   authentication mechanism such as those described in
+   [I-D.becker-guthrie-noncomposite-hybrid-auth].
 
 
 
-Ounsworth & Pala         Expires January 5, 2023                [Page 5]
+
+
+Ounsworth & Pala         Expires January 9, 2023                [Page 5]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
-
-   mechanism such as those described in [draft-becker-guthrie-
-   noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help
-   with this ref).
 
 3.1.1.  Key Usage Bits
 
@@ -333,7 +329,11 @@ Internet-Draft              PQ Composite Sigs                  July 2022
 
 
 
-Ounsworth & Pala         Expires January 5, 2023                [Page 6]
+
+
+
+
+Ounsworth & Pala         Expires January 9, 2023                [Page 6]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -389,7 +389,7 @@ Internet-Draft              PQ Composite Sigs                  July 2022
 
 
 
-Ounsworth & Pala         Expires January 5, 2023                [Page 7]
+Ounsworth & Pala         Expires January 9, 2023                [Page 7]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -445,7 +445,7 @@ Internet-Draft              PQ Composite Sigs                  July 2022
 
 
 
-Ounsworth & Pala         Expires January 5, 2023                [Page 8]
+Ounsworth & Pala         Expires January 9, 2023                [Page 8]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -501,7 +501,7 @@ Internet-Draft              PQ Composite Sigs                  July 2022
 
 
 
-Ounsworth & Pala         Expires January 5, 2023                [Page 9]
+Ounsworth & Pala         Expires January 9, 2023                [Page 9]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -542,11 +542,11 @@ Signature Generation Process:
    storage mechanisms are considered to be conformant to this document
    so long as it produces the same output as the process sketched above.
 
-   Since recursive composite public keys are disallowed in ~~ Reference
-   draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no
-   component signature may itself be a composite; ie the signature
-   generation process MUST fail if one of the private keys K1, K2, ..,
-   Kn is a composite with the OID id-alg-composite.
+   Since recursive composite public keys are disallowed in
+   [I-D.ounsworth-pq-composite-keys], no component signature may itself
+   be a composite; ie the signature generation process MUST fail if one
+   of the private keys K1, K2, .., Kn is a composite with the OID id-
+   alg-composite.
 
    A composite signature MUST produce, and include in the output, a
    signature value for every component key in and include in the output,
@@ -557,7 +557,7 @@ Signature Generation Process:
 
 
 
-Ounsworth & Pala         Expires January 5, 2023               [Page 10]
+Ounsworth & Pala         Expires January 9, 2023               [Page 10]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -613,7 +613,7 @@ Internet-Draft              PQ Composite Sigs                  July 2022
 
 
 
-Ounsworth & Pala         Expires January 5, 2023               [Page 11]
+Ounsworth & Pala         Expires January 9, 2023               [Page 11]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -669,17 +669,16 @@ Internet-Draft              PQ Composite Sigs                  July 2022
 
 
 
-Ounsworth & Pala         Expires January 5, 2023               [Page 12]
+Ounsworth & Pala         Expires January 9, 2023               [Page 12]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
 
-   Since recursive composite public keys are disallowed in ~~ Reference
-   draft-ounsworth-pq-composite-keys sec-composite-pub-keys ~~, no
-   component signature may be composite; ie the signature verification
-   procedure MUST fail if any of the public keys P1, P2, .., Pn or
-   algorithm identifiers A1, A2, .., An are composite with the OID id-
-   alg-composite.
+   Since recursive composite public keys are disallowed in
+   [I-D.ounsworth-pq-composite-keys], no component signature may be
+   composite; ie the signature verification procedure MUST fail if any
+   of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2,
+   .., An are composite with the OID id-alg-composite.
 
    Some verification clients may include a policy mechanism for
    specifying acceptable subsets of algorithms.  In these cases,
@@ -725,7 +724,8 @@ Internet-Draft              PQ Composite Sigs                  July 2022
 
 
 
-Ounsworth & Pala         Expires January 5, 2023               [Page 13]
+
+Ounsworth & Pala         Expires January 9, 2023               [Page 13]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -781,7 +781,7 @@ Internet-Draft              PQ Composite Sigs                  July 2022
 
 
 
-Ounsworth & Pala         Expires January 5, 2023               [Page 14]
+Ounsworth & Pala         Expires January 9, 2023               [Page 14]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -804,9 +804,8 @@ Internet-Draft              PQ Composite Sigs                  July 2022
    For negotiated protocols, the client could choose which public key(s)
    or certificate(s) to use based on the negotiated algorithms, or could
    combine two of the public keys for example in a non-composite hybrid
-   method such as [draft-becker-guthrie-noncomposite-hybrid-auth-00]
-   (NOTE: need kramdown formatting help with this ref) or [draft-
-   guthrie-ipsecme-ikev2-hybrid-auth-00].  Note that it is possible to
+   method such as [I-D.becker-guthrie-noncomposite-hybrid-auth] or
+   [I-D.guthrie-ipsecme-ikev2-hybrid-auth].  Note that it is possible to
    use the signature algorithms defined in Section 4 as a way to carry
    the multiple signature values generated by one of the non-composite
    public mechanism in protocols where it is easier to support the
@@ -837,7 +836,8 @@ Internet-Draft              PQ Composite Sigs                  July 2022
 
 
 
-Ounsworth & Pala         Expires January 5, 2023               [Page 15]
+
+Ounsworth & Pala         Expires January 9, 2023               [Page 15]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -893,7 +893,7 @@ Internet-Draft              PQ Composite Sigs                  July 2022
 
 
 
-Ounsworth & Pala         Expires January 5, 2023               [Page 16]
+Ounsworth & Pala         Expires January 9, 2023               [Page 16]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -949,7 +949,7 @@ Internet-Draft              PQ Composite Sigs                  July 2022
 
 
 
-Ounsworth & Pala         Expires January 5, 2023               [Page 17]
+Ounsworth & Pala         Expires January 9, 2023               [Page 17]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -1005,7 +1005,7 @@ Internet-Draft              PQ Composite Sigs                  July 2022
 
 
 
-Ounsworth & Pala         Expires January 5, 2023               [Page 18]
+Ounsworth & Pala         Expires January 9, 2023               [Page 18]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -1023,6 +1023,11 @@ Internet-Draft              PQ Composite Sigs                  July 2022
               Hybrid Authentication in PKIX and Applications to Internet
               Protocols", draft-becker-guthrie-noncomposite-hybrid-
               auth-00 (work in progress), March 2022.
+
+   [I-D.guthrie-ipsecme-ikev2-hybrid-auth]
+              Guthrie, R., "Hybrid Non-Composite Authentication in
+              IKEv2", draft-guthrie-ipsecme-ikev2-hybrid-auth-00 (work
+              in progress), March 2022.
 
    [I-D.ounsworth-pq-composite-keys]
               Ounsworth, M. and M. Pala, "Composite Public and Private
@@ -1056,12 +1061,7 @@ A.1.  Combiner modes (KofN)
 
 
 
-
-
-
-
-
-Ounsworth & Pala         Expires January 5, 2023               [Page 19]
+Ounsworth & Pala         Expires January 9, 2023               [Page 19]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -1117,7 +1117,7 @@ Appendix D.  ASN.1 Module
 
 
 
-Ounsworth & Pala         Expires January 5, 2023               [Page 20]
+Ounsworth & Pala         Expires January 9, 2023               [Page 20]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -1173,7 +1173,7 @@ Appendix E.  Intellectual Property Considerations
 
 
 
-Ounsworth & Pala         Expires January 5, 2023               [Page 21]
+Ounsworth & Pala         Expires January 9, 2023               [Page 21]
 
 Internet-Draft              PQ Composite Sigs                  July 2022
 
@@ -1229,4 +1229,4 @@ Authors' Addresses
 
 
 
-Ounsworth & Pala         Expires January 5, 2023               [Page 22]
+Ounsworth & Pala         Expires January 9, 2023               [Page 22]
