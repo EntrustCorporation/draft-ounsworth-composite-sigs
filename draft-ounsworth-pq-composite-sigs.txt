@@ -989,14 +989,14 @@ Internet-Draft              PQ Composite Sigs                August 2022
    If the message to be signed is pre-hashed, for example "m0 =
    SHA256(m)" and then m0 provided to Dilithium or Falcon to sign, then
    you have re-introduced the collision problem since two messages m1
-   and m2 where SHA256(m1) == SHA256(m2) hash value will result a single
-   Falcon or Dilithium signature value which is simultaneously valid for
-   both m1 and m2.  This removes the extra collision resistance built in
-   to the Dilithium and Falcon primitives and reduces it to the
-   collision resistance strength of the underlying hash function.  For
-   this reason it is in general not recommended to pre-hash when using
-   Dilithium or Falcon except in cases where the implementor is
-   comfortable with this reduction in security.
+   and m2 where SHA256(m1) == SHA256(m2) will result in a single Falcon
+   or Dilithium signature value which is simultaneously valid for both
+   m1 and m2.  This removes the extra collision resistance built in to
+   the Dilithium and Falcon primitives and reduces it to the collision
+   resistance strength of the underlying hash function.  For this reason
+   it is in general not recommended to pre-hash when using Dilithium or
+   Falcon except in cases where the implementor is comfortable with this
+   reduction in security.
 
    Therefore, for the purpose of interoperability of composite
    signatures, signature alogrithms defined in this version of this
