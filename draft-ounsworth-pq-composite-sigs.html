@@ -399,7 +399,7 @@
 <link href="#rfc.section.8.2" rel="Chapter" title="8.2 OR Modes">
 <link href="#rfc.section.8.2.1" rel="Chapter" title="8.2.1 Subset Signature Generation">
 <link href="#rfc.section.8.2.2" rel="Chapter" title="8.2.2 Subset Signature Verification">
-<link href="#rfc.section.8.3" rel="Chapter" title="8.3 Do not pre-hash">
+<link href="#rfc.section.8.3" rel="Chapter" title="8.3 Do not hash-then-sign">
 <link href="#rfc.references" rel="Chapter" title="9 References">
 <link href="#rfc.references.1" rel="Chapter" title="9.1 Normative References">
 <link href="#rfc.references.2" rel="Chapter" title="9.2 Informative References">
@@ -530,7 +530,7 @@
 </li>
 <li>8.2.2.   <a href="#rfc.section.8.2.2">Subset Signature Verification</a>
 </li>
-</ul><li>8.3.   <a href="#rfc.section.8.3">Do not pre-hash</a>
+</ul><li>8.3.   <a href="#rfc.section.8.3">Do not hash-then-sign</a>
 </li>
 </ul><li>9.   <a href="#rfc.references">References</a>
 </li>
@@ -863,25 +863,27 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 <li>Moreover, verifying multiple algorithms provides security even in the event that one of the algorithms has already been broken, but knowledge of the break has not been made public yet.</li>
 </ul>
 <h1 id="rfc.section.8.3">
-<a href="#rfc.section.8.3">8.3.</a> <a href="#do-not-pre-hash" id="do-not-pre-hash">Do not pre-hash</a>
+<a href="#rfc.section.8.3">8.3.</a> <a href="#do-not-hash-then-sign" id="do-not-hash-then-sign">Do not hash-then-sign</a>
 </h1>
-<p id="rfc.section.8.3.p.1">With traditional signature algorithms, it was sometimes common to pre-hash the message to be signed, and then sign the hash with the signature primitive. This saves bandwidth, for example, when the signature is performed by a networked cryptographic appliance since you only need to send a small hash value rather than streaming the entire message.</p>
-<p id="rfc.section.8.3.p.2">With Dilithium and Falcon signatures it is NOT RECOMMENDED to pre-hash for the following reasons:</p>
-<p id="rfc.section.8.3.p.3">The Dilithium construction includes</p>
+<p id="rfc.section.8.3.p.1">In the hash-then-sign paradigm, the message to be signed is hashed externally to the signature primitive, and then the hash value is signed.</p>
+<p id="rfc.section.8.3.p.2">The hash-then-sign paradigm is required, for example, with RSA signatures in order to sign messages larger than the RSA modulus. Hash-then-sign also gives performance and bandwidth benefits, for example, when the signature is performed by a networked cryptographic appliance since you only need to send a small hash value rather than streaming the entire message.</p>
+<p id="rfc.section.8.3.p.3">With Dilithium and Falcon signatures it is not recommended to pre-hash for the following reasons:</p>
+<p id="rfc.section.8.3.p.4">The Dilithium construction includes</p>
 <pre>
 Sign(sk,M):
 10: mu \in {0, 1}^384 := CRH(tr || M)
 </pre>
-<p id="rfc.section.8.3.p.4">where <samp>CRH</samp> is any collision-resistant hash function and <samp>tr</samp> is a component of the secret key. This provides strong security against pre-computed collision attacks since an attacker has no a-priori knowledge of <samp>r</samp> and provides per-key hash-domain separation of the message to be signed.</p>
-<p id="rfc.section.8.3.p.5">The Falcon construction includes</p>
+<p id="rfc.section.8.3.p.5">where <samp>CRH</samp> is any collision-resistant hash function and <samp>tr</samp> is a component of the secret key. This provides strong security against pre-computed collision attacks since an attacker has no knowledge of <samp>tr</samp> and provides per-key hash-domain separation of the message to be signed.</p>
+<p id="rfc.section.8.3.p.6">The Falcon construction includes</p>
 <pre>
 Sign (m, sk, beta^2):
 1: r &lt;- {0, 1}^320 uniformly
 2: c &lt;- HashToPoint(r || m, q, n)
 </pre>
-<p id="rfc.section.8.3.p.6">where <samp>HashToPoint</samp> is a SHAKE-256-based construct. This provides strong security against pre-computed collision attacks since an attacker has no a-priori knowledge of <samp>r</samp> and provides per-signature hash-domain separation of the message to be signed.</p>
-<p id="rfc.section.8.3.p.7">If the message to be signed is pre-hashed, for example <samp>m0 = SHA256(m)</samp> and then m0 provided to Falcon or Dilithium to sign, then you have re-introduced the collision problem since two messages with the same SHA256 hash value will result in the same Falcon or Dilithium signature value (NOTE: I don't think that's actually true for Falcon since r is unique per signature). This removes the extra collision resistance built in to the Falcon and Dilithium primitives and reduces it to the collision resistance of the underlying hash function. For this reason it is NOT RECOMMENDED to pre-hash when using Dilithium or Falcon except in cases where the implementor is comfortable with this reduction in security.</p>
-<p id="rfc.section.8.3.p.8">EDNOTE: Sync this with the authors of the Dilithium and Falcon signatures specs for LAMPS.</p>
+<p id="rfc.section.8.3.p.7">where <samp>HashToPoint</samp> is a SHAKE-256-based construct. This provides strong security against pre-computed collision attacks since an attacker has no a-priori knowledge of <samp>r</samp> and provides per-signature hash-domain separation of the message to be signed.</p>
+<p id="rfc.section.8.3.p.8">If the message to be signed is pre-hashed, for example <samp>m0 = SHA256(m)</samp> and then m0 provided to Dilithium or Falcon to sign, then you have re-introduced the collision problem since two messages m1 and m2 where SHA256(m1) == SHA256(m2) hash value will result a single Falcon or Dilithium signature value which is simultaneously valid for both m1 and m2. This removes the extra collision resistance built in to the Dilithium and Falcon primitives and reduces it to the collision resistance strength of the underlying hash function. For this reason it is in general not recommended to pre-hash when using Dilithium or Falcon except in cases where the implementor is comfortable with this reduction in security.</p>
+<p id="rfc.section.8.3.p.9">Therefore, for the purpose of interoperability of composite signatures, signature alogrithms defined in this version of this document do not pre-hash messages for Dilithium and Falcon. If pre-hashed versions of these signatures are also desired, then separate signature algorithms will need to be defined.</p>
+<p id="rfc.section.8.3.p.10">EDNOTE: Sync this with the authors of the Dilithium and Falcon signatures specs for LAMPS.</p>
 <h1 id="rfc.references">
 <a href="#rfc.references">9.</a> References</h1>
 <h1 id="rfc.references.1">

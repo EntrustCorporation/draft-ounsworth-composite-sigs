@@ -132,18 +132,18 @@ Internet-Draft              PQ Composite Sigs                August 2022
      8.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  16
        8.2.1.  Subset Signature Generation . . . . . . . . . . . . .  16
        8.2.2.  Subset Signature Verification . . . . . . . . . . . .  17
-     8.3.  Do not pre-hash . . . . . . . . . . . . . . . . . . . . .  17
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
+     8.3.  Do not hash-then-sign . . . . . . . . . . . . . . . . . .  17
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  19
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  19
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  20
    Appendix A.  Work in Progress . . . . . . . . . . . . . . . . . .  20
-     A.1.  Combiner modes (KofN) . . . . . . . . . . . . . . . . . .  20
+     A.1.  Combiner modes (KofN) . . . . . . . . . . . . . . . . . .  21
    Appendix B.  Creating explicit combinations . . . . . . . . . . .  21
    Appendix C.  Examples . . . . . . . . . . . . . . . . . . . . . .  21
      C.1.  Generic Composite Signature Examples  . . . . . . . . . .  21
      C.2.  Explicit Composite Signature Examples . . . . . . . . . .  21
    Appendix D.  ASN.1 Module . . . . . . . . . . . . . . . . . . . .  21
-   Appendix E.  Intellectual Property Considerations . . . . . . . .  22
+   Appendix E.  Intellectual Property Considerations . . . . . . . .  23
    Appendix F.  Contributors and Acknowledgements  . . . . . . . . .  23
      F.1.  Making contributions  . . . . . . . . . . . . . . . . . .  23
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  23
@@ -939,12 +939,12 @@ Internet-Draft              PQ Composite Sigs                August 2022
       the event that one of the algorithms has already been broken, but
       knowledge of the break has not been made public yet.
 
-8.3.  Do not pre-hash
+8.3.  Do not hash-then-sign
 
-   With traditional signature algorithms, it was sometimes common to
-   pre-hash the message to be signed, and then sign the hash with the
-   signature primitive.  This saves bandwidth, for example, when the
-   signature is performed by a networked cryptographic appliance since
+   In the hash-then-sign paradigm, the message to be signed is hashed
+   externally to the signature primitive, and then the hash value is
+   signed.
+
 
 
 
@@ -954,10 +954,14 @@ Ounsworth & Pala        Expires February 18, 2023              [Page 17]
 Internet-Draft              PQ Composite Sigs                August 2022
 
 
-   you only need to send a small hash value rather than streaming the
-   entire message.
+   The hash-then-sign paradigm is required, for example, with RSA
+   signatures in order to sign messages larger than the RSA modulus.
+   Hash-then-sign also gives performance and bandwidth benefits, for
+   example, when the signature is performed by a networked cryptographic
+   appliance since you only need to send a small hash value rather than
+   streaming the entire message.
 
-   With Dilithium and Falcon signatures it is NOT RECOMMENDED to pre-
+   With Dilithium and Falcon signatures it is not recommended to pre-
    hash for the following reasons:
 
    The Dilithium construction includes
@@ -967,9 +971,9 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
    where "CRH" is any collision-resistant hash function and "tr" is a
    component of the secret key.  This provides strong security against
-   pre-computed collision attacks since an attacker has no a-priori
-   knowledge of "r" and provides per-key hash-domain separation of the
-   message to be signed.
+   pre-computed collision attacks since an attacker has no knowledge of
+   "tr" and provides per-key hash-domain separation of the message to be
+   signed.
 
    The Falcon construction includes
 
@@ -983,24 +987,20 @@ Internet-Draft              PQ Composite Sigs                August 2022
    hash-domain separation of the message to be signed.
 
    If the message to be signed is pre-hashed, for example "m0 =
-   SHA256(m)" and then m0 provided to Falcon or Dilithium to sign, then
-   you have re-introduced the collision problem since two messages with
-   the same SHA256 hash value will result in the same Falcon or
-   Dilithium signature value (NOTE: I don't think that's actually true
-   for Falcon since r is unique per signature).  This removes the extra
-   collision resistance built in to the Falcon and Dilithium primitives
-   and reduces it to the collision resistance of the underlying hash
-   function.  For this reason it is NOT RECOMMENDED to pre-hash when
-   using Dilithium or Falcon except in cases where the implementor is
+   SHA256(m)" and then m0 provided to Dilithium or Falcon to sign, then
+   you have re-introduced the collision problem since two messages m1
+   and m2 where SHA256(m1) == SHA256(m2) hash value will result a single
+   Falcon or Dilithium signature value which is simultaneously valid for
+   both m1 and m2.  This removes the extra collision resistance built in
+   to the Dilithium and Falcon primitives and reduces it to the
+   collision resistance strength of the underlying hash function.  For
+   this reason it is in general not recommended to pre-hash when using
+   Dilithium or Falcon except in cases where the implementor is
    comfortable with this reduction in security.
 
-   EDNOTE: Sync this with the authors of the Dilithium and Falcon
-   signatures specs for LAMPS.
-
-9.  References
-
-
-
+   Therefore, for the purpose of interoperability of composite
+   signatures, signature alogrithms defined in this version of this
+   document do not pre-hash messages for Dilithium and Falcon.  If pre-
 
 
 
@@ -1009,6 +1009,14 @@ Ounsworth & Pala        Expires February 18, 2023              [Page 18]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
+
+   hashed versions of these signatures are also desired, then separate
+   signature algorithms will need to be defined.
+
+   EDNOTE: Sync this with the authors of the Dilithium and Falcon
+   signatures specs for LAMPS.
+
+9.  References
 
 9.1.  Normative References
 
@@ -1047,14 +1055,6 @@ Internet-Draft              PQ Composite Sigs                August 2022
               RFC 8411, DOI 10.17487/RFC8411, August 2018,
               <https://www.rfc-editor.org/info/rfc8411>.
 
-   [X.690]    ITU-T, "Information technology - ASN.1 encoding Rules:
-              Specification of Basic Encoding Rules (BER), Canonical
-              Encoding Rules (CER) and Distinguished Encoding Rules
-              (DER)", ISO/IEC 8825-1:2015, November 2015.
-
-9.2.  Informative References
-
-
 
 
 
@@ -1065,6 +1065,13 @@ Ounsworth & Pala        Expires February 18, 2023              [Page 19]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
+
+   [X.690]    ITU-T, "Information technology - ASN.1 encoding Rules:
+              Specification of Basic Encoding Rules (BER), Canonical
+              Encoding Rules (CER) and Distinguished Encoding Rules
+              (DER)", ISO/IEC 8825-1:2015, November 2015.
+
+9.2.  Informative References
 
    [Bindel2017]
               Bindel, N., Herath, U., McKague, M., and D. Stebila,
@@ -1103,6 +1110,18 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 Appendix A.  Work in Progress
 
+
+
+
+
+
+
+
+Ounsworth & Pala        Expires February 18, 2023              [Page 20]
+
+Internet-Draft              PQ Composite Sigs                August 2022
+
+
 A.1.  Combiner modes (KofN)
 
    For content commitment use-cases, such as legally-binding non-
@@ -1114,13 +1133,6 @@ A.1.  Combiner modes (KofN)
    draft, but we are still discussing how to incorporate this for the
    cases where it is needed (maybe a X.509 v3 extension, or a signature
    algorithm param).
-
-
-
-Ounsworth & Pala        Expires February 18, 2023              [Page 20]
-
-Internet-Draft              PQ Composite Sigs                August 2022
-
 
 Appendix B.  Creating explicit combinations
 
@@ -1158,6 +1170,14 @@ Appendix D.  ASN.1 Module
            id-mod-algorithmInformation-02(58) }
 
      SubjectPublicKeyInfo
+
+
+
+Ounsworth & Pala        Expires February 18, 2023              [Page 21]
+
+Internet-Draft              PQ Composite Sigs                August 2022
+
+
        FROM PKIX1Explicit-2009
          { iso(1) identified-organization(3) dod(6) internet(1)
            security(5) mechanisms(5) pkix(7) id-mod(0)
@@ -1170,14 +1190,6 @@ Appendix D.  ASN.1 Module
            id-mod-asymmetricKeyPkgV1(50) } ;
 
    --
-
-
-
-Ounsworth & Pala        Expires February 18, 2023              [Page 21]
-
-Internet-Draft              PQ Composite Sigs                August 2022
-
-
    -- Object Identifiers
    --
 
@@ -1215,6 +1227,13 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
    END
 
+
+
+Ounsworth & Pala        Expires February 18, 2023              [Page 22]
+
+Internet-Draft              PQ Composite Sigs                August 2022
+
+
    <CODE ENDS>
 
 
@@ -1223,16 +1242,6 @@ Appendix E.  Intellectual Property Considerations
    The following IPR Disclosure relates to this draft:
 
    https://datatracker.ietf.org/ipr/3588/
-
-
-
-
-
-
-Ounsworth & Pala        Expires February 18, 2023              [Page 22]
-
-Internet-Draft              PQ Composite Sigs                August 2022
-
 
 Appendix F.  Contributors and Acknowledgements
 
@@ -1273,6 +1282,14 @@ Authors' Addresses
    Email: mike.ounsworth@entrust.com
 
 
+
+
+
+Ounsworth & Pala        Expires February 18, 2023              [Page 23]
+
+Internet-Draft              PQ Composite Sigs                August 2022
+
+
    Massimiliano Pala
    CableLabs
 
@@ -1285,4 +1302,43 @@ Authors' Addresses
 
 
 
-Ounsworth & Pala        Expires February 18, 2023              [Page 23]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth & Pala        Expires February 18, 2023              [Page 24]
