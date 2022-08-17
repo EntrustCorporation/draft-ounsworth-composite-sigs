@@ -399,6 +399,7 @@
 <link href="#rfc.section.8.2" rel="Chapter" title="8.2 OR Modes">
 <link href="#rfc.section.8.2.1" rel="Chapter" title="8.2.1 Subset Signature Generation">
 <link href="#rfc.section.8.2.2" rel="Chapter" title="8.2.2 Subset Signature Verification">
+<link href="#rfc.section.8.3" rel="Chapter" title="8.3 Do not pre-hash">
 <link href="#rfc.references" rel="Chapter" title="9 References">
 <link href="#rfc.references.1" rel="Chapter" title="9.1 Normative References">
 <link href="#rfc.references.2" rel="Chapter" title="9.2 Informative References">
@@ -420,7 +421,7 @@
 
   <meta name="dct.creator" content="Ounsworth, M. and M. Pala" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-sigs-08" />
-  <meta name="dct.issued" scheme="ISO8601" content="2022-07-08" />
+  <meta name="dct.issued" scheme="ISO8601" content="2022-08-17" />
   <meta name="dct.abstract" content="The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs. Cautious implementer may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as &quot;dual&quot;, and for encryption key establishment this as referred to as &quot;hybrid&quot;. This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called &quot;composite&quot; where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. EDNOTE: the terms &quot;dual&quot; and &quot;hybrid&quot; are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. The generic composite variant is defined which allows arbitrary combinations of signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or pre-agreed. The explicit variant is also defined which allows for a set of signature algorithm identifier OIDs to be registered together as an explicit composite signature algorithm and assigned an OID. This document is intended to be coupled with corresponding documents that define the structure and semantics of composite public and private keys and encryption , however may also be used with non-composite keys, such as when a protocol combines multiple certificates into a single cryptographic operation. " />
   <meta name="description" content="The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs. Cautious implementer may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as &quot;dual&quot;, and for encryption key establishment this as referred to as &quot;hybrid&quot;. This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called &quot;composite&quot; where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. EDNOTE: the terms &quot;dual&quot; and &quot;hybrid&quot; are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. The generic composite variant is defined which allows arbitrary combinations of signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or pre-agreed. The explicit variant is also defined which allows for a set of signature algorithm identifier OIDs to be registered together as an explicit composite signature algorithm and assigned an OID. This document is intended to be coupled with corresponding documents that define the structure and semantics of composite public and private keys and encryption , however may also be used with non-composite keys, such as when a protocol combines multiple certificates into a single cryptographic operation. " />
 
@@ -444,12 +445,12 @@
 <td class="right">M. Pala</td>
 </tr>
 <tr>
-<td class="left">Expires: January 9, 2023</td>
+<td class="left">Expires: February 18, 2023</td>
 <td class="right">CableLabs</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 08, 2022</td>
+<td class="right">August 17, 2022</td>
 </tr>
 
     	
@@ -469,7 +470,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 9, 2023.</p>
+<p>This Internet-Draft will expire on February 18, 2023.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2022 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -529,7 +530,9 @@
 </li>
 <li>8.2.2.   <a href="#rfc.section.8.2.2">Subset Signature Verification</a>
 </li>
-</ul></ul><li>9.   <a href="#rfc.references">References</a>
+</ul><li>8.3.   <a href="#rfc.section.8.3">Do not pre-hash</a>
+</li>
+</ul><li>9.   <a href="#rfc.references">References</a>
 </li>
 <ul><li>9.1.   <a href="#rfc.references.1">Normative References</a>
 </li>
@@ -644,7 +647,7 @@ CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
 <h1 id="rfc.section.4.1">
 <a href="#rfc.section.4.1">4.1.</a> <a href="#sec-generic-composite" id="sec-generic-composite">id-alg-composite (Generic Composite Signatures)</a>
 </h1>
-<p id="rfc.section.4.1.p.1">The id-alg-composite object identifier is used for identifying a generic composite signature. This algorithm allows arbitrary combinations of signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or pre-agreed. This identifier MUST be used in sa-CompositeSignature.identifier.</p>
+<p id="rfc.section.4.1.p.1">The id-alg-composite object identifier is used for identifying a generic composite signature. This algorithm allows arbitrary combinations of component signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or standardized. This identifier MUST be used in sa-CompositeSignature.identifier.</p>
 <pre>
 id-alg-composite OBJECT IDENTIFIER ::= {
     iso(1)  identified-organization(3) dod(6) internet(1) private(4)
@@ -662,10 +665,10 @@ CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 <p id="rfc.section.4.2.p.1">The ASN.1 algorithm object for a composite signature is:</p>
 <pre>
 sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
-    IDENTIFIER id-alg-composite,
-    VALUE CompositeSignatureValue,
-    PARAMS ANY DEFINED BY ALGORITHM,
-    PUBLIC-KEYS { pk-Composite },
+    IDENTIFIER id-alg-composite
+    VALUE CompositeSignatureValue
+    PARAMS ANY DEFINED BY ALGORITHM
+    PUBLIC-KEYS { pk-Composite }
     SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 }
 </pre>
@@ -814,7 +817,7 @@ Signature Verification Procedure::
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#sec-iana" id="sec-iana">IANA Considerations</a>
 </h1>
-<p id="rfc.section.7.p.1">The ASN.1 module OID is TBD.  The id-alg-composite OID is to be assigned by IANA.  The authors suggest that IANA assign an OID on the id-pkix arc:</p>
+<p id="rfc.section.7.p.1">This document registers the following in the SMI "Security for PKIX Algorithms (1.3.6.1.5.5.7.6)" registry:</p>
 <pre>
 id-alg-composite OBJECT IDENTIFIER ::= {
     iso(1) identified-organization(3) dod(6) internet(1) security(5)
@@ -859,6 +862,26 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 <li>Verifications of a subset of signatures leads to ambiguity in the security strength of the signature verification; ie if a message carries two signatures, one at 128 bits and the other at 112 bits of security and clients are verifying in an OR mode with flexible policy, then it becomes difficult to audit the security strength used at runtime.</li>
 <li>Moreover, verifying multiple algorithms provides security even in the event that one of the algorithms has already been broken, but knowledge of the break has not been made public yet.</li>
 </ul>
+<h1 id="rfc.section.8.3">
+<a href="#rfc.section.8.3">8.3.</a> <a href="#do-not-pre-hash" id="do-not-pre-hash">Do not pre-hash</a>
+</h1>
+<p id="rfc.section.8.3.p.1">With traditional signature algorithms, it was sometimes common to pre-hash the message to be signed, and then sign the hash with the signature primitive. This saves bandwidth, for example, when the signature is performed by a networked cryptographic appliance since you only need to send a small hash value rather than streaming the entire message.</p>
+<p id="rfc.section.8.3.p.2">With Dilithium and Falcon signatures it is NOT RECOMMENDED to pre-hash for the following reasons:</p>
+<p id="rfc.section.8.3.p.3">The Dilithium construction includes</p>
+<pre>
+Sign(sk,M):
+10: mu \in {0, 1}^384 := CRH(tr || M)
+</pre>
+<p id="rfc.section.8.3.p.4">where <samp>CRH</samp> is any collision-resistant hash function and <samp>tr</samp> is a component of the secret key. This provides strong security against pre-computed collision attacks since an attacker has no a-priori knowledge of <samp>r</samp> and provides per-key hash-domain separation of the message to be signed.</p>
+<p id="rfc.section.8.3.p.5">The Falcon construction includes</p>
+<pre>
+Sign (m, sk, beta^2):
+1: r &lt;- {0, 1}^320 uniformly
+2: c &lt;- HashToPoint(r || m, q, n)
+</pre>
+<p id="rfc.section.8.3.p.6">where <samp>HashToPoint</samp> is a SHAKE-256-based construct. This provides strong security against pre-computed collision attacks since an attacker has no a-priori knowledge of <samp>r</samp> and provides per-signature hash-domain separation of the message to be signed.</p>
+<p id="rfc.section.8.3.p.7">If the message to be signed is pre-hashed, for example <samp>m0 = SHA256(m)</samp> and then m0 provided to Falcon or Dilithium to sign, then you have re-introduced the collision problem since two messages with the same SHA256 hash value will result in the same Falcon or Dilithium signature value (NOTE: I don't think that's actually true for Falcon since r is unique per signature). This removes the extra collision resistance built in to the Falcon and Dilithium primitives and reduces it to the collision resistance of the underlying hash function. For this reason it is NOT RECOMMENDED to pre-hash when using Dilithium or Falcon except in cases where the implementor is comfortable with this reduction in security.</p>
+<p id="rfc.section.8.3.p.8">EDNOTE: Sync this with the authors of the Dilithium and Falcon signatures specs for LAMPS.</p>
 <h1 id="rfc.references">
 <a href="#rfc.references">9.</a> References</h1>
 <h1 id="rfc.references.1">

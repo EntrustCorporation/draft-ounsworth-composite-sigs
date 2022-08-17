@@ -247,7 +247,7 @@ Some use-cases desire the flexibility for clients to use any combination of supp
 
 ## id-alg-composite (Generic Composite Signatures) {#sec-generic-composite}
 
-The id-alg-composite object identifier is used for identifying a generic composite signature. This algorithm allows arbitrary combinations of signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or pre-agreed. This identifier MUST be used in sa-CompositeSignature.identifier.
+The id-alg-composite object identifier is used for identifying a generic composite signature. This algorithm allows arbitrary combinations of component signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or standardized. This identifier MUST be used in sa-CompositeSignature.identifier.
 
 ~~~ asn.1
 id-alg-composite OBJECT IDENTIFIER ::= {
@@ -274,10 +274,10 @@ The ASN.1 algorithm object for a composite signature is:
 
 ~~~ asn.1
 sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
-    IDENTIFIER id-alg-composite,
-    VALUE CompositeSignatureValue,
-    PARAMS ANY DEFINED BY ALGORITHM,
-    PUBLIC-KEYS { pk-Composite },
+    IDENTIFIER id-alg-composite
+    VALUE CompositeSignatureValue
+    PARAMS ANY DEFINED BY ALGORITHM
+    PUBLIC-KEYS { pk-Composite }
     SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 }
 ~~~
@@ -467,7 +467,8 @@ For non-negotiated protocols, the details for obtaining backwards compatibility 
 <!-- End of In Practice section -->
 
 # IANA Considerations {#sec-iana}
-The ASN.1 module OID is TBD.  The id-alg-composite OID is to be assigned by IANA.  The authors suggest that IANA assign an OID on the id-pkix arc:
+
+This document registers the following in the SMI "Security for PKIX Algorithms (1.3.6.1.5.5.7.6)" registry:
 
 ~~~
 id-alg-composite OBJECT IDENTIFIER ::= {
@@ -521,6 +522,43 @@ Risks:
 - Failing to update client verification policy in response to advances in cryptanalysis
 - Verifications of a subset of signatures leads to ambiguity in the security strength of the signature verification; ie if a message carries two signatures, one at 128 bits and the other at 112 bits of security and clients are verifying in an OR mode with flexible policy, then it becomes difficult to audit the security strength used at runtime.
 - Moreover, verifying multiple algorithms provides security even in the event that one of the algorithms has already been broken, but knowledge of the break has not been made public yet.
+
+
+## Do not hash-then-sign
+
+In the hash-then-sign paradigm, the message to be signed is hashed externally to the signature primitive, and then the hash value is signed.
+
+The hash-then-sign paradigm is required, for example, with RSA signatures in order to sign messages larger than the RSA modulus. Hash-then-sign also gives performance and bandwidth benefits, for example, when the signature is performed by a networked cryptographic appliance since you only need to send a small hash value rather than streaming the entire message.
+
+With Dilithium and Falcon signatures it is not recommended to pre-hash for the following reasons:
+
+
+The Dilithium construction includes 
+
+~~~
+Sign(sk,M):
+10: mu \in {0, 1}^384 := CRH(tr || M)
+~~~
+
+where `CRH` is any collision-resistant hash function and `tr` is a component of the secret key. This provides strong security against pre-computed collision attacks since an attacker has no a-priori knowledge of `r` and provides per-key hash-domain separation of the message to be signed.
+
+
+The Falcon construction includes 
+
+~~~
+Sign (m, sk, beta^2):
+1: r <- {0, 1}^320 uniformly
+2: c <- HashToPoint(r || m, q, n)
+~~~
+
+where `HashToPoint` is a SHAKE-256-based construct. This provides strong security against pre-computed collision attacks since an attacker has no a-priori knowledge of `r` and provides per-signature hash-domain separation of the message to be signed.
+
+If the message to be signed is pre-hashed, for example `m0 = SHA256(m)` and then m0 provided to Dilithium or Falcon to sign, then you have re-introduced the collision problem since two messages m1 and m2 where SHA256(m1) == SHA256(m2) hash value will result a single Falcon or Dilithium signature value which is simultaneously valid for both m1 and m2. This removes the extra collision resistance built in to the Dilithium and Falcon primitives and reduces it to the collision resistance strength of the underlying hash function. For this reason it is in general not recommended to pre-hash when using Dilithium or Falcon except in cases where the implementor is comfortable with this reduction in security.
+
+Therefore, for the purpose of interoperability of composite signatures, implementations MUST NOT pre-hash messages for Dilithium and Falcon. If pre-hashed versions of these signatures are desired, then separate signature algorithms will need to be defined.
+
+EDNOTE: Sync this with the authors of the Dilithium and Falcon signatures specs for LAMPS.
+
 
 <!-- End of Security Considerations section -->
 
