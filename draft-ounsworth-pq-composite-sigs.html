@@ -829,13 +829,13 @@ Signature Verification Procedure::
 <h1 id="rfc.section.6.2">
 <a href="#rfc.section.6.2">6.2.</a> <a href="#external-signatures" id="external-signatures">External signatures</a>
 </h1>
-<p id="rfc.section.6.2.p.1">EDNOTE: Does this section even belong here? Does it instead belong in <a href="#I-D.massimo-lamps-pq-sig-certificates" class="xref">[I-D.massimo-lamps-pq-sig-certificates]</a>?</p>
+<p id="rfc.section.6.2.p.1">EDNOTE: This section probably does not belong in this draft. It probably belongs instead in the core Dilithium / Falcon specs such as <a href="#I-D.massimo-lamps-pq-sig-certificates" class="xref">[I-D.massimo-lamps-pq-sig-certificates]</a>.</p>
 <p id="rfc.section.6.2.p.2">In many contexts, a signature or a verification operation is performed inside a cryptographic module where it is desirable to provide a message digest to the cryptographic module rather than streaming the entire message (which in some cases can be very large).</p>
 <p><a href="#sec-cons-hash-then-sign" class="xref">Section 10.3</a> discusses security considerations around the traditional "hash-then-sign paradigm" where a simple hash of the message is taken and then the hash value is signed. In general this is not desirable with the Dilithium and Falcon algorithms.</p>
 <p id="rfc.section.6.2.p.4">This means that implementations MUST NOT perform a single message digest operation and then provide that digest value to all component algorithms.</p>
 <p id="rfc.section.6.2.p.5">That said, the first step of both the Dilithium and Falcon algoritms is a keyed hash of the message. This section considers modifications to the Dilithium and Falcon algorithms where the first hashing step is performed externally to the cryptographic module.</p>
 <h1 id="rfc.section.7">
-<a href="#rfc.section.7">7.</a> <a href="#dilithium" id="dilithium">Dilithium</a>
+<a href="#rfc.section.7">7.</a> <a href="#ext-sigs-dilithium" id="ext-sigs-dilithium">Dilithium</a>
 </h1>
 <p id="rfc.section.7.p.1">The Dilithium construction includes</p>
 <pre>
@@ -855,9 +855,9 @@ Sign(sk,M):
 Verify(pk, M, sigma):
 mu \in {0, 1}^384 := CRH(CRH(rho || t1) || M)
 </pre>
-<p id="rfc.section.7.p.4">These steps of the Sign() and Verify() operations MAY be externalized to a pre-computation step outside of the cryptographic module as they only need access to the public key (rho, t1), and since doing so does not affect interoperability of the signature algorithm.</p>
+<p id="rfc.section.7.p.4">These steps of the Sign() and Verify() operations MAY be externalized to a pre-computation step outside of the cryptographic module as they only need access to the public key <samp>(rho, t1)</samp> and the choice of hash function <samp>CRH</samp>, and since doing so does not affect interoperability of the signature algorithm.</p>
 <h1 id="rfc.section.8">
-<a href="#rfc.section.8">8.</a> <a href="#falcon" id="falcon">Falcon</a>
+<a href="#rfc.section.8">8.</a> <a href="#ext-sigs-falcon" id="ext-sigs-falcon">Falcon</a>
 </h1>
 <p id="rfc.section.8.p.1">The Falcon construction includes</p>
 <pre>
@@ -871,7 +871,7 @@ Verify(m, sig, pk, floor(beta^2)):
 1: c &lt;- HashToPoint(r||m, q, n)
 </pre>
 <p id="rfc.section.8.p.3">where <samp>HashToPoint</samp> is a SHAKE256-based construct that hashes the nonce <samp>r</samp> and the message <samp>m</samp> to a lattice point using the lattice parameters <samp>q</samp> and <samp>n</samp>.</p>
-<p id="rfc.section.8.p.4">These steps of the Sign() and Verify() operations MAY be externalized to a pre-computation step outside of the cryptographic module as they only need access to the lattice parameters <samp>q</samp> and <samp>n</samp>, and since doing so does not affect interoperability of the signature algorithm. This does require generation of <samp>r</samp> to be performed outside of the cryptographic module, which may or may not have security implications depending on the implementation and runtime environment.</p>
+<p id="rfc.section.8.p.4">These steps of the Sign() and Verify() operations MAY be externalized to a pre-computation step outside of the cryptographic module as they only need access to the lattice parameters <samp>q</samp> and <samp>n</samp>, and since doing so does not affect interoperability of the signature algorithm. This does require generation of <samp>r</samp> to be performed outside of the cryptographic module for <samp>Sign()</samp> operations, which may or may not have security implications depending on the implementation and runtime environment.</p>
 <h1 id="rfc.section.9">
 <a href="#rfc.section.9">9.</a> <a href="#sec-iana" id="sec-iana">IANA Considerations</a>
 </h1>

@@ -360,6 +360,7 @@ A composite signature MUST produce, and include in the output, a signature value
 
 For security when using a generic composite signature algorithm as defined in {{sec-generic-composite}}, the list of component signature algorithms A1, A2, .., An, which may be carried in a CompositeParams object, SHOULD be included in the signed message M to prevent an attacker from substituting a weaker algorithm which is compatible with the same public key. This attack is not unique or new to the composite format.
 
+
 ## Composite Signature Verification Process {#sec-comp-sig-verify}
 
 Verification of a composite signature involves applying each component algorithm's verification process according to its specification.
@@ -468,7 +469,7 @@ For non-negotiated protocols, the details for obtaining backwards compatibility 
 
 ## External signatures
 
-EDNOTE: Does this section even belong here? Does it instead belong in {{I-D.massimo-lamps-pq-sig-certificates}}?
+EDNOTE: This section probably does not belong in this draft. It probably belongs instead in the core Dilithium / Falcon specs such as {{I-D.massimo-lamps-pq-sig-certificates}}.
 
 In many contexts, a signature or a verification operation is performed inside a cryptographic module where it is desirable to provide a message digest to the cryptographic module rather than streaming the entire message (which in some cases can be very large). 
 
@@ -478,7 +479,7 @@ This means that implementations MUST NOT perform a single message digest operati
 
 That said, the first step of both the Dilithium and Falcon algoritms is a keyed hash of the message. This section considers modifications to the Dilithium and Falcon algorithms where the first hashing step is performed externally to the cryptographic module.
 
-# Dilithium
+# Dilithium {#ext-sigs-dilithium}
 
 The Dilithium construction includes 
 
@@ -504,11 +505,11 @@ Verify(pk, M, sigma):
 mu \in {0, 1}^384 := CRH(CRH(rho || t1) || M)
 ~~~
 
-These steps of the Sign() and Verify() operations MAY be externalized to a pre-computation step outside of the cryptographic module as they only need access to the public key (rho, t1), and since doing so does not affect interoperability of the signature algorithm.
+These steps of the Sign() and Verify() operations MAY be externalized to a pre-computation step outside of the cryptographic module as they only need access to the public key `(rho, t1)` and the choice of hash function `CRH`, and since doing so does not affect interoperability of the signature algorithm.
 
 
 
-# Falcon
+# Falcon {#ext-sigs-falcon}
 
 The Falcon construction includes
 
@@ -527,7 +528,7 @@ Verify(m, sig, pk, floor(beta^2)):
 
 where `HashToPoint` is a SHAKE256-based construct that hashes the nonce `r` and the message `m` to a lattice point using the lattice parameters `q` and `n`.
 
-These steps of the Sign() and Verify() operations MAY be externalized to a pre-computation step outside of the cryptographic module as they only need access to the lattice parameters `q` and `n`, and since doing so does not affect interoperability of the signature algorithm. This does require generation of `r` to be performed outside of the cryptographic module, which may or may not have security implications depending on the implementation and runtime environment.
+These steps of the Sign() and Verify() operations MAY be externalized to a pre-computation step outside of the cryptographic module as they only need access to the lattice parameters `q` and `n`, and since doing so does not affect interoperability of the signature algorithm. This does require generation of `r` to be performed outside of the cryptographic module for `Sign()` operations, which may or may not have security implications depending on the implementation and runtime environment.
 
 <!-- End of In Practice section -->
 
