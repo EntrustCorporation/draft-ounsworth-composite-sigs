@@ -475,9 +475,11 @@ In many contexts, a signature or a verification operation is performed inside a 
 
 {{sec-cons-hash-then-sign}} discusses security considerations around the traditional "hash-then-sign paradigm" where a simple hash of the message is taken and then the hash value is signed. In general this is not desirable with the Dilithium and Falcon algorithms.
 
-This means that implementations MUST NOT perform a single message digest operation and then provide that digest value to all component algorithms.
+This means that composite signature implementations MUST NOT perform a single message digest operation and then provide that digest value to all component algorithms.
 
 That said, the first step of both the Dilithium and Falcon algoritms is a keyed hash of the message. This section considers modifications to the Dilithium and Falcon algorithms where the first hashing step is performed externally to the cryptographic module.
+
+That said, for use-cases where pre-hashing of messages for Dilithium or Falcon signatures is required for bandwidth or resource contraints, external hashing should be considered. Depending on the algorithm chosen additional contraints on the format of the external hashing may be required to meet the security requirements of the algorithm. The following subsections provide specific instructions for externalizing the message digest step of the Dilithium and Falcon Sign() and Verify() operations.
 
 # Dilithium {#ext-sigs-dilithium}
 
@@ -549,7 +551,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 
 ## Policy for Deprecated and Acceptable Algorithms
 
-Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), it is obvious that clients performing signature verifications should be updated to fail to validate signatures using these algorithms.
+Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), then clients performing signatures or verifications should be updated to adhere to appropriate policies.
 
 In the composite model this is less obvious since a single public key, certificate, or signature may contain a mixture of deprecated and non-deprecated algorithms. Moreover, implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though neither algorithm is acceptable by itself.
 

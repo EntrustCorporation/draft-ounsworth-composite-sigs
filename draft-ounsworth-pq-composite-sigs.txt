@@ -136,7 +136,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
        10.2.1.  Subset Signature Generation  . . . . . . . . . . . .  18
        10.2.2.  Subset Signature Verification  . . . . . . . . . . .  19
      10.3.  Do not hash-then-sign  . . . . . . . . . . . . . . . . .  19
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
+   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  21
      11.1.  Normative References . . . . . . . . . . . . . . . . . .  21
      11.2.  Informative References . . . . . . . . . . . . . . . . .  22
    Appendix A.  Work in Progress . . . . . . . . . . . . . . . . . .  23
@@ -850,14 +850,23 @@ Internet-Draft              PQ Composite Sigs                August 2022
    and then the hash value is signed.  In general this is not desirable
    with the Dilithium and Falcon algorithms.
 
-   This means that implementations MUST NOT perform a single message
-   digest operation and then provide that digest value to all component
-   algorithms.
+   This means that composite signature implementations MUST NOT perform
+   a single message digest operation and then provide that digest value
+   to all component algorithms.
 
    That said, the first step of both the Dilithium and Falcon algoritms
    is a keyed hash of the message.  This section considers modifications
    to the Dilithium and Falcon algorithms where the first hashing step
    is performed externally to the cryptographic module.
+
+   That said, for use-cases where pre-hashing of messages for Dilithium
+   or Falcon signatures is required for bandwidth or resource
+   contraints, external hashing should be considered.  Depending on the
+   algorithm chosen additional contraints on the format of the external
+   hashing may be required to meet the security requirements of the
+   algorithm.  The following subsections provide specific instructions
+   for externalizing the message digest step of the Dilithium and Falcon
+   Sign() and Verify() operations.
 
 7.  Dilithium
 
@@ -880,15 +889,6 @@ Internet-Draft              PQ Composite Sigs                August 2022
    Verify(pk, M, sigma):
    mu \in {0, 1}^384 := CRH(CRH(rho || t1) || M)
 
-   These steps of the Sign() and Verify() operations MAY be externalized
-   to a pre-computation step outside of the cryptographic module as they
-   only need access to the public key "(rho, t1)" and the choice of hash
-   function "CRH", and since doing so does not affect interoperability
-   of the signature algorithm.
-
-
-
-
 
 
 
@@ -897,6 +897,12 @@ Ounsworth & Pala        Expires February 20, 2023              [Page 16]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
+
+   These steps of the Sign() and Verify() operations MAY be externalized
+   to a pre-computation step outside of the cryptographic module as they
+   only need access to the public key "(rho, t1)" and the choice of hash
+   function "CRH", and since doing so does not affect interoperability
+   of the signature algorithm.
 
 8.  Falcon
 
@@ -939,13 +945,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
    Traditionally, a public key, certificate, or signature contains a
    single cryptographic algorithm.  If and when an algorithm becomes
-   deprecated (for example, RSA-512, or SHA1), it is obvious that
-   clients performing signature verifications should be updated to fail
-   to validate signatures using these algorithms.
-
-   In the composite model this is less obvious since a single public
-   key, certificate, or signature may contain a mixture of deprecated
-   and non-deprecated algorithms.  Moreover, implementers may decide
+   deprecated (for example, RSA-512, or SHA1), then clients performing
 
 
 
@@ -954,6 +954,12 @@ Ounsworth & Pala        Expires February 20, 2023              [Page 17]
 Internet-Draft              PQ Composite Sigs                August 2022
 
 
+   signatures or verifications should be updated to adhere to
+   appropriate policies.
+
+   In the composite model this is less obvious since a single public
+   key, certificate, or signature may contain a mixture of deprecated
+   and non-deprecated algorithms.  Moreover, implementers may decide
    that certain cryptographic algorithms have complementary security
    properties and are acceptable in combination even though neither
    algorithm is acceptable by itself.
@@ -995,12 +1001,6 @@ Internet-Draft              PQ Composite Sigs                August 2022
    the potential for stripping attacks.  Note that, in an effort to keep
    compliant implementations simple and secure, implementations claiming
    to be compliant with this draft MUST NOT generate subset signatures
-   in this way, and MUST reject during verification any subset
-   signatures that they encounter.
-
-
-
-
 
 
 
@@ -1009,6 +1009,9 @@ Ounsworth & Pala        Expires February 20, 2023              [Page 18]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
+
+   in this way, and MUST reject during verification any subset
+   signatures that they encounter.
 
 10.2.2.  Subset Signature Verification
 
@@ -1056,15 +1059,15 @@ Internet-Draft              PQ Composite Sigs                August 2022
    appliance since you only need to send a small hash value rather than
    streaming the entire message.
 
-   With Dilithium and Falcon signatures it is not recommended to pre-
-   hash for the following reasons:
-
 
 
 Ounsworth & Pala        Expires February 20, 2023              [Page 19]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
+
+   With Dilithium and Falcon signatures it is not recommended to pre-
+   hash for the following reasons:
 
    The Dilithium construction includes
 
@@ -1109,9 +1112,6 @@ Internet-Draft              PQ Composite Sigs                August 2022
    EDNOTE: Sync this with the authors of the Dilithium and Falcon
    signatures specs for LAMPS.
 
-11.  References
-
-
 
 
 
@@ -1121,6 +1121,8 @@ Ounsworth & Pala        Expires February 20, 2023              [Page 20]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
+
+11.  References
 
 11.1.  Normative References
 
@@ -1166,8 +1168,6 @@ Internet-Draft              PQ Composite Sigs                August 2022
               Cryptographic Algorithm Object Identifier Range",
               RFC 8411, DOI 10.17487/RFC8411, August 2018,
               <https://www.rfc-editor.org/info/rfc8411>.
-
-
 
 
 

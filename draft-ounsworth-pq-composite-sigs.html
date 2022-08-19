@@ -832,8 +832,9 @@ Signature Verification Procedure::
 <p id="rfc.section.6.2.p.1">EDNOTE: This section probably does not belong in this draft. It probably belongs instead in the core Dilithium / Falcon specs such as <a href="#I-D.massimo-lamps-pq-sig-certificates" class="xref">[I-D.massimo-lamps-pq-sig-certificates]</a>.</p>
 <p id="rfc.section.6.2.p.2">In many contexts, a signature or a verification operation is performed inside a cryptographic module where it is desirable to provide a message digest to the cryptographic module rather than streaming the entire message (which in some cases can be very large).</p>
 <p><a href="#sec-cons-hash-then-sign" class="xref">Section 10.3</a> discusses security considerations around the traditional "hash-then-sign paradigm" where a simple hash of the message is taken and then the hash value is signed. In general this is not desirable with the Dilithium and Falcon algorithms.</p>
-<p id="rfc.section.6.2.p.4">This means that implementations MUST NOT perform a single message digest operation and then provide that digest value to all component algorithms.</p>
+<p id="rfc.section.6.2.p.4">This means that composite signature implementations MUST NOT perform a single message digest operation and then provide that digest value to all component algorithms.</p>
 <p id="rfc.section.6.2.p.5">That said, the first step of both the Dilithium and Falcon algoritms is a keyed hash of the message. This section considers modifications to the Dilithium and Falcon algorithms where the first hashing step is performed externally to the cryptographic module.</p>
+<p id="rfc.section.6.2.p.6">That said, for use-cases where pre-hashing of messages for Dilithium or Falcon signatures is required for bandwidth or resource contraints, external hashing should be considered. Depending on the algorithm chosen additional contraints on the format of the external hashing may be required to meet the security requirements of the algorithm. The following subsections provide specific instructions for externalizing the message digest step of the Dilithium and Falcon Sign() and Verify() operations.</p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#ext-sigs-dilithium" id="ext-sigs-dilithium">Dilithium</a>
 </h1>
@@ -887,7 +888,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 <h1 id="rfc.section.10.1">
 <a href="#rfc.section.10.1">10.1.</a> <a href="#policy-for-deprecated-and-acceptable-algorithms" id="policy-for-deprecated-and-acceptable-algorithms">Policy for Deprecated and Acceptable Algorithms</a>
 </h1>
-<p id="rfc.section.10.1.p.1">Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), it is obvious that clients performing signature verifications should be updated to fail to validate signatures using these algorithms.</p>
+<p id="rfc.section.10.1.p.1">Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), then clients performing signatures or verifications should be updated to adhere to appropriate policies.</p>
 <p id="rfc.section.10.1.p.2">In the composite model this is less obvious since a single public key, certificate, or signature may contain a mixture of deprecated and non-deprecated algorithms. Moreover, implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though neither algorithm is acceptable by itself.</p>
 <p id="rfc.section.10.1.p.3">Specifying a modified verification algorithm to handle these situations is beyond the scope of this draft, but could be desirable as the subject of an application profile document, or to be up to the discretion of implementers.</p>
 <pre>
