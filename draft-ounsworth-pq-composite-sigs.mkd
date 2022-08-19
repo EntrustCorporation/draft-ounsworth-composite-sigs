@@ -43,6 +43,7 @@ normative:
   RFC5652:
   RFC8174:
   RFC8411:
+  I-D.draft-massimo-lamps-pq-sig-certificates-00:
   X.690:
       title: "Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)"
       date: November 2015
@@ -99,6 +100,7 @@ This document is intended to be coupled with corresponding documents that define
 
 # Changes in version -08
 
+- hash-then-sign, and external hashing
 
 
 # Introduction {#sec-intro}
@@ -464,6 +466,69 @@ For negotiated protocols, the client could choose which public key(s) or certifi
 For non-negotiated protocols, the details for obtaining backwards compatibility will vary by protocol, but for example in CMS [RFC5652], the inclusion of multiple SignerInfo objects is often already treated as an OR relationship, so including one for each of the signer's parallel PKI public keys would, in many cases, have the desired effect of allowing the receiver to choose one they are compatible with and ignore the others, thus achieving full backwards compatibility.
 
 
+## External signatures
+
+EDNOTE: Does this section even belong here? Does it instead belong in {{I-D.massimo-lamps-pq-sig-certificates}}?
+
+In many contexts, a signature or a verification operation is performed inside a cryptographic module where it is desirable to provide a message digest to the cryptographic module rather than streaming the entire message (which in some cases can be very large). 
+
+{{sec-cons-hash-then-sign}} discusses security considerations around the traditional "hash-then-sign paradigm" where a simple hash of the message is taken and then the hash value is signed. In general this is not desirable with the Dilithium and Falcon algorithms.
+
+This means that implementations MUST NOT perform a single message digest operation and then provide that digest value to all component algorithms.
+
+That said, the first step of both the Dilithium and Falcon algoritms is a keyed hash of the message. This section considers modifications to the Dilithium and Falcon algorithms where the first hashing step is performed externally to the cryptographic module.
+
+# Dilithium
+
+The Dilithium construction includes 
+
+~~~
+Gen():
+...
+07 tr \in {0, 1}^384 := CRH(rho || t1)
+~~~
+
+where CRH is a collision-resistant hash, and (rho, t1) is the public key.
+
+~~~
+Sign(sk,M):
+...
+10: mu \in {0, 1}^384 := CRH(tr || M) 
+      // which = CRH(CRH(rho || t1) || M)
+~~~
+
+and
+
+~~~
+Verify(pk, M, sigma):
+mu \in {0, 1}^384 := CRH(CRH(rho || t1) || M)
+~~~
+
+These steps of the Sign() and Verify() operations MAY be externalized to a pre-computation step outside of the cryptographic module as they only need access to the public key (rho, t1), and since doing so does not affect interoperability of the signature algorithm.
+
+
+
+# Falcon
+
+The Falcon construction includes
+
+~~~
+Sign(m, sk, floor(beta^2)):
+1: r <- {0,1}^320 uniformly
+2: c <- HashToPoint(r||m, q, n)
+~~~
+
+and
+
+~~~
+Verify(m, sig, pk, floor(beta^2)):
+1: c <- HashToPoint(r||m, q, n)
+~~~
+
+where `HashToPoint` is a SHAKE256-based construct that hashes the nonce `r` and the message `m` to a lattice point using the lattice parameters `q` and `n`.
+
+These steps of the Sign() and Verify() operations MAY be externalized to a pre-computation step outside of the cryptographic module as they only need access to the lattice parameters `q` and `n`, and since doing so does not affect interoperability of the signature algorithm. This does require generation of `r` to be performed outside of the cryptographic module, which may or may not have security implications depending on the implementation and runtime environment.
+
 <!-- End of In Practice section -->
 
 # IANA Considerations {#sec-iana}
@@ -524,7 +589,7 @@ Risks:
 - Moreover, verifying multiple algorithms provides security even in the event that one of the algorithms has already been broken, but knowledge of the break has not been made public yet.
 
 
-## Do not hash-then-sign
+## Do not hash-then-sign {#sec-cons-hash-then-sign}
 
 In the hash-then-sign paradigm, the message to be signed is hashed externally to the signature primitive, and then the hash value is signed.
 
@@ -563,6 +628,7 @@ EDNOTE: Sync this with the authors of the Dilithium and Falcon signatures specs 
 <!-- End of Security Considerations section -->
 
 <!-- Start of Appendices -->
+
 --- back
 
 # Work in Progress
