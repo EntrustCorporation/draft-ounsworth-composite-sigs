@@ -386,6 +386,7 @@
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 id-alg-composite (Generic Composite Signatures)">
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 sa-CompositeSignature">
 <link href="#rfc.section.4.3" rel="Chapter" title="4.3 Explicit Composite Signatures">
+<link href="#rfc.section.4.3.1" rel="Chapter" title="4.3.1 sa-Dilithium3-ECDSA-P256">
 <link href="#rfc.section.5" rel="Chapter" title="5 Composite Signature Processes">
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 Composite Signature Generation Process">
 <link href="#rfc.section.5.2" rel="Chapter" title="5.2 Composite Signature Verification Process">
@@ -424,7 +425,7 @@
 
   <meta name="dct.creator" content="Ounsworth, M. and M. Pala" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-sigs-08" />
-  <meta name="dct.issued" scheme="ISO8601" content="2022-08-19" />
+  <meta name="dct.issued" scheme="ISO8601" content="2022-08-31" />
   <meta name="dct.abstract" content="The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs. Cautious implementer may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as &quot;dual&quot;, and for encryption key establishment this as referred to as &quot;hybrid&quot;. This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called &quot;composite&quot; where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. EDNOTE: the terms &quot;dual&quot; and &quot;hybrid&quot; are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. The generic composite variant is defined which allows arbitrary combinations of signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or pre-agreed. The explicit variant is also defined which allows for a set of signature algorithm identifier OIDs to be registered together as an explicit composite signature algorithm and assigned an OID. This document is intended to be coupled with corresponding documents that define the structure and semantics of composite public and private keys and encryption , however may also be used with non-composite keys, such as when a protocol combines multiple certificates into a single cryptographic operation. " />
   <meta name="description" content="The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs. Cautious implementer may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as &quot;dual&quot;, and for encryption key establishment this as referred to as &quot;hybrid&quot;. This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called &quot;composite&quot; where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. EDNOTE: the terms &quot;dual&quot; and &quot;hybrid&quot; are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. The generic composite variant is defined which allows arbitrary combinations of signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or pre-agreed. The explicit variant is also defined which allows for a set of signature algorithm identifier OIDs to be registered together as an explicit composite signature algorithm and assigned an OID. This document is intended to be coupled with corresponding documents that define the structure and semantics of composite public and private keys and encryption , however may also be used with non-composite keys, such as when a protocol combines multiple certificates into a single cryptographic operation. " />
 
@@ -448,12 +449,12 @@
 <td class="right">M. Pala</td>
 </tr>
 <tr>
-<td class="left">Expires: February 20, 2023</td>
+<td class="left">Expires: March 4, 2023</td>
 <td class="right">CableLabs</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">August 19, 2022</td>
+<td class="right">August 31, 2022</td>
 </tr>
 
     	
@@ -473,7 +474,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 20, 2023.</p>
+<p>This Internet-Draft will expire on March 4, 2023.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2022 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -507,7 +508,9 @@
 </li>
 <li>4.3.   <a href="#rfc.section.4.3">Explicit Composite Signatures</a>
 </li>
-</ul><li>5.   <a href="#rfc.section.5">Composite Signature Processes</a>
+<ul><li>4.3.1.   <a href="#rfc.section.4.3.1">sa-Dilithium3-ECDSA-P256</a>
+</li>
+</ul></ul><li>5.   <a href="#rfc.section.5">Composite Signature Processes</a>
 </li>
 <ul><li>5.1.   <a href="#rfc.section.5.1">Composite Signature Generation Process</a>
 </li>
@@ -701,6 +704,11 @@ sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
 <p id="rfc.section.4.3.p.5">See <a href="#appdx-creatingExplicitCombinations" class="xref">Appendix B</a> for guidance on creating and registering OIDs for specific explicit combinations.</p>
 <p id="rfc.section.4.3.p.6">For explicit algorithms, it is not necessary to carry a CompositeParams with the list of component algorithms in the signature algorithm parameters because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in <a href="#RFC8017" class="xref">[RFC8017]</a>. <a href="#sec-composite-sig-structs" class="xref">Section 4.2</a> defines <samp>PARAMS ANY DEFINED BY ALGORITHM</samp> so that explicit algorithms may define params as ABSENT, use <samp>CompositeParams</samp> defined in <a href="#sec-generic-composite" class="xref">Section 4.1</a> or use any other encoding that is appropriate.</p>
 <p id="rfc.section.4.3.p.7">In this variant, the signature is encoded as defined in <a href="#sec-composite-sig-structs" class="xref">Section 4.2</a>, however the sa-CompositeSignature.identifier SHALL be an OID which is registered to represent a specific combination of component signature algorithms. See <a href="#appdx-examples" class="xref">Appendix C</a> for examples.</p>
+<h1 id="rfc.section.4.3.1">
+<a href="#rfc.section.4.3.1">4.3.1.</a> <a href="#sa-dilithium3-ecdsa-p256" id="sa-dilithium3-ecdsa-p256">sa-Dilithium3-ECDSA-P256</a>
+</h1>
+<p id="rfc.section.4.3.1.p.1">TODO: What to do about hash functions? Does Dilithium3 specify a hash function, or do we need to specify one?</p>
+<p id="rfc.section.4.3.1.p.2">TODO: What to do about pre-hashing? Cryptographic modules prefer to receive a hash of the message rather than the entire message. However, Dilithium starts with a hash of the message pre-pended with the public key <samp>mu := CRH( tr || m )</samp> which provides domain-separation per public key. Perhaps the right answer is that <samp>mu</samp> is also the hash value to be signed by ECDSA?</p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#sec-composite-signature-algorithm" id="sec-composite-signature-algorithm">Composite Signature Processes</a>
 </h1>

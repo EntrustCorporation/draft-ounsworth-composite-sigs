@@ -309,7 +309,11 @@ For explicit algorithms, it is not necessary to carry a CompositeParams with the
 
 In this variant, the signature is encoded as defined in {{sec-composite-sig-structs}}, however the sa-CompositeSignature.identifier SHALL be an OID which is registered to represent a specific combination of component signature algorithms. See {{appdx-examples}} for examples.
 
+### sa-Dilithium3-ECDSA-P256
 
+TODO: What to do about hash functions? Does Dilithium3 specify a hash function, or do we need to specify one?
+
+TODO: What to do about pre-hashing? Cryptographic modules prefer to receive a hash of the message rather than the entire message. However, Dilithium starts with a hash of the message pre-pended with the public key `mu := CRH( tr || m )` which provides domain-separation per public key. Perhaps the right answer is that `mu` is also the hash value to be signed by ECDSA?
 
 # Composite Signature Processes {#sec-composite-signature-algorithm}
 

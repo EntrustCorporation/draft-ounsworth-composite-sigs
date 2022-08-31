@@ -5,8 +5,8 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   Entrust
 Intended status: Standards Track                                 M. Pala
-Expires: February 20, 2023                                     CableLabs
-                                                         August 19, 2022
+Expires: March 4, 2023                                         CableLabs
+                                                         August 31, 2022
 
 
               Composite Signatures For Use In Internet PKI
@@ -53,7 +53,7 @@ Abstract
 
 
 
-Ounsworth & Pala        Expires February 20, 2023               [Page 1]
+Ounsworth & Pala          Expires March 4, 2023                 [Page 1]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -80,7 +80,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 20, 2023.
+   This Internet-Draft will expire on March 4, 2023.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth & Pala        Expires February 20, 2023               [Page 2]
+Ounsworth & Pala          Expires March 4, 2023                 [Page 2]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -119,7 +119,8 @@ Internet-Draft              PQ Composite Sigs                August 2022
      4.1.  id-alg-composite (Generic Composite Signatures) . . . . .   7
      4.2.  sa-CompositeSignature . . . . . . . . . . . . . . . . . .   8
      4.3.  Explicit Composite Signatures . . . . . . . . . . . . . .   8
-   5.  Composite Signature Processes . . . . . . . . . . . . . . . .   9
+       4.3.1.  sa-Dilithium3-ECDSA-P256  . . . . . . . . . . . . . .   9
+   5.  Composite Signature Processes . . . . . . . . . . . . . . . .  10
      5.1.  Composite Signature Generation Process  . . . . . . . . .  10
      5.2.  Composite Signature Verification Process  . . . . . . . .  11
    6.  Implementation Considerations . . . . . . . . . . . . . . . .  13
@@ -161,15 +162,15 @@ Internet-Draft              PQ Composite Sigs                August 2022
    uncertainty as to the strength of cryptographic algorithms; we will
    no longer fully trust traditional cryptography such as RSA, Diffie-
    Hellman, DSA and their elliptic curve variants, but we will also not
-   fully trust their post-quantum replacements until they have had
 
 
 
-Ounsworth & Pala        Expires February 20, 2023               [Page 3]
+Ounsworth & Pala          Expires March 4, 2023                 [Page 3]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
 
+   fully trust their post-quantum replacements until they have had
    sufficient scrutiny and time to discover and fix implementation bugs.
    Unlike previous cryptographic algorithm migrations, the choice of
    when to migrate and which algorithms to migrate to, is not so clear.
@@ -220,8 +221,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-
-Ounsworth & Pala        Expires February 20, 2023               [Page 4]
+Ounsworth & Pala          Expires March 4, 2023                 [Page 4]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -277,7 +277,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023               [Page 5]
+Ounsworth & Pala          Expires March 4, 2023                 [Page 5]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -333,7 +333,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023               [Page 6]
+Ounsworth & Pala          Expires March 4, 2023                 [Page 6]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -389,7 +389,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023               [Page 7]
+Ounsworth & Pala          Expires March 4, 2023                 [Page 7]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -445,7 +445,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023               [Page 8]
+Ounsworth & Pala          Expires March 4, 2023                 [Page 8]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -486,6 +486,26 @@ Internet-Draft              PQ Composite Sigs                August 2022
    registered to represent a specific combination of component signature
    algorithms.  See Appendix C for examples.
 
+4.3.1.  sa-Dilithium3-ECDSA-P256
+
+   TODO: What to do about hash functions?  Does Dilithium3 specify a
+   hash function, or do we need to specify one?
+
+   TODO: What to do about pre-hashing?  Cryptographic modules prefer to
+   receive a hash of the message rather than the entire message.
+   However, Dilithium starts with a hash of the message pre-pended with
+   the public key "mu := CRH( tr || m )" which provides domain-
+   separation per public key.  Perhaps the right answer is that "mu" is
+   also the hash value to be signed by ECDSA?
+
+
+
+
+Ounsworth & Pala          Expires March 4, 2023                 [Page 9]
+
+Internet-Draft              PQ Composite Sigs                August 2022
+
+
 5.  Composite Signature Processes
 
    This section specifies the processes for generating and verifying
@@ -495,16 +515,6 @@ Internet-Draft              PQ Composite Sigs                August 2022
    the verifier with parallel signatures from all the component
    signature algorithms; thus forging the composite signature would
    require forging all of the component signatures.
-
-
-
-
-
-
-Ounsworth & Pala        Expires February 20, 2023               [Page 9]
-
-Internet-Draft              PQ Composite Sigs                August 2022
-
 
 5.1.  Composite Signature Generation Process
 
@@ -544,6 +554,14 @@ Signature Generation Process:
    Note on composite inputs: the method of providing the list of
    component keys and algorithms is flexible and beyond the scope of
    this pseudo-code, for example they may be carried in
+
+
+
+Ounsworth & Pala          Expires March 4, 2023                [Page 10]
+
+Internet-Draft              PQ Composite Sigs                August 2022
+
+
    CompositePrivateKey and CompositeParams structures.  It is also
    possible to generate a composite signature that combines signatures
    from distinct keys stored in separate software or hardware keystores.
@@ -554,14 +572,6 @@ Signature Generation Process:
    Since recursive composite public keys are disallowed in
    [I-D.ounsworth-pq-composite-keys], no component signature may itself
    be a composite; ie the signature generation process MUST fail if one
-
-
-
-Ounsworth & Pala        Expires February 20, 2023              [Page 10]
-
-Internet-Draft              PQ Composite Sigs                August 2022
-
-
    of the private keys K1, K2, .., Kn is a composite with the OID id-
    alg-composite.
 
@@ -603,17 +613,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-
-
-
-
-
-
-
-
-
-
-Ounsworth & Pala        Expires February 20, 2023              [Page 11]
+Ounsworth & Pala          Expires March 4, 2023                [Page 11]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -669,7 +669,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023              [Page 12]
+Ounsworth & Pala          Expires March 4, 2023                [Page 12]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -725,7 +725,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023              [Page 13]
+Ounsworth & Pala          Expires March 4, 2023                [Page 13]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -781,7 +781,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023              [Page 14]
+Ounsworth & Pala          Expires March 4, 2023                [Page 14]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -837,7 +837,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023              [Page 15]
+Ounsworth & Pala          Expires March 4, 2023                [Page 15]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -893,7 +893,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023              [Page 16]
+Ounsworth & Pala          Expires March 4, 2023                [Page 16]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -949,7 +949,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023              [Page 17]
+Ounsworth & Pala          Expires March 4, 2023                [Page 17]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -1005,7 +1005,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023              [Page 18]
+Ounsworth & Pala          Expires March 4, 2023                [Page 18]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -1061,7 +1061,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023              [Page 19]
+Ounsworth & Pala          Expires March 4, 2023                [Page 19]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -1117,7 +1117,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023              [Page 20]
+Ounsworth & Pala          Expires March 4, 2023                [Page 20]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -1173,7 +1173,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023              [Page 21]
+Ounsworth & Pala          Expires March 4, 2023                [Page 21]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -1229,7 +1229,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023              [Page 22]
+Ounsworth & Pala          Expires March 4, 2023                [Page 22]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -1285,7 +1285,7 @@ Appendix D.  ASN.1 Module
 
 
 
-Ounsworth & Pala        Expires February 20, 2023              [Page 23]
+Ounsworth & Pala          Expires March 4, 2023                [Page 23]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -1341,7 +1341,7 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023              [Page 24]
+Ounsworth & Pala          Expires March 4, 2023                [Page 24]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -1397,7 +1397,7 @@ Authors' Addresses
 
 
 
-Ounsworth & Pala        Expires February 20, 2023              [Page 25]
+Ounsworth & Pala          Expires March 4, 2023                [Page 25]
 
 Internet-Draft              PQ Composite Sigs                August 2022
 
@@ -1453,4 +1453,4 @@ Internet-Draft              PQ Composite Sigs                August 2022
 
 
 
-Ounsworth & Pala        Expires February 20, 2023              [Page 26]
+Ounsworth & Pala          Expires March 4, 2023                [Page 26]
