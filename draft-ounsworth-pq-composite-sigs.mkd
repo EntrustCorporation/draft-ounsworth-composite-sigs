@@ -226,6 +226,19 @@ A CompositeSignatureValue MUST contain the same number of component signatures a
 
 The choice of `SEQUENCE OF BIT STRING`, rather than for example a single BIT STRING containing the concatenated signature values, is to gracefully handle variable-length signature values by taking advantage of ASN.1's built-in length fields.
 
+## Composite Signature Parameters {#sec-compositeParameters}
+
+Composite signature parameters are defined as follows and MUST be included in the composite 
+signature AlgorithmIdentifier for the composite signature algorithm:
+
+~~~ asn.1
+CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
+~~~
+{: artwork-name="CompositeSignatureParams-asn.1-structures"}
+
+The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey. 
+
+
 ## Encoding Rules {#sec-encoding-rules}
 <!-- EDNOTE 7: Examples of how other specifications specify how a data structure is converted to a bit string can be found in RFC 2313, section 10.1.4, 3279 section 2.3.5, and RFC 4055, section 3.2. -->
 
@@ -249,21 +262,21 @@ The following sections will indicate the details for each explicit composite sig
 
 Signature public key types:
 
-Signature key type / Signature Alg    | Definition                            | OID
+Signature key type | Signature Alg    | Definition                            | Signature OID
  ---------                            | ----------                            | ------------
-id-Dilithium3-RSA                     | {{sec-id-Dilithium3-RSA}}             | 2.16.840.1.114027.80.5.1.1 (for prototyping only)
-id-Dilithium3-EC-P256                 | {{sec-id-Dilithium3-EC-P256}}         | 2.16.840.1.114027.80.5.1.2 (for prototyping only)
-id-Dilithium3-EC-brainpoolP256r1      | {{sec-id-Dilithium3-EC-brainpoolP256r1}}  | 2.16.840.1.114027.80.5.1.3 (for prototyping only)
-id-Dilithium3-Ed25519                 | {{sec-id-Dilithium3-Ed25519}}         | 2.16.840.1.114027.80.5.1.4 (for prototyping only)
-id-Dilithium5-EC-P384                 | {{sec-id-Dilithium5-EC-P384}}         | 2.16.840.1.114027.80.5.1.5 (for prototyping only)
-id-Dilithium5-EC-brainpoolP384r1      | {{sec-id-Dilithium5-EC-brainpoolP384r1}}  | 2.16.840.1.114027.80.5.1.6 (for prototyping only)
-id-Dilithium5-Ed448                   | {{sec-id-Dilithium5-Ed448}}           | 2.16.840.1.114027.80.5.1.7 (for prototyping only)
-id-Falcon512-EC-P256                  | {{sec-id-Falcon512-EC-P256}}          | 2.16.840.1.114027.80.5.1.8 (for prototyping only)
-id-Falcon512-EC-brainpoolP256r1       | {{sec-id-Falcon512-EC-brainpoolP256r1}}   | 2.16.840.1.114027.80.5.1.9 (for prototyping only)
-id-Falcon512-Ed25519                  | {{sec-id-Falcon512-Ed25519}}          | 2.16.840.1.114027.80.5.1.10 (for prototyping only)
-id-SPHINCSplusSHA256-EC-P256          | {{sec-id-SPHINCSplusSHA256-EC-P256}}  | 2.16.840.1.114027.80.5.1.11 (for prototyping only)
-id-SPHINCSplusSHA256-EC-brainpoolP256r1  | {{sec-id-SPHINCSplusSHA256-EC-brainpoolP256r1}} | 2.16.840.1.114027.80.5.1.12 (for prototyping only)
-id-SPHINCSplusSHA256-Ed25519          | {{sec-id-SPHINCSplusSHA256-Ed25519}}  | 2.16.840.1.114027.80.5.1.13 (for prototyping only)
+id-Dilithium3-RSA  | id-Dilithium3-SHA256withRSA                   | {{sec-sa-Dilithium3-SHA256withRSA}}   | 2.16.840.1.114027.80.5.3.1 (for prototyping only)
+id-Dilithium3-EC-P256 | id-Dilithium3-SHA256withECDSA               | {{sec-sa-Dilithium3-SHA256withECDSA}}    | 2.16.840.1.114027.80.5.3.2 (for prototyping only)
+id-Dilithium3-EC-brainpoolP256r1 | id-Dilithium3-SHA256withECDSA     | {{sec-sa-Dilithium3-SHA256withECDSA}}  | 2.16.840.1.114027.80.5.3.2 (for prototyping only)
+id-Dilithium3-Ed25519   |  id-Dilithium3-Ed25519             | {{sec-sa-Dilithium3-Ed25519}}         | 2.16.840.1.114027.80.5.3.4 (for prototyping only)
+id-Dilithium5-EC-P384 | id-Dilithium5-SHA384withECDSA                | {{sec-sa-Dilithium5-SHA384withECDSA}}         | 2.16.840.1.114027.80.5.3.5 (for prototyping only)
+id-Dilithium5-EC-brainpoolP384r1 | id-Dilithium5-SHA384withECDSA     | {{sec-sa-Dilithium5-SHA384withECDSA}}  | 2.16.840.1.114027.80.5.3.5 (for prototyping only)
+id-Dilithium5-Ed448  | id-Dilithium5-Ed448  | {{sec-sa-Dilithium5-Ed448}}           | 2.16.840.1.114027.80.5.3.7 (for prototyping only)
+id-Falcon512-EC-P256 | id-Falcon512-SHA256withECDSA                  | {{sec-sa-Falcon512-SHA256withECDSA}}          | 2.16.840.1.114027.80.5.3.8 (for prototyping only)
+id-Falcon512-EC-brainpoolP256r1 | id-Falcon512-SHA256withECDSA     | {{sec-sa-Falcon512-SHA256withECDSA}}   | 2.16.840.1.114027.80.5.3.8 (for prototyping only)
+id-Falcon512-Ed25519  | id-Falcon512-Ed25519               | {{sec-sa-Falcon512-Ed25519}}          | 2.16.840.1.114027.80.5.3.10 (for prototyping only)
+id-SPHINCSplusSHA256-EC-P256 | id-SPHINCSplusSHA256-SHA256withECDSA          | {{sec-sa-SPHINCSplusSHA256-SHA256withECDSA}}  | 2.16.840.1.114027.80.5.3.11 (for prototyping only)
+id-SPHINCSplusSHA256-EC-brainpoolP256r1 | id-SPHINCSplusSHA256-SHA256withECDSA  | {{sec-sa-SPHINCSplusSHA256-SHA256withECDSA}} | 2.16.840.1.114027.80.5.3.11 (for prototyping only)
+id-SPHINCSplusSHA256-Ed25519 | id-SPHINCSplusSHA256-Ed25519        | {{sec-sa-SPHINCSplusSHA256-Ed25519}}  | 2.16.840.1.114027.80.5.3.13 (for prototyping only)
 
 
 ## sa-CompositeSignature ASN.1 structure {#sec-composite-sig-structs}
@@ -282,13 +295,13 @@ sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
 
 The following sections will identify each of the required components listed above:
 
-SIGNATURE-ALGORITHM element | Definition                            
- ---------                  | ----------                            
-IDENTIFIER                  | The Object ID used to identify the composite Sinature Algorithm
-VALUE                       | The algorithm identifier OID and key type used for each component used to create the CompositeSignatureValue           
-PARAMS                      | Signature parameters either declared ABSENT, or defined with a type and encoding
-PUBLIC-KEYS                 | The composite key required to produce the composite signature
-SMIME_CAPS                  | Not needed for composite
+SIGNATURE-ALGORITHM element | Definition |
+---------                  | ---------- |
+IDENTIFIER                  | The Object ID used to identify the composite Sinature Algorithm | 
+VALUE                       | The Sequence of BIT STRINGS for each component signature value |
+PARAMS                      | Signature parameters either declared ABSENT, or defined with a type and encoding |
+PUBLIC-KEYS                 | The composite key required to produce the composite signature |
+SMIME_CAPS                  | Not needed for composite |
 
 
 This definition provides a rigid way of specifying supported combinations of algorithms.
@@ -302,61 +315,208 @@ For explicit algorithms, it is not necessary to carry a CompositeParams with the
 
 In this variant, the signature is encoded as defined in {{sec-composite-sig-structs}}, however the sa-CompositeSignature.identifier SHALL be an OID which is registered to represent a specific combination of component signature algorithms. See {{appdx-examples}} for examples.
 
-## sa-Dilithium3-RSA {#sec-id-Dilithium3-RSA}
+## sa-Dilithium3-SHA256withRSA {#sec-sa-Dilithium3-SHA256withRSA}
 
+IDENTIFIER: The following object identifier represents the sa-Dilithium3-SHA256withRSA
+   signature algorithm:
+   
+   
+~~~ asn.1
+   sa-Dilithium3-RSA OBJECT IDENTIFIER ::= {
+     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+     algorithm(80) ExplicitComposite(5) SignatureAlg(3) id-Dilithium3-SHA256withRSA(1) }
+~~~ 
 
+      EDNOTE: this is a temporary OID for the purposes of prototyping.
+      We are requesting IANA to assign a permanent OID, see Section 7.
 
-## sa-Dilithium3-ECDSA-P256 {#sec-id-Dilithium3-EC-P256}
+VALUE:  The sa-Dilithium3-SHA256withRSA Composite Signature Value is defined as follows:
+
+~~~ asn.1
+   SEQUENCE  {
+        signatureValue     BIT STRING(TBDDilithium3Signature),
+        signatureValue     BIT STRING(sha256WithRSAEncryption)
+   }
+~~~
+
+PARAMS:  The sa-Dilithium3-SHA256withRSA composite signature algorithm parameters MUST be defined as follows:
+
+~~~ asn.1
+   SEQUENCE  {
+        algorithm  AlgorithmIdentifier {
+             algorithm id-dilithium3TBD
+         },
+        algorithm  AlgorithmIdentifier {
+             algorithm id-sha256WithRSAEncryption
+         }
+   }
+~~~
+   
+   
+ where id-dilithium3TBD is defined in [I-D.ietf-lamps-dilithium-certificates]
+and sha256WithRSAEncryption is defined in [RFC5754]
+   
+
+PUBLIC-KEYS:  The public key for use with sa-Dilithium3-SHA256withRSA MUST be of type id-Dilithium3-RSA 
+
 
 TODO: What to do about hash functions? Does Dilithium3 specify a hash function, or do we need to specify one?
 
 TODO: What to do about pre-hashing? Cryptographic modules prefer to receive a hash of the message rather than the entire message. However, Dilithium starts with a hash of the message pre-pended with the public key `mu := CRH( tr || m )` which provides domain-separation per public key. Perhaps the right answer is that `mu` is also the hash value to be signed by ECDSA?
 
 
+## sa-Dilithium3-SHA256withECDSA {#sec-sa-Dilithium3-SHA256withECDSA}
 
-## id-Dilithium3-EDSA-brainpoolP256r1 {#sec-id-Dilithium3-EC-brainpoolP256r1}
+IDENTIFIER: The following object identifier represents the sa-Dilithium3-SHA256withECDSA
+   signature algorithm:
+   
+   
+~~~ asn.1
+   sa-Dilithium3-SHA256withECDSA OBJECT IDENTIFIER ::= {
+     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+     algorithm(80) ExplicitComposite(5) SignatureAlg(3) id-Dilithium3-SHA256withECDSA(2) }
+~~~ 
+
+      EDNOTE: this is a temporary OID for the purposes of prototyping.
+      We are requesting IANA to assign a permanent OID, see Section 7.
+
+VALUE:  The sa-Dilithium3-SHA256withECDSA Composite Signature Value is defined as follows:
+
+~~~ asn.1
+   SEQUENCE  {
+        signatureValue     BIT STRING(TBDDilithium3Signature),
+        signatureValue     BIT STRING(ecdsa-with-SHA256)
+   }
+~~~
+
+PARAMS:  The sa-Dilithium3-SHA256withECDSA composite signature algorithm parameters MUST be defined as follows:
+
+~~~ asn.1
+   SEQUENCE  {
+        algorithm  AlgorithmIdentifier {
+             algorithm id-dilithium3TBD
+         },
+        algorithm  AlgorithmIdentifier {
+             algorithm ecdsa-with-SHA256
+         }
+   }
+~~~
+   
+   
+ where id-dilithium3TBD is defined in [I-D.ietf-lamps-dilithium-certificates]
+and ecdsa-with-SHA256 is defined in [RFC5754]
+   
+PUBLIC-KEYS:  The public keys for use with sa-Dilithium3-SHA256withECDSA MUST be of type id-Dilithium3-ECDSA-P256 or id-Dilithium3-ECDSA-brainpoolP256r1
+
+
+## sa-Dilithium3-Ed25519 {#sec-sa-Dilithium3-Ed25519}
+
+IDENTIFIER: The following object identifier represents the sa-Dilithium3-Ed25519
+   signature algorithm:
+   
+   
+~~~ asn.1
+   sa-Dilithium3-Ed25519 OBJECT IDENTIFIER ::= {
+     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+     algorithm(80) ExplicitComposite(5) SignatureAlg(3) id-Dilithium3-Ed25519(4) }
+~~~ 
+
+      EDNOTE: this is a temporary OID for the purposes of prototyping.
+      We are requesting IANA to assign a permanent OID, see Section 7.
+
+VALUE:  The sa-Dilithium3-Ed25519 Composite Signature Value is defined as follows:
+
+~~~ asn.1
+   SEQUENCE  {
+        signatureValue     BIT STRING(TBDDilithium3Signature),
+        signatureValue     BIT STRING(id-Ed25519)
+   }
+~~~
+
+PARAMS:  The sa-Dilithium3-Ed25519 composite signature algorithm parameters MUST be defined as follows:
+
+~~~ asn.1
+   SEQUENCE  {
+        algorithm  AlgorithmIdentifier {
+             algorithm id-dilithium3TBD
+         },
+        algorithm  AlgorithmIdentifier {
+             algorithm id-Ed25519
+         }
+   }
+~~~
+
+where TBDDilithium3Signature is defined in [I-D.ietf-lamps-dilithium-certificates]
+and Ed25519 is defined in [RFC8410]
+   
+PUBLIC-KEYS:  The public keys for use with sa-Dilithium3-Ed25519 MUST be of type id-Dilithium3-Ed25519
+
+
+## sa-Dilithium5-SHA384withECDSA {#sec-sa-Dilithium5-SHA384withECDSA}
 
 
 
-## id-Dilithium3-Ed25519 {#sec-id-Dilithium3-Ed25519}
+## sa-Dilithium5-Ed448 {#sec-sa-Dilithium5-Ed448}
+
+IDENTIFIER: The following object identifier represents the sa-Dilithium5-Ed448
+   signature algorithm:
+   
+   
+~~~ asn.1
+   sa-Dilithium5-Ed448 OBJECT IDENTIFIER ::= {
+     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+     algorithm(80) ExplicitComposite(5) SignatureAlg(3) id-Dilithium5-Ed448(7) }
+~~~ 
+
+      EDNOTE: this is a temporary OID for the purposes of prototyping.
+      We are requesting IANA to assign a permanent OID, see Section 7.
+
+VALUE:  The sa-Dilithium5-Ed448 Composite Signature Value is defined as follows:
+
+~~~ asn.1
+   SEQUENCE  {
+        signatureValue     BIT STRING(TBDDilithium5Signature),
+        signatureValue     BIT STRING(id-Ed448)
+   }
+~~~
+
+PARAMS:  The sa-Dilithium5-Ed448 composite signature algorithm parameters MUST be defined as follows:
+
+~~~ asn.1
+   SEQUENCE  {
+        algorithm  AlgorithmIdentifier {
+             algorithm id-dilithium5TBD
+         },
+        algorithm  AlgorithmIdentifier {
+             algorithm id-Ed448
+         }
+   }
+~~~
+
+where id-dilithium5TBD is defined in [I-D.ietf-lamps-dilithium-certificates]
+and id-Ed448 is defined in [RFC8410]
+   
+PUBLIC-KEYS:  The public keys for use with sa-Dilithium5-Ed448 MUST be of type Dilithium5-Ed448
 
 
 
-## id-Dilithium5-EC-P384 {#sec-id-Dilithium5-EC-P384}
+## sa-Falcon512-SHA256withECDSA {#sec-sa-Falcon512-SHA256withECDSA}
 
 
 
-## id-Dilithium5-EC-brainpoolP384r1 {#sec-id-Dilithium5-EC-brainpoolP384r1}
+## sa-Falcon512-Ed25519 {#sec-sa-Falcon512-Ed25519}
 
 
 
-## id-Dilithium5-Ed448 {#sec-id-Dilithium5-Ed448}
+## sa-SPHINCSplusSHA256-SHA256withECDSA {#sec-sa-SPHINCSplusSHA256-SHA256withECDSA}
 
 
 
-## id-Falcon512-EC-P256 {#sec-id-Falcon512-EC-P256}
+## sa-SPHINCSplusSHA256-Ed25519 {#sec-sa-SPHINCSplusSHA256-Ed25519}
 
 
 
-## id-Falcon512-EC-brainpoolP256r1 {#sec-id-Falcon512-EC-brainpoolP256r1}
-
-
-
-## id-Falcon512-Ed25519 {#sec-id-Falcon512-Ed25519}
-
-
-
-## id-SPHINCSplusSHA256-EC-P256 {#sec-id-SPHINCSplusSHA256-EC-P256}
-
-
-## id-SPHINCSplusSHA256-EC-brainpoolP256r1 {#sec-id-SPHINCSplusSHA256-EC-brainpoolP256r1}
-
-
-
-## id-SPHINCSplusSHA256-Ed25519 {#sec-id-SPHINCSplusSHA256-Ed25519}
-
-
-## id-alg-composite (Generic Composite Signatures) {#sec-generic-composite}
+## sa-alg-composite (Generic Composite Signatures) {#sec-generic-composite}
 
 The id-alg-composite object identifier is used for identifying a generic composite signature. This algorithm allows arbitrary combinations of component signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or standardized. This identifier MUST be used in sa-CompositeSignature.identifier.
 
