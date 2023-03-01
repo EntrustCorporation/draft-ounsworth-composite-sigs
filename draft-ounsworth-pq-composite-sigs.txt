@@ -881,15 +881,15 @@ Internet-Draft              PQ Composite Sigs              February 2023
    encounters a component signature algorithm for which it does not
    posses a compatible implementation but wishes to proceed with the
    signature verification using the subset of component signatures for
-   which it does have compatible implementations.
+   which it does have compatible implementations.  Such a mechanism
+   could be designed to provide ease of migration by allowing for
+   composite keys to be distributed and used before all clients in the
+   environment are fully upgraded.
 
-
-
-
-
-
-
-
+   It is important to notice that although Composite Crypto does not
+   allow for full backwards compatibility (since clients would at least
+   need to be upgraded from their current state to be able to parse the
+   composite structures), upgrading today's systems to be able to handle
 
 
 
@@ -898,15 +898,16 @@ Ounsworth & Pala        Expires 1 September 2023               [Page 16]
 Internet-Draft              PQ Composite Sigs              February 2023
 
 
-   Such a mechanism could be designed to provide ease of migration by
-   allowing for composite keys to be distributed and used before all
-   clients in the environment are fully upgraded, but it does not allow
-   for full backwards compatibility since clients would at least need to
-   be upgraded from their current state to be able to parse the
-   composite structures.  Hoever, especially for the generic composite
-   case, the upgrade to handle composite keys and singatures can be seen
-   as a tool that can be leveraged also for the next generation of
-   migration tools to achieve full crypto agility.
+   composite keys and signatures will also provide the tool for the next
+   generation of migration.  In other words, the work to support
+   Composite Crypto will also provide crypto agility options for
+   subsequent crypto-migration in a truly crypto-agile fashion (i.e.,
+   entities will always able to process composite signatures independent
+   from the individual cryptographic algorithms that are supported
+   today).
+
+   Please refer to [I-D.draft-pala-klaussner-composite-kofn] for more
+   information.
 
 6.1.2.  Parallel PKIs
 
@@ -938,7 +939,6 @@ Internet-Draft              PQ Composite Sigs              February 2023
    convenience in setting up parallel PKI hierarchies that need to
    service a range of clients implementing different styles of post-
    quantum migration strategies.
-
 
 
 
