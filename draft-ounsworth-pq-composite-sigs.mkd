@@ -49,7 +49,6 @@ normative:
   RFC5652:
   RFC8174:
   RFC8411:
-  I-D.draft-massimo-lamps-pq-sig-certificates-00:
   X.690:
       title: "Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)"
       date: November 2015
@@ -80,7 +79,29 @@ informative:
   I-D.draft-guthrie-ipsecme-ikev2-hybrid-auth-00:
   RFC3279:
   RFC8017:
-  I-D.draft-truskovsky-lamps-pq-hybrid-x509: draft_hybrid_x509
+  I-D.draft-truskovsky-lamps-pq-hybrid-x509:
+    target: https://www.ietf.org/archive/id/draft-pala-klaussner-composite-kofn-00.txt
+    title: Multiple Public-Key Algorithm X.509 Certificates
+    date: August 2018
+    author:
+      -
+        ins: A. Truskovsky
+        name: Alexander Truskovsky
+      -
+        ins: D. Van Geest
+        name: Daniel Van Geest
+      -
+        ins: S. Fluhrer
+        name: Scott Fluhrer
+      -
+        ins: P. Kampanakis
+        name: Panos Kampanakis
+      -
+        ins: M. Ounsworth
+        name: Mike Ounsworth
+      -
+        ins: S. Mister
+        name: Serge Mister
 
 
 --- abstract
@@ -402,7 +423,7 @@ Note on composite inputs: the method of providing the list of component keys and
 
 Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.
 
-A composite signature MUST produce, and include in the output, a signature value for every component key in  and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2, etc. The authors recognize that there may be valid use cases for "subset signature generation"; see {{sec-subset-sig-gen}} for further discussion of security implications, and {{sec-backwards-compat}} for further discussion of backwards compatibility implications.
+A composite signature MUST produce, and include in the output, a signature value for every component key in  and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2, etc.
 
 For security when using a generic composite signature algorithm as defined in {{sec-generic-composite}}, the list of component signature algorithms A1, A2, .., An, which may be carried in a CompositeParams object, SHOULD be included in the signed message M to prevent an attacker from substituting a weaker algorithm which is compatible with the same public key. This attack is not unique or new to the composite format.
 
@@ -461,10 +482,7 @@ Note on composite inputs: the method of providing the list of component keys, al
 
 Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
 
-Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementer MAY, in the interest of performance of compatibility, modify the above process to skip one or more signature validations as per their local client policy. See {{I-D.draft-pala-klaussner-composite-kofn}} for a discussion of associated risks.
-
-In the absence of such a policy mechanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here. See {{sec-subset-sig-gen}} for further discussion of security implications of subset signature verifications, and {{sec-backwards-compat}} for further discussion of backwards compatibility implications.
-
+Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementer MAY, in the interest of performance of compatibility, modify the above process to skip one or more signature validations as per their local client policy. See {{I-D.draft-pala-klaussner-composite-kofn}} for a discussion of implementation and associated risks.
 
 <!-- End of Composite Signature Algorithm section -->
 
@@ -525,7 +543,7 @@ additional keys and signatures. When the custom extensions are not marked critic
 backward-compatible approach where clients can simply ignore the post-quantum (or extra) keys and signatures, it also requires
 all applications to be updated for correctly processing multiple algorithms together.
 
-Please refer to {{-draft_hybrid_x509}} for more information.
+Please refer to {{I-D.draft-truskovsky-lamps-pq-hybrid-x509}} for more information.
 
 # IANA Considerations {#sec-iana}
 
