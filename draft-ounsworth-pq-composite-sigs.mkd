@@ -283,9 +283,9 @@ This identifier MAY be used in sa-CompositeSignature.identifier.
 ~~~ asn.1
 id-alg-composite OBJECT IDENTIFIER ::= {
     iso(1)  identified-organization(3) dod(6) internet(1) private(4)
-    enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) }
+    enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) 
+    id-alg-composite-sha256(2) }
 ~~~
-
 The following algorithm parameters MUST be included:
 
 ~~~ asn.1
@@ -302,11 +302,11 @@ The id-alg-composite object identifier is used for identifying a generic composi
 ~~~ asn.1
 id-alg-composite OBJECT IDENTIFIER ::= {
     iso(1)  identified-organization(3) dod(6) internet(1) private(4)
-    enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) }
+    enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1)
+    id-alg-composite-sha512(4) }
 ~~~
 
 EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see {{sec-iana}}.
-
 
 The following algorithm parameters MUST be included:
 
@@ -457,7 +457,7 @@ Signature Verification Procedure::
 ~~~
 {: artwork-name="alg-sig-verif"}
 
-Note on composite inputs: the method of providing the list of component keys, algorithms and signatures is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey, CompositeParams, and compositesignaturevalue structures. It is also possible to verify a composite signature where the component public verification keys belong, for example, to separate X.509 certificates or cryptographic modules. Variations in the process to accommodate particular public verification key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
+Note on composite inputs: the method of providing the list of component keys, algorithms and signatures is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey, CompositeParams, and CompositeSignatureValue structures. It is also possible to verify a composite signature where the component public verification keys belong, for example, to separate X.509 certificates or cryptographic modules. Variations in the process to accommodate particular public verification key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
 
 Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
 
