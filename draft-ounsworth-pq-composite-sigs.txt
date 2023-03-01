@@ -120,7 +120,7 @@ Internet-Draft              PQ Composite Sigs              February 2023
            Composite Signatures) . . . . . . . . . . . . . . . . . .   8
        4.2.1.  id-alg-CompositeWithSha512 (SHA512 Pre-Hashed Generic
                Composite Signatures) . . . . . . . . . . . . . . . .   9
-       4.2.2.  sa-CompositeSignature . . . . . . . . . . . . . . . .   9
+       4.2.2.  sa-CompositeSignature . . . . . . . . . . . . . . . .  10
      4.3.  Explicit Composite Signatures . . . . . . . . . . . . . .  10
        4.3.1.  sa-Dilithium3-ECDSA-P256  . . . . . . . . . . . . . .  11
    5.  Composite Signature Processes . . . . . . . . . . . . . . . .  11
@@ -139,14 +139,13 @@ Internet-Draft              PQ Composite Sigs              February 2023
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  19
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  20
    Appendix A.  Work in Progress . . . . . . . . . . . . . . . . . .  21
-     A.1.  Composite with Hash-n-Sign  . . . . . . . . . . . . . . .  22
-   Appendix B.  Creating explicit combinations . . . . . . . . . . .  22
+   Appendix B.  Creating explicit combinations . . . . . . . . . . .  21
    Appendix C.  Examples . . . . . . . . . . . . . . . . . . . . . .  22
      C.1.  Generic Composite Signature Examples  . . . . . . . . . .  22
      C.2.  Explicit Composite Signature Examples . . . . . . . . . .  22
    Appendix D.  ASN.1 Module . . . . . . . . . . . . . . . . . . . .  22
-   Appendix E.  Intellectual Property Considerations . . . . . . . .  24
-   Appendix F.  Contributors and Acknowledgements  . . . . . . . . .  24
+   Appendix E.  Intellectual Property Considerations . . . . . . . .  23
+   Appendix F.  Contributors and Acknowledgements  . . . . . . . . .  23
      F.1.  Making contributions  . . . . . . . . . . . . . . . . . .  24
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
 
@@ -160,6 +159,7 @@ Internet-Draft              PQ Composite Sigs              February 2023
       reference
 
    *  Added considerations for external hashing
+
 
 
 
@@ -425,13 +425,30 @@ Internet-Draft              PQ Composite Sigs              February 2023
 4.2.  id-alg-compositeWithSha256 (SHA256 Pre-Hashed Generic Composite
       Signatures)
 
-   The id-alg-composite object identifier is used for identifying a pre-
-   hashed composite signature that uses SHA-256.  This algorithm allows
-   arbitrary combinations of component signature algorithms to be used
-   in the CompositeSignatureValue and CompositeParams structures without
-   needing the combination to be pre-registered or standardized.
+   The id-alg-CompositeWithSha256 object identifier is used for
+   identifying a pre-hashed composite signature that uses SHA-256.  This
+   algorithm allows arbitrary combinations of component signature
+   algorithms to be used in the CompositeSignatureValue and
+   CompositeParams structures without needing the combination to be pre-
+   registered or standardized.
+
+   When the id-alg-compositeWithSha256 is used, the signature is
+   calculated over the digest of the message rather than the message
+   itself.  This mode can be used to generate signatures with any type
+   of key (i.e., classic, post-quantum, or post-post-quantum, etc...) by
+   signing the SHA256 value calculated over the message.
 
    This identifier MAY be used in sa-CompositeSignature.identifier.
+
+
+
+
+
+
+Ounsworth & Pala        Expires 1 September 2023                [Page 8]
+
+Internet-Draft              PQ Composite Sigs              February 2023
+
 
    id-alg-composite OBJECT IDENTIFIER ::= {
        iso(1)  identified-organization(3) dod(6) internet(1) private(4)
@@ -442,14 +459,6 @@ Internet-Draft              PQ Composite Sigs              February 2023
 
    CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 
-
-
-
-Ounsworth & Pala        Expires 1 September 2023                [Page 8]
-
-Internet-Draft              PQ Composite Sigs              February 2023
-
-
    The signature's CompositeParams sequence MUST contain the same
    component algorithms listed in the same order as in the associated
    CompositePublicKey.
@@ -457,12 +466,18 @@ Internet-Draft              PQ Composite Sigs              February 2023
 4.2.1.  id-alg-CompositeWithSha512 (SHA512 Pre-Hashed Generic Composite
         Signatures)
 
-   The id-alg-composite object identifier is used for identifying a
-   generic composite signature.  This algorithm allows arbitrary
-   combinations of component signature algorithms to be used in the
-   CompositeSignatureValue and CompositeParams structures without
+   The id-alg-compositeWithSha512 object identifier is used for
+   identifying a generic composite signature.  This algorithm allows
+   arbitrary combinations of component signature algorithms to be used
+   in the CompositeSignatureValue and CompositeParams structures without
    needing the combination to be pre-registered or standardized.  This
    identifier MUST be used in sa-CompositeSignature.identifier.
+
+   When the id-alg-compositeWithSha512 is used, the signature is
+   calculated over the digest of the message rather than the message
+   itself.  This mode can be used to generate signatures with any type
+   of key (i.e., classic, post-quantum, or post-post-quantum, etc...) by
+   signing the SHA512 value calculated over the message.
 
    id-alg-composite OBJECT IDENTIFIER ::= {
        iso(1)  identified-organization(3) dod(6) internet(1) private(4)
@@ -480,6 +495,17 @@ Internet-Draft              PQ Composite Sigs              February 2023
    component algorithms listed in the same order as in the associated
    CompositePublicKey.
 
+
+
+
+
+
+
+Ounsworth & Pala        Expires 1 September 2023                [Page 9]
+
+Internet-Draft              PQ Composite Sigs              February 2023
+
+
 4.2.2.  sa-CompositeSignature
 
    The ASN.1 algorithm object for a composite signature is:
@@ -491,20 +517,6 @@ Internet-Draft              PQ Composite Sigs              February 2023
        PUBLIC-KEYS { pk-Composite }
        SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
    }
-
-
-
-
-
-
-
-
-
-
-Ounsworth & Pala        Expires 1 September 2023                [Page 9]
-
-Internet-Draft              PQ Composite Sigs              February 2023
-
 
    The motivation for this variant is primarily for addressing
    combinations of algorithms not covered by the explicit combinations.
@@ -542,6 +554,14 @@ Internet-Draft              PQ Composite Sigs              February 2023
    See Appendix B for guidance on creating and registering OIDs for
    specific explicit combinations.
 
+
+
+
+Ounsworth & Pala        Expires 1 September 2023               [Page 10]
+
+Internet-Draft              PQ Composite Sigs              February 2023
+
+
    For explicit algorithms, it is not necessary to carry a
    CompositeParams with the list of component algorithms in the
    signature algorithm parameters because clients can infer the expected
@@ -552,15 +572,6 @@ Internet-Draft              PQ Composite Sigs              February 2023
    that explicit algorithms may define params as ABSENT, use
    CompositeParams defined in Section 4.1 or use any other encoding that
    is appropriate.
-
-
-
-
-
-Ounsworth & Pala        Expires 1 September 2023               [Page 10]
-
-Internet-Draft              PQ Composite Sigs              February 2023
-
 
    In this variant, the signature is encoded as defined in
    Section 4.2.2, however the sa-CompositeSignature.identifier SHALL be
@@ -597,17 +608,6 @@ Internet-Draft              PQ Composite Sigs              February 2023
    the CompositeSignatureValue structure defined in Section 4.2.2.
 
    The following process is used to generate composite signature values.
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1164,12 +1164,12 @@ Internet-Draft              PQ Composite Sigs              February 2023
 
 Appendix A.  Work in Progress
 
+Appendix B.  Creating explicit combinations
 
+   The following ASN.1 Information Objects may be useful in defining and
+   parsing explicit pairs of signature algorithms.
 
-
-
-
-
+   ... TODO ... copy & adapt from the keys draft.
 
 
 
@@ -1177,23 +1177,6 @@ Ounsworth & Pala        Expires 1 September 2023               [Page 21]
 
 Internet-Draft              PQ Composite Sigs              February 2023
 
-
-A.1.  Composite with Hash-n-Sign
-
-   The use of composite signatures might require the use of pre-hashing
-   to be able to generate signatures on the same data with both classic
-   and post-quantum algorithms.  For this reason, we define two
-   additional OIDs for composite signatures that implement the hash-
-   n-sign paradigm.
-
-   Specifically
-
-Appendix B.  Creating explicit combinations
-
-   The following ASN.1 Information Objects may be useful in defining and
-   parsing explicit pairs of signature algorithms.
-
-   ... TODO ... copy & adapt from the keys draft.
 
 Appendix C.  Examples
 
@@ -1226,14 +1209,6 @@ Appendix D.  ASN.1 Module
      SubjectPublicKeyInfo
        FROM PKIX1Explicit-2009
          { iso(1) identified-organization(3) dod(6) internet(1)
-
-
-
-Ounsworth & Pala        Expires 1 September 2023               [Page 22]
-
-Internet-Draft              PQ Composite Sigs              February 2023
-
-
            security(5) mechanisms(5) pkix(7) id-mod(0)
            id-mod-pkix1-explicit-02(51) }
 
@@ -1251,6 +1226,14 @@ Internet-Draft              PQ Composite Sigs              February 2023
 
    --
    -- Public Key
+
+
+
+Ounsworth & Pala        Expires 1 September 2023               [Page 22]
+
+Internet-Draft              PQ Composite Sigs              February 2023
+
+
    --
 
    pk-Composite PUBLIC-KEY ::= {
@@ -1283,13 +1266,6 @@ Internet-Draft              PQ Composite Sigs              February 2023
 
    <CODE ENDS>
 
-
-
-Ounsworth & Pala        Expires 1 September 2023               [Page 23]
-
-Internet-Draft              PQ Composite Sigs              February 2023
-
-
 Appendix E.  Intellectual Property Considerations
 
    The following IPR Disclosure relates to this draft:
@@ -1304,6 +1280,15 @@ Appendix F.  Contributors and Acknowledgements
    attended many long meetings and generated millions of bytes of
    electronic mail and VOIP traffic over the past year in pursuit of
    this document:
+
+
+
+
+
+Ounsworth & Pala        Expires 1 September 2023               [Page 23]
+
+Internet-Draft              PQ Composite Sigs              February 2023
+
 
    John Gray (Entrust), Serge Mister (Entrust), Scott Fluhrer (Cisco
    Systems), Panos Kampanakis (Cisco Systems), Daniel Van Geest (ISARA),
@@ -1338,14 +1323,6 @@ Authors' Addresses
    Massimiliano Pala
    CableLabs
    858 Coal Creek Circle
-
-
-
-Ounsworth & Pala        Expires 1 September 2023               [Page 24]
-
-Internet-Draft              PQ Composite Sigs              February 2023
-
-
    Louisville, Colorado,  80027
    United States of America
 
@@ -1364,37 +1341,4 @@ Internet-Draft              PQ Composite Sigs              February 2023
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth & Pala        Expires 1 September 2023               [Page 25]
+Ounsworth & Pala        Expires 1 September 2023               [Page 24]
