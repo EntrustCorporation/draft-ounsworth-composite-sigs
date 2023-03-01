@@ -616,14 +616,6 @@ A detailed description of a K of N validation mode that address all these use-ca
 
 # Work in Progress
 
-## Composite with Hash-n-Sign
-
-The use of composite signatures might require the use of pre-hashing to be able to generate signatures on the same data
-with both classic and post-quantum algorithms. For this reason, we define two additional OIDs for composite signatures that
-implement the hash-n-sign paradigm.
-
-Specifically
-
 # Creating explicit combinations {#appdx-creatingExplicitCombinations}
 
 The following ASN.1 Information Objects may be useful in defining and parsing explicit pairs of signature algorithms. 
