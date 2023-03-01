@@ -307,7 +307,7 @@ The signature's CompositeParams sequence MUST contain the same component algorit
 
 ## id-alg-compositeWithSha256 (SHA256 Pre-Hashed Generic Composite Signatures) {#sec-composite-sha256}
 
-The id-alg-CompositeWithSha256 object identifier is used for identifying a pre-hashed composite signature that uses SHA-256. This algorithm
+The id-alg-compositeWithSha256 object identifier is used for identifying a pre-hashed composite signature that uses SHA-256. This algorithm
 allows arbitrary combinations of component signature algorithms to be used in the CompositeSignatureValue and CompositeParams
 structures without needing the combination to be pre-registered or standardized.
 
@@ -333,7 +333,7 @@ CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 
 The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.
 
-### id-alg-CompositeWithSha512 (SHA512 Pre-Hashed Generic Composite Signatures) {#sec-composite-sha512}
+### id-alg-compositeWithSha512 (SHA512 Pre-Hashed Generic Composite Signatures) {#sec-composite-sha512}
 
 The id-alg-compositeWithSha512 object identifier is used for identifying a generic composite signature. This algorithm allows arbitrary combinations of component signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or standardized. This identifier MUST be used in sa-CompositeSignature.identifier.
 
@@ -676,6 +676,8 @@ IMPORTS
 --
 
 id-alg-composite OBJECT IDENTIFIER ::= { TBD }
+id-alg-compositeWithSha256 OBJECT IDENTIFIER ::= { TBD }
+id-alg-compositeWithSha512 OBJECT IDENTIFIER ::= { TBD }
 
 --
 -- Public Key
