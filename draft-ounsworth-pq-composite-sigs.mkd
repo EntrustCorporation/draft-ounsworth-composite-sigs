@@ -124,20 +124,32 @@ This document is intended to be coupled with corresponding documents that define
 
 # Changes in version -08
 
-- hash-then-sign, and external hashing
+The list of changes contained in this version is as follows:
 
+  * Added new OIDs and considerations for the hash-then-sign paradigm
+  * Removed the OR modes of operation and replaced with K-of-N I-D reference
+  * Added considerations for external hashing
 
 # Introduction {#sec-intro}
 
-During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not
-   fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
+During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer
+fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not fully trust their
+post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs.
 
-The deployment of composite signatures using post-quantum algorithms will face two challenges
+Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear.
+Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
 
-- Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
-- Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
+The deployment of composite signatures using post-quantum algorithms will face two challenges:
 
-This document provides a mechanism to address algorithm strength uncertainty concerns by building on {{I-D.ounsworth-pq-composite-keys}} by providing formats for encoding multiple signature values into existing public signature fields, as well as the process for validating a composite signature. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in {{I-D.becker-guthrie-noncomposite-hybrid-auth}}.
+- *Algorithm strength uncertainty*: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted,
+while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key
+algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
+
+- *Backwards compatibility*: During the transition period, post-quantum algorithms will not be supported by all clients.
+
+This document provides a mechanism to address algorithm strength uncertainty concerns by building on {{I-D.ounsworth-pq-composite-keys}} by providing
+formats for encoding multiple signature values into existing public signature fields, as well as the process for validating a composite signature.
+Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in {{I-D.becker-guthrie-noncomposite-hybrid-auth}}.
 
 This document is intended for general applicability anywhere that digital signatures are used within PKIX and CMS structures.
 
@@ -295,9 +307,13 @@ The signature's CompositeParams sequence MUST contain the same component algorit
 
 ## id-alg-compositeWithSha256 (SHA256 Pre-Hashed Generic Composite Signatures) {#sec-composite-sha256}
 
-The id-alg-composite object identifier is used for identifying a pre-hashed composite signature that uses SHA-256. This algorithm
+The id-alg-CompositeWithSha256 object identifier is used for identifying a pre-hashed composite signature that uses SHA-256. This algorithm
 allows arbitrary combinations of component signature algorithms to be used in the CompositeSignatureValue and CompositeParams
-structures without needing the combination to be pre-registered or standardized. 
+structures without needing the combination to be pre-registered or standardized.
+
+When the id-alg-compositeWithSha256 is used, the signature is calculated over the digest of the message rather than the message itself. This
+mode can be used to generate signatures with any type of key (i.e., classic, post-quantum, or post-post-quantum, etc...) by signing the SHA256
+value calculated over the message.
 
 This identifier MAY be used in sa-CompositeSignature.identifier.
 
@@ -307,6 +323,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
     enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) 
     id-alg-composite-sha256(2) }
 ~~~
+
 The following algorithm parameters MUST be included:
 
 ~~~ asn.1
@@ -318,7 +335,11 @@ The signature's CompositeParams sequence MUST contain the same component algorit
 
 ### id-alg-CompositeWithSha512 (SHA512 Pre-Hashed Generic Composite Signatures) {#sec-composite-sha512}
 
-The id-alg-composite object identifier is used for identifying a generic composite signature. This algorithm allows arbitrary combinations of component signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or standardized. This identifier MUST be used in sa-CompositeSignature.identifier.
+The id-alg-compositeWithSha512 object identifier is used for identifying a generic composite signature. This algorithm allows arbitrary combinations of component signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or standardized. This identifier MUST be used in sa-CompositeSignature.identifier.
+
+When the id-alg-compositeWithSha512 is used, the signature is calculated over the digest of the message rather than the message itself. This
+mode can be used to generate signatures with any type of key (i.e., classic, post-quantum, or post-post-quantum, etc...) by signing the SHA512
+value calculated over the message.
 
 ~~~ asn.1
 id-alg-composite OBJECT IDENTIFIER ::= {
