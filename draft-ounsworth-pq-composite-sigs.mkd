@@ -31,7 +31,7 @@ author:
 
     -
       ins: J. Gray
-      name: John GRay
+      name: John Gray
       org: Entrust Limited
       abbrev: Entrust
       street: 2500 Solandt Road – Suite 100
@@ -96,11 +96,9 @@ informative:
 
 The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs.
 
-Cautious implementer may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as "dual", and for encryption key establishment this as referred to as "hybrid". This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level.
+Cautious implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected using either a Post-Quantum / Traditional Hybrid, Post-Quantum / Post-Quantum Hybrid, or combinations thereof. This document, and its companions, defines a specific instantiation of hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level.
 
-EDNOTE: the terms "dual" and "hybrid" are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly.
-
-This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. The generic composite variant is defined which allows arbitrary combinations of signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or pre-agreed. The explicit variant is also defined which allows for a set of signature algorithm identifier OIDs to be registered together as an explicit composite signature algorithm and assigned an OID.
+This document defines the structures CompositeSignatureValue, and CompositeSignatureParams, which are sequences of the respective structure for each component algorithm. The explicit variant is defined which allows for a set of signature algorithm identifier OIDs to be registered together as an explicit composite signature algorithm and assigned an OID.  The generic composite variant is also defined which allows arbitrary combinations of signature algorithms to be used in the CompositeSignatureValue and CompositeSignatureParams structures without needing the combination to be pre-registered or pre-agreed. 
 
 
 This document is intended to be coupled with corresponding documents that define the structure and semantics of composite public and private keys and encryption {{I-D.ounsworth-pq-composite-keys}}, however may also be used with non-composite keys, such as when a protocol combines multiple certificates into a single cryptographic operation.
@@ -112,7 +110,7 @@ This document is intended to be coupled with corresponding documents that define
 
 # Changes in version -08
 
-- hash-then-sign, and external hashing
+- explicit composite combinations defined and ASN.1 module updated
 
 
 # Terminology {#sec-terminology}
@@ -198,7 +196,7 @@ In order for signatures to be composed of multiple algorithms, we define encodin
 
 ## Composite Keys
 
-A composite signature MAY be associated with a composite public key as defined in {{I-D.ounsworth-pq-composite-keys}}, but MAY also be associated with multiple public keys from different sources, for example multiple X.509 certificates, or multiple cryptographic modules. In the latter case, composite signatures MAY be used as the mechanism for carrying multiple signatures in a non-composite authentication mechanism such as those described in {{I-D.becker-guthrie-noncomposite-hybrid-auth}}.
+A composite signature MAY be associated with a composite public key as defined in {{I-D.ounsworth-pq-composite-keys}}, but MAY also be associated with multiple public keys from different sources, for example multiple X.509 certificates, or multiple cryptographic modules. In the latter case, composite signatures MAY be used as the mechanism for carrying multiple signatures in a non-composite hybrid authentication mechanism such as those described in {{I-D.becker-guthrie-noncomposite-hybrid-auth}}.
 
 
 ### Key Usage Bits
@@ -222,6 +220,32 @@ digitalSignature; and
 nonRepudiation;
 ~~~
 
+## sa-CompositeSignature {#sec-composite-sig-structs}
+
+The ASN.1 algorithm object for a composite signature is:
+
+~~~ asn.1
+sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
+    IDENTIFIER TYPE OBJECT IDENTIFIER
+    VALUE CompositeSignatureValue
+    PARAMS ANY DEFINED BY ALGORITHM
+    PUBLIC-KEYS { pk-Composite }
+    SMIME-CAPS ANY DEFINED BY ALGORITHM }
+}
+~~~
+
+
+The following sections will identify each of the required components listed above:
+
+SIGNATURE-ALGORITHM element | Definition | {{tab-composite-sigs}} |
+---------                  | ---------- | ---------- |
+IDENTIFIER                  | The Object ID used to identify the composite Signature Algorithm | Composite Key and Signature AlgorithmID | 
+VALUE                       | The Sequence of BIT STRINGS for each component signature value | OCTET STRING of First |
+PARAMS                      | Signature parameters either declared ABSENT, or defined with a type and encoding | Parameters are optional| |
+PUBLIC-KEYS                 | The composite key required to produce the composite signature | Composite Key and Signature AlgorithmID | 
+SMIME_CAPS                  | Not needed for composite | N/A  |
+
+
 
 ## CompositeSignatureValue {#sec-compositeSignatureValue}
 
@@ -232,23 +256,26 @@ CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
 ~~~
 {: artwork-name="composite-sig-asn.1"}
 
-Where each BIT STRING within the SEQUENCE is a signature value produced by one of the component keys. It MUST contain one signature value produced by each component algorithm, and in the same order as in the associated CompositeParams object.
+Where each BIT STRING within the SEQUENCE is a signature value produced by one of the component keys. It MUST contain one signature value produced by each component algorithm, and in the same order as in the associated CompositeSignatureParams object.
 
 A CompositeSignatureValue MUST contain the same number of component signatures as the corresponding public and private keys, and the order of component signature values MUST correspond to the component public keys.
 
 The choice of `SEQUENCE OF BIT STRING`, rather than for example a single BIT STRING containing the concatenated signature values, is to gracefully handle variable-length signature values by taking advantage of ASN.1's built-in length fields.
 
-## Composite Signature Parameters {#sec-compositeParameters}
+## CompositeSignatureParameters {#sec-compositeParameters}
 
-Composite signature parameters are defined as follows and MUST be included in the composite 
+Composite signature parameters are defined as follows and MAY be included in the composite 
 signature AlgorithmIdentifier for the composite signature algorithm:
 
 ~~~ asn.1
-CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
+CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 ~~~
 {: artwork-name="CompositeSignatureParams-asn.1-structures"}
 
-The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey. 
+When composite signature parameters are used, the signature's CompositeSignatureParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.  
+
+For explicit algorithms, it is not necessary to carry a CompositeSignatureParams with the list of component algorithms in the signature algorithm parameters because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in [RFC8017]. {{sec-composite-sig-structs}} defines `PARAMS ANY DEFINED BY ALGORITHM` so that explicit algorithms may define params as ABSENT, or use `CompositeSignatureParams` as defined in ASN.1 module.  For generic compsite algorithms, CompositeSignatureParams MUST be included. 
+
 
 
 ## Encoding Rules {#sec-encoding-rules}
@@ -270,327 +297,49 @@ This section is not intended to be exhaustive and other authors may define other
 
 Some use-cases desire the flexibility for clients to use any combination of supported algorithms, while others desire the rigidity of explicitly-specified combinations of algorithms.
 
-The following sections will indicate the details for each explicit composite signature algorithms:
+The following table summarizes the details for each explicit composite signature algorithms:
 
 
-The OID referenced are TBD, and the following prefix is used for each:
+The OID referenced are TBD for prototyping only, and the following prefix is used for each:
 
 replace &lt;CompSig&gt; with the String "2.16.840.1.114027.80.5.1"
 
 Therefore &lt;CompSig&gt;.1 is equal to 2.16.840.1.114027.80.5.1.1 
 
+replace &lt;SPHINCS&gt; with the String "SPHINCSplusSHA256128sSimple"
+
+
 Signature public key types:
 
-| AlgorithmID for both Composite Key and Signature Algorithms | OID |  Section |
-| ----------- | ----------- | ----------- | 
-| id-Dilithium3-RSA-PKCS15-SHA256         | &lt;CompSig&gt;.1 | {{sec-sa-Dilithium3-RSA-PKCS15-SHA256}} |
-| id-Dilithium3-ECDSA-P256-SHA256            | &lt;CompSig&gt;.2 | {{sec-sa-Dilithium3-ECDSA-P256-SHA256 }} |
-| id-Dilithium3-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.3 | {{sec-sa-Dilithium3-ECDSA-brainpoolP256r1-SHA256}} |
-| id-Dilithium3-Ed25519               | &lt;CompSig&gt;.4 | {{sec-sa-Dilithium3-Ed25519}}  | 
-| id-Dilithium5-ECDSA-P384-SHA384            | <&lt;CompSig&gt;.5 | {{sec-sa-Dilithium5-ECDSA-P384-SHA384}}   |
-| id-Dilithium5-ECDSA-brainpoolP384r1-SHA384 | &lt;CompSig&gt;.6 | {{sec-sa-Dilithium5-ECDSA-brainpoolP384r1-SHA384}}  |
-| id-Dilithium5-Ed448                 | &lt;CompSig&gt;.7 | {{sec-sa-Dilithium5-Ed448}}  |
-| id-Falcon512-ECDSA-P256-SHA256        | &lt;CompSig&gt;.8 | {{sec-sa-Falcon512-ECDSA-P256-SHA256}} | 
-| id-Falcon512-ECDSA-brainpoolP256r1-SHA256  | &lt;CompSig&gt;.9 | {{sec-sa-Falcon512-ECDSA-brainpoolP256r1-SHA256}}  |
-| id-Falcon512-Ed25519                       | &lt;CompSig&gt;.10| {{sec-sa-Falcon512-Ed25519}}    |
-| id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256            | &lt;CompSig&gt;.11| {{sec-sa-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256}} |
-| id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.12 | {{sec-sa-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256}} |
-| id-SPHINCSplusSHA256128sSimple-Ed25519               | &lt;CompSig&gt;.13 |  {{sec-sa-SPHINCSplusSHA256-Ed25519}} |
-| id-Dilithium3-RSA-PSS-SHA256                   | &lt;CompSig&gt;.14 |  {{sec-sa-Dilithium3-RSA-PSS-SHA256}} |
-
-
-## sa-CompositeSignature ASN.1 structure {#sec-composite-sig-structs}
-
-The ASN.1 algorithm object for a composite signature is:
-
-~~~ asn.1
-sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
-    IDENTIFIER id-alg-composite
-    VALUE CompositeSignatureValue
-    PARAMS ANY DEFINED BY ALGORITHM
-    PUBLIC-KEYS { pk-Composite }
-    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-}
-~~~
-
-The following sections will identify each of the required components listed above:
-
-SIGNATURE-ALGORITHM element | Definition |
----------                  | ---------- |
-IDENTIFIER                  | The Object ID used to identify the composite Sinature Algorithm | 
-VALUE                       | The Sequence of BIT STRINGS for each component signature value |
-PARAMS                      | Signature parameters either declared ABSENT, or defined with a type and encoding |
-PUBLIC-KEYS                 | The composite key required to produce the composite signature |
-SMIME_CAPS                  | Not needed for composite |
-
-
-This definition provides a rigid way of specifying supported combinations of algorithms.
-
-The will make it easier to reference and enforce specific combinations of algorithms. The authors envision this being useful for client-server negotiated protocols, protocol designers who wish to place constraints on allowable algorithm combinations in the protocol specification, as well as audited environments that wish to prove that only certain combinations will be supported by clients.
-
-
-See {{appdx-creatingExplicitCombinations}} for guidance on creating and registering OIDs for specific explicit combinations.
-
-For explicit algorithms, it is not necessary to carry a CompositeParams with the list of component algorithms in the signature algorithm parameters because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in [RFC8017]. {{sec-composite-sig-structs}} defines `PARAMS ANY DEFINED BY ALGORITHM` so that explicit algorithms may define params as ABSENT, use `CompositeParams` defined in {{sec-generic-composite}} or use any other encoding that is appropriate.
-
-In this variant, the signature is encoded as defined in {{sec-composite-sig-structs}}, however the sa-CompositeSignature.identifier SHALL be an OID which is registered to represent a specific combination of component signature algorithms. See {{appdx-examples}} for examples.
-
-## sa-Dilithium3-RSA-PKCS15-SHA256 {#sec-sa-Dilithium3-RSA-PKCS15-SHA256}
-
-IDENTIFIER: The following object identifier represents the sa-Dilithium3-RSA-PKCS15-SHA256
-   signature algorithm:
-   
-   
-~~~ asn.1
-   sa-Dilithium3-RSA OBJECT IDENTIFIER ::= {
-     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-     algorithm(80) ExplicitComposite(5) SignatureAlg(1) id-Dilithium3-SHA256withRSA(1) }
-~~~ 
-
-      EDNOTE: this is a temporary OID for the purposes of prototyping.
-      We are requesting IANA to assign a permanent OID, see Section 7.
-
-VALUE:  The sa-Dilithium3-SHA256withRSA Composite Signature Value is defined as follows:
-
-~~~ asn.1
-   SEQUENCE  {
-        signatureValue     BIT STRING(TBDDilithium3Signature),
-        signatureValue     BIT STRING(sha256WithRSAEncryption)
-   }
-~~~
-
-PARAMS:  The sa-Dilithium3-SHA256withRSA composite signature algorithm parameters MUST be defined as follows:
-
-~~~ asn.1
-   SEQUENCE  {
-        algorithm  AlgorithmIdentifier {
-             algorithm id-dilithium3TBD
-         },
-        algorithm  AlgorithmIdentifier {
-             algorithm id-sha256WithRSAEncryption
-         }
-   }
-~~~
-   
-   
- where id-dilithium3TBD is defined in [I-D.ietf-lamps-dilithium-certificates]
-and sha256WithRSAEncryption is defined in [RFC5754]
-   
-
-PUBLIC-KEYS:  The public key for use with sa-Dilithium3-SHA256withRSA MUST be of type id-Dilithium3-RSA 
-
-
-TODO: What to do about hash functions? Does Dilithium3 specify a hash function, or do we need to specify one?
-
-TODO: What to do about pre-hashing? Cryptographic modules prefer to receive a hash of the message rather than the entire message. However, Dilithium starts with a hash of the message pre-pended with the public key `mu := CRH( tr || m )` which provides domain-separation per public key. Perhaps the right answer is that `mu` is also the hash value to be signed by ECDSA?
-
-
-## sa-Dilithium3-ECDSA-P256-SHA256 {#sec-sa-Dilithium3-ECDSA-P256-SHA256}
-
-IDENTIFIER: The following object identifier represents the sa-Dilithium3-ECDSA-P256-SHA256
-   signature algorithm:
-   
-   
-~~~ asn.1
-   sa-Dilithium3-SHA256withECDSA OBJECT IDENTIFIER ::= {
-     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-     algorithm(80) ExplicitComposite(5) SignatureAlg(1) id-Dilithium3-ECDSA-P256-SHA256(2) }
-~~~ 
-
-      EDNOTE: this is a temporary OID for the purposes of prototyping.
-      We are requesting IANA to assign a permanent OID, see Section 7.
-
-VALUE:  The sa-Dilithium3-SHA256withECDSA Composite Signature Value is defined as follows:
-
-~~~ asn.1
-   SEQUENCE  {
-        signatureValue     BIT STRING(TBDDilithium3Signature),
-        signatureValue     BIT STRING(ecdsa-with-SHA256)
-   }
-~~~
-
-PARAMS:  The sa-Dilithium3-SHA256withECDSA composite signature algorithm parameters MUST be defined as follows:
-
-~~~ asn.1
-   SEQUENCE  {
-        algorithm  AlgorithmIdentifier {
-             algorithm id-dilithium3TBD
-         },
-        algorithm  AlgorithmIdentifier {
-             algorithm ecdsa-with-SHA256
-         }
-   }
-~~~
-   
-   
- where id-dilithium3TBD is defined in [I-D.ietf-lamps-dilithium-certificates]
-and ecdsa-with-SHA256 is defined in [RFC5754]
-   
-PUBLIC-KEYS:  The public keys for use with sa-Dilithium3-SHA256withECDSA MUST be of type id-Dilithium3-ECDSA-P256 or id-Dilithium3-ECDSA-brainpoolP256r1
-
-
-## sa-Dilithium3-ECDSA-brainpoolP256r1-SHA256 {#sec-sa-Dilithium3-ECDSA-brainpoolP256r1-SHA256}
-
-
-
-
-## sa-Dilithium3-Ed25519 {#sec-sa-Dilithium3-Ed25519}
-
-IDENTIFIER: The following object identifier represents the sa-Dilithium3-Ed25519
-   signature algorithm:
-   
-   
-~~~ asn.1
-   sa-Dilithium3-Ed25519 OBJECT IDENTIFIER ::= {
-     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-     algorithm(80) ExplicitComposite(5) SignatureAlg(3) id-Dilithium3-Ed25519(4) }
-~~~ 
-
-      EDNOTE: this is a temporary OID for the purposes of prototyping.
-      We are requesting IANA to assign a permanent OID, see Section 7.
-
-VALUE:  The sa-Dilithium3-Ed25519 Composite Signature Value is defined as follows:
-
-~~~ asn.1
-   SEQUENCE  {
-        signatureValue     BIT STRING(TBDDilithium3Signature),
-        signatureValue     BIT STRING(id-Ed25519)
-   }
-~~~
-
-PARAMS:  The sa-Dilithium3-Ed25519 composite signature algorithm parameters MUST be defined as follows:
-
-~~~ asn.1
-   SEQUENCE  {
-        algorithm  AlgorithmIdentifier {
-             algorithm id-dilithium3TBD
-         },
-        algorithm  AlgorithmIdentifier {
-             algorithm id-Ed25519
-         }
-   }
-~~~
-
-where TBDDilithium3Signature is defined in [I-D.ietf-lamps-dilithium-certificates]
-and Ed25519 is defined in [RFC8410]
-   
-PUBLIC-KEYS:  The public keys for use with sa-Dilithium3-Ed25519 MUST be of type id-Dilithium3-Ed25519
-
-
-## sa-Dilithium5-ECDSA-P384-SHA384 {#sec-sa-Dilithium5-ECDSA-P384-SHA384}
-
-
-## sa-sa-Dilithium5-ECDSA-brainpoolP384r1-SHA384 {#sec-sa-Dilithium5-ECDSA-brainpoolP384r1-SHA384}
-
-
-## sa-Dilithium5-Ed448 {#sec-sa-Dilithium5-Ed448}
-
-IDENTIFIER: The following object identifier represents the sa-Dilithium5-Ed448
-   signature algorithm:
-   
-   
-~~~ asn.1
-   sa-Dilithium5-Ed448 OBJECT IDENTIFIER ::= {
-     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-     algorithm(80) ExplicitComposite(5) SignatureAlg(3) id-Dilithium5-Ed448(7) }
-~~~ 
-
-      EDNOTE: this is a temporary OID for the purposes of prototyping.
-      We are requesting IANA to assign a permanent OID, see Section 7.
-
-VALUE:  The sa-Dilithium5-Ed448 Composite Signature Value is defined as follows:
-
-~~~ asn.1
-   SEQUENCE  {
-        signatureValue     BIT STRING(TBDDilithium5Signature),
-        signatureValue     BIT STRING(id-Ed448)
-   }
-~~~
-
-PARAMS:  The sa-Dilithium5-Ed448 composite signature algorithm parameters MUST be defined as follows:
-
-~~~ asn.1
-   SEQUENCE  {
-        algorithm  AlgorithmIdentifier {
-             algorithm id-dilithium5TBD
-         },
-        algorithm  AlgorithmIdentifier {
-             algorithm id-Ed448
-         }
-   }
-~~~
-
-where id-dilithium5TBD is defined in [I-D.ietf-lamps-dilithium-certificates]
-and id-Ed448 is defined in [RFC8410]
-   
-PUBLIC-KEYS:  The public keys for use with sa-Dilithium5-Ed448 MUST be of type Dilithium5-Ed448
-
-
-## sa-Falcon512-ECDSA-P256-SHA256 {#sec-sa-Falcon512-ECDSA-P256-SHA256}
-
-## sa-Falcon512-ECDSA-brainpoolP256r1-SHA256 {#sec-sa-Falcon512-ECDSA-brainpoolP256r1-SHA256}
-
-
-
-## sa-Falcon512-Ed25519 {#sec-sa-Falcon512-Ed25519}
-
-
-
-## sa-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256 {#sec-sa-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256}
-
-## sa-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256 {#sec-sa-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256}
-
-## sa-SPHINCSplusSHA256-Ed25519 {#sec-sa-SPHINCSplusSHA256-Ed25519}
-
-
-## sa-Dilithium3-RSA-PSS-SHA256 {#sec-sa-Dilithium3-RSA-PSS-SHA256}
-
-
-## sa-alg-composite (Generic Composite Signatures) {#sec-generic-composite}
-
-The id-alg-composite object identifier is used for identifying a generic composite signature. This algorithm allows arbitrary combinations of component signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or standardized. This identifier MUST be used in sa-CompositeSignature.identifier.
-
-~~~ asn.1
-id-alg-composite OBJECT IDENTIFIER ::= {
-    iso(1)  identified-organization(3) dod(6) internet(1) private(4)
-    enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) }
-~~~
-EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see {{sec-iana}}.
-
-
-The following algorithm parameters MUST be included:
-
-~~~ asn.1
-CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
-~~~
-{: artwork-name="CompositeSignatureParams-asn.1-structures"}
-
-The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.
-
-
-The motivation for this variant is primarily for prototyping work prior to the standardization of algorithm identifiers for explicit combinations of algorithms. However, the authors envision that this variant will remain relevant beyond full standardization for example in environments requiring very high levels of crypto agility, for example where clients support a large number of algorithms or where a large number of keys will be used at a time and it is therefore prohibitive to define algorithm identifiers for every combination of pairs, triples, quadruples, etc of algorithms.
-
-
-## Summary of Explicit Composite Signature Algorithms
-
-This section summarizes the list of explicit composite Signature algorithms by the key and signature OID and the two component algorithms which make up the explicit composite algorithm.  These are denoted by First Signature Alg, and Second Signature Alg.  
-
-| Composite Key and Signature AlgorithmID | OID | First Signature Alg |  Second Signature Alg |
+| Composite Key and Signature AlgorithmID | OID | First Signature Alg |  Second Signature Alg | 
 | ----------- | ----------- | ----------- |  ----------- | 
-| id-Dilithium3-RSA-PKCS15-SHA256         | &lt;CompSig&gt;.1 | Dilithium3 | SHA256WithRSAEncryption |
-| id-Dilithium3-ECDSA-P256-SHA256            | &lt;CompSig&gt;.2 | Dilithium3 | SHA256withECDSA |
-| id-Dilithium3-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.3 | Dilithium3 | SHA256withECDSA |
-| id-Dilithium3-Ed25519               | &lt;CompSig&gt;.4 | Dilithium3 | Ed25519 |
-| id-Dilithium5-ECDSA-P384-SHA384            | &lt;CompSig&gt;.5 | Dilithium5 | SHA384withECDSA |   |
-| id-Dilithium5-ECDSA-brainpoolP384r1-SHA384 | &lt;CompSig&gt;.6 | Dilithium5 | SHA384withECDSA |
-| id-Dilithium5-Ed448                 | &lt;CompSig&gt;.7 | Dilithium5 | Ed448 |
-| id-Falcon512-ECDSA-P256             | &lt;CompSig&gt;.8 | Falcon512 | SHA256withECDSA | 
-| id-Falcon512-ECDSA-brainpoolP256r1-SHA256  | &lt;CompSig&gt;.9 | Falcon512 | SHA256withECDSA | 
-| id-Falcon512-Ed25519                       | &lt;CompSig&gt;.10| Falcon512 | Ed25519|   |
-| id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256  | &lt;CompSig&gt;.11| SPHINCSplusSHA256128sSimple | SHA256withECDSA |
-| id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.12 | SPHINCSplusSHA256128sSimple | SHA256withECDSA |
-| id-SPHINCSplusSHA256128sSimple-Ed25519               | &lt;CompSig&gt;.13 | SPHINCSplusSHA256128sSimple | Ed25519 |
-| id-Dilithium3-RSA-PSS-SHA256                   | &lt;CompSig&gt;.14 | Dilithium3 | SHA256WithRSAPSS |
+| id-Dilithium3-RSA-PKCS15-SHA256         | &lt;CompSig&gt;.1 | Dilithium3TBD | SHA256WithRSAEncryption |
+| id-Dilithium3-ECDSA-P256-SHA256            | &lt;CompSig&gt;.2 | Dilithium3TBD | SHA256withECDSA | 
+| id-Dilithium3-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.3 | Dilithium3TBD | SHA256withECDSA |  
+| id-Dilithium3-Ed25519               | &lt;CompSig&gt;.4 | Dilithium3TBD | Ed25519 | 
+| id-Dilithium5-ECDSA-P384-SHA384            | &lt;CompSig&gt;.5 | Dilithium5TBD | SHA384withECDSA | 
+| id-Dilithium5-ECDSA-brainpoolP384r1-SHA384 | &lt;CompSig&gt;.6 | Dilithium5TBD | SHA384withECDSA | 
+| id-Dilithium5-Ed448                 | &lt;CompSig&gt;.7 | Dilithium5TBD | Ed448 | 
+| id-Falcon512-ECDSA-P256             | &lt;CompSig&gt;.8 | Falcon512TBD | SHA256withECDSA | 
+| id-Falcon512-ECDSA-brainpoolP256r1-SHA256  | &lt;CompSig&gt;.9 | Falcon512TBD | SHA256withECDSA | 
+| id-Falcon512-Ed25519                       | &lt;CompSig&gt;.10| Falcon512TBD | Ed25519| 
+| id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256  | &lt;CompSig&gt;.11| &lt;SPHINCS&gt; | SHA256withECDSA | 
+| id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.12 | &lt;SPHINCS&gt; | SHA256withECDSA | 
+| id-SPHINCSplusSHA256128sSimple-Ed25519               | &lt;CompSig&gt;.13 | &lt;SPHINCS&gt; | Ed25519 |
+| id-Dilithium3-RSA-PSS-SHA256                   | &lt;CompSig&gt;.14 | Dilithium3TBD | SHA256WithRSAPSS | 
+| id-composite-signature  | &lt;CompSig&gt;.14 | Dilithium3TBD | SHA256WithRSAPSS | 
+{: #tab-composite-sigs title="Explicit Composite Signature Algorithms"}
+
+The table above contains everything needed to implement the listed explicit composite algorithms. See the ASN.1 module in section {{sec-asn1-module}} for the explicit
+definitions of the above Composite signature algorithms.   
+
+These combinations were chosen according to the following rough guidelines:
+
+1. One RSA combination is provided (but RSA modulus size not mandated), matched with NIST PQC Level 3 algorithms.
+1. NIST [RFC6090], Edwards [RFC7748], and Brainpool [RFC5639] elliptic curve algorithms are provided. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.
+1. NIST level 1 candidates (Falcon512 and Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.
+1. A single SPHINCS+ combination is provided for use cases that wish to put hash-based signatures into hybrid combination.
+1. A generic composite OID is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.The authors wish to note that although the CompositePublicKey and CompositePrivateKey structures are defined in such a way as to easily allow 3 or more component keys, it was decided at the time of writing to only specify explicit pairs. The generic composite allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.
 
 
 # Composite Signature Processes {#sec-composite-signature-algorithm}
@@ -634,13 +383,13 @@ Signature Generation Process:
 ~~~
 {: artwork-name="alg-composite-sig-gen"}
 
-Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePrivateKey and CompositeParams structures. It is also possible to generate a composite signature that combines signatures from distinct keys stored in separate software or hardware keystores. Variations in the process to accommodate particular private key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
+Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePrivateKey and CompositeSignatureParams structures. It is also possible to generate a composite signature that combines signatures from distinct keys stored in separate software or hardware keystores. Variations in the process to accommodate particular private key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
 
 Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.
 
 A composite signature MUST produce, and include in the output, a signature value for every component key in  and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2, etc. The authors recognize that there may be valid use cases for "subset signature generation"; see {{sec-subset-sig-gen}} for further discussion of security implications, and {{sec-backwards-compat}} for further discussion of backwards compatibility implications.
 
-For security when using a generic composite signature algorithm as defined in {{sec-generic-composite}}, the list of component signature algorithms A1, A2, .., An, which may be carried in a CompositeParams object, SHOULD be included in the signed message M to prevent an attacker from substituting a weaker algorithm which is compatible with the same public key. This attack is not unique or new to the composite format.
+For security when using a generic composite signature algorithm, the list of component signature algorithms A1, A2, .., An, which may be carried in a CompositeSignatureParams object, SHOULD be included in the signed message M to prevent an attacker from substituting a weaker algorithm which is compatible with the same public key. This attack is not unique or new to the composite format.
 
 
 ## Composite Signature Verification Process {#sec-comp-sig-verify}
@@ -693,7 +442,7 @@ Signature Verification Procedure::
 ~~~
 {: artwork-name="alg-sig-verif"}
 
-Note on composite inputs: the method of providing the list of component keys, algorithms and signatures is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey, CompositeParams, and compositesignaturevalue structures. It is also possible to verify a composite signature where the component public verification keys belong, for example, to separate X.509 certificates or cryptographic modules. Variations in the process to accommodate particular public verification key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
+Note on composite inputs: the method of providing the list of component keys, algorithms and signatures is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey, CompositeSignatureParams, and compositesignaturevalue structures. It is also possible to verify a composite signature where the component public verification keys belong, for example, to separate X.509 certificates or cryptographic modules. Variations in the process to accommodate particular public verification key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
 
 Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
 
@@ -754,8 +503,6 @@ For non-negotiated protocols, the details for obtaining backwards compatibility 
 EDNOTE: This section probably does not belong in this draft. It probably belongs instead in the core Dilithium / Falcon specs such as {{I-D.massimo-lamps-pq-sig-certificates}}.
 
 In many contexts, a signature or a verification operation is performed inside a cryptographic module where it is desirable to provide a message digest to the cryptographic module rather than streaming the entire message (which in some cases can be very large). 
-
-{{sec-cons-hash-then-sign}} discusses security considerations around the traditional "hash-then-sign paradigm" where a simple hash of the message is taken and then the hash value is signed. In general this is not desirable with the Dilithium and Falcon algorithms.
 
 This means that composite signature implementations MUST NOT perform a single message digest operation and then provide that digest value to all component algorithms.
 
@@ -874,41 +621,6 @@ Risks:
 - Moreover, verifying multiple algorithms provides security even in the event that one of the algorithms has already been broken, but knowledge of the break has not been made public yet.
 
 
-## Do not hash-then-sign {#sec-cons-hash-then-sign}
-
-In the hash-then-sign paradigm, the message to be signed is hashed externally to the signature primitive, and then the hash value is signed.
-
-The hash-then-sign paradigm is required, for example, with RSA signatures in order to sign messages larger than the RSA modulus. Hash-then-sign also gives performance and bandwidth benefits, for example, when the signature is performed by a networked cryptographic appliance since you only need to send a small hash value rather than streaming the entire message.
-
-With Dilithium and Falcon signatures it is not recommended to pre-hash for the following reasons:
-
-
-The Dilithium construction includes 
-
-~~~
-Sign(sk,M):
-10: mu \in {0, 1}^384 := CRH(tr || M)
-~~~
-
-where `CRH` is any collision-resistant hash function and `tr` is a component of the secret key. This provides strong security against pre-computed collision attacks since an attacker has no knowledge of `tr` and provides per-key hash-domain separation of the message to be signed.
-
-
-The Falcon construction includes 
-
-~~~
-Sign (m, sk, beta^2):
-1: r <- {0, 1}^320 uniformly
-2: c <- HashToPoint(r || m, q, n)
-~~~
-
-where `HashToPoint` is a SHAKE-256-based construct. This provides strong security against pre-computed collision attacks since an attacker has no a-priori knowledge of `r` and provides per-signature hash-domain separation of the message to be signed.
-
-If the message to be signed is pre-hashed, for example `m0 = SHA256(m)` and then m0 provided to Dilithium or Falcon to sign, then you have re-introduced the collision problem since two messages m1 and m2 where SHA256(m1) == SHA256(m2) will result in a single Falcon or Dilithium signature value which is simultaneously valid for both m1 and m2. This removes the extra collision resistance built in to the Dilithium and Falcon primitives and reduces it to the collision resistance strength of the underlying hash function. For this reason it is in general not recommended to pre-hash when using Dilithium or Falcon except in cases where the implementor is comfortable with this reduction in security.
-
-Therefore, for the purpose of interoperability of composite signatures, signature alogrithms defined in this version of this document do not pre-hash messages for Dilithium and Falcon. If pre-hashed versions of these signatures are also desired, then separate signature algorithms will need to be defined.
-
-EDNOTE: Sync this with the authors of the Dilithium and Falcon signatures specs for LAMPS.
-
 
 <!-- End of Security Considerations section -->
 
@@ -925,12 +637,6 @@ For content commitment use-cases, such as legally-binding non-repudiation, the s
 For now we have removed combiner modes (AND, OR, KofN) from this draft, but we are still discussing how to incorporate this for the cases where it is needed (maybe a X.509 v3 extension, or a signature algorithm param).
 
 
-# Creating explicit combinations {#appdx-creatingExplicitCombinations}
-
-The following ASN.1 Information Objects may be useful in defining and parsing explicit pairs of signature algorithms. 
-
-... TODO ... copy & adapt from the keys draft.
-
 
 # Examples {#appdx-examples}
 
@@ -943,7 +649,7 @@ TODO
 
 TODO
 
-# ASN.1 Module
+# ASN.1 Module {#sec-asn1-module}
 
 ~~~ asn.1
 
@@ -973,7 +679,13 @@ IMPORTS
     FROM AsymmetricKeyPackageModuleV1
       { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
         pkcs-9(9) smime(16) modules(0)
-        id-mod-asymmetricKeyPkgV1(50) } ;
+        id-mod-asymmetricKeyPkgV1(50) } 
+        
+  pk-Composite
+         FROM Composite-Keys-2023
+           {  id-composite-key OBJECT IDENTIFIER ::= {
+              joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+              Algorithm(80) Composite(4) CompositeKey(1) };      
 
 --
 -- Object Identifiers
@@ -984,6 +696,7 @@ id-alg-composite OBJECT IDENTIFIER ::= { TBD }
 --
 -- Public Key
 --
+-- TODO move to public keys draft
 
 pk-Composite PUBLIC-KEY ::= {
     IDENTIFIER id-alg-composite
@@ -1000,25 +713,9 @@ CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
 -- Signature Algorithm
 --
 
--- sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
---    IDENTIFIER id-alg-composite
---    VALUE CompositeSignatureValue
---    PARAMS TYPE CompositeParams ARE required
---    PUBLIC-KEYS { pk-Composite }
---    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
+-- CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 
-
--- sa-CompositeSignature SIGNATURE-ALGORITHM {OBJECT IDENTIFIER : id, EXPLICIT-COMPOSITE-SIGNATURE-VALUE : sigvalue, EXPLICIT-COMPOSITE-SIGNATURE-PARAMS : sigparams, } ::= {
---    IDENTIFIER id,
---    VALUE sigvalue, 
---    PARAMS TYPE CompositeParams ARE required
---    PUBLIC-KEYS { pk-Composite }
---    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-
-
--- CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
-
--- CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
+CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF OCTET STRING
 
 CompositePublicKeyValue{FirstPublicKeyValue, SecondPublicKeyValue} ::= SEQUENCE { 
       publickey1 FirstPublicKeyValue , 
@@ -1030,20 +727,16 @@ CompositeSignatureParams{FirstSignatureParams, SecondSignatureParams} ::= SEQUEN
       signatureparms2 SecondSignatureParams
 }
 
-CompositeSignatureValue{FirstSignatureValue, SecondSignatureValue}  ::= SEQUENCE {
-      signaturevalue1 FirstSignatureValue,
-      signaturevalue2 SecondSignatureValue
-}
-
+-- TODO Add to Keys draft, and import in this draft
 COMPOSITE-PUBLIC-KEY{Id, PublicKeyValue} ::= PUBLIC-KEY {
      IDENTIFIER Id
      KEY PublicKeyValue 
      PARAMS ARE absent
 } 
 
-COMPOSITE-SIGNATURE-ALGORITHM{Id, PublicKeyValue, SignatureParams, SignatureValue} ::= SIGNATURE-ALGORITHM {
+COMPOSITE-SIGNATURE-ALGORITHM{Id, PublicKeyValue, SignatureParams} ::= SIGNATURE-ALGORITHM {
     IDENTIFIER Id
-    VALUE SignatureValue
+    VALUE CompositeSignatureValue
     PARAMS TYPE SignatureParams ARE Optional
     PUBLIC-KEYS {PublicKeyValue}
 }
@@ -1051,7 +744,7 @@ COMPOSITE-SIGNATURE-ALGORITHM{Id, PublicKeyValue, SignatureParams, SignatureValu
 
 -- Dilithium3-RSA Specification
 
-sa-Dilithium3-RSA OBJECT IDENTIFIER ::= {
+id-Dilithium3-RSA OBJECT IDENTIFIER ::= {
      joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
      algorithm(80) explicitcomposite(5) signatureAlg(1) id-Dilithium3-SHA256withRSA(1) }
 
@@ -1059,11 +752,18 @@ Dilithium3RSAPKCS15PublicKeyValue ::= CompositePublicKeyValue {DilithiumPublicKe
 
 Dilithium3RSAPKCS15SignatureParms ::= CompositeSignatureParams{DilithiumTBD,Sha256WithRSAEncryption}  
 
-Dilithium3RSASignatureValue ::= CompositeSignatureValue {OCTET STRING,OCTET STRING}
-
 Dilithium3RSAPublicKey ::= COMPOSITE-PUBLIC-KEY{Dilithium3RSA,Dilithium3RSAPKCS15PublicKeyValue}
 
-Dilithium3RSASignature ::= COMPOSITE-SIGNATURE-ALGORITHM{Dilithium3RSA,Dilithium3RSAPKCS15PublicKeyValue,Dilithium3RSAPKCS15SignatureParms,Dilithium3RSASignatureValue }
+sa-Dilithium3RSASignature ::= COMPOSITE-SIGNATURE-ALGORITHM{Dilithium3RSA,Dilithium3RSAPKCS15PublicKeyValue,Dilithium3RSAPKCS15SignatureParms}
+
+-- Generic Composite definition
+sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
+    IDENTIFIER TYPE id-alg-composite
+    VALUE CompositeSignatureValue
+    PARAMS TYPE CompositeSignatureParams ARE required
+    PUBLIC-KEYS { pk-Composite }
+ }
+
 
 <CODE ENDS>
 

@@ -6,13 +6,12 @@
 <meta content="initial-scale=1.0" name="viewport">
 <title>Composite Signatures For Use In Internet PKI</title>
 <meta content="Mike Ounsworth" name="author">
-<meta content="John GRay" name="author">
+<meta content="John Gray" name="author">
 <meta content="Massimiliano Pala" name="author">
 <meta content='
        The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs. 
-       Cautious implementer may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as "dual", and for encryption key establishment this as referred to as "hybrid". This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. 
-       EDNOTE: the terms "dual" and "hybrid" are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly. 
-       This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. The generic composite variant is defined which allows arbitrary combinations of signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or pre-agreed. The explicit variant is also defined which allows for a set of signature algorithm identifier OIDs to be registered together as an explicit composite signature algorithm and assigned an OID. 
+       Cautious implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected using either a Post-Quantum / Traditional Hybrid, Post-Quantum / Post-Quantum Hybrid, or combinations thereof. This document, and its companions, defines a specific instantiation of hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. 
+       This document defines the structures CompositeSignatureValue, and CompositeSignatureParams, which are sequences of the respective structure for each component algorithm. The explicit variant is defined which allows for a set of signature algorithm identifier OIDs to be registered together as an explicit composite signature algorithm and assigned an OID.  The generic composite variant is also defined which allows arbitrary combinations of signature algorithms to be used in the CompositeSignatureValue and CompositeSignatureParams structures without needing the combination to be pre-registered or pre-agreed. 
        This document is intended to be coupled with corresponding documents that define the structure and semantics of composite public and private keys and encryption  , however may also be used with non-composite keys, such as when a protocol combines multiple certificates into a single cryptographic operation. 
        
 
@@ -1200,11 +1199,11 @@ li > p:last-of-type {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">PQ Composite Sigs</td>
-<td class="right">February 2023</td>
+<td class="right">March 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Ounsworth, et al.</td>
-<td class="center">Expires 20 August 2023</td>
+<td class="center">Expires 3 September 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1217,12 +1216,12 @@ li > p:last-of-type {
 <dd class="internet-draft">draft-ounsworth-pq-composite-sigs-08</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-02-16" class="published">16 February 2023</time>
+<time datetime="2023-03-02" class="published">2 March 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-08-20">20 August 2023</time></dd>
+<dd class="expires"><time datetime="2023-09-03">3 September 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1244,10 +1243,9 @@ li > p:last-of-type {
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-<p id="section-abstract-2">Cautious implementer may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as "dual", and for encryption key establishment this as referred to as "hybrid". This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
-<p id="section-abstract-3">EDNOTE: the terms "dual" and "hybrid" are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
-<p id="section-abstract-4">This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. The generic composite variant is defined which allows arbitrary combinations of signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or pre-agreed. The explicit variant is also defined which allows for a set of signature algorithm identifier OIDs to be registered together as an explicit composite signature algorithm and assigned an OID.<a href="#section-abstract-4" class="pilcrow">¶</a></p>
-<p id="section-abstract-5">This document is intended to be coupled with corresponding documents that define the structure and semantics of composite public and private keys and encryption <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, however may also be used with non-composite keys, such as when a protocol combines multiple certificates into a single cryptographic operation.<a href="#section-abstract-5" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">Cautious implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected using either a Post-Quantum / Traditional Hybrid, Post-Quantum / Post-Quantum Hybrid, or combinations thereof. This document, and its companions, defines a specific instantiation of hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-3">This document defines the structures CompositeSignatureValue, and CompositeSignatureParams, which are sequences of the respective structure for each component algorithm. The explicit variant is defined which allows for a set of signature algorithm identifier OIDs to be registered together as an explicit composite signature algorithm and assigned an OID.  The generic composite variant is also defined which allows arbitrary combinations of signature algorithms to be used in the CompositeSignatureValue and CompositeSignatureParams structures without needing the combination to be pre-registered or pre-agreed.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
+<p id="section-abstract-4">This document is intended to be coupled with corresponding documents that define the structure and semantics of composite public and private keys and encryption <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, however may also be used with non-composite keys, such as when a protocol combines multiple certificates into a single cryptographic operation.<a href="#section-abstract-4" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1268,7 +1266,7 @@ li > p:last-of-type {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 August 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 3 September 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1318,71 +1316,21 @@ li > p:last-of-type {
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-compositesignaturevalue-2" class="internal xref">CompositeSignatureValue</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-sa-compositesignature-2" class="internal xref">sa-CompositeSignature</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-composite-signature-paramete" class="internal xref">Composite Signature Parameters</a></p>
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-compositesignaturevalue-2" class="internal xref">CompositeSignatureValue</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
-                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-encoding-rules-2" class="internal xref">Encoding Rules</a></p>
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-compositesignatureparameters" class="internal xref">CompositeSignatureParameters</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-encoding-rules-2" class="internal xref">Encoding Rules</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-algorithm-identifiers-2" class="internal xref">Algorithm Identifiers</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-sa-compositesignature-asn1-s" class="internal xref">sa-CompositeSignature ASN.1 structure</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-sa-dilithium3-rsa-pkcs15-sha" class="internal xref">sa-Dilithium3-RSA-PKCS15-SHA256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
-                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-sa-dilithium3-ecdsa-p256-sha" class="internal xref">sa-Dilithium3-ECDSA-P256-SHA256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
-                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-sa-dilithium3-ecdsa-brainpoo" class="internal xref">sa-Dilithium3-ECDSA-brainpoolP256r1-SHA256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5">
-                <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="auto internal xref">5.5</a>.  <a href="#name-sa-dilithium3-ed25519-2" class="internal xref">sa-Dilithium3-Ed25519</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.6">
-                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="auto internal xref">5.6</a>.  <a href="#name-sa-dilithium5-ecdsa-p384-sha" class="internal xref">sa-Dilithium5-ECDSA-P384-SHA384</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.7">
-                <p id="section-toc.1-1.5.2.7.1"><a href="#section-5.7" class="auto internal xref">5.7</a>.  <a href="#name-sa-sa-dilithium5-ecdsa-brain" class="internal xref">sa-sa-Dilithium5-ECDSA-brainpoolP384r1-SHA384</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.8">
-                <p id="section-toc.1-1.5.2.8.1"><a href="#section-5.8" class="auto internal xref">5.8</a>.  <a href="#name-sa-dilithium5-ed448-2" class="internal xref">sa-Dilithium5-Ed448</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.9">
-                <p id="section-toc.1-1.5.2.9.1"><a href="#section-5.9" class="auto internal xref">5.9</a>.  <a href="#name-sa-falcon512-ecdsa-p256-sha2" class="internal xref">sa-Falcon512-ECDSA-P256-SHA256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.10">
-                <p id="section-toc.1-1.5.2.10.1"><a href="#section-5.10" class="auto internal xref">5.10</a>. <a href="#name-sa-falcon512-ecdsa-brainpool" class="internal xref">sa-Falcon512-ECDSA-brainpoolP256r1-SHA256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.11">
-                <p id="section-toc.1-1.5.2.11.1"><a href="#section-5.11" class="auto internal xref">5.11</a>. <a href="#name-sa-falcon512-ed25519-2" class="internal xref">sa-Falcon512-Ed25519</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.12">
-                <p id="section-toc.1-1.5.2.12.1"><a href="#section-5.12" class="auto internal xref">5.12</a>. <a href="#name-sa-sphincsplussha256128ssimpl" class="internal xref">sa-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.13">
-                <p id="section-toc.1-1.5.2.13.1"><a href="#section-5.13" class="auto internal xref">5.13</a>. <a href="#name-sa-sphincsplussha256128ssimple" class="internal xref">sa-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.14">
-                <p id="section-toc.1-1.5.2.14.1"><a href="#section-5.14" class="auto internal xref">5.14</a>. <a href="#name-sa-sphincsplussha256-ed25519" class="internal xref">sa-SPHINCSplusSHA256-Ed25519</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.15">
-                <p id="section-toc.1-1.5.2.15.1"><a href="#section-5.15" class="auto internal xref">5.15</a>. <a href="#name-sa-dilithium3-rsa-pss-sha256" class="internal xref">sa-Dilithium3-RSA-PSS-SHA256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.16">
-                <p id="section-toc.1-1.5.2.16.1"><a href="#section-5.16" class="auto internal xref">5.16</a>. <a href="#name-sa-alg-composite-generic-com" class="internal xref">sa-alg-composite (Generic Composite Signatures)</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.17">
-                <p id="section-toc.1-1.5.2.17.1"><a href="#section-5.17" class="auto internal xref">5.17</a>. <a href="#name-summary-of-explicit-composit" class="internal xref">Summary of Explicit Composite Signature Algorithms</a></p>
-</li>
-            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-composite-signature-processe" class="internal xref">Composite Signature Processes</a></p>
@@ -1440,9 +1388,6 @@ li > p:last-of-type {
 </li>
                 </ul>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.3">
-                <p id="section-toc.1-1.11.2.3.1"><a href="#section-11.3" class="auto internal xref">11.3</a>.  <a href="#name-do-not-hash-then-sign-2" class="internal xref">Do not hash-then-sign</a></p>
-</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
@@ -1465,35 +1410,32 @@ li > p:last-of-type {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
-            <p id="section-toc.1-1.14.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-creating-explicit-combinatio" class="internal xref">Creating explicit combinations</a></p>
+            <p id="section-toc.1-1.14.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-examples-2" class="internal xref">Examples</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.1">
+                <p id="section-toc.1-1.14.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-generic-composite-signature-" class="internal xref">Generic Composite Signature Examples</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2">
+                <p id="section-toc.1-1.14.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-explicit-composite-signature-e" class="internal xref">Explicit Composite Signature Examples</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
-            <p id="section-toc.1-1.15.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-examples-2" class="internal xref">Examples</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.1">
-                <p id="section-toc.1-1.15.2.1.1"><a href="#appendix-C.1" class="auto internal xref">C.1</a>.  <a href="#name-generic-composite-signature-" class="internal xref">Generic Composite Signature Examples</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.2">
-                <p id="section-toc.1-1.15.2.2.1"><a href="#appendix-C.2" class="auto internal xref">C.2</a>.  <a href="#name-explicit-composite-signature" class="internal xref">Explicit Composite Signature Examples</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.15.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-asn1-module-2" class="internal xref">ASN.1 Module</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16">
-            <p id="section-toc.1-1.16.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-asn1-module-2" class="internal xref">ASN.1 Module</a></p>
+            <p id="section-toc.1-1.16.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-intellectual-property-consid" class="internal xref">Intellectual Property Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17">
-            <p id="section-toc.1-1.17.1"><a href="#appendix-E" class="auto internal xref">Appendix E</a>.  <a href="#name-intellectual-property-consid" class="internal xref">Intellectual Property Considerations</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18">
-            <p id="section-toc.1-1.18.1"><a href="#appendix-F" class="auto internal xref">Appendix F</a>.  <a href="#name-contributors-and-acknowledge" class="internal xref">Contributors and Acknowledgements</a></p>
+            <p id="section-toc.1-1.17.1"><a href="#appendix-E" class="auto internal xref">Appendix E</a>.  <a href="#name-contributors-and-acknowledge" class="internal xref">Contributors and Acknowledgements</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.1">
-                <p id="section-toc.1-1.18.2.1.1"><a href="#appendix-F.1" class="auto internal xref">F.1</a>.  <a href="#name-making-contributions-2" class="internal xref">Making contributions</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17.2.1">
+                <p id="section-toc.1-1.17.2.1.1"><a href="#appendix-E.1" class="auto internal xref">E.1</a>.  <a href="#name-making-contributions-2" class="internal xref">Making contributions</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.19">
-            <p id="section-toc.1-1.19.1"><a href="#appendix-G" class="auto internal xref"></a><a href="#name-authors-addresses-2" class="internal xref">Authors' Addresses</a></p>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18">
+            <p id="section-toc.1-1.18.1"><a href="#appendix-F" class="auto internal xref"></a><a href="#name-authors-addresses-2" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1505,7 +1447,7 @@ li > p:last-of-type {
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-changes-in-version-08-2" class="section-name selfRef">Changes in version -08</a>
       </h2>
 <ul class="normal">
-<li class="normal" id="section-1-1.1">hash-then-sign, and external hashing<a href="#section-1-1.1" class="pilcrow">¶</a>
+<li class="normal" id="section-1-1.1">explicit composite combinations defined and ASN.1 module updated<a href="#section-1-1.1" class="pilcrow">¶</a>
 </li>
       </ul>
 </section>
@@ -1588,7 +1530,7 @@ li > p:last-of-type {
         <h3 id="name-composite-keys-2">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-composite-keys-2" class="section-name selfRef">Composite Keys</a>
         </h3>
-<p id="section-4.1-1">A composite signature MAY be associated with a composite public key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, but MAY also be associated with multiple public keys from different sources, for example multiple X.509 certificates, or multiple cryptographic modules. In the latter case, composite signatures MAY be used as the mechanism for carrying multiple signatures in a non-composite authentication mechanism such as those described in <span>[<a href="#I-D.becker-guthrie-noncomposite-hybrid-auth" class="cite xref">I-D.becker-guthrie-noncomposite-hybrid-auth</a>]</span>.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-1">A composite signature MAY be associated with a composite public key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, but MAY also be associated with multiple public keys from different sources, for example multiple X.509 certificates, or multiple cryptographic modules. In the latter case, composite signatures MAY be used as the mechanism for carrying multiple signatures in a non-composite hybrid authentication mechanism such as those described in <span>[<a href="#I-D.becker-guthrie-noncomposite-hybrid-auth" class="cite xref">I-D.becker-guthrie-noncomposite-hybrid-auth</a>]</span>.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <div id="key-usage-bits">
 <section id="section-4.1.1">
           <h4 id="name-key-usage-bits-2">
@@ -1615,46 +1557,110 @@ nonRepudiation;
 </div>
 </section>
 </div>
-<div id="sec-compositeSignatureValue">
+<div id="sec-composite-sig-structs">
 <section id="section-4.2">
-        <h3 id="name-compositesignaturevalue-2">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-compositesignaturevalue-2" class="section-name selfRef">CompositeSignatureValue</a>
+        <h3 id="name-sa-compositesignature-2">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-sa-compositesignature-2" class="section-name selfRef">sa-CompositeSignature</a>
         </h3>
-<p id="section-4.2-1">The output of the composite signature algorithm is the DER encoding of the following structure:<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-1">The ASN.1 algorithm object for a composite signature is:<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <div id="section-4.2-2">
 <pre class="lang-asn.1 sourcecode">
-CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
+sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
+    IDENTIFIER TYPE OBJECT IDENTIFIER
+    VALUE CompositeSignatureValue
+    PARAMS ANY DEFINED BY ALGORITHM
+    PUBLIC-KEYS { pk-Composite }
+    SMIME-CAPS ANY DEFINED BY ALGORITHM }
+}
 </pre><a href="#section-4.2-2" class="pilcrow">¶</a>
 </div>
-<p id="section-4.2-3">Where each BIT STRING within the SEQUENCE is a signature value produced by one of the component keys. It MUST contain one signature value produced by each component algorithm, and in the same order as in the associated CompositeParams object.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
-<p id="section-4.2-4">A CompositeSignatureValue MUST contain the same number of component signatures as the corresponding public and private keys, and the order of component signature values MUST correspond to the component public keys.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
-<p id="section-4.2-5">The choice of <code>SEQUENCE OF BIT STRING</code>, rather than for example a single BIT STRING containing the concatenated signature values, is to gracefully handle variable-length signature values by taking advantage of ASN.1's built-in length fields.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.2-3">The following sections will identify each of the required components listed above:<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">SIGNATURE-ALGORITHM element</th>
+              <th class="text-left" rowspan="1" colspan="1">Definition</th>
+              <th class="text-left" rowspan="1" colspan="1"> </th>
+              <th class="text-left" rowspan="1" colspan="1"> </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">IDENTIFIER</td>
+              <td class="text-left" rowspan="1" colspan="1">The Object ID used to identify the composite Signature Algorithm</td>
+              <td class="text-left" rowspan="1" colspan="1">Composite Key and Signature AlgorithmID</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">VALUE</td>
+              <td class="text-left" rowspan="1" colspan="1">The Sequence of BIT STRINGS for each component signature value</td>
+              <td class="text-left" rowspan="1" colspan="1">OCTET STRING of First</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">PARAMS</td>
+              <td class="text-left" rowspan="1" colspan="1">Signature parameters either declared ABSENT, or defined with a type and encoding</td>
+              <td class="text-left" rowspan="1" colspan="1">Parameters are optional</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">PUBLIC-KEYS</td>
+              <td class="text-left" rowspan="1" colspan="1">The composite key required to produce the composite signature</td>
+              <td class="text-left" rowspan="1" colspan="1">Composite Key and Signature AlgorithmID</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">SMIME_CAPS</td>
+              <td class="text-left" rowspan="1" colspan="1">Not needed for composite</td>
+              <td class="text-left" rowspan="1" colspan="1">N/A</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+            </tr>
+          </tbody>
+        </table>
+</section>
+</div>
+<div id="sec-compositeSignatureValue">
+<section id="section-4.3">
+        <h3 id="name-compositesignaturevalue-2">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-compositesignaturevalue-2" class="section-name selfRef">CompositeSignatureValue</a>
+        </h3>
+<p id="section-4.3-1">The output of the composite signature algorithm is the DER encoding of the following structure:<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<div id="section-4.3-2">
+<pre class="lang-asn.1 sourcecode">
+CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
+</pre><a href="#section-4.3-2" class="pilcrow">¶</a>
+</div>
+<p id="section-4.3-3">Where each BIT STRING within the SEQUENCE is a signature value produced by one of the component keys. It MUST contain one signature value produced by each component algorithm, and in the same order as in the associated CompositeSignatureParams object.<a href="#section-4.3-3" class="pilcrow">¶</a></p>
+<p id="section-4.3-4">A CompositeSignatureValue MUST contain the same number of component signatures as the corresponding public and private keys, and the order of component signature values MUST correspond to the component public keys.<a href="#section-4.3-4" class="pilcrow">¶</a></p>
+<p id="section-4.3-5">The choice of <code>SEQUENCE OF BIT STRING</code>, rather than for example a single BIT STRING containing the concatenated signature values, is to gracefully handle variable-length signature values by taking advantage of ASN.1's built-in length fields.<a href="#section-4.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-compositeParameters">
-<section id="section-4.3">
-        <h3 id="name-composite-signature-paramete">
-<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-composite-signature-paramete" class="section-name selfRef">Composite Signature Parameters</a>
+<section id="section-4.4">
+        <h3 id="name-compositesignatureparameters">
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-compositesignatureparameters" class="section-name selfRef">CompositeSignatureParameters</a>
         </h3>
-<p id="section-4.3-1">Composite signature parameters are defined as follows and MUST be included in the composite 
-signature AlgorithmIdentifier for the composite signature algorithm:<a href="#section-4.3-1" class="pilcrow">¶</a></p>
-<div id="section-4.3-2">
+<p id="section-4.4-1">Composite signature parameters are defined as follows and MAY be included in the composite 
+signature AlgorithmIdentifier for the composite signature algorithm:<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<div id="section-4.4-2">
 <pre class="lang-asn.1 sourcecode">
-CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
-</pre><a href="#section-4.3-2" class="pilcrow">¶</a>
+CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
+</pre><a href="#section-4.4-2" class="pilcrow">¶</a>
 </div>
-<p id="section-4.3-3">The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.<a href="#section-4.3-3" class="pilcrow">¶</a></p>
+<p id="section-4.4-3">When composite signature parameters are used, the signature's CompositeSignatureParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
+<p id="section-4.4-4">For explicit algorithms, it is not necessary to carry a CompositeSignatureParams with the list of component algorithms in the signature algorithm parameters because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in <span>[<a href="#RFC8017" class="cite xref">RFC8017</a>]</span>. <a href="#sec-composite-sig-structs" class="auto internal xref">Section 4.2</a> defines <code>PARAMS ANY DEFINED BY ALGORITHM</code> so that explicit algorithms may define params as ABSENT, or use <code>CompositeSignatureParams</code> as defined in ASN.1 module.  For generic compsite algorithms, CompositeSignatureParams MUST be included.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-encoding-rules">
-<section id="section-4.4">
+<section id="section-4.5">
         <h3 id="name-encoding-rules-2">
-<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-encoding-rules-2" class="section-name selfRef">Encoding Rules</a>
+<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-encoding-rules-2" class="section-name selfRef">Encoding Rules</a>
         </h3>
-<p id="section-4.4-1">Many protocol specifications will require that composite signature data structures be represented by an octet string or bit string.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
-<p id="section-4.4-2">When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
-<p id="section-4.4-3">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
-<p id="section-4.4-4">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
+<p id="section-4.5-1">Many protocol specifications will require that composite signature data structures be represented by an octet string or bit string.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
+<p id="section-4.5-2">When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.<a href="#section-4.5-2" class="pilcrow">¶</a></p>
+<p id="section-4.5-3">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
+<p id="section-4.5-4">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.<a href="#section-4.5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1667,581 +1673,135 @@ CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 <p id="section-5-1">This section defines the algorithm identifiers for explicit combinations.  For simplicity and prototyping purposes, the signature algorithm object identifiers specified in this document are the same as the composite key object Identifiers specified in {draft-ounsworth-pq-composite-keys}.  A proper implementation should not presume that the object ID of a composite key will be the same as its composite signature algorithm.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">This section is not intended to be exhaustive and other authors may define others composite signature algorithms so long as they are compatible with the structures and processes defined in this and companion public and private key documents.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <p id="section-5-3">Some use-cases desire the flexibility for clients to use any combination of supported algorithms, while others desire the rigidity of explicitly-specified combinations of algorithms.<a href="#section-5-3" class="pilcrow">¶</a></p>
-<p id="section-5-4">The following sections will indicate the details for each explicit composite signature algorithms:<a href="#section-5-4" class="pilcrow">¶</a></p>
-<p id="section-5-5">The OID referenced are TBD, and the following prefix is used for each:<a href="#section-5-5" class="pilcrow">¶</a></p>
+<p id="section-5-4">The following table summarizes the details for each explicit composite signature algorithms:<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-5">The OID referenced are TBD for prototyping only, and the following prefix is used for each:<a href="#section-5-5" class="pilcrow">¶</a></p>
 <p id="section-5-6">replace &lt;CompSig&gt; with the String "2.16.840.1.114027.80.5.1"<a href="#section-5-6" class="pilcrow">¶</a></p>
 <p id="section-5-7">Therefore &lt;CompSig&gt;.1 is equal to 2.16.840.1.114027.80.5.1.1<a href="#section-5-7" class="pilcrow">¶</a></p>
-<p id="section-5-8">Signature public key types:<a href="#section-5-8" class="pilcrow">¶</a></p>
-<table class="center" id="table-1">
-        <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<p id="section-5-8">replace &lt;SPHINCS&gt; with the String "SPHINCSplusSHA256128sSimple"<a href="#section-5-8" class="pilcrow">¶</a></p>
+<p id="section-5-9">Signature public key types:<a href="#section-5-9" class="pilcrow">¶</a></p>
+<span id="name-explicit-composite-signature-"></span><div id="tab-composite-sigs">
+<table class="center" id="table-2">
+        <caption>
+<a href="#table-2" class="selfRef">Table 2</a>:
+<a href="#name-explicit-composite-signature-" class="selfRef">Explicit Composite Signature Algorithms</a>
+        </caption>
 <thead>
           <tr>
-            <th class="text-left" rowspan="1" colspan="1">AlgorithmID for both Composite Key and Signature Algorithms</th>
+            <th class="text-left" rowspan="1" colspan="1">Composite Key and Signature AlgorithmID</th>
             <th class="text-left" rowspan="1" colspan="1">OID</th>
-            <th class="text-left" rowspan="1" colspan="1">Section</th>
+            <th class="text-left" rowspan="1" colspan="1">First Signature Alg</th>
+            <th class="text-left" rowspan="1" colspan="1">Second Signature Alg</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-RSA-PKCS15-SHA256</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.1</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <a href="#sec-sa-Dilithium3-RSA-PKCS15-SHA256" class="auto internal xref">Section 5.2</a>
-</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium3TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA256WithRSAEncryption</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-ECDSA-P256-SHA256</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.2</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <a href="#sec-sa-Dilithium3-ECDSA-P256-SHA256" class="auto internal xref">Section 5.3</a>
-</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium3TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-ECDSA-brainpoolP256r1-SHA256</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.3</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <a href="#sec-sa-Dilithium3-ECDSA-brainpoolP256r1-SHA256" class="auto internal xref">Section 5.4</a>
-</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium3TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-Ed25519</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.4</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <a href="#sec-sa-Dilithium3-Ed25519" class="auto internal xref">Section 5.5</a>
-</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium3TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">Ed25519</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Dilithium5-ECDSA-P384-SHA384</td>
-            <td class="text-left" rowspan="1" colspan="1">&lt;&lt;CompSig&gt;.5</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <a href="#sec-sa-Dilithium5-ECDSA-P384-SHA384" class="auto internal xref">Section 5.6</a>
-</td>
+            <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.5</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium5TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA384withECDSA</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Dilithium5-ECDSA-brainpoolP384r1-SHA384</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.6</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <a href="#sec-sa-Dilithium5-ECDSA-brainpoolP384r1-SHA384" class="auto internal xref">Section 5.7</a>
-</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium5TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA384withECDSA</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Dilithium5-Ed448</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.7</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <a href="#sec-sa-Dilithium5-Ed448" class="auto internal xref">Section 5.8</a>
-</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium5TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">Ed448</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">id-Falcon512-ECDSA-P256-SHA256</td>
+            <td class="text-left" rowspan="1" colspan="1">id-Falcon512-ECDSA-P256</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.8</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <a href="#sec-sa-Falcon512-ECDSA-P256-SHA256" class="auto internal xref">Section 5.9</a>
-</td>
+            <td class="text-left" rowspan="1" colspan="1">Falcon512TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Falcon512-ECDSA-brainpoolP256r1-SHA256</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.9</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <a href="#sec-sa-Falcon512-ECDSA-brainpoolP256r1-SHA256" class="auto internal xref">Section 5.10</a>
-</td>
+            <td class="text-left" rowspan="1" colspan="1">Falcon512TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Falcon512-Ed25519</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.10</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <a href="#sec-sa-Falcon512-Ed25519" class="auto internal xref">Section 5.11</a>
-</td>
+            <td class="text-left" rowspan="1" colspan="1">Falcon512TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">Ed25519</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.11</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <a href="#sec-sa-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256" class="auto internal xref">Section 5.12</a>
-</td>
+            <td class="text-left" rowspan="1" colspan="1">&lt;SPHINCS&gt;</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.12</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <a href="#sec-sa-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256" class="auto internal xref">Section 5.13</a>
-</td>
+            <td class="text-left" rowspan="1" colspan="1">&lt;SPHINCS&gt;</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-SPHINCSplusSHA256128sSimple-Ed25519</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.13</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <a href="#sec-sa-SPHINCSplusSHA256-Ed25519" class="auto internal xref">Section 5.14</a>
-</td>
+            <td class="text-left" rowspan="1" colspan="1">&lt;SPHINCS&gt;</td>
+            <td class="text-left" rowspan="1" colspan="1">Ed25519</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-RSA-PSS-SHA256</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.14</td>
-            <td class="text-left" rowspan="1" colspan="1">
-              <a href="#sec-sa-Dilithium3-RSA-PSS-SHA256" class="auto internal xref">Section 5.15</a>
-</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium3TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA256WithRSAPSS</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">id-composite-signature</td>
+            <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.14</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium3TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA256WithRSAPSS</td>
           </tr>
         </tbody>
       </table>
-<div id="sec-composite-sig-structs">
-<section id="section-5.1">
-        <h3 id="name-sa-compositesignature-asn1-s">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-sa-compositesignature-asn1-s" class="section-name selfRef">sa-CompositeSignature ASN.1 structure</a>
-        </h3>
-<p id="section-5.1-1">The ASN.1 algorithm object for a composite signature is:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<div id="section-5.1-2">
-<pre class="lang-asn.1 sourcecode">
-sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
-    IDENTIFIER id-alg-composite
-    VALUE CompositeSignatureValue
-    PARAMS ANY DEFINED BY ALGORITHM
-    PUBLIC-KEYS { pk-Composite }
-    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-}
-</pre><a href="#section-5.1-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1-3">The following sections will identify each of the required components listed above:<a href="#section-5.1-3" class="pilcrow">¶</a></p>
-<table class="center" id="table-2">
-          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
-<thead>
-            <tr>
-              <th class="text-left" rowspan="1" colspan="1">SIGNATURE-ALGORITHM element</th>
-              <th class="text-left" rowspan="1" colspan="1">Definition</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">IDENTIFIER</td>
-              <td class="text-left" rowspan="1" colspan="1">The Object ID used to identify the composite Sinature Algorithm</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">VALUE</td>
-              <td class="text-left" rowspan="1" colspan="1">The Sequence of BIT STRINGS for each component signature value</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">PARAMS</td>
-              <td class="text-left" rowspan="1" colspan="1">Signature parameters either declared ABSENT, or defined with a type and encoding</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">PUBLIC-KEYS</td>
-              <td class="text-left" rowspan="1" colspan="1">The composite key required to produce the composite signature</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">SMIME_CAPS</td>
-              <td class="text-left" rowspan="1" colspan="1">Not needed for composite</td>
-            </tr>
-          </tbody>
-        </table>
-<p id="section-5.1-5">This definition provides a rigid way of specifying supported combinations of algorithms.<a href="#section-5.1-5" class="pilcrow">¶</a></p>
-<p id="section-5.1-6">The will make it easier to reference and enforce specific combinations of algorithms. The authors envision this being useful for client-server negotiated protocols, protocol designers who wish to place constraints on allowable algorithm combinations in the protocol specification, as well as audited environments that wish to prove that only certain combinations will be supported by clients.<a href="#section-5.1-6" class="pilcrow">¶</a></p>
-<p id="section-5.1-7">See <a href="#appdx-creatingExplicitCombinations" class="auto internal xref">Appendix B</a> for guidance on creating and registering OIDs for specific explicit combinations.<a href="#section-5.1-7" class="pilcrow">¶</a></p>
-<p id="section-5.1-8">For explicit algorithms, it is not necessary to carry a CompositeParams with the list of component algorithms in the signature algorithm parameters because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in <span>[<a href="#RFC8017" class="cite xref">RFC8017</a>]</span>. <a href="#sec-composite-sig-structs" class="auto internal xref">Section 5.1</a> defines <code>PARAMS ANY DEFINED BY ALGORITHM</code> so that explicit algorithms may define params as ABSENT, use <code>CompositeParams</code> defined in <a href="#sec-generic-composite" class="auto internal xref">Section 5.16</a> or use any other encoding that is appropriate.<a href="#section-5.1-8" class="pilcrow">¶</a></p>
-<p id="section-5.1-9">In this variant, the signature is encoded as defined in <a href="#sec-composite-sig-structs" class="auto internal xref">Section 5.1</a>, however the sa-CompositeSignature.identifier SHALL be an OID which is registered to represent a specific combination of component signature algorithms. See <a href="#appdx-examples" class="auto internal xref">Appendix C</a> for examples.<a href="#section-5.1-9" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-sa-Dilithium3-RSA-PKCS15-SHA256">
-<section id="section-5.2">
-        <h3 id="name-sa-dilithium3-rsa-pkcs15-sha">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-sa-dilithium3-rsa-pkcs15-sha" class="section-name selfRef">sa-Dilithium3-RSA-PKCS15-SHA256</a>
-        </h3>
-<p id="section-5.2-1">IDENTIFIER: The following object identifier represents the sa-Dilithium3-RSA-PKCS15-SHA256
-   signature algorithm:<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<div id="section-5.2-2">
-<pre class="lang-asn.1 sourcecode">
-   sa-Dilithium3-RSA OBJECT IDENTIFIER ::= {
-     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-     algorithm(80) ExplicitComposite(5) SignatureAlg(1) id-Dilithium3-SHA256withRSA(1) }
-</pre><a href="#section-5.2-2" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="section-5.2-3">
-<pre>
-  EDNOTE: this is a temporary OID for the purposes of prototyping.
-  We are requesting IANA to assign a permanent OID, see Section 7.
-</pre><a href="#section-5.2-3" class="pilcrow">¶</a>
-</div>
-<p id="section-5.2-4">VALUE:  The sa-Dilithium3-SHA256withRSA Composite Signature Value is defined as follows:<a href="#section-5.2-4" class="pilcrow">¶</a></p>
-<div id="section-5.2-5">
-<pre class="lang-asn.1 sourcecode">
-   SEQUENCE  {
-        signatureValue     BIT STRING(TBDDilithium3Signature),
-        signatureValue     BIT STRING(sha256WithRSAEncryption)
-   }
-</pre><a href="#section-5.2-5" class="pilcrow">¶</a>
-</div>
-<p id="section-5.2-6">PARAMS:  The sa-Dilithium3-SHA256withRSA composite signature algorithm parameters MUST be defined as follows:<a href="#section-5.2-6" class="pilcrow">¶</a></p>
-<div id="section-5.2-7">
-<pre class="lang-asn.1 sourcecode">
-   SEQUENCE  {
-        algorithm  AlgorithmIdentifier {
-             algorithm id-dilithium3TBD
-         },
-        algorithm  AlgorithmIdentifier {
-             algorithm id-sha256WithRSAEncryption
-         }
-   }
-</pre><a href="#section-5.2-7" class="pilcrow">¶</a>
-</div>
-<p id="section-5.2-8">where id-dilithium3TBD is defined in [I-D.ietf-lamps-dilithium-certificates]
-and sha256WithRSAEncryption is defined in [RFC5754]<a href="#section-5.2-8" class="pilcrow">¶</a></p>
-<p id="section-5.2-9">PUBLIC-KEYS:  The public key for use with sa-Dilithium3-SHA256withRSA MUST be of type id-Dilithium3-RSA<a href="#section-5.2-9" class="pilcrow">¶</a></p>
-<p id="section-5.2-10">TODO: What to do about hash functions? Does Dilithium3 specify a hash function, or do we need to specify one?<a href="#section-5.2-10" class="pilcrow">¶</a></p>
-<p id="section-5.2-11">TODO: What to do about pre-hashing? Cryptographic modules prefer to receive a hash of the message rather than the entire message. However, Dilithium starts with a hash of the message pre-pended with the public key <code>mu := CRH( tr || m )</code> which provides domain-separation per public key. Perhaps the right answer is that <code>mu</code> is also the hash value to be signed by ECDSA?<a href="#section-5.2-11" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-sa-Dilithium3-ECDSA-P256-SHA256">
-<section id="section-5.3">
-        <h3 id="name-sa-dilithium3-ecdsa-p256-sha">
-<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-sa-dilithium3-ecdsa-p256-sha" class="section-name selfRef">sa-Dilithium3-ECDSA-P256-SHA256</a>
-        </h3>
-<p id="section-5.3-1">IDENTIFIER: The following object identifier represents the sa-Dilithium3-ECDSA-P256-SHA256
-   signature algorithm:<a href="#section-5.3-1" class="pilcrow">¶</a></p>
-<div id="section-5.3-2">
-<pre class="lang-asn.1 sourcecode">
-   sa-Dilithium3-SHA256withECDSA OBJECT IDENTIFIER ::= {
-     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-     algorithm(80) ExplicitComposite(5) SignatureAlg(1) id-Dilithium3-ECDSA-P256-SHA256(2) }
-</pre><a href="#section-5.3-2" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="section-5.3-3">
-<pre>
-  EDNOTE: this is a temporary OID for the purposes of prototyping.
-  We are requesting IANA to assign a permanent OID, see Section 7.
-</pre><a href="#section-5.3-3" class="pilcrow">¶</a>
-</div>
-<p id="section-5.3-4">VALUE:  The sa-Dilithium3-SHA256withECDSA Composite Signature Value is defined as follows:<a href="#section-5.3-4" class="pilcrow">¶</a></p>
-<div id="section-5.3-5">
-<pre class="lang-asn.1 sourcecode">
-   SEQUENCE  {
-        signatureValue     BIT STRING(TBDDilithium3Signature),
-        signatureValue     BIT STRING(ecdsa-with-SHA256)
-   }
-</pre><a href="#section-5.3-5" class="pilcrow">¶</a>
-</div>
-<p id="section-5.3-6">PARAMS:  The sa-Dilithium3-SHA256withECDSA composite signature algorithm parameters MUST be defined as follows:<a href="#section-5.3-6" class="pilcrow">¶</a></p>
-<div id="section-5.3-7">
-<pre class="lang-asn.1 sourcecode">
-   SEQUENCE  {
-        algorithm  AlgorithmIdentifier {
-             algorithm id-dilithium3TBD
-         },
-        algorithm  AlgorithmIdentifier {
-             algorithm ecdsa-with-SHA256
-         }
-   }
-</pre><a href="#section-5.3-7" class="pilcrow">¶</a>
-</div>
-<p id="section-5.3-8">where id-dilithium3TBD is defined in [I-D.ietf-lamps-dilithium-certificates]
-and ecdsa-with-SHA256 is defined in [RFC5754]<a href="#section-5.3-8" class="pilcrow">¶</a></p>
-<p id="section-5.3-9">PUBLIC-KEYS:  The public keys for use with sa-Dilithium3-SHA256withECDSA MUST be of type id-Dilithium3-ECDSA-P256 or id-Dilithium3-ECDSA-brainpoolP256r1<a href="#section-5.3-9" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-sa-Dilithium3-ECDSA-brainpoolP256r1-SHA256">
-<section id="section-5.4">
-        <h3 id="name-sa-dilithium3-ecdsa-brainpoo">
-<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-sa-dilithium3-ecdsa-brainpoo" class="section-name selfRef">sa-Dilithium3-ECDSA-brainpoolP256r1-SHA256</a>
-      </h3>
-</section>
-</div>
-<div id="sec-sa-Dilithium3-Ed25519">
-<section id="section-5.5">
-        <h3 id="name-sa-dilithium3-ed25519-2">
-<a href="#section-5.5" class="section-number selfRef">5.5. </a><a href="#name-sa-dilithium3-ed25519-2" class="section-name selfRef">sa-Dilithium3-Ed25519</a>
-        </h3>
-<p id="section-5.5-1">IDENTIFIER: The following object identifier represents the sa-Dilithium3-Ed25519
-   signature algorithm:<a href="#section-5.5-1" class="pilcrow">¶</a></p>
-<div id="section-5.5-2">
-<pre class="lang-asn.1 sourcecode">
-   sa-Dilithium3-Ed25519 OBJECT IDENTIFIER ::= {
-     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-     algorithm(80) ExplicitComposite(5) SignatureAlg(3) id-Dilithium3-Ed25519(4) }
-</pre><a href="#section-5.5-2" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="section-5.5-3">
-<pre>
-  EDNOTE: this is a temporary OID for the purposes of prototyping.
-  We are requesting IANA to assign a permanent OID, see Section 7.
-</pre><a href="#section-5.5-3" class="pilcrow">¶</a>
-</div>
-<p id="section-5.5-4">VALUE:  The sa-Dilithium3-Ed25519 Composite Signature Value is defined as follows:<a href="#section-5.5-4" class="pilcrow">¶</a></p>
-<div id="section-5.5-5">
-<pre class="lang-asn.1 sourcecode">
-   SEQUENCE  {
-        signatureValue     BIT STRING(TBDDilithium3Signature),
-        signatureValue     BIT STRING(id-Ed25519)
-   }
-</pre><a href="#section-5.5-5" class="pilcrow">¶</a>
-</div>
-<p id="section-5.5-6">PARAMS:  The sa-Dilithium3-Ed25519 composite signature algorithm parameters MUST be defined as follows:<a href="#section-5.5-6" class="pilcrow">¶</a></p>
-<div id="section-5.5-7">
-<pre class="lang-asn.1 sourcecode">
-   SEQUENCE  {
-        algorithm  AlgorithmIdentifier {
-             algorithm id-dilithium3TBD
-         },
-        algorithm  AlgorithmIdentifier {
-             algorithm id-Ed25519
-         }
-   }
-</pre><a href="#section-5.5-7" class="pilcrow">¶</a>
-</div>
-<p id="section-5.5-8">where TBDDilithium3Signature is defined in [I-D.ietf-lamps-dilithium-certificates]
-and Ed25519 is defined in [RFC8410]<a href="#section-5.5-8" class="pilcrow">¶</a></p>
-<p id="section-5.5-9">PUBLIC-KEYS:  The public keys for use with sa-Dilithium3-Ed25519 MUST be of type id-Dilithium3-Ed25519<a href="#section-5.5-9" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-sa-Dilithium5-ECDSA-P384-SHA384">
-<section id="section-5.6">
-        <h3 id="name-sa-dilithium5-ecdsa-p384-sha">
-<a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-sa-dilithium5-ecdsa-p384-sha" class="section-name selfRef">sa-Dilithium5-ECDSA-P384-SHA384</a>
-      </h3>
-</section>
-</div>
-<div id="sec-sa-Dilithium5-ECDSA-brainpoolP384r1-SHA384">
-<section id="section-5.7">
-        <h3 id="name-sa-sa-dilithium5-ecdsa-brain">
-<a href="#section-5.7" class="section-number selfRef">5.7. </a><a href="#name-sa-sa-dilithium5-ecdsa-brain" class="section-name selfRef">sa-sa-Dilithium5-ECDSA-brainpoolP384r1-SHA384</a>
-      </h3>
-</section>
-</div>
-<div id="sec-sa-Dilithium5-Ed448">
-<section id="section-5.8">
-        <h3 id="name-sa-dilithium5-ed448-2">
-<a href="#section-5.8" class="section-number selfRef">5.8. </a><a href="#name-sa-dilithium5-ed448-2" class="section-name selfRef">sa-Dilithium5-Ed448</a>
-        </h3>
-<p id="section-5.8-1">IDENTIFIER: The following object identifier represents the sa-Dilithium5-Ed448
-   signature algorithm:<a href="#section-5.8-1" class="pilcrow">¶</a></p>
-<div id="section-5.8-2">
-<pre class="lang-asn.1 sourcecode">
-   sa-Dilithium5-Ed448 OBJECT IDENTIFIER ::= {
-     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-     algorithm(80) ExplicitComposite(5) SignatureAlg(3) id-Dilithium5-Ed448(7) }
-</pre><a href="#section-5.8-2" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="section-5.8-3">
-<pre>
-  EDNOTE: this is a temporary OID for the purposes of prototyping.
-  We are requesting IANA to assign a permanent OID, see Section 7.
-</pre><a href="#section-5.8-3" class="pilcrow">¶</a>
-</div>
-<p id="section-5.8-4">VALUE:  The sa-Dilithium5-Ed448 Composite Signature Value is defined as follows:<a href="#section-5.8-4" class="pilcrow">¶</a></p>
-<div id="section-5.8-5">
-<pre class="lang-asn.1 sourcecode">
-   SEQUENCE  {
-        signatureValue     BIT STRING(TBDDilithium5Signature),
-        signatureValue     BIT STRING(id-Ed448)
-   }
-</pre><a href="#section-5.8-5" class="pilcrow">¶</a>
-</div>
-<p id="section-5.8-6">PARAMS:  The sa-Dilithium5-Ed448 composite signature algorithm parameters MUST be defined as follows:<a href="#section-5.8-6" class="pilcrow">¶</a></p>
-<div id="section-5.8-7">
-<pre class="lang-asn.1 sourcecode">
-   SEQUENCE  {
-        algorithm  AlgorithmIdentifier {
-             algorithm id-dilithium5TBD
-         },
-        algorithm  AlgorithmIdentifier {
-             algorithm id-Ed448
-         }
-   }
-</pre><a href="#section-5.8-7" class="pilcrow">¶</a>
-</div>
-<p id="section-5.8-8">where id-dilithium5TBD is defined in [I-D.ietf-lamps-dilithium-certificates]
-and id-Ed448 is defined in [RFC8410]<a href="#section-5.8-8" class="pilcrow">¶</a></p>
-<p id="section-5.8-9">PUBLIC-KEYS:  The public keys for use with sa-Dilithium5-Ed448 MUST be of type Dilithium5-Ed448<a href="#section-5.8-9" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-sa-Falcon512-ECDSA-P256-SHA256">
-<section id="section-5.9">
-        <h3 id="name-sa-falcon512-ecdsa-p256-sha2">
-<a href="#section-5.9" class="section-number selfRef">5.9. </a><a href="#name-sa-falcon512-ecdsa-p256-sha2" class="section-name selfRef">sa-Falcon512-ECDSA-P256-SHA256</a>
-      </h3>
-</section>
-</div>
-<div id="sec-sa-Falcon512-ECDSA-brainpoolP256r1-SHA256">
-<section id="section-5.10">
-        <h3 id="name-sa-falcon512-ecdsa-brainpool">
-<a href="#section-5.10" class="section-number selfRef">5.10. </a><a href="#name-sa-falcon512-ecdsa-brainpool" class="section-name selfRef">sa-Falcon512-ECDSA-brainpoolP256r1-SHA256</a>
-      </h3>
-</section>
-</div>
-<div id="sec-sa-Falcon512-Ed25519">
-<section id="section-5.11">
-        <h3 id="name-sa-falcon512-ed25519-2">
-<a href="#section-5.11" class="section-number selfRef">5.11. </a><a href="#name-sa-falcon512-ed25519-2" class="section-name selfRef">sa-Falcon512-Ed25519</a>
-      </h3>
-</section>
-</div>
-<div id="sec-sa-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256">
-<section id="section-5.12">
-        <h3 id="name-sa-sphincsplussha256128ssimpl">
-<a href="#section-5.12" class="section-number selfRef">5.12. </a><a href="#name-sa-sphincsplussha256128ssimpl" class="section-name selfRef">sa-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256</a>
-      </h3>
-</section>
-</div>
-<div id="sec-sa-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256">
-<section id="section-5.13">
-        <h3 id="name-sa-sphincsplussha256128ssimple">
-<a href="#section-5.13" class="section-number selfRef">5.13. </a><a href="#name-sa-sphincsplussha256128ssimple" class="section-name selfRef">sa-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256</a>
-      </h3>
-</section>
-</div>
-<div id="sec-sa-SPHINCSplusSHA256-Ed25519">
-<section id="section-5.14">
-        <h3 id="name-sa-sphincsplussha256-ed25519">
-<a href="#section-5.14" class="section-number selfRef">5.14. </a><a href="#name-sa-sphincsplussha256-ed25519" class="section-name selfRef">sa-SPHINCSplusSHA256-Ed25519</a>
-      </h3>
-</section>
-</div>
-<div id="sec-sa-Dilithium3-RSA-PSS-SHA256">
-<section id="section-5.15">
-        <h3 id="name-sa-dilithium3-rsa-pss-sha256">
-<a href="#section-5.15" class="section-number selfRef">5.15. </a><a href="#name-sa-dilithium3-rsa-pss-sha256" class="section-name selfRef">sa-Dilithium3-RSA-PSS-SHA256</a>
-      </h3>
-</section>
-</div>
-<div id="sec-generic-composite">
-<section id="section-5.16">
-        <h3 id="name-sa-alg-composite-generic-com">
-<a href="#section-5.16" class="section-number selfRef">5.16. </a><a href="#name-sa-alg-composite-generic-com" class="section-name selfRef">sa-alg-composite (Generic Composite Signatures)</a>
-        </h3>
-<p id="section-5.16-1">The id-alg-composite object identifier is used for identifying a generic composite signature. This algorithm allows arbitrary combinations of component signature algorithms to be used in the CompositeSignatureValue and CompositeParams structures without needing the combination to be pre-registered or standardized. This identifier MUST be used in sa-CompositeSignature.identifier.<a href="#section-5.16-1" class="pilcrow">¶</a></p>
-<div id="section-5.16-2">
-<pre class="lang-asn.1 sourcecode">
-id-alg-composite OBJECT IDENTIFIER ::= {
-    iso(1)  identified-organization(3) dod(6) internet(1) private(4)
-    enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) }
-</pre><a href="#section-5.16-2" class="pilcrow">¶</a>
-</div>
-<p id="section-5.16-3">EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see <a href="#sec-iana" class="auto internal xref">Section 10</a>.<a href="#section-5.16-3" class="pilcrow">¶</a></p>
-<p id="section-5.16-4">The following algorithm parameters MUST be included:<a href="#section-5.16-4" class="pilcrow">¶</a></p>
-<div id="section-5.16-5">
-<pre class="lang-asn.1 sourcecode">
-CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
-</pre><a href="#section-5.16-5" class="pilcrow">¶</a>
-</div>
-<p id="section-5.16-6">The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.<a href="#section-5.16-6" class="pilcrow">¶</a></p>
-<p id="section-5.16-7">The motivation for this variant is primarily for prototyping work prior to the standardization of algorithm identifiers for explicit combinations of algorithms. However, the authors envision that this variant will remain relevant beyond full standardization for example in environments requiring very high levels of crypto agility, for example where clients support a large number of algorithms or where a large number of keys will be used at a time and it is therefore prohibitive to define algorithm identifiers for every combination of pairs, triples, quadruples, etc of algorithms.<a href="#section-5.16-7" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="summary-of-explicit-composite-signature-algorithms">
-<section id="section-5.17">
-        <h3 id="name-summary-of-explicit-composit">
-<a href="#section-5.17" class="section-number selfRef">5.17. </a><a href="#name-summary-of-explicit-composit" class="section-name selfRef">Summary of Explicit Composite Signature Algorithms</a>
-        </h3>
-<p id="section-5.17-1">This section summarizes the list of explicit composite Signature algorithms by the key and signature OID and the two component algorithms which make up the explicit composite algorithm.  These are denoted by First Signature Alg, and Second Signature Alg.<a href="#section-5.17-1" class="pilcrow">¶</a></p>
-<table class="center" id="table-3">
-          <caption><a href="#table-3" class="selfRef">Table 3</a></caption>
-<thead>
-            <tr>
-              <th class="text-left" rowspan="1" colspan="1">Composite Key and Signature AlgorithmID</th>
-              <th class="text-left" rowspan="1" colspan="1">OID</th>
-              <th class="text-left" rowspan="1" colspan="1">First Signature Alg</th>
-              <th class="text-left" rowspan="1" colspan="1">Second Signature Alg</th>
-              <th class="text-left" rowspan="1" colspan="1"> </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-RSA-PKCS15-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.1</td>
-              <td class="text-left" rowspan="1" colspan="1">Dilithium3</td>
-              <td class="text-left" rowspan="1" colspan="1">SHA256WithRSAEncryption</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-ECDSA-P256-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.2</td>
-              <td class="text-left" rowspan="1" colspan="1">Dilithium3</td>
-              <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-ECDSA-brainpoolP256r1-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.3</td>
-              <td class="text-left" rowspan="1" colspan="1">Dilithium3</td>
-              <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-Ed25519</td>
-              <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.4</td>
-              <td class="text-left" rowspan="1" colspan="1">Dilithium3</td>
-              <td class="text-left" rowspan="1" colspan="1">Ed25519</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-Dilithium5-ECDSA-P384-SHA384</td>
-              <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.5</td>
-              <td class="text-left" rowspan="1" colspan="1">Dilithium5</td>
-              <td class="text-left" rowspan="1" colspan="1">SHA384withECDSA</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-Dilithium5-ECDSA-brainpoolP384r1-SHA384</td>
-              <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.6</td>
-              <td class="text-left" rowspan="1" colspan="1">Dilithium5</td>
-              <td class="text-left" rowspan="1" colspan="1">SHA384withECDSA</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-Dilithium5-Ed448</td>
-              <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.7</td>
-              <td class="text-left" rowspan="1" colspan="1">Dilithium5</td>
-              <td class="text-left" rowspan="1" colspan="1">Ed448</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-Falcon512-ECDSA-P256</td>
-              <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.8</td>
-              <td class="text-left" rowspan="1" colspan="1">Falcon512</td>
-              <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-Falcon512-ECDSA-brainpoolP256r1-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.9</td>
-              <td class="text-left" rowspan="1" colspan="1">Falcon512</td>
-              <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-Falcon512-Ed25519</td>
-              <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.10</td>
-              <td class="text-left" rowspan="1" colspan="1">Falcon512</td>
-              <td class="text-left" rowspan="1" colspan="1">Ed25519</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.11</td>
-              <td class="text-left" rowspan="1" colspan="1">SPHINCSplusSHA256128sSimple</td>
-              <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.12</td>
-              <td class="text-left" rowspan="1" colspan="1">SPHINCSplusSHA256128sSimple</td>
-              <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-SPHINCSplusSHA256128sSimple-Ed25519</td>
-              <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.13</td>
-              <td class="text-left" rowspan="1" colspan="1">SPHINCSplusSHA256128sSimple</td>
-              <td class="text-left" rowspan="1" colspan="1">Ed25519</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-RSA-PSS-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.14</td>
-              <td class="text-left" rowspan="1" colspan="1">Dilithium3</td>
-              <td class="text-left" rowspan="1" colspan="1">SHA256WithRSAPSS</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-            </tr>
-          </tbody>
-        </table>
-</section>
-</div>
+<p id="section-5-11">The table above contains everything needed to implement the listed explicit composite algorithms. See the ASN.1 module in section <a href="#sec-asn1-module" class="auto internal xref">Appendix C</a> for the explicit
+definitions of the above Composite signature algorithms.<a href="#section-5-11" class="pilcrow">¶</a></p>
+<p id="section-5-12">These combinations were chosen according to the following rough guidelines:<a href="#section-5-12" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-5-13">
+<li id="section-5-13.1">One RSA combination is provided (but RSA modulus size not mandated), matched with NIST PQC Level 3 algorithms.<a href="#section-5-13.1" class="pilcrow">¶</a>
+</li>
+        <li id="section-5-13.2">NIST [RFC6090], Edwards [RFC7748], and Brainpool [RFC5639] elliptic curve algorithms are provided. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.<a href="#section-5-13.2" class="pilcrow">¶</a>
+</li>
+        <li id="section-5-13.3">NIST level 1 candidates (Falcon512 and Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.<a href="#section-5-13.3" class="pilcrow">¶</a>
+</li>
+        <li id="section-5-13.4">A single SPHINCS+ combination is provided for use cases that wish to put hash-based signatures into hybrid combination.<a href="#section-5-13.4" class="pilcrow">¶</a>
+</li>
+        <li id="section-5-13.5">A generic composite OID is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.The authors wish to note that although the CompositePublicKey and CompositePrivateKey structures are defined in such a way as to easily allow 3 or more component keys, it was decided at the time of writing to only specify explicit pairs. The generic composite allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.<a href="#section-5-13.5" class="pilcrow">¶</a>
+</li>
+      </ol>
 </section>
 </div>
 <div id="sec-composite-signature-algorithm">
@@ -2256,7 +1816,7 @@ CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
         <h3 id="name-composite-signature-generati">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-composite-signature-generati" class="section-name selfRef">Composite Signature Generation Process</a>
         </h3>
-<p id="section-6.1-1">Generation of a composite signature involves applying each component algorithm's signature process to the input message according to its specification, and then placing each component signature value into the CompositeSignatureValue structure defined in <a href="#sec-composite-sig-structs" class="auto internal xref">Section 5.1</a>.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-1">Generation of a composite signature involves applying each component algorithm's signature process to the input message according to its specification, and then placing each component signature value into the CompositeSignatureValue structure defined in <a href="#sec-composite-sig-structs" class="auto internal xref">Section 4.2</a>.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <p id="section-6.1-2">The following process is used to generate composite signature values.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-6.1-3">
 <pre>
@@ -2287,10 +1847,10 @@ Signature Generation Process:
    3. Output S
 </pre><a href="#section-6.1-3" class="pilcrow">¶</a>
 </div>
-<p id="section-6.1-4">Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePrivateKey and CompositeParams structures. It is also possible to generate a composite signature that combines signatures from distinct keys stored in separate software or hardware keystores. Variations in the process to accommodate particular private key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.<a href="#section-6.1-4" class="pilcrow">¶</a></p>
+<p id="section-6.1-4">Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePrivateKey and CompositeSignatureParams structures. It is also possible to generate a composite signature that combines signatures from distinct keys stored in separate software or hardware keystores. Variations in the process to accommodate particular private key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.<a href="#section-6.1-4" class="pilcrow">¶</a></p>
 <p id="section-6.1-5">Since recursive composite public keys are disallowed in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.<a href="#section-6.1-5" class="pilcrow">¶</a></p>
 <p id="section-6.1-6">A composite signature MUST produce, and include in the output, a signature value for every component key in  and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2, etc. The authors recognize that there may be valid use cases for "subset signature generation"; see <a href="#sec-subset-sig-gen" class="auto internal xref">Section 11.2.1</a> for further discussion of security implications, and <a href="#sec-backwards-compat" class="auto internal xref">Section 7.1</a> for further discussion of backwards compatibility implications.<a href="#section-6.1-6" class="pilcrow">¶</a></p>
-<p id="section-6.1-7">For security when using a generic composite signature algorithm as defined in <a href="#sec-generic-composite" class="auto internal xref">Section 5.16</a>, the list of component signature algorithms A1, A2, .., An, which may be carried in a CompositeParams object, SHOULD be included in the signed message M to prevent an attacker from substituting a weaker algorithm which is compatible with the same public key. This attack is not unique or new to the composite format.<a href="#section-6.1-7" class="pilcrow">¶</a></p>
+<p id="section-6.1-7">For security when using a generic composite signature algorithm, the list of component signature algorithms A1, A2, .., An, which may be carried in a CompositeSignatureParams object, SHOULD be included in the signed message M to prevent an attacker from substituting a weaker algorithm which is compatible with the same public key. This attack is not unique or new to the composite format.<a href="#section-6.1-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-comp-sig-verify">
@@ -2342,7 +1902,7 @@ Signature Verification Procedure::
         output "Valid signature"
 </pre><a href="#section-6.2-4" class="pilcrow">¶</a>
 </div>
-<p id="section-6.2-5">Note on composite inputs: the method of providing the list of component keys, algorithms and signatures is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey, CompositeParams, and compositesignaturevalue structures. It is also possible to verify a composite signature where the component public verification keys belong, for example, to separate X.509 certificates or cryptographic modules. Variations in the process to accommodate particular public verification key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.<a href="#section-6.2-5" class="pilcrow">¶</a></p>
+<p id="section-6.2-5">Note on composite inputs: the method of providing the list of component keys, algorithms and signatures is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey, CompositeSignatureParams, and compositesignaturevalue structures. It is also possible to verify a composite signature where the component public verification keys belong, for example, to separate X.509 certificates or cryptographic modules. Variations in the process to accommodate particular public verification key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.<a href="#section-6.2-5" class="pilcrow">¶</a></p>
 <p id="section-6.2-6">Since recursive composite public keys are disallowed in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.<a href="#section-6.2-6" class="pilcrow">¶</a></p>
 <p id="section-6.2-7">Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementer MAY, in the interest of performance of compatibility, modify the above process to skip one or more signature validations as per their local client policy. See <a href="#sec-cons-OR-modes" class="auto internal xref">Section 11.2</a> for a discussion of associated risks.<a href="#section-6.2-7" class="pilcrow">¶</a></p>
 <p id="section-6.2-8">In the absence of such a policy mechanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here. See <a href="#sec-subset-sig-gen" class="auto internal xref">Section 11.2.1</a> for further discussion of security implications of subset signature verifications, and <a href="#sec-backwards-compat" class="auto internal xref">Section 7.1</a> for further discussion of backwards compatibility implications.<a href="#section-6.2-8" class="pilcrow">¶</a></p>
@@ -2411,10 +1971,9 @@ Signature Verification Procedure::
         </h3>
 <p id="section-7.2-1">EDNOTE: This section probably does not belong in this draft. It probably belongs instead in the core Dilithium / Falcon specs such as <span>[<a href="#I-D.massimo-lamps-pq-sig-certificates" class="cite xref">I-D.massimo-lamps-pq-sig-certificates</a>]</span>.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 <p id="section-7.2-2">In many contexts, a signature or a verification operation is performed inside a cryptographic module where it is desirable to provide a message digest to the cryptographic module rather than streaming the entire message (which in some cases can be very large).<a href="#section-7.2-2" class="pilcrow">¶</a></p>
-<p id="section-7.2-3"><a href="#sec-cons-hash-then-sign" class="auto internal xref">Section 11.3</a> discusses security considerations around the traditional "hash-then-sign paradigm" where a simple hash of the message is taken and then the hash value is signed. In general this is not desirable with the Dilithium and Falcon algorithms.<a href="#section-7.2-3" class="pilcrow">¶</a></p>
-<p id="section-7.2-4">This means that composite signature implementations MUST NOT perform a single message digest operation and then provide that digest value to all component algorithms.<a href="#section-7.2-4" class="pilcrow">¶</a></p>
-<p id="section-7.2-5">That said, the first step of both the Dilithium and Falcon algoritms is a keyed hash of the message. This section considers modifications to the Dilithium and Falcon algorithms where the first hashing step is performed externally to the cryptographic module.<a href="#section-7.2-5" class="pilcrow">¶</a></p>
-<p id="section-7.2-6">That said, for use-cases where pre-hashing of messages for Dilithium or Falcon signatures is required for bandwidth or resource contraints, external hashing should be considered. Depending on the algorithm chosen additional contraints on the format of the external hashing may be required to meet the security requirements of the algorithm. The following subsections provide specific instructions for externalizing the message digest step of the Dilithium and Falcon Sign() and Verify() operations.<a href="#section-7.2-6" class="pilcrow">¶</a></p>
+<p id="section-7.2-3">This means that composite signature implementations MUST NOT perform a single message digest operation and then provide that digest value to all component algorithms.<a href="#section-7.2-3" class="pilcrow">¶</a></p>
+<p id="section-7.2-4">That said, the first step of both the Dilithium and Falcon algoritms is a keyed hash of the message. This section considers modifications to the Dilithium and Falcon algorithms where the first hashing step is performed externally to the cryptographic module.<a href="#section-7.2-4" class="pilcrow">¶</a></p>
+<p id="section-7.2-5">That said, for use-cases where pre-hashing of messages for Dilithium or Falcon signatures is required for bandwidth or resource contraints, external hashing should be considered. Depending on the algorithm chosen additional contraints on the format of the external hashing may be required to meet the security requirements of the algorithm. The following subsections provide specific instructions for externalizing the message digest step of the Dilithium and Falcon Sign() and Verify() operations.<a href="#section-7.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2550,36 +2109,6 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 </div>
 </section>
 </div>
-<div id="sec-cons-hash-then-sign">
-<section id="section-11.3">
-        <h3 id="name-do-not-hash-then-sign-2">
-<a href="#section-11.3" class="section-number selfRef">11.3. </a><a href="#name-do-not-hash-then-sign-2" class="section-name selfRef">Do not hash-then-sign</a>
-        </h3>
-<p id="section-11.3-1">In the hash-then-sign paradigm, the message to be signed is hashed externally to the signature primitive, and then the hash value is signed.<a href="#section-11.3-1" class="pilcrow">¶</a></p>
-<p id="section-11.3-2">The hash-then-sign paradigm is required, for example, with RSA signatures in order to sign messages larger than the RSA modulus. Hash-then-sign also gives performance and bandwidth benefits, for example, when the signature is performed by a networked cryptographic appliance since you only need to send a small hash value rather than streaming the entire message.<a href="#section-11.3-2" class="pilcrow">¶</a></p>
-<p id="section-11.3-3">With Dilithium and Falcon signatures it is not recommended to pre-hash for the following reasons:<a href="#section-11.3-3" class="pilcrow">¶</a></p>
-<p id="section-11.3-4">The Dilithium construction includes<a href="#section-11.3-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-11.3-5">
-<pre>
-Sign(sk,M):
-10: mu \in {0, 1}^384 := CRH(tr || M)
-</pre><a href="#section-11.3-5" class="pilcrow">¶</a>
-</div>
-<p id="section-11.3-6">where <code>CRH</code> is any collision-resistant hash function and <code>tr</code> is a component of the secret key. This provides strong security against pre-computed collision attacks since an attacker has no knowledge of <code>tr</code> and provides per-key hash-domain separation of the message to be signed.<a href="#section-11.3-6" class="pilcrow">¶</a></p>
-<p id="section-11.3-7">The Falcon construction includes<a href="#section-11.3-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-11.3-8">
-<pre>
-Sign (m, sk, beta^2):
-1: r &lt;- {0, 1}^320 uniformly
-2: c &lt;- HashToPoint(r || m, q, n)
-</pre><a href="#section-11.3-8" class="pilcrow">¶</a>
-</div>
-<p id="section-11.3-9">where <code>HashToPoint</code> is a SHAKE-256-based construct. This provides strong security against pre-computed collision attacks since an attacker has no a-priori knowledge of <code>r</code> and provides per-signature hash-domain separation of the message to be signed.<a href="#section-11.3-9" class="pilcrow">¶</a></p>
-<p id="section-11.3-10">If the message to be signed is pre-hashed, for example <code>m0 = SHA256(m)</code> and then m0 provided to Dilithium or Falcon to sign, then you have re-introduced the collision problem since two messages m1 and m2 where SHA256(m1) == SHA256(m2) will result in a single Falcon or Dilithium signature value which is simultaneously valid for both m1 and m2. This removes the extra collision resistance built in to the Dilithium and Falcon primitives and reduces it to the collision resistance strength of the underlying hash function. For this reason it is in general not recommended to pre-hash when using Dilithium or Falcon except in cases where the implementor is comfortable with this reduction in security.<a href="#section-11.3-10" class="pilcrow">¶</a></p>
-<p id="section-11.3-11">Therefore, for the purpose of interoperability of composite signatures, signature alogrithms defined in this version of this document do not pre-hash messages for Dilithium and Falcon. If pre-hashed versions of these signatures are also desired, then separate signature algorithms will need to be defined.<a href="#section-11.3-11" class="pilcrow">¶</a></p>
-<p id="section-11.3-12">EDNOTE: Sync this with the authors of the Dilithium and Falcon signatures specs for LAMPS.<a href="#section-11.3-12" class="pilcrow">¶</a></p>
-</section>
-</div>
 </section>
 </div>
 <section id="section-12">
@@ -2593,7 +2122,7 @@ Sign (m, sk, beta^2):
 <dl class="references">
 <dt id="I-D.massimo-lamps-pq-sig-certificates">[I-D.massimo-lamps-pq-sig-certificates]</dt>
         <dd>
-<span class="refAuthor">Massimo, J.</span>, <span class="refAuthor">Kampanakis, P.</span>, <span class="refAuthor">Turner, S.</span>, and <span class="refAuthor">B. Westerbaan</span>, <span class="refTitle">"Algorithms and Identifiers for Post-Quantum Algorithms"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-massimo-lamps-pq-sig-certificates-00</span>, <time datetime="2022-07-08" class="refDate">8 July 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-massimo-lamps-pq-sig-certificates-00.txt">https://www.ietf.org/archive/id/draft-massimo-lamps-pq-sig-certificates-00.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Massimo, J.</span>, <span class="refAuthor">Kampanakis, P.</span>, <span class="refAuthor">Turner, S.</span>, and <span class="refAuthor">B. Westerbaan</span>, <span class="refTitle">"Algorithms and Identifiers for Post-Quantum Algorithms"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-massimo-lamps-pq-sig-certificates-00</span>, <time datetime="2022-07-08" class="refDate">8 July 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-massimo-lamps-pq-sig-certificates-00">https://datatracker.ietf.org/doc/html/draft-massimo-lamps-pq-sig-certificates-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
@@ -2640,15 +2169,15 @@ Sign (m, sk, beta^2):
 <dd class="break"></dd>
 <dt id="I-D.becker-guthrie-noncomposite-hybrid-auth">[I-D.becker-guthrie-noncomposite-hybrid-auth]</dt>
         <dd>
-<span class="refAuthor">Becker, A.</span>, <span class="refAuthor">Guthrie, R.</span>, and <span class="refAuthor">M. J. Jenkins</span>, <span class="refTitle">"Non-Composite Hybrid Authentication in PKIX and Applications to Internet Protocols"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-becker-guthrie-noncomposite-hybrid-auth-00</span>, <time datetime="2022-03-22" class="refDate">22 March 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-becker-guthrie-noncomposite-hybrid-auth-00.txt">https://www.ietf.org/archive/id/draft-becker-guthrie-noncomposite-hybrid-auth-00.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Becker, A.</span>, <span class="refAuthor">Guthrie, R.</span>, and <span class="refAuthor">M. J. Jenkins</span>, <span class="refTitle">"Non-Composite Hybrid Authentication in PKIX and Applications to Internet Protocols"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-becker-guthrie-noncomposite-hybrid-auth-00</span>, <time datetime="2022-03-22" class="refDate">22 March 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-becker-guthrie-noncomposite-hybrid-auth-00">https://datatracker.ietf.org/doc/html/draft-becker-guthrie-noncomposite-hybrid-auth-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.guthrie-ipsecme-ikev2-hybrid-auth">[I-D.guthrie-ipsecme-ikev2-hybrid-auth]</dt>
         <dd>
-<span class="refAuthor">Guthrie, R.</span>, <span class="refTitle">"Hybrid Non-Composite Authentication in IKEv2"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-guthrie-ipsecme-ikev2-hybrid-auth-00</span>, <time datetime="2022-03-25" class="refDate">25 March 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-guthrie-ipsecme-ikev2-hybrid-auth-00.txt">https://www.ietf.org/archive/id/draft-guthrie-ipsecme-ikev2-hybrid-auth-00.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Guthrie, R.</span>, <span class="refTitle">"Hybrid Non-Composite Authentication in IKEv2"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-guthrie-ipsecme-ikev2-hybrid-auth-00</span>, <time datetime="2022-03-25" class="refDate">25 March 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-guthrie-ipsecme-ikev2-hybrid-auth-00">https://datatracker.ietf.org/doc/html/draft-guthrie-ipsecme-ikev2-hybrid-auth-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ounsworth-pq-composite-keys">[I-D.ounsworth-pq-composite-keys]</dt>
         <dd>
-<span class="refAuthor">Ounsworth, M.</span> and <span class="refAuthor">M. Pala</span>, <span class="refTitle">"Composite Public and Private Keys For Use In Internet PKI"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ounsworth-pq-composite-keys-00</span>, <time datetime="2021-07-12" class="refDate">12 July 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ounsworth-pq-composite-keys-00.txt">https://www.ietf.org/archive/id/draft-ounsworth-pq-composite-keys-00.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Ounsworth, M.</span> and <span class="refAuthor">M. Pala</span>, <span class="refTitle">"Composite Public and Private Keys For Use In Internet PKI"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ounsworth-pq-composite-keys-00</span>, <time datetime="2021-07-12" class="refDate">12 July 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-composite-keys-00">https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-composite-keys-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC3279">[RFC3279]</dt>
         <dd>
@@ -2677,44 +2206,35 @@ Sign (m, sk, beta^2):
 </div>
 </section>
 </div>
-<div id="appdx-creatingExplicitCombinations">
-<section id="appendix-B">
-      <h2 id="name-creating-explicit-combinatio">
-<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-creating-explicit-combinatio" class="section-name selfRef">Creating explicit combinations</a>
-      </h2>
-<p id="appendix-B-1">The following ASN.1 Information Objects may be useful in defining and parsing explicit pairs of signature algorithms.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<p id="appendix-B-2">... TODO ... copy &amp; adapt from the keys draft.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="appdx-examples">
-<section id="appendix-C">
+<section id="appendix-B">
       <h2 id="name-examples-2">
-<a href="#appendix-C" class="section-number selfRef">Appendix C. </a><a href="#name-examples-2" class="section-name selfRef">Examples</a>
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-examples-2" class="section-name selfRef">Examples</a>
       </h2>
 <div id="appdx-genComposite-examples">
-<section id="appendix-C.1">
+<section id="appendix-B.1">
         <h3 id="name-generic-composite-signature-">
-<a href="#appendix-C.1" class="section-number selfRef">C.1. </a><a href="#name-generic-composite-signature-" class="section-name selfRef">Generic Composite Signature Examples</a>
+<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-generic-composite-signature-" class="section-name selfRef">Generic Composite Signature Examples</a>
         </h3>
-<p id="appendix-C.1-1">TODO<a href="#appendix-C.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.1-1">TODO<a href="#appendix-B.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="appdx-expComposite-examples">
-<section id="appendix-C.2">
-        <h3 id="name-explicit-composite-signature">
-<a href="#appendix-C.2" class="section-number selfRef">C.2. </a><a href="#name-explicit-composite-signature" class="section-name selfRef">Explicit Composite Signature Examples</a>
+<section id="appendix-B.2">
+        <h3 id="name-explicit-composite-signature-e">
+<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-explicit-composite-signature-e" class="section-name selfRef">Explicit Composite Signature Examples</a>
         </h3>
-<p id="appendix-C.2-1">TODO<a href="#appendix-C.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.2-1">TODO<a href="#appendix-B.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
-<div id="asn1-module">
-<section id="appendix-D">
+<div id="sec-asn1-module">
+<section id="appendix-C">
       <h2 id="name-asn1-module-2">
-<a href="#appendix-D" class="section-number selfRef">Appendix D. </a><a href="#name-asn1-module-2" class="section-name selfRef">ASN.1 Module</a>
+<a href="#appendix-C" class="section-number selfRef">Appendix C. </a><a href="#name-asn1-module-2" class="section-name selfRef">ASN.1 Module</a>
       </h2>
-<div id="appendix-D-1">
+<div id="appendix-C-1">
 <pre class="breakable lang-asn.1 sourcecode">
 &lt;CODE STARTS&gt;
 
@@ -2742,7 +2262,13 @@ IMPORTS
     FROM AsymmetricKeyPackageModuleV1
       { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
         pkcs-9(9) smime(16) modules(0)
-        id-mod-asymmetricKeyPkgV1(50) } ;
+        id-mod-asymmetricKeyPkgV1(50) }
+
+  pk-Composite
+         FROM Composite-Keys-2023
+           {  id-composite-key OBJECT IDENTIFIER ::= {
+              joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+              Algorithm(80) Composite(4) CompositeKey(1) };
 
 --
 -- Object Identifiers
@@ -2753,6 +2279,7 @@ id-alg-composite OBJECT IDENTIFIER ::= { TBD }
 --
 -- Public Key
 --
+-- TODO move to public keys draft
 
 pk-Composite PUBLIC-KEY ::= {
     IDENTIFIER id-alg-composite
@@ -2769,25 +2296,9 @@ CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
 -- Signature Algorithm
 --
 
--- sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
---    IDENTIFIER id-alg-composite
---    VALUE CompositeSignatureValue
---    PARAMS TYPE CompositeParams ARE required
---    PUBLIC-KEYS { pk-Composite }
---    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
+-- CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 
-
--- sa-CompositeSignature SIGNATURE-ALGORITHM {OBJECT IDENTIFIER : id, EXPLICIT-COMPOSITE-SIGNATURE-VALUE : sigvalue, EXPLICIT-COMPOSITE-SIGNATURE-PARAMS : sigparams, } ::= {
---    IDENTIFIER id,
---    VALUE sigvalue,
---    PARAMS TYPE CompositeParams ARE required
---    PUBLIC-KEYS { pk-Composite }
---    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-
-
--- CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
-
--- CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
+CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF OCTET STRING
 
 CompositePublicKeyValue{FirstPublicKeyValue, SecondPublicKeyValue}::= SEQUENCE {
       publickey1 FirstPublicKeyValue ,
@@ -2799,20 +2310,16 @@ CompositeSignatureParams{FirstSignatureParams, SecondSignatureParams} ::= SEQUEN
       signatureparms2 SecondSignatureParams
 }
 
-CompositeSignatureValue{FirstSignatureValue, SecondSignatureValue} ::= SEQUENCE {
-      signaturevalue1 FirstSignatureValue,
-      signaturevalue2 SecondSignatureValue
-}
-
+-- TODO Add to Keys draft, and import in this draft
 COMPOSITE-PUBLIC-KEY{Id, PublicKeyValue}::= PUBLIC-KEY {
      IDENTIFIER Id
      KEY PublicKeyValue
      PARAMS ARE absent
 }
 
-COMPOSITE-SIGNATURE-ALGORITHM{Id, PublicKeyValue, SignatureParams, SignatureValue} ::= SIGNATURE-ALGORITHM {
+COMPOSITE-SIGNATURE-ALGORITHM{Id, PublicKeyValue, SignatureParams} ::= SIGNATURE-ALGORITHM {
     IDENTIFIER Id
-    VALUE SignatureValue
+    VALUE CompositeSignatureValue
     PARAMS TYPE SignatureParams ARE Optional
     PUBLIC-KEYS {PublicKeyValue}
 }
@@ -2820,7 +2327,7 @@ COMPOSITE-SIGNATURE-ALGORITHM{Id, PublicKeyValue, SignatureParams, SignatureValu
 
 -- Dilithium3-RSA Specification
 
-sa-Dilithium3-RSA OBJECT IDENTIFIER ::= {
+id-Dilithium3-RSA OBJECT IDENTIFIER ::= {
      joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
      algorithm(80) explicitcomposite(5) signatureAlg(1) id-Dilithium3-SHA256withRSA(1) }
 
@@ -2828,56 +2335,63 @@ Dilithium3RSAPKCS15PublicKeyValue ::= CompositePublicKeyValue {DilithiumPublicKe
 
 Dilithium3RSAPKCS15SignatureParms ::= CompositeSignatureParams{DilithiumTBD,Sha256WithRSAEncryption}
 
-Dilithium3RSASignatureValue ::= CompositeSignatureValue {OCTET STRING,OCTET STRING}
-
 Dilithium3RSAPublicKey ::= COMPOSITE-PUBLIC-KEY{Dilithium3RSA,Dilithium3RSAPKCS15PublicKeyValue}
 
-Dilithium3RSASignature ::= COMPOSITE-SIGNATURE-ALGORITHM{Dilithium3RSA,Dilithium3RSAPKCS15PublicKeyValue,Dilithium3RSAPKCS15SignatureParms,Dilithium3RSASignatureValue }
+sa-Dilithium3RSASignature ::= COMPOSITE-SIGNATURE-ALGORITHM{Dilithium3RSA,Dilithium3RSAPKCS15PublicKeyValue,Dilithium3RSAPKCS15SignatureParms}
+
+-- Generic Composite definition
+sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
+    IDENTIFIER TYPE id-alg-composite
+    VALUE CompositeSignatureValue
+    PARAMS TYPE CompositeSignatureParams ARE required
+    PUBLIC-KEYS { pk-Composite }
+ }
+
 
 &lt;CODE ENDS&gt;
 
-</pre><a href="#appendix-D-1" class="pilcrow">¶</a>
+</pre><a href="#appendix-C-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="intellectual-property-considerations">
-<section id="appendix-E">
+<section id="appendix-D">
       <h2 id="name-intellectual-property-consid">
-<a href="#appendix-E" class="section-number selfRef">Appendix E. </a><a href="#name-intellectual-property-consid" class="section-name selfRef">Intellectual Property Considerations</a>
+<a href="#appendix-D" class="section-number selfRef">Appendix D. </a><a href="#name-intellectual-property-consid" class="section-name selfRef">Intellectual Property Considerations</a>
       </h2>
-<p id="appendix-E-1">The following IPR Disclosure relates to this draft:<a href="#appendix-E-1" class="pilcrow">¶</a></p>
-<p id="appendix-E-2">https://datatracker.ietf.org/ipr/3588/<a href="#appendix-E-2" class="pilcrow">¶</a></p>
+<p id="appendix-D-1">The following IPR Disclosure relates to this draft:<a href="#appendix-D-1" class="pilcrow">¶</a></p>
+<p id="appendix-D-2">https://datatracker.ietf.org/ipr/3588/<a href="#appendix-D-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="contributors-and-acknowledgements">
-<section id="appendix-F">
+<section id="appendix-E">
       <h2 id="name-contributors-and-acknowledge">
-<a href="#appendix-F" class="section-number selfRef">Appendix F. </a><a href="#name-contributors-and-acknowledge" class="section-name selfRef">Contributors and Acknowledgements</a>
+<a href="#appendix-E" class="section-number selfRef">Appendix E. </a><a href="#name-contributors-and-acknowledge" class="section-name selfRef">Contributors and Acknowledgements</a>
       </h2>
-<p id="appendix-F-1">This document incorporates contributions and comments from a large group of experts. The Editors would especially like to acknowledge the expertise and tireless dedication of the following people, who attended many long meetings and generated millions of bytes of electronic mail and VOIP traffic over the past year in pursuit of this document:<a href="#appendix-F-1" class="pilcrow">¶</a></p>
-<p id="appendix-F-2">Serge Mister (Entrust),
+<p id="appendix-E-1">This document incorporates contributions and comments from a large group of experts. The Editors would especially like to acknowledge the expertise and tireless dedication of the following people, who attended many long meetings and generated millions of bytes of electronic mail and VOIP traffic over the past year in pursuit of this document:<a href="#appendix-E-1" class="pilcrow">¶</a></p>
+<p id="appendix-E-2">Serge Mister (Entrust),
 Scott Fluhrer (Cisco Systems),
 Panos Kampanakis (Cisco Systems),
 Daniel Van Geest (ISARA),
 Tim Hollebeek (Digicert), and
-Francois Rousseau.<a href="#appendix-F-2" class="pilcrow">¶</a></p>
-<p id="appendix-F-3">We are grateful to all, including any contributors who may have
-been inadvertently omitted from this list.<a href="#appendix-F-3" class="pilcrow">¶</a></p>
-<p id="appendix-F-4">This document borrows text from similar documents, including those referenced below. Thanks go to the authors of those
-   documents.  "Copying always makes things easier and less error prone" - <span>[<a href="#RFC8411" class="cite xref">RFC8411</a>]</span>.<a href="#appendix-F-4" class="pilcrow">¶</a></p>
+Francois Rousseau.<a href="#appendix-E-2" class="pilcrow">¶</a></p>
+<p id="appendix-E-3">We are grateful to all, including any contributors who may have
+been inadvertently omitted from this list.<a href="#appendix-E-3" class="pilcrow">¶</a></p>
+<p id="appendix-E-4">This document borrows text from similar documents, including those referenced below. Thanks go to the authors of those
+   documents.  "Copying always makes things easier and less error prone" - <span>[<a href="#RFC8411" class="cite xref">RFC8411</a>]</span>.<a href="#appendix-E-4" class="pilcrow">¶</a></p>
 <div id="making-contributions">
-<section id="appendix-F.1">
+<section id="appendix-E.1">
         <h3 id="name-making-contributions-2">
-<a href="#appendix-F.1" class="section-number selfRef">F.1. </a><a href="#name-making-contributions-2" class="section-name selfRef">Making contributions</a>
+<a href="#appendix-E.1" class="section-number selfRef">E.1. </a><a href="#name-making-contributions-2" class="section-name selfRef">Making contributions</a>
         </h3>
-<p id="appendix-F.1-1">Additional contributions to this draft are welcome. Please see the working copy of this draft at, as well as open issues at:<a href="#appendix-F.1-1" class="pilcrow">¶</a></p>
-<p id="appendix-F.1-2">https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs<a href="#appendix-F.1-2" class="pilcrow">¶</a></p>
+<p id="appendix-E.1-1">Additional contributions to this draft are welcome. Please see the working copy of this draft at, as well as open issues at:<a href="#appendix-E.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-E.1-2">https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs<a href="#appendix-E.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-G">
+<section id="appendix-F">
       <h2 id="name-authors-addresses-2">
 <a href="#name-authors-addresses-2" class="section-name selfRef">Authors' Addresses</a>
       </h2>
@@ -2895,7 +2409,7 @@ been inadvertently omitted from this list.<a href="#appendix-F-3" class="pilcrow
 </div>
 </address>
 <address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">John GRay</span></div>
+        <div dir="auto" class="left"><span class="fn nameRole">John Gray</span></div>
 <div dir="auto" class="left"><span class="org">Entrust Limited</span></div>
 <div dir="auto" class="left"><span class="street-address">2500 Solandt Road -- Suite 100</span></div>
 <div dir="auto" class="left">
