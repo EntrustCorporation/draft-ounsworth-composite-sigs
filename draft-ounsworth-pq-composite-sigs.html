@@ -1331,6 +1331,11 @@ li > p:last-of-type {
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-explicit-composite-algorithm" class="internal xref">Explicit Composite Algorithm Identifiers</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-generic-composite-algorithm-" class="internal xref">Generic Composite Algorithm Identifiers</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-composite-signature-processe" class="internal xref">Composite Signature Processes</a></p>
@@ -1574,47 +1579,36 @@ sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
 }
 </pre><a href="#section-4.2-2" class="pilcrow">¶</a>
 </div>
-<p id="section-4.2-3">The following sections will identify each of the required components listed above:<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-3">The following is an explanation how SIGNATURE-ALGORITHM elements are used 
+to create Composite Signatures:<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 <table class="center" id="table-1">
           <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
 <thead>
             <tr>
               <th class="text-left" rowspan="1" colspan="1">SIGNATURE-ALGORITHM element</th>
               <th class="text-left" rowspan="1" colspan="1">Definition</th>
-              <th class="text-left" rowspan="1" colspan="1"> </th>
-              <th class="text-left" rowspan="1" colspan="1"> </th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">IDENTIFIER</td>
               <td class="text-left" rowspan="1" colspan="1">The Object ID used to identify the composite Signature Algorithm</td>
-              <td class="text-left" rowspan="1" colspan="1">Composite Key and Signature AlgorithmID</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">VALUE</td>
               <td class="text-left" rowspan="1" colspan="1">The Sequence of BIT STRINGS for each component signature value</td>
-              <td class="text-left" rowspan="1" colspan="1">OCTET STRING of First</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">PARAMS</td>
               <td class="text-left" rowspan="1" colspan="1">Signature parameters either declared ABSENT, or defined with a type and encoding</td>
-              <td class="text-left" rowspan="1" colspan="1">Parameters are optional</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">PUBLIC-KEYS</td>
               <td class="text-left" rowspan="1" colspan="1">The composite key required to produce the composite signature</td>
-              <td class="text-left" rowspan="1" colspan="1">Composite Key and Signature AlgorithmID</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">SMIME_CAPS</td>
               <td class="text-left" rowspan="1" colspan="1">Not needed for composite</td>
-              <td class="text-left" rowspan="1" colspan="1">N/A</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
             </tr>
           </tbody>
         </table>
@@ -1737,7 +1731,7 @@ CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
             <td class="text-left" rowspan="1" colspan="1">Ed448</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">id-Falcon512-ECDSA-P256</td>
+            <td class="text-left" rowspan="1" colspan="1">id-Falcon512-ECDSA-P256-SHA256</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.8</td>
             <td class="text-left" rowspan="1" colspan="1">Falcon512TBD</td>
             <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
@@ -1778,12 +1772,6 @@ CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
             <td class="text-left" rowspan="1" colspan="1">Dilithium3TBD</td>
             <td class="text-left" rowspan="1" colspan="1">SHA256WithRSAPSS</td>
           </tr>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">id-composite-signature</td>
-            <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.14</td>
-            <td class="text-left" rowspan="1" colspan="1">Dilithium3TBD</td>
-            <td class="text-left" rowspan="1" colspan="1">SHA256WithRSAPSS</td>
-          </tr>
         </tbody>
       </table>
 </div>
@@ -1802,6 +1790,30 @@ definitions of the above Composite signature algorithms.<a href="#section-5-11" 
         <li id="section-5-13.5">A generic composite OID is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.The authors wish to note that although the CompositePublicKey and CompositePrivateKey structures are defined in such a way as to easily allow 3 or more component keys, it was decided at the time of writing to only specify explicit pairs. The generic composite allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.<a href="#section-5-13.5" class="pilcrow">¶</a>
 </li>
       </ol>
+<div id="generic-composite-algorithm-identifiers">
+<section id="section-5.1">
+        <h3 id="name-generic-composite-algorithm-">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-generic-composite-algorithm-" class="section-name selfRef">Generic Composite Algorithm Identifiers</a>
+        </h3>
+<p id="section-5.1-1">This draft remains backwards compatible with the previous version of composite signatures.   Explicit Composite keys are a rigid subset of generic composite keys.  In previous versions, the composite signature algorihtm Identifier and the composite key identifier used different Object Identifiers.  The generic composite signature algorithm identifier is:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<div id="section-5.1-2">
+<pre class="lang-asn.1 sourcecode">
+id-alg-composite OBJECT IDENTIFIER ::= {
+      iso(1)  identified-organization(3) dod(6) internet(1) private(4)
+         enterprise(1) opencA(18227) algorithms(2) id-alg-composite(1) }
+</pre><a href="#section-5.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-5.1-3">As defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, a generic composite key uses the following identifier:<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<div id="section-5.1-4">
+<pre class="lang-asn.1 sourcecode">
+id-composite-key OBJECT IDENTIFIER ::= {
+    joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+    algorithm(80) composite(4) compositekey(1) }
+</pre><a href="#section-5.1-4" class="pilcrow">¶</a>
+</div>
+<p id="section-5.1-5">See the ASN.1 module in section <a href="#sec-asn1-module" class="auto internal xref">Appendix C</a> for the definitions of Generic Composite algorithms<a href="#section-5.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="sec-composite-signature-algorithm">
@@ -1848,7 +1860,7 @@ Signature Generation Process:
 </pre><a href="#section-6.1-3" class="pilcrow">¶</a>
 </div>
 <p id="section-6.1-4">Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePrivateKey and CompositeSignatureParams structures. It is also possible to generate a composite signature that combines signatures from distinct keys stored in separate software or hardware keystores. Variations in the process to accommodate particular private key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.<a href="#section-6.1-4" class="pilcrow">¶</a></p>
-<p id="section-6.1-5">Since recursive composite public keys are disallowed in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.<a href="#section-6.1-5" class="pilcrow">¶</a></p>
+<p id="section-6.1-5">Since recursive composite public keys are disallowed in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite or an explicit composite OID.<a href="#section-6.1-5" class="pilcrow">¶</a></p>
 <p id="section-6.1-6">A composite signature MUST produce, and include in the output, a signature value for every component key in  and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2, etc. The authors recognize that there may be valid use cases for "subset signature generation"; see <a href="#sec-subset-sig-gen" class="auto internal xref">Section 9.2.1</a> for further discussion of security implications, and <a href="#sec-backwards-compat" class="auto internal xref">Section 7.1</a> for further discussion of backwards compatibility implications.<a href="#section-6.1-6" class="pilcrow">¶</a></p>
 <p id="section-6.1-7">For security when using a generic composite signature algorithm, the list of component signature algorithms A1, A2, .., An, which may be carried in a CompositeSignatureParams object, SHOULD be included in the signed message M to prevent an attacker from substituting a weaker algorithm which is compatible with the same public key. This attack is not unique or new to the composite format.<a href="#section-6.1-7" class="pilcrow">¶</a></p>
 </section>
@@ -1903,7 +1915,7 @@ Signature Verification Procedure::
 </pre><a href="#section-6.2-4" class="pilcrow">¶</a>
 </div>
 <p id="section-6.2-5">Note on composite inputs: the method of providing the list of component keys, algorithms and signatures is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey, CompositeSignatureParams, and compositesignaturevalue structures. It is also possible to verify a composite signature where the component public verification keys belong, for example, to separate X.509 certificates or cryptographic modules. Variations in the process to accommodate particular public verification key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.<a href="#section-6.2-5" class="pilcrow">¶</a></p>
-<p id="section-6.2-6">Since recursive composite public keys are disallowed in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.<a href="#section-6.2-6" class="pilcrow">¶</a></p>
+<p id="section-6.2-6">Since recursive composite public keys are disallowed in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with OID id-alg-composite or an explicit composite OID.<a href="#section-6.2-6" class="pilcrow">¶</a></p>
 <p id="section-6.2-7">Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementer MAY, in the interest of performance of compatibility, modify the above process to skip one or more signature validations as per their local client policy. See <a href="#sec-cons-OR-modes" class="auto internal xref">Section 9.2</a> for a discussion of associated risks.<a href="#section-6.2-7" class="pilcrow">¶</a></p>
 <p id="section-6.2-8">In the absence of such a policy mechanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here. See <a href="#sec-subset-sig-gen" class="auto internal xref">Section 9.2.1</a> for further discussion of security implications of subset signature verifications, and <a href="#sec-backwards-compat" class="auto internal xref">Section 7.1</a> for further discussion of backwards compatibility implications.<a href="#section-6.2-8" class="pilcrow">¶</a></p>
 </section>
@@ -2266,15 +2278,28 @@ IMPORTS
         pkcs-9(9) smime(16) modules(0)
         id-mod-asymmetricKeyPkgV1(50) }
 
-  pk-dilithium3-rsa-pkcs15-sha256,  pk-dilithium3-rsassa-pss,
-  pk-dilithium3-ecdsa-brainpoolp256r1-sha256,  pk-Composite,
-  id-Dilithium3-RSA-PKCS15-SHA256, id-Dilithium3-RSASSA-PSS,
-  id-Dilithium3-ECDSA-brainpoolP256r1-SHA256
-
+  pk-Dilithium3-RSA-PSS, id-Dilithium3-RSA-PSS,
+  pk-Dilithium3-RSA-PKCS15-SHA256, id-Dilithium3-RSA-PKCS15-SHA256,
+  pk-Dilithium3-ECDSA-P256-SHA256, id-Dilithium3-ECDSA-P256-SHA256,
+  pk-Dilithium3-ECDSA-brainpoolP256r1, id-Dilithium3-ECDSA-brainpoolP256r1,
+  pk-Dilithium3-Ed25519, id-Dilithium3-Ed25519,
+  pk-Dilithium5-ECDSA-P384, id-Dilithium5-ECDSA-P384,
+  pk-Dilithium5-ECDSA-brainpoolP384r1-SHA384,
+  id-Dilithium5-ECDSA-brainpoolP384r1-SHA384,
+  pk-Dilithium5-Ed448, id-Dilithium5-Ed448,
+  pk-Falcon512-ECDSA-P256-SHA256, id-Falcon512-ECDSA-P256-SHA256,
+  pk-Falcon512-ECDSA-brainpoolP256r1-SHA256,
+  id-Falcon512-ECDSA-brainpoolP256r1-SHA256,
+  pk-Falcon512-Ed25519, id-Falcon512-Ed25519,
+  pk-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
+  id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
+  pk-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
+  id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
+  pk-SPHINCSplusSHA256128sSimple-Ed25519,
+  id-SPHINCSplusSHA256128sSimple-Ed25519
     FROM CompositeKeys-2023
            {iso(1) identified-organization(3) dod(6) internet(1) security(5)
        mechanisms(5) pkix(7) id-mod(0) id-mod-composite-keys(TBD)};
-
 
 --
 -- Signature Algorithm

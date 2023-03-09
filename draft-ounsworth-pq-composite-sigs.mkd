@@ -235,15 +235,16 @@ sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
 ~~~
 
 
-The following sections will identify each of the required components listed above:
+The following is an explanation how SIGNATURE-ALGORITHM elements are used 
+to create Composite Signatures:
 
-SIGNATURE-ALGORITHM element | Definition | {{tab-composite-sigs}} |
----------                  | ---------- | ---------- |
-IDENTIFIER                  | The Object ID used to identify the composite Signature Algorithm | Composite Key and Signature AlgorithmID | 
-VALUE                       | The Sequence of BIT STRINGS for each component signature value | OCTET STRING of First |
-PARAMS                      | Signature parameters either declared ABSENT, or defined with a type and encoding | Parameters are optional| |
-PUBLIC-KEYS                 | The composite key required to produce the composite signature | Composite Key and Signature AlgorithmID | 
-SMIME_CAPS                  | Not needed for composite | N/A  |
+SIGNATURE-ALGORITHM element | Definition | 
+---------                  | ---------- |
+IDENTIFIER                  | The Object ID used to identify the composite Signature Algorithm | 
+VALUE                       | The Sequence of BIT STRINGS for each component signature value | 
+PARAMS                      | Signature parameters either declared ABSENT, or defined with a type and encoding | 
+PUBLIC-KEYS                 | The composite key required to produce the composite signature | 
+SMIME_CAPS                  | Not needed for composite | 
 
 
 
@@ -320,14 +321,13 @@ Signature public key types:
 | id-Dilithium5-ECDSA-P384-SHA384            | &lt;CompSig&gt;.5 | Dilithium5TBD | SHA384withECDSA | 
 | id-Dilithium5-ECDSA-brainpoolP384r1-SHA384 | &lt;CompSig&gt;.6 | Dilithium5TBD | SHA384withECDSA | 
 | id-Dilithium5-Ed448                 | &lt;CompSig&gt;.7 | Dilithium5TBD | Ed448 | 
-| id-Falcon512-ECDSA-P256             | &lt;CompSig&gt;.8 | Falcon512TBD | SHA256withECDSA | 
+| id-Falcon512-ECDSA-P256-SHA256        | &lt;CompSig&gt;.8 | Falcon512TBD | SHA256withECDSA | 
 | id-Falcon512-ECDSA-brainpoolP256r1-SHA256  | &lt;CompSig&gt;.9 | Falcon512TBD | SHA256withECDSA | 
 | id-Falcon512-Ed25519                       | &lt;CompSig&gt;.10| Falcon512TBD | Ed25519| 
 | id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256  | &lt;CompSig&gt;.11| &lt;SPHINCS&gt; | SHA256withECDSA | 
 | id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.12 | &lt;SPHINCS&gt; | SHA256withECDSA | 
 | id-SPHINCSplusSHA256128sSimple-Ed25519               | &lt;CompSig&gt;.13 | &lt;SPHINCS&gt; | Ed25519 |
 | id-Dilithium3-RSA-PSS                      | &lt;CompSig&gt;.14 | Dilithium3TBD | SHA256WithRSAPSS | 
-| id-composite-signature  | &lt;CompSig&gt;.14 | Dilithium3TBD | SHA256WithRSAPSS | 
 {: #tab-composite-sigs title="Explicit Composite Signature Algorithms"}
 
 The table above contains everything needed to implement the listed explicit composite algorithms. See the ASN.1 module in section {{sec-asn1-module}} for the explicit
@@ -341,6 +341,27 @@ These combinations were chosen according to the following rough guidelines:
 1. A single SPHINCS+ combination is provided for use cases that wish to put hash-based signatures into hybrid combination.
 1. A generic composite OID is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.The authors wish to note that although the CompositePublicKey and CompositePrivateKey structures are defined in such a way as to easily allow 3 or more component keys, it was decided at the time of writing to only specify explicit pairs. The generic composite allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.
 
+## Generic Composite Algorithm Identifiers
+This draft remains backwards compatible with the previous version of composite signatures.   Explicit Composite keys are a rigid subset of generic composite keys.  In previous versions, the composite signature algorihtm Identifier and the composite key identifier used different Object Identifiers.  The generic composite signature algorithm identifier is:
+
+~~~ asn.1
+id-alg-composite OBJECT IDENTIFIER ::= {
+      iso(1)  identified-organization(3) dod(6) internet(1) private(4)
+         enterprise(1) opencA(18227) algorithms(2) id-alg-composite(1) }
+~~~
+{: artwork-name="GenericCompositeSignature-OID"}         
+
+
+As defined in {{I-D.ounsworth-pq-composite-keys}}, a generic composite key uses the following identifier:
+
+~~~ asn.1
+id-composite-key OBJECT IDENTIFIER ::= {
+    joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+    algorithm(80) composite(4) compositekey(1) }
+~~~
+{: artwork-name="GenericCompositeKey-OID"}         
+
+See the ASN.1 module in section {{sec-asn1-module}} for the definitions of Generic Composite algorithms
 
 # Composite Signature Processes {#sec-composite-signature-algorithm}
 
@@ -385,7 +406,7 @@ Signature Generation Process:
 
 Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePrivateKey and CompositeSignatureParams structures. It is also possible to generate a composite signature that combines signatures from distinct keys stored in separate software or hardware keystores. Variations in the process to accommodate particular private key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
 
-Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.
+Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite or an explicit composite OID.
 
 A composite signature MUST produce, and include in the output, a signature value for every component key in  and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2, etc. The authors recognize that there may be valid use cases for "subset signature generation"; see {{sec-subset-sig-gen}} for further discussion of security implications, and {{sec-backwards-compat}} for further discussion of backwards compatibility implications.
 
@@ -444,7 +465,7 @@ Signature Verification Procedure::
 
 Note on composite inputs: the method of providing the list of component keys, algorithms and signatures is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey, CompositeSignatureParams, and compositesignaturevalue structures. It is also possible to verify a composite signature where the component public verification keys belong, for example, to separate X.509 certificates or cryptographic modules. Variations in the process to accommodate particular public verification key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
 
-Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
+Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with OID id-alg-composite or an explicit composite OID.
 
 Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementer MAY, in the interest of performance of compatibility, modify the above process to skip one or more signature validations as per their local client policy. See {{sec-cons-OR-modes}} for a discussion of associated risks.
 
@@ -682,16 +703,29 @@ IMPORTS
       { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
         pkcs-9(9) smime(16) modules(0)
         id-mod-asymmetricKeyPkgV1(50) } 
-		
-  pk-dilithium3-rsa-pkcs15-sha256,  pk-dilithium3-rsassa-pss,
-  pk-dilithium3-ecdsa-brainpoolp256r1-sha256,  pk-Composite,
-  id-Dilithium3-RSA-PKCS15-SHA256, id-Dilithium3-RSASSA-PSS,
-  id-Dilithium3-ECDSA-brainpoolP256r1-SHA256
-  
+        
+  pk-Dilithium3-RSA-PSS, id-Dilithium3-RSA-PSS,
+  pk-Dilithium3-RSA-PKCS15-SHA256, id-Dilithium3-RSA-PKCS15-SHA256,
+  pk-Dilithium3-ECDSA-P256-SHA256, id-Dilithium3-ECDSA-P256-SHA256,
+  pk-Dilithium3-ECDSA-brainpoolP256r1, id-Dilithium3-ECDSA-brainpoolP256r1,
+  pk-Dilithium3-Ed25519, id-Dilithium3-Ed25519,
+  pk-Dilithium5-ECDSA-P384, id-Dilithium5-ECDSA-P384,
+  pk-Dilithium5-ECDSA-brainpoolP384r1-SHA384, 
+  id-Dilithium5-ECDSA-brainpoolP384r1-SHA384,
+  pk-Dilithium5-Ed448, id-Dilithium5-Ed448,
+  pk-Falcon512-ECDSA-P256-SHA256, id-Falcon512-ECDSA-P256-SHA256,
+  pk-Falcon512-ECDSA-brainpoolP256r1-SHA256, 
+  id-Falcon512-ECDSA-brainpoolP256r1-SHA256,
+  pk-Falcon512-Ed25519, id-Falcon512-Ed25519,
+  pk-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
+  id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
+  pk-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
+  id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
+  pk-SPHINCSplusSHA256128sSimple-Ed25519,
+  id-SPHINCSplusSHA256128sSimple-Ed25519
     FROM CompositeKeys-2023
 	   {iso(1) identified-organization(3) dod(6) internet(1) security(5)
        mechanisms(5) pkix(7) id-mod(0) id-mod-composite-keys(TBD)};
-
 
 --
 -- Signature Algorithm
