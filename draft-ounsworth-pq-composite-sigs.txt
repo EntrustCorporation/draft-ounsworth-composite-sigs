@@ -5,9 +5,9 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
 Intended status: Standards Track                                 Entrust
-Expires: 3 September 2023                                        M. Pala
+Expires: 10 September 2023                                       M. Pala
                                                                CableLabs
-                                                            2 March 2023
+                                                            9 March 2023
 
 
               Composite Signatures For Use In Internet PKI
@@ -53,7 +53,7 @@ Abstract
 
 
 
-Ounsworth, et al.       Expires 3 September 2023                [Page 1]
+Ounsworth, et al.       Expires 10 September 2023               [Page 1]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -80,7 +80,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 September 2023.
+   This Internet-Draft will expire on 10 September 2023.
 
 Copyright Notice
 
@@ -109,14 +109,14 @@ Table of Contents
 
 
 
-Ounsworth, et al.       Expires 3 September 2023                [Page 2]
+Ounsworth, et al.       Expires 10 September 2023               [Page 2]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
 
      4.4.  CompositeSignatureParameters  . . . . . . . . . . . . . .   8
      4.5.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   8
-   5.  Algorithm Identifiers . . . . . . . . . . . . . . . . . . . .   9
+   5.  Explicit Composite Algorithm Identifiers  . . . . . . . . . .   9
    6.  Composite Signature Processes . . . . . . . . . . . . . . . .  11
      6.1.  Composite Signature Generation Process  . . . . . . . . .  11
      6.2.  Composite Signature Verification Process  . . . . . . . .  13
@@ -125,27 +125,27 @@ Internet-Draft              PQ Composite Sigs                 March 2023
        7.1.1.  OR modes  . . . . . . . . . . . . . . . . . . . . . .  17
        7.1.2.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  17
      7.2.  External signatures . . . . . . . . . . . . . . . . . . .  18
-   8.  Dilithium . . . . . . . . . . . . . . . . . . . . . . . . . .  18
-   9.  Falcon  . . . . . . . . . . . . . . . . . . . . . . . . . . .  19
-   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  19
-   11. Security Considerations . . . . . . . . . . . . . . . . . . .  20
-     11.1.  Policy for Deprecated and Acceptable Algorithms  . . . .  20
-     11.2.  OR Modes . . . . . . . . . . . . . . . . . . . . . . . .  20
-       11.2.1.  Subset Signature Generation  . . . . . . . . . . . .  20
-       11.2.2.  Subset Signature Verification  . . . . . . . . . . .  21
-   12. References  . . . . . . . . . . . . . . . . . . . . . . . . .  21
-     12.1.  Normative References . . . . . . . . . . . . . . . . . .  22
-     12.2.  Informative References . . . . . . . . . . . . . . . . .  23
+     7.3.  Dilithium . . . . . . . . . . . . . . . . . . . . . . . .  18
+     7.4.  Falcon  . . . . . . . . . . . . . . . . . . . . . . . . .  19
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  19
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  20
+     9.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  20
+     9.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  20
+       9.2.1.  Subset Signature Generation . . . . . . . . . . . . .  20
+       9.2.2.  Subset Signature Verification . . . . . . . . . . . .  21
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  21
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  22
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  23
    Appendix A.  Work in Progress . . . . . . . . . . . . . . . . . .  23
      A.1.  Combiner modes (KofN) . . . . . . . . . . . . . . . . . .  24
    Appendix B.  Examples . . . . . . . . . . . . . . . . . . . . . .  24
      B.1.  Generic Composite Signature Examples  . . . . . . . . . .  24
      B.2.  Explicit Composite Signature Examples . . . . . . . . . .  24
    Appendix C.  ASN.1 Module . . . . . . . . . . . . . . . . . . . .  24
-   Appendix D.  Intellectual Property Considerations . . . . . . . .  26
-   Appendix E.  Contributors and Acknowledgements  . . . . . . . . .  27
-     E.1.  Making contributions  . . . . . . . . . . . . . . . . . .  27
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  27
+   Appendix D.  Intellectual Property Considerations . . . . . . . .  28
+   Appendix E.  Contributors and Acknowledgements  . . . . . . . . .  28
+     E.1.  Making contributions  . . . . . . . . . . . . . . . . . .  28
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  28
 
 1.  Changes in version -08
 
@@ -165,7 +165,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023                [Page 3]
+Ounsworth, et al.       Expires 10 September 2023               [Page 3]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -221,7 +221,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023                [Page 4]
+Ounsworth, et al.       Expires 10 September 2023               [Page 4]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -277,7 +277,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023                [Page 5]
+Ounsworth, et al.       Expires 10 September 2023               [Page 5]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -333,7 +333,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023                [Page 6]
+Ounsworth, et al.       Expires 10 September 2023               [Page 6]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -389,7 +389,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023                [Page 7]
+Ounsworth, et al.       Expires 10 September 2023               [Page 7]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -445,12 +445,12 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023                [Page 8]
+Ounsworth, et al.       Expires 10 September 2023               [Page 8]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
 
-5.  Algorithm Identifiers
+5.  Explicit Composite Algorithm Identifiers
 
    This section defines the algorithm identifiers for explicit
    combinations.  For simplicity and prototyping purposes, the signature
@@ -501,7 +501,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023                [Page 9]
+Ounsworth, et al.       Expires 10 September 2023               [Page 9]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -533,7 +533,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
    |SPHINCSplusSHA256128sSimple-|            |             |                       |
    |Ed25519                     |            |             |                       |
    +----------------------------+------------+-------------+-----------------------+
-   |id-Dilithium3-RSA-PSS-SHA256|<CompSig>.14|Dilithium3TBD|SHA256WithRSAPSS       |
+   |id-Dilithium3-RSA-PSS       |<CompSig>.14|Dilithium3TBD|SHA256WithRSAPSS       |
    +----------------------------+------------+-------------+-----------------------+
    |id-composite-signature      |<CompSig>.14|Dilithium3TBD|SHA256WithRSAPSS       |
    +----------------------------+------------+-------------+-----------------------+
@@ -557,7 +557,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 10]
+Ounsworth, et al.       Expires 10 September 2023              [Page 10]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -613,7 +613,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 11]
+Ounsworth, et al.       Expires 10 September 2023              [Page 11]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -669,13 +669,13 @@ Signature Generation Process:
 
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 12]
+Ounsworth, et al.       Expires 10 September 2023              [Page 12]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
 
    recognize that there may be valid use cases for "subset signature
-   generation"; see Section 11.2.1 for further discussion of security
+   generation"; see Section 9.2.1 for further discussion of security
    implications, and Section 7.1 for further discussion of backwards
    compatibility implications.
 
@@ -725,7 +725,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 13]
+Ounsworth, et al.       Expires 10 September 2023              [Page 13]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -781,7 +781,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 14]
+Ounsworth, et al.       Expires 10 September 2023              [Page 14]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -808,13 +808,13 @@ Internet-Draft              PQ Composite Sigs                 March 2023
    specifying acceptable subsets of algorithms.  In these cases,
    implementer MAY, in the interest of performance of compatibility,
    modify the above process to skip one or more signature validations as
-   per their local client policy.  See Section 11.2 for a discussion of
+   per their local client policy.  See Section 9.2 for a discussion of
    associated risks.
 
    In the absence of such a policy mechanism that can be easily updated
    to reflect new cryptanalytic breakthroughs, clients MUST perform
    signature verifications in the AND mode defined here.  See
-   Section 11.2.1 for further discussion of security implications of
+   Section 9.2.1 for further discussion of security implications of
    subset signature verifications, and Section 7.1 for further
    discussion of backwards compatibility implications.
 
@@ -837,7 +837,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 15]
+Ounsworth, et al.       Expires 10 September 2023              [Page 15]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -893,7 +893,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 16]
+Ounsworth, et al.       Expires 10 September 2023              [Page 16]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -949,7 +949,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 17]
+Ounsworth, et al.       Expires 10 September 2023              [Page 17]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -992,7 +992,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
    for externalizing the message digest step of the Dilithium and Falcon
    Sign() and Verify() operations.
 
-8.  Dilithium
+7.3.  Dilithium
 
    The Dilithium construction includes
 
@@ -1005,7 +1005,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 18]
+Ounsworth, et al.       Expires 10 September 2023              [Page 18]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1026,7 +1026,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
    function CRH, and since doing so does not affect interoperability of
    the signature algorithm.
 
-9.  Falcon
+7.4.  Falcon
 
    The Falcon construction includes
 
@@ -1052,7 +1052,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
    security implications depending on the implementation and runtime
    environment.
 
-10.  IANA Considerations
+8.  IANA Considerations
 
    This document registers the following in the SMI "Security for PKIX
    Algorithms (1.3.6.1.5.5.7.6)" registry:
@@ -1061,7 +1061,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 19]
+Ounsworth, et al.       Expires 10 September 2023              [Page 19]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1070,9 +1070,9 @@ Internet-Draft              PQ Composite Sigs                 March 2023
        iso(1) identified-organization(3) dod(6) internet(1) security(5)
        mechanisms(5) pkix(7) algorithms(6) composite(??) }
 
-11.  Security Considerations
+9.  Security Considerations
 
-11.1.  Policy for Deprecated and Acceptable Algorithms
+9.1.  Policy for Deprecated and Acceptable Algorithms
 
    Traditionally, a public key, certificate, or signature contains a
    single cryptographic algorithm.  If and when an algorithm becomes
@@ -1098,9 +1098,9 @@ Internet-Draft              PQ Composite Sigs                 March 2023
       if not checkPolicy(A1, A2, ..., An), then
         output "Invalid signature"
 
-11.2.  OR Modes
+9.2.  OR Modes
 
-11.2.1.  Subset Signature Generation
+9.2.1.  Subset Signature Generation
 
    This document defines a composite signature generation process in
    Section 6.1 where the signer MUST produce a signature value with each
@@ -1117,7 +1117,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 20]
+Ounsworth, et al.       Expires 10 September 2023              [Page 20]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1135,7 +1135,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
    in this way, and MUST reject during verification any subset
    signatures that they encounter.
 
-11.2.2.  Subset Signature Verification
+9.2.2.  Subset Signature Verification
 
    This document defines a composite signature verification process in
    Section 6.2 where the verifier verifies all component signatures and
@@ -1168,17 +1168,17 @@ Internet-Draft              PQ Composite Sigs                 March 2023
       the event that one of the algorithms has already been broken, but
       knowledge of the break has not been made public yet.
 
-12.  References
+10.  References
 
 
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 21]
+Ounsworth, et al.       Expires 10 September 2023              [Page 21]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
 
-12.1.  Normative References
+10.1.  Normative References
 
    [I-D.massimo-lamps-pq-sig-certificates]
               Massimo, J., Kampanakis, P., Turner, S., and B.
@@ -1229,7 +1229,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 22]
+Ounsworth, et al.       Expires 10 September 2023              [Page 22]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1239,7 +1239,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
               Encoding Rules (CER) and Distinguished Encoding Rules
               (DER)", ISO/IEC 8825-1:2015, November 2015.
 
-12.2.  Informative References
+10.2.  Informative References
 
    [Bindel2017]
               Bindel, N., Herath, U., McKague, M., and D. Stebila,
@@ -1285,7 +1285,7 @@ Appendix A.  Work in Progress
 
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 23]
+Ounsworth, et al.       Expires 10 September 2023              [Page 23]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1316,15 +1316,17 @@ Appendix C.  ASN.1 Module
 
    <CODE STARTS>
 
-   Composite-Signatures-2019
-     { TBD }
+
+      Composite-Signatures-2023
+        { joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+          algorithm(80) id-composite-signatures-2023 (TBD) }
 
    DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
    EXPORTS ALL;
 
    IMPORTS
-     PUBLIC-KEY, SIGNATURE-ALGORITHM
+     PUBLIC-KEY, SIGNATURE-ALGORITHM, AlgorithmIdentifier{}
        FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
          { iso(1) identified-organization(3) dod(6) internet(1)
            security(5) mechanisms(5) pkix(7) id-mod(0)
@@ -1336,110 +1338,189 @@ Appendix C.  ASN.1 Module
            security(5) mechanisms(5) pkix(7) id-mod(0)
            id-mod-pkix1-explicit-02(51) }
 
-     OneAsymmetricKey
-       FROM AsymmetricKeyPackageModuleV1
 
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 24]
+Ounsworth, et al.       Expires 10 September 2023              [Page 24]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
 
+     OneAsymmetricKey
+       FROM AsymmetricKeyPackageModuleV1
          { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
            pkcs-9(9) smime(16) modules(0)
            id-mod-asymmetricKeyPkgV1(50) }
 
-     pk-Composite
-            FROM Composite-Keys-2023
-              {  id-composite-key OBJECT IDENTIFIER ::= {
-                 joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-                 Algorithm(80) Composite(4) CompositeKey(1) };
+     pk-dilithium3-rsa-pkcs15-sha256,  pk-dilithium3-rsassa-pss,
+     pk-dilithium3-ecdsa-brainpoolp256r1-sha256,  pk-Composite,
+     id-Dilithium3-RSA-PKCS15-SHA256, id-Dilithium3-RSASSA-PSS,
+     id-Dilithium3-ECDSA-brainpoolP256r1-SHA256
 
-   --
-   -- Object Identifiers
-   --
+       FROM CompositeKeys-2023
+              {iso(1) identified-organization(3) dod(6) internet(1) security(5)
+          mechanisms(5) pkix(7) id-mod(0) id-mod-composite-keys(TBD)};
 
-   id-alg-composite OBJECT IDENTIFIER ::= { TBD }
-
-   --
-   -- Public Key
-   --
-   -- TODO move to public keys draft
-
-   pk-Composite PUBLIC-KEY ::= {
-       IDENTIFIER id-alg-composite
-       KEY CompositePublicKey
-       PARAMS ARE absent
-       PRIVATE-KEY CompositePrivateKey
-   }
-
-   CompositePublicKey ::= SEQUENCE SIZE (2..MAX) OF SubjectPublicKeyInfo
-
-   CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
 
    --
    -- Signature Algorithm
    --
 
-   -- CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
+   -- Composite Signature Value is just a sequence of OCTET STRINGS
 
-   CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF OCTET STRING
+      CompositeSignaturePair{FirstSignatureValue, SecondSignatureValue} ::=
+        SEQUENCE {
+         signaturevalue1 FirstSignatureValue,
+         signaturevalue2 SecondSignatureValue }
 
-   CompositePublicKeyValue{FirstPublicKeyValue, SecondPublicKeyValue}::= SEQUENCE {
-         publickey1 FirstPublicKeyValue ,
-         publickey2 SecondPublicKeyValue
-   }
-
-   CompositeSignatureParams{FirstSignatureParams, SecondSignatureParams} ::= SEQUENCE {
-         signatureparms1 FirstSignatureParams,
-         signatureparms2 SecondSignatureParams
-
+      -- An Explicit Compsite Signature is a set of Signatures which
+      -- are composed of OCTET STRINGS
+      ExplicitCompositeSignatureValue ::= CompositeSignaturePair {
+          OCTET STRING,OCTET STRING}
 
 
-Ounsworth, et al.       Expires 3 September 2023               [Page 25]
+
+   ExplicitSignatureParameters{SIGNATURE-ALGORITHM:FirstSignatureAlg,
+      SIGNATURE-ALGORITHM:SecondSignatureAlg}  ::=
+         SEQUENCE {
+             signatureAlgorithm1   AlgorithmIdentifier
+                               { SIGNATURE-ALGORITHM, {FirstSignatureAlg}},
+              signatureAlgorithm2   AlgorithmIdentifier
+                               { SIGNATURE-ALGORITHM, {SecondSignatureAlg}} }
+
+
+   sa-explicitCompositeSignature{OBJECT IDENTIFIER:id,
+      PUBLIC-KEY:publicKeyObject, ExplicitCompositeParams}
+         SIGNATURE-ALGORITHM ::=  {
+            IDENTIFIER id
+            VALUE ExplicitCompositeSignatureValue
+
+
+
+Ounsworth, et al.       Expires 10 September 2023              [Page 25]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
 
-   }
-
-   -- TODO Add to Keys draft, and import in this draft
-   COMPOSITE-PUBLIC-KEY{Id, PublicKeyValue}::= PUBLIC-KEY {
-        IDENTIFIER Id
-        KEY PublicKeyValue
-        PARAMS ARE absent
-   }
-
-   COMPOSITE-SIGNATURE-ALGORITHM{Id, PublicKeyValue, SignatureParams} ::= SIGNATURE-ALGORITHM {
-       IDENTIFIER Id
-       VALUE CompositeSignatureValue
-       PARAMS TYPE SignatureParams ARE Optional
-       PUBLIC-KEYS {PublicKeyValue}
-   }
+            PARAMS TYPE ExplicitCompositeParams ARE optional
+            PUBLIC-KEYS {publicKeyObject} }
 
 
-   -- Dilithium3-RSA Specification
+   sa-Dilithium3-RSA-PKCS15-SHA256 SIGNATURE-ALGORITHM ::=
+      sa-explicitCompositeSignature{ id-Dilithium3-RSA-PKCS15-SHA256,
+         pk-Dilithium3-RSA-PKCS15-SHA256,
+            ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-rsaWithSHA256}} }
 
-   id-Dilithium3-RSA OBJECT IDENTIFIER ::= {
-        joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-        algorithm(80) explicitcomposite(5) signatureAlg(1) id-Dilithium3-SHA256withRSA(1) }
+   sa-Dilithium3-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
+      sa-explicitCompositeSignature{id-Dilithium3-ECDSA-P256-SHA256,
+         pk-Dilithium3-ECDSA-P256-SHA256,
+           ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-ecdsaWithSHA256}} }
 
-   Dilithium3RSAPKCS15PublicKeyValue ::= CompositePublicKeyValue {DilithiumPublicKey, RSAEncryption}
+   sa-Dilithium3-ECDSA-brainpoolP256r1-SHA256 SIGNATURE-ALGORITHM ::=
+      sa-explicitCompositeSignature{id-Dilithium3-ECDSA-brainpoolP256r1-SHA256,
+         pk-Dilithium3-ECDSA-brainpoolP256r1-SHA256,
+           ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-ecdsaWithSHA256}} }
 
-   Dilithium3RSAPKCS15SignatureParms ::= CompositeSignatureParams{DilithiumTBD,Sha256WithRSAEncryption}
+   sa-Dilithium3-Ed25519 SIGNATURE-ALGORITHM ::=
+      sa-explicitCompositeSignature{id-Dilithium3-Ed25519,pk-Dilithium3-Ed25519,
+           ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-Ed25519}} }
 
-   Dilithium3RSAPublicKey ::= COMPOSITE-PUBLIC-KEY{Dilithium3RSA,Dilithium3RSAPKCS15PublicKeyValue}
+   sa-Dilithium5-ECDSA-P384-SHA384 SIGNATURE-ALGORITHM ::=
+      sa-explicitCompositeSignature{ id-Dilithium5-ECDSA-P384-SHA384,
+         pk-Dilithium5-ECDSA-P384-SHA384,
+           ExplicitSignatureParameters{{sa-Dilithium5TBD},{sa-ecdsaWithSHA384}} }
 
-   sa-Dilithium3RSASignature ::= COMPOSITE-SIGNATURE-ALGORITHM{Dilithium3RSA,Dilithium3RSAPKCS15PublicKeyValue,Dilithium3RSAPKCS15SignatureParms}
+   sa-Dilithium5-ECDSA-brainpoolP384r1-SHA384 SIGNATURE-ALGORITHM ::=
+      sa-explicitCompositeSignature{id-Dilithium5-ECDSA-brainpoolP384r1-SHA384,
+         pk-Dilithium5-ECDSA-brainpoolP384r1-SHA384,
+           ExplicitSignatureParameters{{sa-Dilithium5TBD},{sa-ecdsaWithSHA384}} }
+
+   sa-Dilithium5-Ed448 SIGNATURE-ALGORITHM ::=
+      sa-explicitCompositeSignature{id-Dilithium5-Ed448,pk-Dilithium5-Ed448,
+           ExplicitSignatureParameters{{sa-Dilithium5TBD},{sa-ed448}} }
+
+   sa-Falcon512-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
+      sa-explicitCompositeSignature{id-Falcon512-ECDSA-P256-SHA256,
+         pk-Falcon512-ECDSA-P256-SHA256,
+           ExplicitSignatureParameters{{sa-Falcon512TBD},{sa-ecdsaWithSHA256}} }
+
+   sa-Falcon512-ECDSA-brainpoolP256r1-SHA256 SIGNATURE-ALGORITHM ::=
+      sa-explicitCompositeSignature{id-Falcon512-ECDSA-brainpoolP256r1-SHA256,
+         pk-Falcon512-ECDSA-brainpoolP256r1-SHA256,
+           ExplicitSignatureParameters{{sa-Falcon512TBD},{sa-ecdsaWithSHA256}} }
+
+   sa-Falcon512-Ed25519 SIGNATURE-ALGORITHM ::=
+
+
+
+Ounsworth, et al.       Expires 10 September 2023              [Page 26]
+
+Internet-Draft              PQ Composite Sigs                 March 2023
+
+
+      sa-explicitCompositeSignature{id-Falcon512-Ed25519,pk-Falcon512-Ed25519,
+           ExplicitSignatureParameters{{sa-Falcon512TBD},{sa-Ed25519}} }
+
+   sa-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
+      sa-explicitCompositeSignature{
+         id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
+            pk-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
+              ExplicitSignatureParameters{{sa-SPHINCSTBD},
+                  {sa-ecdsaWithSHA256}} }
+
+   sa-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256
+      SIGNATURE-ALGORITHM ::= sa-explicitCompositeSignature {
+         id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
+            pk-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
+               ExplicitSignatureParameters{{sa-SPHINCSTBD},
+                  {sa-ecdsaWithSHA256}} }
+
+   sa-SPHINCSplusSHA256128sSimple-Ed25519 SIGNATURE-ALGORITHM ::=
+      sa-explicitCompositeSignature{id-SPHINCSplusSHA256128sSimple-Ed25519,
+         pk-SPHINCSplusSHA256128sSimple-Ed25519,
+            ExplicitSignatureParameters{{sa-SPHINCSTBD},{sa-Ed25519}} }
+
+   sa-Dilithium3-RSA-PSS-SHA256 SIGNATURE-ALGORITHM ::=
+      sa-explicitCompositeSignature{id-Dilithium3-RSA-PSS-SHA256,
+         pk-Dilithium3-RSA-PSS-SHA256,
+            ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-rsaSSA-PSS}} }
+
 
    -- Generic Composite definition
+
+   --
+   -- Object Identifiers
+   --
+
+      id-alg-composite OBJECT IDENTIFIER ::= {
+         iso(1)  identified-organization(3) dod(6) internet(1) private(4)
+            enterprise(1) opencA(18227) algorithms(2) id-alg-composite(1) }
+
    sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
-       IDENTIFIER TYPE id-alg-composite
+       IDENTIFIER id-alg-composite
        VALUE CompositeSignatureValue
        PARAMS TYPE CompositeSignatureParams ARE required
        PUBLIC-KEYS { pk-Composite }
     }
+
+    CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
+
+    CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF
+
+
+
+Ounsworth, et al.       Expires 10 September 2023              [Page 27]
+
+Internet-Draft              PQ Composite Sigs                 March 2023
+
+
+        AlgorithmIdentifier{SIGNATURE-ALGORITHM, {SignatureAlgSet}}
+
+
+   END
+
+
+
 
 
    <CODE ENDS>
@@ -1449,14 +1530,6 @@ Appendix D.  Intellectual Property Considerations
    The following IPR Disclosure relates to this draft:
 
    https://datatracker.ietf.org/ipr/3588/
-
-
-
-
-Ounsworth, et al.       Expires 3 September 2023               [Page 26]
-
-Internet-Draft              PQ Composite Sigs                 March 2023
-
 
 Appendix E.  Contributors and Acknowledgements
 
@@ -1488,6 +1561,15 @@ E.1.  Making contributions
 
 Authors' Addresses
 
+
+
+
+
+Ounsworth, et al.       Expires 10 September 2023              [Page 28]
+
+Internet-Draft              PQ Composite Sigs                 March 2023
+
+
    Mike Ounsworth
    Entrust Limited
    2500 Solandt Road -- Suite 100
@@ -1506,14 +1588,6 @@ Authors' Addresses
 
    Massimiliano Pala
    CableLabs
-
-
-
-Ounsworth, et al.       Expires 3 September 2023               [Page 27]
-
-Internet-Draft              PQ Composite Sigs                 March 2023
-
-
    Email: director@openca.org
 
 
@@ -1547,22 +1621,4 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth, et al.       Expires 3 September 2023               [Page 28]
+Ounsworth, et al.       Expires 10 September 2023              [Page 29]
