@@ -5,9 +5,9 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
 Intended status: Standards Track                                 Entrust
-Expires: 10 September 2023                                       M. Pala
+Expires: 11 September 2023                                       M. Pala
                                                                CableLabs
-                                                            9 March 2023
+                                                           10 March 2023
 
 
               Composite Signatures For Use In Internet PKI
@@ -53,7 +53,7 @@ Abstract
 
 
 
-Ounsworth, et al.       Expires 10 September 2023               [Page 1]
+Ounsworth, et al.       Expires 11 September 2023               [Page 1]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -80,7 +80,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 September 2023.
+   This Internet-Draft will expire on 11 September 2023.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth, et al.       Expires 10 September 2023               [Page 2]
+Ounsworth, et al.       Expires 11 September 2023               [Page 2]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -134,7 +134,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
      9.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  21
        9.2.1.  Subset Signature Generation . . . . . . . . . . . . .  21
        9.2.2.  Subset Signature Verification . . . . . . . . . . . .  22
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  22
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  23
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  23
      10.2.  Informative References . . . . . . . . . . . . . . . . .  24
    Appendix A.  Work in Progress . . . . . . . . . . . . . . . . . .  24
@@ -165,7 +165,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023               [Page 3]
+Ounsworth, et al.       Expires 11 September 2023               [Page 3]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -221,7 +221,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023               [Page 4]
+Ounsworth, et al.       Expires 11 September 2023               [Page 4]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -277,7 +277,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023               [Page 5]
+Ounsworth, et al.       Expires 11 September 2023               [Page 5]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -333,7 +333,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023               [Page 6]
+Ounsworth, et al.       Expires 11 September 2023               [Page 6]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -389,7 +389,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023               [Page 7]
+Ounsworth, et al.       Expires 11 September 2023               [Page 7]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -445,7 +445,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023               [Page 8]
+Ounsworth, et al.       Expires 11 September 2023               [Page 8]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -501,7 +501,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023               [Page 9]
+Ounsworth, et al.       Expires 11 September 2023               [Page 9]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -557,7 +557,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 10]
+Ounsworth, et al.       Expires 11 September 2023              [Page 10]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -613,7 +613,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 11]
+Ounsworth, et al.       Expires 11 September 2023              [Page 11]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -669,7 +669,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 12]
+Ounsworth, et al.       Expires 11 September 2023              [Page 12]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -725,7 +725,7 @@ Signature Generation Process:
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 13]
+Ounsworth, et al.       Expires 11 September 2023              [Page 13]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -781,7 +781,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 14]
+Ounsworth, et al.       Expires 11 September 2023              [Page 14]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -837,7 +837,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 15]
+Ounsworth, et al.       Expires 11 September 2023              [Page 15]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -893,7 +893,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 16]
+Ounsworth, et al.       Expires 11 September 2023              [Page 16]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -949,7 +949,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 17]
+Ounsworth, et al.       Expires 11 September 2023              [Page 17]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1005,7 +1005,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 18]
+Ounsworth, et al.       Expires 11 September 2023              [Page 18]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1061,7 +1061,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 19]
+Ounsworth, et al.       Expires 11 September 2023              [Page 19]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1117,7 +1117,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 20]
+Ounsworth, et al.       Expires 11 September 2023              [Page 20]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1125,6 +1125,8 @@ Internet-Draft              PQ Composite Sigs                 March 2023
    id-alg-composite OBJECT IDENTIFIER ::= {
        iso(1) identified-organization(3) dod(6) internet(1) security(5)
        mechanisms(5) pkix(7) algorithms(6) composite(??) }
+
+   Plus the ASN.1 Module OID for Composite-Signatures-2023.
 
 9.  Security Considerations
 
@@ -1168,16 +1170,16 @@ Internet-Draft              PQ Composite Sigs                 March 2023
    available component algorithms, for example to save bandwidth, or
    because a client has been issued a key for which it does not (yet)
    have implementations of all component algorithms.  This could be
-   easily encoded by placing a NULL value into the corresponding field
-   of the CompositeSignatureValue.  However, this mode was intentionally
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 21]
+Ounsworth, et al.       Expires 11 September 2023              [Page 21]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
 
+   easily encoded by placing a NULL value into the corresponding field
+   of the CompositeSignatureValue.  However, this mode was intentionally
    omitted from this specification as it trivially allows for stripping
    attacks where an attacker replaces a valid component signature value
    with NULL, thus reducing the security of the composite signature to
@@ -1224,15 +1226,15 @@ Internet-Draft              PQ Composite Sigs                 March 2023
       the event that one of the algorithms has already been broken, but
       knowledge of the break has not been made public yet.
 
-10.  References
 
 
 
-
-Ounsworth, et al.       Expires 10 September 2023              [Page 22]
+Ounsworth, et al.       Expires 11 September 2023              [Page 22]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
+
+10.  References
 
 10.1.  Normative References
 
@@ -1283,9 +1285,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-
-
-Ounsworth, et al.       Expires 10 September 2023              [Page 23]
+Ounsworth, et al.       Expires 11 September 2023              [Page 23]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1341,7 +1341,7 @@ Appendix A.  Work in Progress
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 24]
+Ounsworth, et al.       Expires 11 September 2023              [Page 24]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1397,7 +1397,7 @@ Appendix C.  ASN.1 Module
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 25]
+Ounsworth, et al.       Expires 11 September 2023              [Page 25]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1453,7 +1453,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 26]
+Ounsworth, et al.       Expires 11 September 2023              [Page 26]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1509,7 +1509,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 27]
+Ounsworth, et al.       Expires 11 September 2023              [Page 27]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1565,7 +1565,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 28]
+Ounsworth, et al.       Expires 11 September 2023              [Page 28]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1621,7 +1621,7 @@ Appendix E.  Contributors and Acknowledgements
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 29]
+Ounsworth, et al.       Expires 11 September 2023              [Page 29]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
@@ -1677,4 +1677,4 @@ Authors' Addresses
 
 
 
-Ounsworth, et al.       Expires 10 September 2023              [Page 30]
+Ounsworth, et al.       Expires 11 September 2023              [Page 30]

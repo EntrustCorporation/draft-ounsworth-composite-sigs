@@ -594,6 +594,8 @@ id-alg-composite OBJECT IDENTIFIER ::= {
     mechanisms(5) pkix(7) algorithms(6) composite(??) }
 ~~~
 
+Plus the ASN.1 Module OID for `Composite-Signatures-2023`.
+
 <!-- End of IANA Considerations section -->
 
 

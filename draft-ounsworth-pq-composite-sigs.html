@@ -18,27 +18,13 @@
 
 
     ' name="description">
-<meta content="xml2rfc 3.15.1" name="generator">
+<meta content="xml2rfc 3.12.2" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ounsworth-pq-composite-sigs-08" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.15.1
-    Python 3.8.10
-    appdirs 1.4.4
-    ConfigArgParse 1.5.3
-    google-i18n-address 2.5.2
-    html5lib 1.1
-    intervaltree 3.1.0
-    Jinja2 3.1.2
-    kitchen 1.2.6
-    lxml 4.9.1
-    MarkupSafe 2.1.1
-    pycountry 22.3.5
-    PyYAML 5.3.1
-    requests 2.22.0
-    setuptools 45.2.0
-    six 1.14.0
-    WeasyPrint 51
+  xml2rfc 3.12.2
+    Python 3.10.6
+    weasyprint 54.1
 -->
 <link href="draft-ounsworth-pq-composite-sigs.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -180,8 +166,11 @@ svg {
   margin: 1em 0;
 }
 .alignCenter > *:first-child {
-  display: table;
   border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
   margin: 0 auto;
 }
 
@@ -259,7 +248,7 @@ a.selfRef:hover {
 } */
 
 /* Figures */
-tt, code, pre {
+tt, code, pre, code {
   background-color: #f9f9f9;
   font-family: 'Roboto Mono', monospace;
 }
@@ -661,9 +650,6 @@ hr.addr {
   figure {
     overflow: scroll;
   }
-  pre.breakable {
-    break-inside: auto;
-  }
   h1, h2, h3, h4, h5, h6 {
     page-break-after: avoid;
   }
@@ -831,7 +817,7 @@ section {
 }
 
 /* prevent monospace from becoming overly large */
-tt, code, pre {
+tt, code, pre, code {
   font-size: 95%;
 }
 
@@ -1054,7 +1040,6 @@ aside > p {
 /* Sourcecode margin in print, when there's no pilcrow */
 @media print {
   .artwork,
-  .artwork > pre,
   .sourcecode {
     margin-bottom: 1em;
   }
@@ -1075,9 +1060,6 @@ table {
 }
 td {
   border-top: 1px solid #ddd;
-}
-tr {
-  break-inside: avoid;
 }
 tr:nth-child(2n+1) > td {
   background-color: #f8f8f8;
@@ -1193,7 +1175,7 @@ li > p:last-of-type {
 <link href="rfc-local.css" rel="stylesheet" type="text/css">
 <script type="application/javascript">async function addMetadata(){try{const e=document.styleSheets[0].cssRules;for(let t=0;t<e.length;t++)if(/#identifiers/.exec(e[t].selectorText)){const a=e[t].cssText.replace("#identifiers","#external-updates");document.styleSheets[0].insertRule(a,document.styleSheets[0].cssRules.length)}}catch(e){console.log(e)}const e=document.getElementById("external-metadata");if(e)try{var t,a="",o=function(e){const t=document.getElementsByTagName("meta");for(let a=0;a<t.length;a++)if(t[a].getAttribute("name")===e)return t[a].getAttribute("content");return""}("rfc.number");if(o){t="https://www.rfc-editor.org/rfc/rfc"+o+".json";try{const e=await fetch(t);a=await e.json()}catch(e){t=document.URL.indexOf("html")>=0?document.URL.replace(/html$/,"json"):document.URL+".json";const o=await fetch(t);a=await o.json()}}if(!a)return;e.style.display="block";const s="",d="https://datatracker.ietf.org/doc",n="https://datatracker.ietf.org/ipr/search",c="https://www.rfc-editor.org/info",l=a.doc_id.toLowerCase(),i=a.doc_id.slice(0,3).toLowerCase(),f=a.doc_id.slice(3).replace(/^0+/,""),u={status:"Status",obsoletes:"Obsoletes",obsoleted_by:"Obsoleted By",updates:"Updates",updated_by:"Updated By",see_also:"See Also",errata_url:"Errata"};let h="<dl style='overflow:hidden' id='external-updates'>";["status","obsoletes","obsoleted_by","updates","updated_by","see_also","errata_url"].forEach(e=>{if("status"==e){a[e]=a[e].toLowerCase();var t=a[e].split(" "),o=t.length,w="",p=1;for(let e=0;e<o;e++)p<o?w=w+r(t[e])+" ":w+=r(t[e]),p++;a[e]=w}else if("obsoletes"==e||"obsoleted_by"==e||"updates"==e||"updated_by"==e){var g,m="",b=1;g=a[e].length;for(let t=0;t<g;t++)a[e][t]&&(a[e][t]=String(a[e][t]).toLowerCase(),m=b<g?m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>, ":m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>",b++);a[e]=m}else if("see_also"==e){var y,L="",C=1;y=a[e].length;for(let t=0;t<y;t++)if(a[e][t]){a[e][t]=String(a[e][t]);var _=a[e][t].slice(0,3),v=a[e][t].slice(3).replace(/^0+/,"");L=C<y?"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>, ":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>, ":"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>",C++}a[e]=L}else if("errata_url"==e){var R="";R=a[e]?R+"<a href='"+a[e]+"'>Errata exist</a> | <a href='"+d+"/"+l+"'>Datatracker</a>| <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>":"<a href='"+d+"/"+l+"'>Datatracker</a> | <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>",a[e]=R}""!=a[e]?"Errata"==u[e]?h+=`<dt>More info:</dt><dd>${a[e]}</dd>`:h+=`<dt>${u[e]}:</dt><dd>${a[e]}</dd>`:"Errata"==u[e]&&(h+=`<dt>More info:</dt><dd>${a[e]}</dd>`)}),h+="</dl>",e.innerHTML=h}catch(e){console.log(e)}else console.log("Could not locate metadata <div> element");function r(e){return e.charAt(0).toUpperCase()+e.slice(1)}}window.removeEventListener("load",addMetadata),window.addEventListener("load",addMetadata);</script>
 </head>
-<body class="xml2rfc">
+<body>
 <script src="metadata.min.js"></script>
 <table class="ears">
 <thead><tr>
@@ -1203,7 +1185,7 @@ li > p:last-of-type {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Ounsworth, et al.</td>
-<td class="center">Expires 10 September 2023</td>
+<td class="center">Expires 11 September 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1216,12 +1198,12 @@ li > p:last-of-type {
 <dd class="internet-draft">draft-ounsworth-pq-composite-sigs-08</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-03-09" class="published">9 March 2023</time>
+<time datetime="2023-03-10" class="published">10 March 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-09-10">10 September 2023</time></dd>
+<dd class="expires"><time datetime="2023-09-11">11 September 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1245,7 +1227,7 @@ li > p:last-of-type {
 <p id="section-abstract-1">The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <p id="section-abstract-2">Cautious implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected using either a Post-Quantum / Traditional Hybrid, Post-Quantum / Post-Quantum Hybrid, or combinations thereof. This document, and its companions, defines a specific instantiation of hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 <p id="section-abstract-3">This document defines the structures CompositeSignatureValue, and CompositeSignatureParams, which are sequences of the respective structure for each component algorithm. The explicit variant is defined which allows for a set of signature algorithm identifier OIDs to be registered together as an explicit composite signature algorithm and assigned an OID.  The generic composite variant is also defined which allows arbitrary combinations of signature algorithms to be used in the CompositeSignatureValue and CompositeSignatureParams structures without needing the combination to be pre-registered or pre-agreed.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
-<p id="section-abstract-4">This document is intended to be coupled with corresponding documents that define the structure and semantics of composite public and private keys and encryption <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, however may also be used with non-composite keys, such as when a protocol combines multiple certificates into a single cryptographic operation.<a href="#section-abstract-4" class="pilcrow">¶</a></p>
+<p id="section-abstract-4">This document is intended to be coupled with corresponding documents that define the structure and semantics of composite public and private keys and encryption <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, however may also be used with non-composite keys, such as when a protocol combines multiple certificates into a single cryptographic operation.<a href="#section-abstract-4" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1266,7 +1248,7 @@ li > p:last-of-type {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 10 September 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 September 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1296,151 +1278,151 @@ li > p:last-of-type {
         </h2>
 <nav class="toc"><ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
-            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-changes-in-version-08-2" class="internal xref">Changes in version -08</a></p>
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-changes-in-version-08-2" class="xref">Changes in version -08</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-terminology-2" class="internal xref">Terminology</a></p>
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-terminology-2" class="xref">Terminology</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-introduction-2" class="internal xref">Introduction</a></p>
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="xref">3</a>.  <a href="#name-introduction-2" class="xref">Introduction</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-composite-signature-structur" class="internal xref">Composite Signature Structures</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-composite-signature-structur" class="xref">Composite Signature Structures</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-composite-keys-2" class="internal xref">Composite Keys</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-composite-keys-2" class="xref">Composite Keys</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.1">
-                    <p id="section-toc.1-1.4.2.1.2.1.1"><a href="#section-4.1.1" class="auto internal xref">4.1.1</a>.  <a href="#name-key-usage-bits-2" class="internal xref">Key Usage Bits</a></p>
+                    <p id="section-toc.1-1.4.2.1.2.1.1"><a href="#section-4.1.1" class="xref">4.1.1</a>.  <a href="#name-key-usage-bits-2" class="xref">Key Usage Bits</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-sa-compositesignature-2" class="internal xref">sa-CompositeSignature</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-sa-compositesignature-2" class="xref">sa-CompositeSignature</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-compositesignaturevalue-2" class="internal xref">CompositeSignatureValue</a></p>
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-compositesignaturevalue-2" class="xref">CompositeSignatureValue</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
-                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-compositesignatureparameters" class="internal xref">CompositeSignatureParameters</a></p>
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-compositesignatureparameters" class="xref">CompositeSignatureParameters</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
-                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-encoding-rules-2" class="internal xref">Encoding Rules</a></p>
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="xref">4.5</a>.  <a href="#name-encoding-rules-2" class="xref">Encoding Rules</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-explicit-composite-algorithm" class="internal xref">Explicit Composite Algorithm Identifiers</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-explicit-composite-algorithm" class="xref">Explicit Composite Algorithm Identifiers</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-generic-composite-algorithm-" class="internal xref">Generic Composite Algorithm Identifiers</a></p>
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-generic-composite-algorithm-" class="xref">Generic Composite Algorithm Identifiers</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-composite-signature-processe" class="internal xref">Composite Signature Processes</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-composite-signature-processe" class="xref">Composite Signature Processes</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-composite-signature-generati" class="internal xref">Composite Signature Generation Process</a></p>
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="xref">6.1</a>.  <a href="#name-composite-signature-generati" class="xref">Composite Signature Generation Process</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
-                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-composite-signature-verifica" class="internal xref">Composite Signature Verification Process</a></p>
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="xref">6.2</a>.  <a href="#name-composite-signature-verifica" class="xref">Composite Signature Verification Process</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-implementation-consideration" class="internal xref">Implementation Considerations</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-implementation-consideration" class="xref">Implementation Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-backwards-compatibility-2" class="internal xref">Backwards Compatibility</a></p>
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-backwards-compatibility-2" class="xref">Backwards Compatibility</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.1">
-                    <p id="section-toc.1-1.7.2.1.2.1.1"><a href="#section-7.1.1" class="auto internal xref">7.1.1</a>.  <a href="#name-or-modes-3" class="internal xref">OR modes</a></p>
+                    <p id="section-toc.1-1.7.2.1.2.1.1"><a href="#section-7.1.1" class="xref">7.1.1</a>.  <a href="#name-or-modes-3" class="xref">OR modes</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.2">
-                    <p id="section-toc.1-1.7.2.1.2.2.1"><a href="#section-7.1.2" class="auto internal xref">7.1.2</a>.  <a href="#name-parallel-pkis-2" class="internal xref">Parallel PKIs</a></p>
+                    <p id="section-toc.1-1.7.2.1.2.2.1"><a href="#section-7.1.2" class="xref">7.1.2</a>.  <a href="#name-parallel-pkis-2" class="xref">Parallel PKIs</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-external-signatures-2" class="internal xref">External signatures</a></p>
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-external-signatures-2" class="xref">External signatures</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
-                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-dilithium-2" class="internal xref">Dilithium</a></p>
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="xref">7.3</a>.  <a href="#name-dilithium-2" class="xref">Dilithium</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
-                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-falcon-2" class="internal xref">Falcon</a></p>
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="xref">7.4</a>.  <a href="#name-falcon-2" class="xref">Falcon</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-iana-considerations-2" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-iana-considerations-2" class="xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-security-considerations-2" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-security-considerations-2" class="xref">Security Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
-                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="auto internal xref">9.1</a>.  <a href="#name-policy-for-deprecated-and-ac" class="internal xref">Policy for Deprecated and Acceptable Algorithms</a></p>
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="xref">9.1</a>.  <a href="#name-policy-for-deprecated-and-ac" class="xref">Policy for Deprecated and Acceptable Algorithms</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
-                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="auto internal xref">9.2</a>.  <a href="#name-or-modes-4" class="internal xref">OR Modes</a></p>
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="xref">9.2</a>.  <a href="#name-or-modes-4" class="xref">OR Modes</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2.2.1">
-                    <p id="section-toc.1-1.9.2.2.2.1.1"><a href="#section-9.2.1" class="auto internal xref">9.2.1</a>.  <a href="#name-subset-signature-generation-2" class="internal xref">Subset Signature Generation</a></p>
+                    <p id="section-toc.1-1.9.2.2.2.1.1"><a href="#section-9.2.1" class="xref">9.2.1</a>.  <a href="#name-subset-signature-generation-2" class="xref">Subset Signature Generation</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2.2.2">
-                    <p id="section-toc.1-1.9.2.2.2.2.1"><a href="#section-9.2.2" class="auto internal xref">9.2.2</a>.  <a href="#name-subset-signature-verificatio" class="internal xref">Subset Signature Verification</a></p>
+                    <p id="section-toc.1-1.9.2.2.2.2.1"><a href="#section-9.2.2" class="xref">9.2.2</a>.  <a href="#name-subset-signature-verificatio" class="xref">Subset Signature Verification</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-references-2" class="internal xref">References</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="xref">10</a>. <a href="#name-references-2" class="xref">References</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
-                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="auto internal xref">10.1</a>.  <a href="#name-normative-references-2" class="internal xref">Normative References</a></p>
+                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="xref">10.1</a>.  <a href="#name-normative-references-2" class="xref">Normative References</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
-                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="auto internal xref">10.2</a>.  <a href="#name-informative-references-2" class="internal xref">Informative References</a></p>
+                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="xref">10.2</a>.  <a href="#name-informative-references-2" class="xref">Informative References</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-work-in-progress-2" class="internal xref">Work in Progress</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="xref">Appendix A</a>.  <a href="#name-work-in-progress-2" class="xref">Work in Progress</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
-                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-combiner-modes-kofn-2" class="internal xref">Combiner modes (KofN)</a></p>
+                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-A.1" class="xref">A.1</a>.  <a href="#name-combiner-modes-kofn-2" class="xref">Combiner modes (KofN)</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-examples-2" class="internal xref">Examples</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="xref">Appendix B</a>.  <a href="#name-examples-2" class="xref">Examples</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1">
-                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-generic-composite-signature-" class="internal xref">Generic Composite Signature Examples</a></p>
+                <p id="section-toc.1-1.12.2.1.1"><a href="#appendix-B.1" class="xref">B.1</a>.  <a href="#name-generic-composite-signature-" class="xref">Generic Composite Signature Examples</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2">
-                <p id="section-toc.1-1.12.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-explicit-composite-signature-e" class="internal xref">Explicit Composite Signature Examples</a></p>
+                <p id="section-toc.1-1.12.2.2.1"><a href="#appendix-B.2" class="xref">B.2</a>.  <a href="#name-explicit-composite-signature-e" class="xref">Explicit Composite Signature Examples</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-asn1-module-2" class="internal xref">ASN.1 Module</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#appendix-C" class="xref">Appendix C</a>.  <a href="#name-asn1-module-2" class="xref">ASN.1 Module</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
-            <p id="section-toc.1-1.14.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-intellectual-property-consid" class="internal xref">Intellectual Property Considerations</a></p>
+            <p id="section-toc.1-1.14.1"><a href="#appendix-D" class="xref">Appendix D</a>.  <a href="#name-intellectual-property-consid" class="xref">Intellectual Property Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
-            <p id="section-toc.1-1.15.1"><a href="#appendix-E" class="auto internal xref">Appendix E</a>.  <a href="#name-contributors-and-acknowledge" class="internal xref">Contributors and Acknowledgements</a></p>
+            <p id="section-toc.1-1.15.1"><a href="#appendix-E" class="xref">Appendix E</a>.  <a href="#name-contributors-and-acknowledge" class="xref">Contributors and Acknowledgements</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.1">
-                <p id="section-toc.1-1.15.2.1.1"><a href="#appendix-E.1" class="auto internal xref">E.1</a>.  <a href="#name-making-contributions-2" class="internal xref">Making contributions</a></p>
+                <p id="section-toc.1-1.15.2.1.1"><a href="#appendix-E.1" class="xref">E.1</a>.  <a href="#name-making-contributions-2" class="xref">Making contributions</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16">
-            <p id="section-toc.1-1.16.1"><a href="#appendix-F" class="auto internal xref"></a><a href="#name-authors-addresses-2" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.16.1"><a href="#appendix-F" class="xref"></a><a href="#name-authors-addresses-2" class="xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1462,7 +1444,7 @@ li > p:last-of-type {
       <h2 id="name-terminology-2">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-terminology-2" class="section-name selfRef">Terminology</a>
       </h2>
-<p id="section-2-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span>  <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span>  <span>[<a href="#RFC8174" class="xref">RFC8174</a>]</span> when, and only when, they appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">The following terms are used in this document:<a href="#section-2-2" class="pilcrow">¶</a></p>
 <p id="section-2-3">ALGORITHM:
           A standardized cryptographic primitive, as well as 
@@ -1471,7 +1453,7 @@ li > p:last-of-type {
           primarily concerned with algorithms for producing digital
           signatures.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <p id="section-2-4">BER:
-          Basic Encoding Rules (BER) as defined in <span>[<a href="#X.690" class="cite xref">X.690</a>]</span>.<a href="#section-2-4" class="pilcrow">¶</a></p>
+          Basic Encoding Rules (BER) as defined in <span>[<a href="#X.690" class="xref">X.690</a>]</span>.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <p id="section-2-5">CLIENT:
           Any software that is making use of a cryptographic key.
           This includes a signer, verifier, encrypter, decrypter.<a href="#section-2-5" class="pilcrow">¶</a></p>
@@ -1480,14 +1462,14 @@ li > p:last-of-type {
             composite algorithm.<a href="#section-2-6" class="pilcrow">¶</a></p>
 <p id="section-2-7">COMPOSITE ALGORITHM:
           An algorithm which is a sequence of two or more component
-            algorithms, as defined in <a href="#sec-composite-structs" class="auto internal xref">Section 4</a>.<a href="#section-2-7" class="pilcrow">¶</a></p>
+            algorithms, as defined in <a href="#sec-composite-structs" class="xref">Section 4</a>.<a href="#section-2-7" class="pilcrow">¶</a></p>
 <p id="section-2-8">DER:
-          Distinguished Encoding Rules as defined in <span>[<a href="#X.690" class="cite xref">X.690</a>]</span>.<a href="#section-2-8" class="pilcrow">¶</a></p>
+          Distinguished Encoding Rules as defined in <span>[<a href="#X.690" class="xref">X.690</a>]</span>.<a href="#section-2-8" class="pilcrow">¶</a></p>
 <p id="section-2-9">LEGACY:   For the purposes of this document, a legacy algorithm is
           any cryptographic algorithm currently is use which is 
           not believe to be resistant to quantum cryptanalysis.<a href="#section-2-9" class="pilcrow">¶</a></p>
 <p id="section-2-10">PKI:
-          Public Key Infrastructure, as defined in <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>.<a href="#section-2-10" class="pilcrow">¶</a></p>
+          Public Key Infrastructure, as defined in <span>[<a href="#RFC5280" class="xref">RFC5280</a>]</span>.<a href="#section-2-10" class="pilcrow">¶</a></p>
 <p id="section-2-11">POST-QUANTUM ALGORITHM:
           Any cryptographic algorithm which is believed to be resistant
           to classical and quantum cryptanalysis, such as the algorithms being considered for standardization by NIST.<a href="#section-2-11" class="pilcrow">¶</a></p>
@@ -1520,7 +1502,7 @@ li > p:last-of-type {
         <li class="normal" id="section-3-3.2">Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.<a href="#section-3-3.2" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-3-4">This document provides a mechanism to address algorithm strength uncertainty concerns by building on <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span> by providing formats for encoding multiple signature values into existing public signature fields, as well as the process for validating a composite signature. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in <span>[<a href="#I-D.becker-guthrie-noncomposite-hybrid-auth" class="cite xref">I-D.becker-guthrie-noncomposite-hybrid-auth</a>]</span>.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-4">This document provides a mechanism to address algorithm strength uncertainty concerns by building on <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span> by providing formats for encoding multiple signature values into existing public signature fields, as well as the process for validating a composite signature. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in <span>[<a href="#I-D.becker-guthrie-noncomposite-hybrid-auth" class="xref">I-D.becker-guthrie-noncomposite-hybrid-auth</a>]</span>.<a href="#section-3-4" class="pilcrow">¶</a></p>
 <p id="section-3-5">This document is intended for general applicability anywhere that digital signatures are used within PKIX and CMS structures.<a href="#section-3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1529,19 +1511,19 @@ li > p:last-of-type {
       <h2 id="name-composite-signature-structur">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-composite-signature-structur" class="section-name selfRef">Composite Signature Structures</a>
       </h2>
-<p id="section-4-1">In order for signatures to be composed of multiple algorithms, we define encodings consisting of a sequence of signature primitives (aka "component algorithms") such that these structures can be used as a drop-in replacement for existing signature fields such as those found in PKCS#10 <span>[<a href="#RFC2986" class="cite xref">RFC2986</a>]</span>, CMP <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span>, X.509 <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>, CMS <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span>.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-1">In order for signatures to be composed of multiple algorithms, we define encodings consisting of a sequence of signature primitives (aka "component algorithms") such that these structures can be used as a drop-in replacement for existing signature fields such as those found in PKCS#10 <span>[<a href="#RFC2986" class="xref">RFC2986</a>]</span>, CMP <span>[<a href="#RFC4210" class="xref">RFC4210</a>]</span>, X.509 <span>[<a href="#RFC5280" class="xref">RFC5280</a>]</span>, CMS <span>[<a href="#RFC5652" class="xref">RFC5652</a>]</span>.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <div id="composite-keys">
 <section id="section-4.1">
         <h3 id="name-composite-keys-2">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-composite-keys-2" class="section-name selfRef">Composite Keys</a>
         </h3>
-<p id="section-4.1-1">A composite signature MAY be associated with a composite public key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, but MAY also be associated with multiple public keys from different sources, for example multiple X.509 certificates, or multiple cryptographic modules. In the latter case, composite signatures MAY be used as the mechanism for carrying multiple signatures in a non-composite hybrid authentication mechanism such as those described in <span>[<a href="#I-D.becker-guthrie-noncomposite-hybrid-auth" class="cite xref">I-D.becker-guthrie-noncomposite-hybrid-auth</a>]</span>.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-1">A composite signature MAY be associated with a composite public key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, but MAY also be associated with multiple public keys from different sources, for example multiple X.509 certificates, or multiple cryptographic modules. In the latter case, composite signatures MAY be used as the mechanism for carrying multiple signatures in a non-composite hybrid authentication mechanism such as those described in <span>[<a href="#I-D.becker-guthrie-noncomposite-hybrid-auth" class="xref">I-D.becker-guthrie-noncomposite-hybrid-auth</a>]</span>.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <div id="key-usage-bits">
 <section id="section-4.1.1">
           <h4 id="name-key-usage-bits-2">
 <a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-key-usage-bits-2" class="section-name selfRef">Key Usage Bits</a>
           </h4>
-<p id="section-4.1.1-1">For protocols such as X.509 <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span> that specify key usage along with the public key, then the composite public key associated with a composite signature MUST have a signing-type key usage.<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.1-1">For protocols such as X.509 <span>[<a href="#RFC5280" class="xref">RFC5280</a>]</span> that specify key usage along with the public key, then the composite public key associated with a composite signature MUST have a signing-type key usage.<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.1.1-2">If the keyUsage extension is present in a Certification Authority (CA) certificate that indicates a composite key, then any combination of the following values MAY be present:<a href="#section-4.1.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.1.1-3">
 <pre>
@@ -1643,7 +1625,7 @@ CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 </pre><a href="#section-4.4-2" class="pilcrow">¶</a>
 </div>
 <p id="section-4.4-3">When composite signature parameters are used, the signature's CompositeSignatureParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
-<p id="section-4.4-4">For explicit algorithms, it is not necessary to carry a CompositeSignatureParams with the list of component algorithms in the signature algorithm parameters because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in <span>[<a href="#RFC8017" class="cite xref">RFC8017</a>]</span>. <a href="#sec-composite-sig-structs" class="auto internal xref">Section 4.2</a> defines <code>PARAMS ANY DEFINED BY ALGORITHM</code> so that explicit algorithms may define params as ABSENT, or use <code>CompositeSignatureParams</code> as defined in ASN.1 module.  For generic compsite algorithms, CompositeSignatureParams MUST be included.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
+<p id="section-4.4-4">For explicit algorithms, it is not necessary to carry a CompositeSignatureParams with the list of component algorithms in the signature algorithm parameters because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in <span>[<a href="#RFC8017" class="xref">RFC8017</a>]</span>. <a href="#sec-composite-sig-structs" class="xref">Section 4.2</a> defines <code>PARAMS ANY DEFINED BY ALGORITHM</code> so that explicit algorithms may define params as ABSENT, or use <code>CompositeSignatureParams</code> as defined in ASN.1 module.  For generic compsite algorithms, CompositeSignatureParams MUST be included.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-encoding-rules">
@@ -1775,7 +1757,7 @@ CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
         </tbody>
       </table>
 </div>
-<p id="section-5-11">The table above contains everything needed to implement the listed explicit composite algorithms. See the ASN.1 module in section <a href="#sec-asn1-module" class="auto internal xref">Appendix C</a> for the explicit
+<p id="section-5-11">The table above contains everything needed to implement the listed explicit composite algorithms. See the ASN.1 module in section <a href="#sec-asn1-module" class="xref">Appendix C</a> for the explicit
 definitions of the above Composite signature algorithms.<a href="#section-5-11" class="pilcrow">¶</a></p>
 <p id="section-5-12">These combinations were chosen according to the following rough guidelines:<a href="#section-5-12" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-5-13">
@@ -1803,7 +1785,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
          enterprise(1) opencA(18227) algorithms(2) id-alg-composite(1) }
 </pre><a href="#section-5.1-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1-3">As defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, a generic composite key uses the following identifier:<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">As defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, a generic composite key uses the following identifier:<a href="#section-5.1-3" class="pilcrow">¶</a></p>
 <div id="section-5.1-4">
 <pre class="lang-asn.1 sourcecode">
 id-composite-key OBJECT IDENTIFIER ::= {
@@ -1811,7 +1793,7 @@ id-composite-key OBJECT IDENTIFIER ::= {
     algorithm(80) composite(4) compositekey(1) }
 </pre><a href="#section-5.1-4" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1-5">See the ASN.1 module in section <a href="#sec-asn1-module" class="auto internal xref">Appendix C</a> for the definitions of Generic Composite algorithms<a href="#section-5.1-5" class="pilcrow">¶</a></p>
+<p id="section-5.1-5">See the ASN.1 module in section <a href="#sec-asn1-module" class="xref">Appendix C</a> for the definitions of Generic Composite algorithms<a href="#section-5.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1828,7 +1810,7 @@ id-composite-key OBJECT IDENTIFIER ::= {
         <h3 id="name-composite-signature-generati">
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-composite-signature-generati" class="section-name selfRef">Composite Signature Generation Process</a>
         </h3>
-<p id="section-6.1-1">Generation of a composite signature involves applying each component algorithm's signature process to the input message according to its specification, and then placing each component signature value into the CompositeSignatureValue structure defined in <a href="#sec-composite-sig-structs" class="auto internal xref">Section 4.2</a>.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-1">Generation of a composite signature involves applying each component algorithm's signature process to the input message according to its specification, and then placing each component signature value into the CompositeSignatureValue structure defined in <a href="#sec-composite-sig-structs" class="xref">Section 4.2</a>.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
 <p id="section-6.1-2">The following process is used to generate composite signature values.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-6.1-3">
 <pre>
@@ -1860,8 +1842,8 @@ Signature Generation Process:
 </pre><a href="#section-6.1-3" class="pilcrow">¶</a>
 </div>
 <p id="section-6.1-4">Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePrivateKey and CompositeSignatureParams structures. It is also possible to generate a composite signature that combines signatures from distinct keys stored in separate software or hardware keystores. Variations in the process to accommodate particular private key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.<a href="#section-6.1-4" class="pilcrow">¶</a></p>
-<p id="section-6.1-5">Since recursive composite public keys are disallowed in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite or an explicit composite OID.<a href="#section-6.1-5" class="pilcrow">¶</a></p>
-<p id="section-6.1-6">A composite signature MUST produce, and include in the output, a signature value for every component key in  and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2, etc. The authors recognize that there may be valid use cases for "subset signature generation"; see <a href="#sec-subset-sig-gen" class="auto internal xref">Section 9.2.1</a> for further discussion of security implications, and <a href="#sec-backwards-compat" class="auto internal xref">Section 7.1</a> for further discussion of backwards compatibility implications.<a href="#section-6.1-6" class="pilcrow">¶</a></p>
+<p id="section-6.1-5">Since recursive composite public keys are disallowed in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite or an explicit composite OID.<a href="#section-6.1-5" class="pilcrow">¶</a></p>
+<p id="section-6.1-6">A composite signature MUST produce, and include in the output, a signature value for every component key in  and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2, etc. The authors recognize that there may be valid use cases for "subset signature generation"; see <a href="#sec-subset-sig-gen" class="xref">Section 9.2.1</a> for further discussion of security implications, and <a href="#sec-backwards-compat" class="xref">Section 7.1</a> for further discussion of backwards compatibility implications.<a href="#section-6.1-6" class="pilcrow">¶</a></p>
 <p id="section-6.1-7">For security when using a generic composite signature algorithm, the list of component signature algorithms A1, A2, .., An, which may be carried in a CompositeSignatureParams object, SHOULD be included in the signed message M to prevent an attacker from substituting a weaker algorithm which is compatible with the same public key. This attack is not unique or new to the composite format.<a href="#section-6.1-7" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1915,9 +1897,9 @@ Signature Verification Procedure::
 </pre><a href="#section-6.2-4" class="pilcrow">¶</a>
 </div>
 <p id="section-6.2-5">Note on composite inputs: the method of providing the list of component keys, algorithms and signatures is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey, CompositeSignatureParams, and compositesignaturevalue structures. It is also possible to verify a composite signature where the component public verification keys belong, for example, to separate X.509 certificates or cryptographic modules. Variations in the process to accommodate particular public verification key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.<a href="#section-6.2-5" class="pilcrow">¶</a></p>
-<p id="section-6.2-6">Since recursive composite public keys are disallowed in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="cite xref">I-D.ounsworth-pq-composite-keys</a>]</span>, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with OID id-alg-composite or an explicit composite OID.<a href="#section-6.2-6" class="pilcrow">¶</a></p>
-<p id="section-6.2-7">Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementer MAY, in the interest of performance of compatibility, modify the above process to skip one or more signature validations as per their local client policy. See <a href="#sec-cons-OR-modes" class="auto internal xref">Section 9.2</a> for a discussion of associated risks.<a href="#section-6.2-7" class="pilcrow">¶</a></p>
-<p id="section-6.2-8">In the absence of such a policy mechanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here. See <a href="#sec-subset-sig-gen" class="auto internal xref">Section 9.2.1</a> for further discussion of security implications of subset signature verifications, and <a href="#sec-backwards-compat" class="auto internal xref">Section 7.1</a> for further discussion of backwards compatibility implications.<a href="#section-6.2-8" class="pilcrow">¶</a></p>
+<p id="section-6.2-6">Since recursive composite public keys are disallowed in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with OID id-alg-composite or an explicit composite OID.<a href="#section-6.2-6" class="pilcrow">¶</a></p>
+<p id="section-6.2-7">Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementer MAY, in the interest of performance of compatibility, modify the above process to skip one or more signature validations as per their local client policy. See <a href="#sec-cons-OR-modes" class="xref">Section 9.2</a> for a discussion of associated risks.<a href="#section-6.2-7" class="pilcrow">¶</a></p>
+<p id="section-6.2-8">In the absence of such a policy mechanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here. See <a href="#sec-subset-sig-gen" class="xref">Section 9.2.1</a> for further discussion of security implications of subset signature verifications, and <a href="#sec-backwards-compat" class="xref">Section 7.1</a> for further discussion of backwards compatibility implications.<a href="#section-6.2-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1954,13 +1936,13 @@ Signature Verification Procedure::
         </h3>
 <p id="section-7.1-1">As noted in the introduction, the post-quantum cryptographic migration will face challenges in both ensuring cryptographic strength against adversaries of unknown capabilities, as well as providing ease of migration. The composite mechanisms defined in this document primarily address cryptographic strength, however this section contains notes on how backwards compatibility may be obtained.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
 <p id="section-7.1-2">The term "ease of migration" is used here to mean that existing systems can be gracefully transitioned to the new technology without requiring large service disruptions or expensive upgrades. The term "backwards compatibility" is used here to mean something more specific; that existing systems as they are deployed today can interoperate with the upgraded systems of the future.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
-<p id="section-7.1-3">These migration and interoperability concerns need to be thought about in the context of various types of protocols that make use of X.509 and PKIX with relation to digital signature objects, from online negotiated protocols such as TLS 1.3 [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous protocols such as S/MIME signed email [RFC8551], document signing such as in the context of the European eIDAS regulations [eIDAS2014], and publicly trusted code signing [codeSigningBRsv2.8], as well as myriad other standardized and proprietary protocols and applications that leverage CMS <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span> signed structures.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.1-3">These migration and interoperability concerns need to be thought about in the context of various types of protocols that make use of X.509 and PKIX with relation to digital signature objects, from online negotiated protocols such as TLS 1.3 [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous protocols such as S/MIME signed email [RFC8551], document signing such as in the context of the European eIDAS regulations [eIDAS2014], and publicly trusted code signing [codeSigningBRsv2.8], as well as myriad other standardized and proprietary protocols and applications that leverage CMS <span>[<a href="#RFC5652" class="xref">RFC5652</a>]</span> signed structures.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
 <div id="or-modes">
 <section id="section-7.1.1">
           <h4 id="name-or-modes-3">
 <a href="#section-7.1.1" class="section-number selfRef">7.1.1. </a><a href="#name-or-modes-3" class="section-name selfRef">OR modes</a>
           </h4>
-<p id="section-7.1.1-1"><a href="#sec-comp-sig-gen" class="auto internal xref">Section 6.1</a> and <a href="#sec-comp-sig-verify" class="auto internal xref">Section 6.2</a> make reference to subset signature generation and verification modes to achieve an OR relation between component signatures, where senders and / or receivers are permitted to ignore some component keys. Some envisioned uses of this include environments where the client encounters a component signature algorithm for which it does not posses a compatible implementation but wishes to proceed with the signature verification using the subset of component signatures for which it does have compatible implementations. Such a mechanism could be designed to provide ease of migration by allowing for composite keys to be distributed and used before all clients in the environment are fully upgraded, but it does not allow for full backwards compatibility since clients would at least need to be upgraded from their current state to be able to parse the composite structures.<a href="#section-7.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-1"><a href="#sec-comp-sig-gen" class="xref">Section 6.1</a> and <a href="#sec-comp-sig-verify" class="xref">Section 6.2</a> make reference to subset signature generation and verification modes to achieve an OR relation between component signatures, where senders and / or receivers are permitted to ignore some component keys. Some envisioned uses of this include environments where the client encounters a component signature algorithm for which it does not posses a compatible implementation but wishes to proceed with the signature verification using the subset of component signatures for which it does have compatible implementations. Such a mechanism could be designed to provide ease of migration by allowing for composite keys to be distributed and used before all clients in the environment are fully upgraded, but it does not allow for full backwards compatibility since clients would at least need to be upgraded from their current state to be able to parse the composite structures.<a href="#section-7.1.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="parallel-pkis">
@@ -1970,8 +1952,8 @@ Signature Verification Procedure::
           </h4>
 <p id="section-7.1.2-1">We present the term "Parallel PKI" to refer to the setup where a PKI end entity possesses two or more distinct public keys or certificates for the same identity (name), but containing keys for different cryptographic algorithms. One could imagine a set of parallel PKIs where an existing PKI using legacy algorithms (RSA, ECC) is left operational during the post-quantum migration but is shadowed by one or more parallel PKIs using pure post quantum algorithms or composite algorithms (legacy and post-quantum).<a href="#section-7.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-7.1.2-2">Equipped with a set of parallel public keys in this way, a client would have the flexibility to choose which public key(s) or certificate(s) to use in a given signature operation.<a href="#section-7.1.2-2" class="pilcrow">¶</a></p>
-<p id="section-7.1.2-3">For negotiated protocols, the client could choose which public key(s) or certificate(s) to use based on the negotiated algorithms, or could combine two of the public keys for example in a non-composite hybrid method such as <span>[<a href="#I-D.becker-guthrie-noncomposite-hybrid-auth" class="cite xref">I-D.becker-guthrie-noncomposite-hybrid-auth</a>]</span> or <span>[<a href="#I-D.guthrie-ipsecme-ikev2-hybrid-auth" class="cite xref">I-D.guthrie-ipsecme-ikev2-hybrid-auth</a>]</span>. Note that it is possible to use the signature algorithms defined in <a href="#sec-alg-idents" class="auto internal xref">Section 5</a> as a way to carry the multiple signature values generated by one of the non-composite public mechanism in protocols where it is easier to support the composite signature algorithms than to implement such a mechanism in the protocol itself. There is also nothing precluding a composite public key from being one of the components used within a non-composite authentication operation; this may lead to greater convenience in setting up parallel PKI hierarchies that need to service a range of clients implementing different styles of post-quantum migration strategies.<a href="#section-7.1.2-3" class="pilcrow">¶</a></p>
-<p id="section-7.1.2-4">For non-negotiated protocols, the details for obtaining backwards compatibility will vary by protocol, but for example in CMS <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span>, the inclusion of multiple SignerInfo objects is often already treated as an OR relationship, so including one for each of the signer's parallel PKI public keys would, in many cases, have the desired effect of allowing the receiver to choose one they are compatible with and ignore the others, thus achieving full backwards compatibility.<a href="#section-7.1.2-4" class="pilcrow">¶</a></p>
+<p id="section-7.1.2-3">For negotiated protocols, the client could choose which public key(s) or certificate(s) to use based on the negotiated algorithms, or could combine two of the public keys for example in a non-composite hybrid method such as <span>[<a href="#I-D.becker-guthrie-noncomposite-hybrid-auth" class="xref">I-D.becker-guthrie-noncomposite-hybrid-auth</a>]</span> or <span>[<a href="#I-D.guthrie-ipsecme-ikev2-hybrid-auth" class="xref">I-D.guthrie-ipsecme-ikev2-hybrid-auth</a>]</span>. Note that it is possible to use the signature algorithms defined in <a href="#sec-alg-idents" class="xref">Section 5</a> as a way to carry the multiple signature values generated by one of the non-composite public mechanism in protocols where it is easier to support the composite signature algorithms than to implement such a mechanism in the protocol itself. There is also nothing precluding a composite public key from being one of the components used within a non-composite authentication operation; this may lead to greater convenience in setting up parallel PKI hierarchies that need to service a range of clients implementing different styles of post-quantum migration strategies.<a href="#section-7.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-7.1.2-4">For non-negotiated protocols, the details for obtaining backwards compatibility will vary by protocol, but for example in CMS <span>[<a href="#RFC5652" class="xref">RFC5652</a>]</span>, the inclusion of multiple SignerInfo objects is often already treated as an OR relationship, so including one for each of the signer's parallel PKI public keys would, in many cases, have the desired effect of allowing the receiver to choose one they are compatible with and ignore the others, thus achieving full backwards compatibility.<a href="#section-7.1.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1981,7 +1963,7 @@ Signature Verification Procedure::
         <h3 id="name-external-signatures-2">
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-external-signatures-2" class="section-name selfRef">External signatures</a>
         </h3>
-<p id="section-7.2-1">EDNOTE: This section probably does not belong in this draft. It probably belongs instead in the core Dilithium / Falcon specs such as <span>[<a href="#I-D.massimo-lamps-pq-sig-certificates" class="cite xref">I-D.massimo-lamps-pq-sig-certificates</a>]</span>.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.2-1">EDNOTE: This section probably does not belong in this draft. It probably belongs instead in the core Dilithium / Falcon specs such as <span>[<a href="#I-D.massimo-lamps-pq-sig-certificates" class="xref">I-D.massimo-lamps-pq-sig-certificates</a>]</span>.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 <p id="section-7.2-2">In many contexts, a signature or a verification operation is performed inside a cryptographic module where it is desirable to provide a message digest to the cryptographic module rather than streaming the entire message (which in some cases can be very large).<a href="#section-7.2-2" class="pilcrow">¶</a></p>
 <p id="section-7.2-3">This means that composite signature implementations MUST NOT perform a single message digest operation and then provide that digest value to all component algorithms.<a href="#section-7.2-3" class="pilcrow">¶</a></p>
 <p id="section-7.2-4">That said, the first step of both the Dilithium and Falcon algoritms is a keyed hash of the message. This section considers modifications to the Dilithium and Falcon algorithms where the first hashing step is performed externally to the cryptographic module.<a href="#section-7.2-4" class="pilcrow">¶</a></p>
@@ -2059,6 +2041,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
     mechanisms(5) pkix(7) algorithms(6) composite(??) }
 </pre><a href="#section-8-2" class="pilcrow">¶</a>
 </div>
+<p id="section-8-3">Plus the ASN.1 Module OID for <code>Composite-Signatures-2023</code>.<a href="#section-8-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
@@ -2095,7 +2078,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
           <h4 id="name-subset-signature-generation-2">
 <a href="#section-9.2.1" class="section-number selfRef">9.2.1. </a><a href="#name-subset-signature-generation-2" class="section-name selfRef">Subset Signature Generation</a>
           </h4>
-<p id="section-9.2.1-1">This document defines a composite signature generation process in <a href="#sec-comp-sig-gen" class="auto internal xref">Section 6.1</a> where the signer MUST produce a signature value with each of their component private keys, this providing full protection of the content under all available component algorithms.<a href="#section-9.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-9.2.1-1">This document defines a composite signature generation process in <a href="#sec-comp-sig-gen" class="xref">Section 6.1</a> where the signer MUST produce a signature value with each of their component private keys, this providing full protection of the content under all available component algorithms.<a href="#section-9.2.1-1" class="pilcrow">¶</a></p>
 <p id="section-9.2.1-2">The authors recognize that there may be cases where a client may wish to generate a composite signature that only uses a subset of the available component algorithms, for example to save bandwidth, or because a client has been issued a key for which it does not (yet) have implementations of all component algorithms. This could be easily encoded by placing a NULL value into the corresponding field of the CompositeSignatureValue. However, this mode was intentionally omitted from this specification as it trivially allows for stripping attacks where an attacker replaces a valid component signature value with NULL, thus reducing the security of the composite signature to the weakest of the available component algorithms.<a href="#section-9.2.1-2" class="pilcrow">¶</a></p>
 <p id="section-9.2.1-3">Implementer who wish to perform subset signature generations are advised to couple it with an out-of-band policy mechanism that limits the potential for stripping attacks. Note that, in an effort to keep compliant implementations simple and secure, implementations claiming to be compliant with this draft MUST NOT generate subset signatures in this way, and MUST reject during verification any subset signatures that they encounter.<a href="#section-9.2.1-3" class="pilcrow">¶</a></p>
 </section>
@@ -2105,7 +2088,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
           <h4 id="name-subset-signature-verificatio">
 <a href="#section-9.2.2" class="section-number selfRef">9.2.2. </a><a href="#name-subset-signature-verificatio" class="section-name selfRef">Subset Signature Verification</a>
           </h4>
-<p id="section-9.2.2-1">This document defines a composite signature verification process in <a href="#sec-comp-sig-verify" class="auto internal xref">Section 6.2</a> where the verifier verifies all component signatures and fails if any component fails. The authors recognize that there will be scenarios where the verifier considers a single component algorithm -- or subset of component algorithms -- to provide sufficient security, and therefore for performance reasons wishes to skip the verification of one or more component signatures.<a href="#section-9.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-9.2.2-1">This document defines a composite signature verification process in <a href="#sec-comp-sig-verify" class="xref">Section 6.2</a> where the verifier verifies all component signatures and fails if any component fails. The authors recognize that there will be scenarios where the verifier considers a single component algorithm -- or subset of component algorithms -- to provide sufficient security, and therefore for performance reasons wishes to skip the verification of one or more component signatures.<a href="#section-9.2.2-1" class="pilcrow">¶</a></p>
 <p id="section-9.2.2-2">-- harmonize this with Serge's blurb --<a href="#section-9.2.2-2" class="pilcrow">¶</a></p>
 <p id="section-9.2.2-3">Implementers who wish to perform subset signature verifications are advised to couple it with an out-of-band policy mechanism that can control the list of acceptable algorithm combinations, and keep this list up to date as new cryptanalytic advances are made.<a href="#section-9.2.2-3" class="pilcrow">¶</a></p>
 <p id="section-9.2.2-4">Risks:<a href="#section-9.2.2-4" class="pilcrow">¶</a></p>
@@ -2247,7 +2230,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 <a href="#appendix-C" class="section-number selfRef">Appendix C. </a><a href="#name-asn1-module-2" class="section-name selfRef">ASN.1 Module</a>
       </h2>
 <div id="appendix-C-1">
-<pre class="breakable lang-asn.1 sourcecode">
+<pre class="lang-asn.1 sourcecode">
 &lt;CODE STARTS&gt;
 
 
@@ -2468,7 +2451,7 @@ Francois Rousseau.<a href="#appendix-E-2" class="pilcrow">¶</a></p>
 <p id="appendix-E-3">We are grateful to all, including any contributors who may have
 been inadvertently omitted from this list.<a href="#appendix-E-3" class="pilcrow">¶</a></p>
 <p id="appendix-E-4">This document borrows text from similar documents, including those referenced below. Thanks go to the authors of those
-   documents.  "Copying always makes things easier and less error prone" - <span>[<a href="#RFC8411" class="cite xref">RFC8411</a>]</span>.<a href="#appendix-E-4" class="pilcrow">¶</a></p>
+   documents.  "Copying always makes things easier and less error prone" - <span>[<a href="#RFC8411" class="xref">RFC8411</a>]</span>.<a href="#appendix-E-4" class="pilcrow">¶</a></p>
 <div id="making-contributions">
 <section id="appendix-E.1">
         <h3 id="name-making-contributions-2">
