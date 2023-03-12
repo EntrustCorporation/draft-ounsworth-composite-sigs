@@ -69,6 +69,7 @@ normative:
 
 informative:
   I-D.draft-ounsworth-pq-composite-keys-00:
+  I-D.draft-ounsworth-pq-composite-kem-00:
   I-D.draft-becker-guthrie-noncomposite-hybrid-auth-00:
   I-D.draft-guthrie-ipsecme-ikev2-hybrid-auth-00:
   Bindel2017:
@@ -185,6 +186,18 @@ This document provides a mechanism to address algorithm strength uncertainty con
 
 This document is intended for general applicability anywhere that digital signatures are used within PKIX and CMS structures.
 
+
+## Algorithm Selection Criteria
+
+The composite algorithm combinations defined in this document were chosen according to the following guidelines:
+
+1. A single RSA combination is provided (but RSA modulus size not mandated), matched with NIST PQC Level 3 algorithms.
+1. Elliptic curve algorithms are provided with combinations on each of the NIST [RFC6090], Brainpool [RFC5639], and Edwards [RFC7748] curves. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.
+1. NIST level 1 candidates (Falcon512 and Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.
+1. A single SPHINCS+ combination is provided for use cases that wish to put hash-based signatures into hybrid combination.
+1. A generic composite algorithm is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.
+
+The authors wish to note that although all the composite structures defined in this and the companion composite keys {{I-D.ounsworth-pq-composite-keys}} and composite KEM {{I-D.ounsworth-pq-composite-kem}} specifications are defined in such a way as to easily allow 3 or more component algorithms, it was decided to only specify explicit pairs. The generic composite specified in {{sec-generic-composite}} of course allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.
 
 <!-- End of Introduction section -->
 
@@ -330,18 +343,9 @@ Signature public key types:
 | id-Dilithium3-RSA-PSS                      | &lt;CompSig&gt;.14 | Dilithium3TBD | SHA256WithRSAPSS | 
 {: #tab-composite-sigs title="Explicit Composite Signature Algorithms"}
 
-The table above contains everything needed to implement the listed explicit composite algorithms. See the ASN.1 module in section {{sec-asn1-module}} for the explicit
-definitions of the above Composite signature algorithms.   
+The table above contains everything needed to implement the listed explicit composite algorithms. See the ASN.1 module in section {{sec-asn1-module}} for the explicit definitions of the above Composite signature algorithms.   
 
-These combinations were chosen according to the following rough guidelines:
-
-1. One RSA combination is provided (but RSA modulus size not mandated), matched with NIST PQC Level 3 algorithms.
-1. NIST [RFC6090], Edwards [RFC7748], and Brainpool [RFC5639] elliptic curve algorithms are provided. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.
-1. NIST level 1 candidates (Falcon512 and Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.
-1. A single SPHINCS+ combination is provided for use cases that wish to put hash-based signatures into hybrid combination.
-1. A generic composite OID is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.The authors wish to note that although the CompositePublicKey and CompositePrivateKey structures are defined in such a way as to easily allow 3 or more component keys, it was decided at the time of writing to only specify explicit pairs. The generic composite allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.
-
-## Generic Composite Algorithm Identifiers
+## Generic Composite Algorithm Identifiers {#sec-generic-composite}
 This draft remains backwards compatible with the previous version of composite signatures.   Explicit Composite keys are a rigid subset of generic composite keys.  In previous versions, the composite signature algorihtm Identifier and the composite key identifier used different Object Identifiers.  The generic composite signature algorithm identifier is:
 
 ~~~ asn.1

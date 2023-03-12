@@ -1185,7 +1185,7 @@ li > p:last-of-type {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Ounsworth, et al.</td>
-<td class="center">Expires 11 September 2023</td>
+<td class="center">Expires 12 September 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1198,12 +1198,12 @@ li > p:last-of-type {
 <dd class="internet-draft">draft-ounsworth-pq-composite-sigs-08</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-03-10" class="published">10 March 2023</time>
+<time datetime="2023-03-11" class="published">11 March 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-09-11">11 September 2023</time></dd>
+<dd class="expires"><time datetime="2023-09-12">12 September 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1248,7 +1248,7 @@ li > p:last-of-type {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 11 September 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 12 September 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1284,7 +1284,12 @@ li > p:last-of-type {
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-terminology-2" class="xref">Terminology</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="xref">3</a>.  <a href="#name-introduction-2" class="xref">Introduction</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-introduction-2" class="xref">Introduction</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-algorithm-selection-criteria" class="xref">Algorithm Selection Criteria</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-composite-signature-structur" class="xref">Composite Signature Structures</a></p>
@@ -1504,6 +1509,27 @@ li > p:last-of-type {
       </ul>
 <p id="section-3-4">This document provides a mechanism to address algorithm strength uncertainty concerns by building on <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span> by providing formats for encoding multiple signature values into existing public signature fields, as well as the process for validating a composite signature. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in <span>[<a href="#I-D.becker-guthrie-noncomposite-hybrid-auth" class="xref">I-D.becker-guthrie-noncomposite-hybrid-auth</a>]</span>.<a href="#section-3-4" class="pilcrow">¶</a></p>
 <p id="section-3-5">This document is intended for general applicability anywhere that digital signatures are used within PKIX and CMS structures.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<div id="algorithm-selection-criteria">
+<section id="section-3.1">
+        <h3 id="name-algorithm-selection-criteria">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-algorithm-selection-criteria" class="section-name selfRef">Algorithm Selection Criteria</a>
+        </h3>
+<p id="section-3.1-1">The composite algorithm combinations defined in this document were chosen according to the following guidelines:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-3.1-2">
+<li id="section-3.1-2.1">A single RSA combination is provided (but RSA modulus size not mandated), matched with NIST PQC Level 3 algorithms.<a href="#section-3.1-2.1" class="pilcrow">¶</a>
+</li>
+          <li id="section-3.1-2.2">Elliptic curve algorithms are provided with combinations on each of the NIST [RFC6090], Brainpool [RFC5639], and Edwards [RFC7748] curves. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.<a href="#section-3.1-2.2" class="pilcrow">¶</a>
+</li>
+          <li id="section-3.1-2.3">NIST level 1 candidates (Falcon512 and Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.<a href="#section-3.1-2.3" class="pilcrow">¶</a>
+</li>
+          <li id="section-3.1-2.4">A single SPHINCS+ combination is provided for use cases that wish to put hash-based signatures into hybrid combination.<a href="#section-3.1-2.4" class="pilcrow">¶</a>
+</li>
+          <li id="section-3.1-2.5">A generic composite algorithm is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.<a href="#section-3.1-2.5" class="pilcrow">¶</a>
+</li>
+        </ol>
+<p id="section-3.1-3">The authors wish to note that although all the composite structures defined in this and the companion composite keys <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span> and composite KEM <span>[<a href="#I-D.ounsworth-pq-composite-kem" class="xref">I-D.ounsworth-pq-composite-kem</a>]</span> specifications are defined in such a way as to easily allow 3 or more component algorithms, it was decided to only specify explicit pairs. The generic composite specified in <a href="#sec-generic-composite" class="xref">Section 5.1</a> of course allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="sec-composite-structs">
@@ -1757,22 +1783,8 @@ CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
         </tbody>
       </table>
 </div>
-<p id="section-5-11">The table above contains everything needed to implement the listed explicit composite algorithms. See the ASN.1 module in section <a href="#sec-asn1-module" class="xref">Appendix C</a> for the explicit
-definitions of the above Composite signature algorithms.<a href="#section-5-11" class="pilcrow">¶</a></p>
-<p id="section-5-12">These combinations were chosen according to the following rough guidelines:<a href="#section-5-12" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-5-13">
-<li id="section-5-13.1">One RSA combination is provided (but RSA modulus size not mandated), matched with NIST PQC Level 3 algorithms.<a href="#section-5-13.1" class="pilcrow">¶</a>
-</li>
-        <li id="section-5-13.2">NIST [RFC6090], Edwards [RFC7748], and Brainpool [RFC5639] elliptic curve algorithms are provided. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.<a href="#section-5-13.2" class="pilcrow">¶</a>
-</li>
-        <li id="section-5-13.3">NIST level 1 candidates (Falcon512 and Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.<a href="#section-5-13.3" class="pilcrow">¶</a>
-</li>
-        <li id="section-5-13.4">A single SPHINCS+ combination is provided for use cases that wish to put hash-based signatures into hybrid combination.<a href="#section-5-13.4" class="pilcrow">¶</a>
-</li>
-        <li id="section-5-13.5">A generic composite OID is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.The authors wish to note that although the CompositePublicKey and CompositePrivateKey structures are defined in such a way as to easily allow 3 or more component keys, it was decided at the time of writing to only specify explicit pairs. The generic composite allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.<a href="#section-5-13.5" class="pilcrow">¶</a>
-</li>
-      </ol>
-<div id="generic-composite-algorithm-identifiers">
+<p id="section-5-11">The table above contains everything needed to implement the listed explicit composite algorithms. See the ASN.1 module in section <a href="#sec-asn1-module" class="xref">Appendix C</a> for the explicit definitions of the above Composite signature algorithms.<a href="#section-5-11" class="pilcrow">¶</a></p>
+<div id="sec-generic-composite">
 <section id="section-5.1">
         <h3 id="name-generic-composite-algorithm-">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-generic-composite-algorithm-" class="section-name selfRef">Generic Composite Algorithm Identifiers</a>
@@ -2169,6 +2181,10 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 <dt id="I-D.guthrie-ipsecme-ikev2-hybrid-auth">[I-D.guthrie-ipsecme-ikev2-hybrid-auth]</dt>
         <dd>
 <span class="refAuthor">Guthrie, R.</span>, <span class="refTitle">"Hybrid Non-Composite Authentication in IKEv2"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-guthrie-ipsecme-ikev2-hybrid-auth-00</span>, <time datetime="2022-03-25" class="refDate">25 March 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-guthrie-ipsecme-ikev2-hybrid-auth-00">https://datatracker.ietf.org/doc/html/draft-guthrie-ipsecme-ikev2-hybrid-auth-00</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ounsworth-pq-composite-kem">[I-D.ounsworth-pq-composite-kem]</dt>
+        <dd>
+<span class="refAuthor">Ounsworth, M.</span> and <span class="refAuthor">J. Gray</span>, <span class="refTitle">"Composite KEM For Use In Internet PKI"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ounsworth-pq-composite-kem-00</span>, <time datetime="2022-07-11" class="refDate">11 July 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-composite-kem-00">https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-composite-kem-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ounsworth-pq-composite-keys">[I-D.ounsworth-pq-composite-keys]</dt>
         <dd>
