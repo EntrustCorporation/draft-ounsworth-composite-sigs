@@ -56,6 +56,8 @@ normative:
   RFC8174:
   RFC8411:
   I-D.draft-massimo-lamps-pq-sig-certificates-00:
+  I-D.draft-ietf-lamps-dilithium-certificates-01:
+  I-D.draft-ietf-lamps-cms-sphincs-plus-01:
   X.690:
       title: "Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)"
       date: November 2015
@@ -197,7 +199,7 @@ The composite algorithm combinations defined in this document were chosen accord
 1. A single SPHINCS+ combination is provided for use cases that wish to put hash-based signatures into hybrid combination.
 1. A generic composite algorithm is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.
 
-The authors wish to note that although all the composite structures defined in this and the companion composite keys {{I-D.ounsworth-pq-composite-keys}} and composite KEM {{I-D.ounsworth-pq-composite-kem}} specifications are defined in such a way as to easily allow 3 or more component algorithms, it was decided to only specify explicit pairs. The generic composite specified in {{sec-generic-composite}} of course allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.
+The authors wish to note that although all the composite structures defined in this and the companion composite keys {{I-D.ounsworth-pq-composite-keys}} and composite KEM {{I-D.ounsworth-pq-composite-kem}} specifications are defined in such a way as to easily allow 3 or more component algorithms, it was decided to only specify explicit pairs. The generic composite specified in this document allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.
 
 <!-- End of Introduction section -->
 
@@ -303,7 +305,7 @@ When a bit string is required, the octets of the DER encoded composite data stru
 
 In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.
 
-# Explicit Composite Algorithm Identifiers {#sec-alg-idents}
+# Algorithm Identifiers {#sec-alg-ids}
 
 This section defines the algorithm identifiers for explicit combinations.  For simplicity and prototyping purposes, the signature algorithm object identifiers specified in this document are the same as the composite key object Identifiers specified in {draft-ounsworth-pq-composite-keys}.  A proper implementation should not presume that the object ID of a composite key will be the same as its composite signature algorithm.   
 
@@ -325,47 +327,44 @@ replace &lt;SPHINCS&gt; with the String "SPHINCSplusSHA256128sSimple"
 
 Signature public key types:
 
-| Composite Key and Signature AlgorithmID | OID | First Signature Alg |  Second Signature Alg | 
+| Composite Key and Signature AlgorithmID | OID | First Algorithm | Second Algorithm | 
 | ----------- | ----------- | ----------- |  ----------- | 
-| id-Dilithium3-RSA-PKCS15-SHA256         | &lt;CompSig&gt;.1 | Dilithium3TBD | SHA256WithRSAEncryption |
-| id-Dilithium3-ECDSA-P256-SHA256            | &lt;CompSig&gt;.2 | Dilithium3TBD | SHA256withECDSA | 
-| id-Dilithium3-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.3 | Dilithium3TBD | SHA256withECDSA |  
-| id-Dilithium3-Ed25519               | &lt;CompSig&gt;.4 | Dilithium3TBD | Ed25519 | 
-| id-Dilithium5-ECDSA-P384-SHA384            | &lt;CompSig&gt;.5 | Dilithium5TBD | SHA384withECDSA | 
-| id-Dilithium5-ECDSA-brainpoolP384r1-SHA384 | &lt;CompSig&gt;.6 | Dilithium5TBD | SHA384withECDSA | 
-| id-Dilithium5-Ed448                 | &lt;CompSig&gt;.7 | Dilithium5TBD | Ed448 | 
-| id-Falcon512-ECDSA-P256-SHA256        | &lt;CompSig&gt;.8 | Falcon512TBD | SHA256withECDSA | 
-| id-Falcon512-ECDSA-brainpoolP256r1-SHA256  | &lt;CompSig&gt;.9 | Falcon512TBD | SHA256withECDSA | 
-| id-Falcon512-Ed25519                       | &lt;CompSig&gt;.10| Falcon512TBD | Ed25519| 
+| id-Dilithium3-RSA-PSS                      | &lt;CompSig&gt;.14 | Dilithium3 | SHA256WithRSAPSS | 
+| id-Dilithium3-RSA-PKCS15-SHA256            | &lt;CompSig&gt;.1  | Dilithium3 | SHA256WithRSAEncryption |
+| id-Dilithium3-ECDSA-P256-SHA256            | &lt;CompSig&gt;.2  | Dilithium3 | SHA256withECDSA | 
+| id-Dilithium3-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.3  | Dilithium3 | SHA256withECDSA |  
+| id-Dilithium3-Ed25519                      | &lt;CompSig&gt;.4  | Dilithium3 | Ed25519 | 
+| id-Dilithium5-ECDSA-P384-SHA384            | &lt;CompSig&gt;.5  | Dilithium5 | SHA384withECDSA | 
+| id-Dilithium5-ECDSA-brainpoolP384r1-SHA384 | &lt;CompSig&gt;.6  | Dilithium5 | SHA384withECDSA | 
+| id-Dilithium5-Ed448                        | &lt;CompSig&gt;.7  | Dilithium5 | Ed448 | 
+| id-Falcon512-ECDSA-P256-SHA256             | &lt;CompSig&gt;.8  | Falcon512  | SHA256withECDSA | 
+| id-Falcon512-ECDSA-brainpoolP256r1-SHA256  | &lt;CompSig&gt;.9  | Falcon512  | SHA256withECDSA | 
+| id-Falcon512-Ed25519                       | &lt;CompSig&gt;.10 | Falcon512  | Ed25519| 
 | id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256  | &lt;CompSig&gt;.11| &lt;SPHINCS&gt; | SHA256withECDSA | 
 | id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.12 | &lt;SPHINCS&gt; | SHA256withECDSA | 
 | id-SPHINCSplusSHA256128sSimple-Ed25519               | &lt;CompSig&gt;.13 | &lt;SPHINCS&gt; | Ed25519 |
-| id-Dilithium3-RSA-PSS                      | &lt;CompSig&gt;.14 | Dilithium3TBD | SHA256WithRSAPSS | 
+| id-composite-sig                                     | 1.3.6.1.4.1.18227.2.1 | Any | Any |
 {: #tab-composite-sigs title="Explicit Composite Signature Algorithms"}
 
 The table above contains everything needed to implement the listed explicit composite algorithms. See the ASN.1 module in section {{sec-asn1-module}} for the explicit definitions of the above Composite signature algorithms.   
 
-## Generic Composite Algorithm Identifiers {#sec-generic-composite}
-This draft remains backwards compatible with the previous version of composite signatures.   Explicit Composite keys are a rigid subset of generic composite keys.  In previous versions, the composite signature algorihtm Identifier and the composite key identifier used different Object Identifiers.  The generic composite signature algorithm identifier is:
 
-~~~ asn.1
-id-alg-composite OBJECT IDENTIFIER ::= {
-      iso(1)  identified-organization(3) dod(6) internet(1) private(4)
-         enterprise(1) opencA(18227) algorithms(2) id-alg-composite(1) }
-~~~
-{: artwork-name="GenericCompositeSignature-OID"}         
+Full specifications for the referenced algorithms can be found as follows:
+
+* _Dilithium_: {{I-D.ietf-lamps-dilithium-certificates}}
+* _ECDSA_: [RFC5480]
+  * _ECDSA-P256_: AlgorithmIdentifier.parameters MUST be `secp256r1` as defined in [RFC5480].
+  * _ECDSA-brainpoolP256r1_: AlgorithmIdentifier.parameters MUST be `brainpoolP256r1` as defined in [RFC5639].
+  * _ECDSA-P384_: AlgorithmIdentifier.parameters MUST be `secp384r1` as defined in [RFC5480].
+  * _ECDSA-brainpoolP384r1_: AlgorithmIdentifier.parameters MUST be `brainpoolP384r1` as defined in [RFC5639].
+* _Ed25519 / Ed448_: [RFC8410]
+* _Falcon_: TBD
+* _RSAES-PKCS-v1_5_: [RFC8017]
+* _RSASSA-PSS_: [RFC8017]
+* _SPHICNCSplus_: {{I-D.ietf-lamps-cms-sphincs-plus}}
+* id-composite-sigs: {{I-D.ounsworth-pq-composite-keys}}
 
 
-As defined in {{I-D.ounsworth-pq-composite-keys}}, a generic composite key uses the following identifier:
-
-~~~ asn.1
-id-composite-key OBJECT IDENTIFIER ::= {
-    joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-    algorithm(80) composite(4) compositekey(1) }
-~~~
-{: artwork-name="GenericCompositeKey-OID"}         
-
-See the ASN.1 module in section {{sec-asn1-module}} for the definitions of Generic Composite algorithms
 
 # Composite Signature Processes {#sec-composite-signature-algorithm}
 
@@ -518,7 +517,7 @@ We present the term "Parallel PKI" to refer to the setup where a PKI end entity 
 
 Equipped with a set of parallel public keys in this way, a client would have the flexibility to choose which public key(s) or certificate(s) to use in a given signature operation. 
 
-For negotiated protocols, the client could choose which public key(s) or certificate(s) to use based on the negotiated algorithms, or could combine two of the public keys for example in a non-composite hybrid method such as {{I-D.becker-guthrie-noncomposite-hybrid-auth}} or {{I-D.guthrie-ipsecme-ikev2-hybrid-auth}}. Note that it is possible to use the signature algorithms defined in {{sec-alg-idents}} as a way to carry the multiple signature values generated by one of the non-composite public mechanism in protocols where it is easier to support the composite signature algorithms than to implement such a mechanism in the protocol itself. There is also nothing precluding a composite public key from being one of the components used within a non-composite authentication operation; this may lead to greater convenience in setting up parallel PKI hierarchies that need to service a range of clients implementing different styles of post-quantum migration strategies.
+For negotiated protocols, the client could choose which public key(s) or certificate(s) to use based on the negotiated algorithms, or could combine two of the public keys for example in a non-composite hybrid method such as {{I-D.becker-guthrie-noncomposite-hybrid-auth}} or {{I-D.guthrie-ipsecme-ikev2-hybrid-auth}}. Note that it is possible to use the signature algorithms defined in {{sec-alg-ids}} as a way to carry the multiple signature values generated by one of the non-composite public mechanism in protocols where it is easier to support the composite signature algorithms than to implement such a mechanism in the protocol itself. There is also nothing precluding a composite public key from being one of the components used within a non-composite authentication operation; this may lead to greater convenience in setting up parallel PKI hierarchies that need to service a range of clients implementing different styles of post-quantum migration strategies.
 
 For non-negotiated protocols, the details for obtaining backwards compatibility will vary by protocol, but for example in CMS [RFC5652], the inclusion of multiple SignerInfo objects is often already treated as an OR relationship, so including one for each of the signer's parallel PKI public keys would, in many cases, have the desired effect of allowing the receiver to choose one they are compatible with and ignore the others, thus achieving full backwards compatibility.
 

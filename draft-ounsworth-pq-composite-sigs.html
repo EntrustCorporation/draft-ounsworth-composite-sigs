@@ -1185,7 +1185,7 @@ li > p:last-of-type {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Ounsworth, et al.</td>
-<td class="center">Expires 12 September 2023</td>
+<td class="center">Expires 13 September 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1198,12 +1198,12 @@ li > p:last-of-type {
 <dd class="internet-draft">draft-ounsworth-pq-composite-sigs-08</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-03-11" class="published">11 March 2023</time>
+<time datetime="2023-03-12" class="published">12 March 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-09-12">12 September 2023</time></dd>
+<dd class="expires"><time datetime="2023-09-13">13 September 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1248,7 +1248,7 @@ li > p:last-of-type {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 12 September 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 13 September 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1317,12 +1317,7 @@ li > p:last-of-type {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-explicit-composite-algorithm" class="xref">Explicit Composite Algorithm Identifiers</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-generic-composite-algorithm-" class="xref">Generic Composite Algorithm Identifiers</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-algorithm-identifiers-2" class="xref">Algorithm Identifiers</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-composite-signature-processe" class="xref">Composite Signature Processes</a></p>
@@ -1527,7 +1522,7 @@ li > p:last-of-type {
           <li id="section-3.1-2.5">A generic composite algorithm is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.<a href="#section-3.1-2.5" class="pilcrow">¶</a>
 </li>
         </ol>
-<p id="section-3.1-3">The authors wish to note that although all the composite structures defined in this and the companion composite keys <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span> and composite KEM <span>[<a href="#I-D.ounsworth-pq-composite-kem" class="xref">I-D.ounsworth-pq-composite-kem</a>]</span> specifications are defined in such a way as to easily allow 3 or more component algorithms, it was decided to only specify explicit pairs. The generic composite specified in <a href="#sec-generic-composite" class="xref">Section 5.1</a> of course allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-3">The authors wish to note that although all the composite structures defined in this and the companion composite keys <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span> and composite KEM <span>[<a href="#I-D.ounsworth-pq-composite-kem" class="xref">I-D.ounsworth-pq-composite-kem</a>]</span> specifications are defined in such a way as to easily allow 3 or more component algorithms, it was decided to only specify explicit pairs. The generic composite specified in this document allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1667,10 +1662,10 @@ CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 </div>
 </section>
 </div>
-<div id="sec-alg-idents">
+<div id="sec-alg-ids">
 <section id="section-5">
-      <h2 id="name-explicit-composite-algorithm">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-explicit-composite-algorithm" class="section-name selfRef">Explicit Composite Algorithm Identifiers</a>
+      <h2 id="name-algorithm-identifiers-2">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-algorithm-identifiers-2" class="section-name selfRef">Algorithm Identifiers</a>
       </h2>
 <p id="section-5-1">This section defines the algorithm identifiers for explicit combinations.  For simplicity and prototyping purposes, the signature algorithm object identifiers specified in this document are the same as the composite key object Identifiers specified in {draft-ounsworth-pq-composite-keys}.  A proper implementation should not presume that the object ID of a composite key will be the same as its composite signature algorithm.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">This section is not intended to be exhaustive and other authors may define others composite signature algorithms so long as they are compatible with the structures and processes defined in this and companion public and private key documents.<a href="#section-5-2" class="pilcrow">¶</a></p>
@@ -1691,69 +1686,75 @@ CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
           <tr>
             <th class="text-left" rowspan="1" colspan="1">Composite Key and Signature AlgorithmID</th>
             <th class="text-left" rowspan="1" colspan="1">OID</th>
-            <th class="text-left" rowspan="1" colspan="1">First Signature Alg</th>
-            <th class="text-left" rowspan="1" colspan="1">Second Signature Alg</th>
+            <th class="text-left" rowspan="1" colspan="1">First Algorithm</th>
+            <th class="text-left" rowspan="1" colspan="1">Second Algorithm</th>
           </tr>
         </thead>
         <tbody>
           <tr>
+            <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-RSA-PSS</td>
+            <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.14</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium3</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA256WithRSAPSS</td>
+          </tr>
+          <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-RSA-PKCS15-SHA256</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.1</td>
-            <td class="text-left" rowspan="1" colspan="1">Dilithium3TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium3</td>
             <td class="text-left" rowspan="1" colspan="1">SHA256WithRSAEncryption</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-ECDSA-P256-SHA256</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.2</td>
-            <td class="text-left" rowspan="1" colspan="1">Dilithium3TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium3</td>
             <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-ECDSA-brainpoolP256r1-SHA256</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.3</td>
-            <td class="text-left" rowspan="1" colspan="1">Dilithium3TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium3</td>
             <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-Ed25519</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.4</td>
-            <td class="text-left" rowspan="1" colspan="1">Dilithium3TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium3</td>
             <td class="text-left" rowspan="1" colspan="1">Ed25519</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Dilithium5-ECDSA-P384-SHA384</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.5</td>
-            <td class="text-left" rowspan="1" colspan="1">Dilithium5TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium5</td>
             <td class="text-left" rowspan="1" colspan="1">SHA384withECDSA</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Dilithium5-ECDSA-brainpoolP384r1-SHA384</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.6</td>
-            <td class="text-left" rowspan="1" colspan="1">Dilithium5TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium5</td>
             <td class="text-left" rowspan="1" colspan="1">SHA384withECDSA</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Dilithium5-Ed448</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.7</td>
-            <td class="text-left" rowspan="1" colspan="1">Dilithium5TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">Dilithium5</td>
             <td class="text-left" rowspan="1" colspan="1">Ed448</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Falcon512-ECDSA-P256-SHA256</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.8</td>
-            <td class="text-left" rowspan="1" colspan="1">Falcon512TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">Falcon512</td>
             <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Falcon512-ECDSA-brainpoolP256r1-SHA256</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.9</td>
-            <td class="text-left" rowspan="1" colspan="1">Falcon512TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">Falcon512</td>
             <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Falcon512-Ed25519</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.10</td>
-            <td class="text-left" rowspan="1" colspan="1">Falcon512TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">Falcon512</td>
             <td class="text-left" rowspan="1" colspan="1">Ed25519</td>
           </tr>
           <tr>
@@ -1775,39 +1776,55 @@ CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
             <td class="text-left" rowspan="1" colspan="1">Ed25519</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">id-Dilithium3-RSA-PSS</td>
-            <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.14</td>
-            <td class="text-left" rowspan="1" colspan="1">Dilithium3TBD</td>
-            <td class="text-left" rowspan="1" colspan="1">SHA256WithRSAPSS</td>
+            <td class="text-left" rowspan="1" colspan="1">id-composite-sig</td>
+            <td class="text-left" rowspan="1" colspan="1">1.3.6.1.4.1.18227.2.1</td>
+            <td class="text-left" rowspan="1" colspan="1">Any</td>
+            <td class="text-left" rowspan="1" colspan="1">Any</td>
           </tr>
         </tbody>
       </table>
 </div>
 <p id="section-5-11">The table above contains everything needed to implement the listed explicit composite algorithms. See the ASN.1 module in section <a href="#sec-asn1-module" class="xref">Section 8</a> for the explicit definitions of the above Composite signature algorithms.<a href="#section-5-11" class="pilcrow">¶</a></p>
-<div id="sec-generic-composite">
-<section id="section-5.1">
-        <h3 id="name-generic-composite-algorithm-">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-generic-composite-algorithm-" class="section-name selfRef">Generic Composite Algorithm Identifiers</a>
-        </h3>
-<p id="section-5.1-1">This draft remains backwards compatible with the previous version of composite signatures.   Explicit Composite keys are a rigid subset of generic composite keys.  In previous versions, the composite signature algorihtm Identifier and the composite key identifier used different Object Identifiers.  The generic composite signature algorithm identifier is:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<div id="section-5.1-2">
-<pre class="lang-asn.1 sourcecode">
-id-alg-composite OBJECT IDENTIFIER ::= {
-      iso(1)  identified-organization(3) dod(6) internet(1) private(4)
-         enterprise(1) opencA(18227) algorithms(2) id-alg-composite(1) }
-</pre><a href="#section-5.1-2" class="pilcrow">¶</a>
-</div>
-<p id="section-5.1-3">As defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, a generic composite key uses the following identifier:<a href="#section-5.1-3" class="pilcrow">¶</a></p>
-<div id="section-5.1-4">
-<pre class="lang-asn.1 sourcecode">
-id-composite-key OBJECT IDENTIFIER ::= {
-    joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-    algorithm(80) composite(4) compositekey(1) }
-</pre><a href="#section-5.1-4" class="pilcrow">¶</a>
-</div>
-<p id="section-5.1-5">See the ASN.1 module in section <a href="#sec-asn1-module" class="xref">Section 8</a> for the definitions of Generic Composite algorithms<a href="#section-5.1-5" class="pilcrow">¶</a></p>
-</section>
-</div>
+<p id="section-5-12">Full specifications for the referenced algorithms can be found as follows:<a href="#section-5-12" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5-13.1">
+          <em>Dilithium</em>: <span>[<a href="#I-D.ietf-lamps-dilithium-certificates" class="xref">I-D.ietf-lamps-dilithium-certificates</a>]</span><a href="#section-5-13.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-5-13.2">
+          <p id="section-5-13.2.1"><em>ECDSA</em>: [RFC5480]<a href="#section-5-13.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5-13.2.2.1">
+              <em>ECDSA-P256</em>: AlgorithmIdentifier.parameters MUST be <code>secp256r1</code> as defined in [RFC5480].<a href="#section-5-13.2.2.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-5-13.2.2.2">
+              <em>ECDSA-brainpoolP256r1</em>: AlgorithmIdentifier.parameters MUST be <code>brainpoolP256r1</code> as defined in [RFC5639].<a href="#section-5-13.2.2.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-5-13.2.2.3">
+              <em>ECDSA-P384</em>: AlgorithmIdentifier.parameters MUST be <code>secp384r1</code> as defined in [RFC5480].<a href="#section-5-13.2.2.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-5-13.2.2.4">
+              <em>ECDSA-brainpoolP384r1</em>: AlgorithmIdentifier.parameters MUST be <code>brainpoolP384r1</code> as defined in [RFC5639].<a href="#section-5-13.2.2.4" class="pilcrow">¶</a>
+</li>
+          </ul>
+</li>
+        <li class="normal" id="section-5-13.3">
+          <em>Ed25519 / Ed448</em>: [RFC8410]<a href="#section-5-13.3" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-5-13.4">
+          <em>Falcon</em>: TBD<a href="#section-5-13.4" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-5-13.5">
+          <em>RSAES-PKCS-v1_5</em>: <span>[<a href="#RFC8017" class="xref">RFC8017</a>]</span><a href="#section-5-13.5" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-5-13.6">
+          <em>RSASSA-PSS</em>: <span>[<a href="#RFC8017" class="xref">RFC8017</a>]</span><a href="#section-5-13.6" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-5-13.7">
+          <em>SPHICNCSplus</em>: <span>[<a href="#I-D.ietf-lamps-cms-sphincs-plus" class="xref">I-D.ietf-lamps-cms-sphincs-plus</a>]</span><a href="#section-5-13.7" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-5-13.8">id-composite-sigs: <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span><a href="#section-5-13.8" class="pilcrow">¶</a>
+</li>
+      </ul>
 </section>
 </div>
 <div id="sec-composite-signature-algorithm">
@@ -1964,7 +1981,7 @@ Signature Verification Procedure::
           </h4>
 <p id="section-7.1.2-1">We present the term "Parallel PKI" to refer to the setup where a PKI end entity possesses two or more distinct public keys or certificates for the same identity (name), but containing keys for different cryptographic algorithms. One could imagine a set of parallel PKIs where an existing PKI using legacy algorithms (RSA, ECC) is left operational during the post-quantum migration but is shadowed by one or more parallel PKIs using pure post quantum algorithms or composite algorithms (legacy and post-quantum).<a href="#section-7.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-7.1.2-2">Equipped with a set of parallel public keys in this way, a client would have the flexibility to choose which public key(s) or certificate(s) to use in a given signature operation.<a href="#section-7.1.2-2" class="pilcrow">¶</a></p>
-<p id="section-7.1.2-3">For negotiated protocols, the client could choose which public key(s) or certificate(s) to use based on the negotiated algorithms, or could combine two of the public keys for example in a non-composite hybrid method such as <span>[<a href="#I-D.becker-guthrie-noncomposite-hybrid-auth" class="xref">I-D.becker-guthrie-noncomposite-hybrid-auth</a>]</span> or <span>[<a href="#I-D.guthrie-ipsecme-ikev2-hybrid-auth" class="xref">I-D.guthrie-ipsecme-ikev2-hybrid-auth</a>]</span>. Note that it is possible to use the signature algorithms defined in <a href="#sec-alg-idents" class="xref">Section 5</a> as a way to carry the multiple signature values generated by one of the non-composite public mechanism in protocols where it is easier to support the composite signature algorithms than to implement such a mechanism in the protocol itself. There is also nothing precluding a composite public key from being one of the components used within a non-composite authentication operation; this may lead to greater convenience in setting up parallel PKI hierarchies that need to service a range of clients implementing different styles of post-quantum migration strategies.<a href="#section-7.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-7.1.2-3">For negotiated protocols, the client could choose which public key(s) or certificate(s) to use based on the negotiated algorithms, or could combine two of the public keys for example in a non-composite hybrid method such as <span>[<a href="#I-D.becker-guthrie-noncomposite-hybrid-auth" class="xref">I-D.becker-guthrie-noncomposite-hybrid-auth</a>]</span> or <span>[<a href="#I-D.guthrie-ipsecme-ikev2-hybrid-auth" class="xref">I-D.guthrie-ipsecme-ikev2-hybrid-auth</a>]</span>. Note that it is possible to use the signature algorithms defined in <a href="#sec-alg-ids" class="xref">Section 5</a> as a way to carry the multiple signature values generated by one of the non-composite public mechanism in protocols where it is easier to support the composite signature algorithms than to implement such a mechanism in the protocol itself. There is also nothing precluding a composite public key from being one of the components used within a non-composite authentication operation; this may lead to greater convenience in setting up parallel PKI hierarchies that need to service a range of clients implementing different styles of post-quantum migration strategies.<a href="#section-7.1.2-3" class="pilcrow">¶</a></p>
 <p id="section-7.1.2-4">For non-negotiated protocols, the details for obtaining backwards compatibility will vary by protocol, but for example in CMS <span>[<a href="#RFC5652" class="xref">RFC5652</a>]</span>, the inclusion of multiple SignerInfo objects is often already treated as an OR relationship, so including one for each of the signer's parallel PKI public keys would, in many cases, have the desired effect of allowing the receiver to choose one they are compatible with and ignore the others, thus achieving full backwards compatibility.<a href="#section-7.1.2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2325,6 +2342,14 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 <a href="#section-11.1" class="section-number selfRef">11.1. </a><a href="#name-normative-references-2" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="I-D.ietf-lamps-cms-sphincs-plus">[I-D.ietf-lamps-cms-sphincs-plus]</dt>
+        <dd>
+<span class="refAuthor">Housley, R.</span>, <span class="refAuthor">Fluhrer, S.</span>, <span class="refAuthor">Kampanakis, P.</span>, and <span class="refAuthor">B. Westerbaan</span>, <span class="refTitle">"Use of the SPHINCS+ Signature Algorithm in the Cryptographic Message Syntax (CMS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-cms-sphincs-plus-01</span>, <time datetime="2022-11-21" class="refDate">21 November 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-sphincs-plus-01">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-sphincs-plus-01</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-lamps-dilithium-certificates">[I-D.ietf-lamps-dilithium-certificates]</dt>
+        <dd>
+<span class="refAuthor">Massimo, J.</span>, <span class="refAuthor">Kampanakis, P.</span>, <span class="refAuthor">Turner, S.</span>, and <span class="refAuthor">B. Westerbaan</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure: Algorithm Identifiers for Dilithium"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-dilithium-certificates-01</span>, <time datetime="2023-02-06" class="refDate">6 February 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-dilithium-certificates-01">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-dilithium-certificates-01</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="I-D.massimo-lamps-pq-sig-certificates">[I-D.massimo-lamps-pq-sig-certificates]</dt>
         <dd>
 <span class="refAuthor">Massimo, J.</span>, <span class="refAuthor">Kampanakis, P.</span>, <span class="refAuthor">Turner, S.</span>, and <span class="refAuthor">B. Westerbaan</span>, <span class="refTitle">"Algorithms and Identifiers for Post-Quantum Algorithms"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-massimo-lamps-pq-sig-certificates-00</span>, <time datetime="2022-07-08" class="refDate">8 July 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-massimo-lamps-pq-sig-certificates-00">https://datatracker.ietf.org/doc/html/draft-massimo-lamps-pq-sig-certificates-00</a>&gt;</span>. </dd>
