@@ -1,0 +1,182 @@
+
+   Composite-Signatures-2023
+     { joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027) 
+       algorithm(80) id-composite-signatures-2023 (TBD) }
+
+DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+EXPORTS ALL;
+
+IMPORTS
+  PUBLIC-KEY, SIGNATURE-ALGORITHM, AlgorithmIdentifier{}
+    FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
+      { iso(1) identified-organization(3) dod(6) internet(1)
+        security(5) mechanisms(5) pkix(7) id-mod(0)
+        id-mod-algorithmInformation-02(58) }
+
+  SubjectPublicKeyInfo
+    FROM PKIX1Explicit-2009
+      { iso(1) identified-organization(3) dod(6) internet(1)
+        security(5) mechanisms(5) pkix(7) id-mod(0)
+        id-mod-pkix1-explicit-02(51) }
+
+  OneAsymmetricKey
+    FROM AsymmetricKeyPackageModuleV1
+      { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
+        pkcs-9(9) smime(16) modules(0)
+        id-mod-asymmetricKeyPkgV1(50) } 
+        
+  pk-Dilithium3-RSA-PSS, id-Dilithium3-RSA-PSS,
+  pk-Dilithium3-RSA-PKCS15-SHA256, id-Dilithium3-RSA-PKCS15-SHA256,
+  pk-Dilithium3-ECDSA-P256-SHA256, id-Dilithium3-ECDSA-P256-SHA256,
+  pk-Dilithium3-ECDSA-brainpoolP256r1, id-Dilithium3-ECDSA-brainpoolP256r1,
+  pk-Dilithium3-Ed25519, id-Dilithium3-Ed25519,
+  pk-Dilithium5-ECDSA-P384, id-Dilithium5-ECDSA-P384,
+  pk-Dilithium5-ECDSA-brainpoolP384r1-SHA384, 
+  id-Dilithium5-ECDSA-brainpoolP384r1-SHA384,
+  pk-Dilithium5-Ed448, id-Dilithium5-Ed448,
+  pk-Falcon512-ECDSA-P256-SHA256, id-Falcon512-ECDSA-P256-SHA256,
+  pk-Falcon512-ECDSA-brainpoolP256r1-SHA256, 
+  id-Falcon512-ECDSA-brainpoolP256r1-SHA256,
+  pk-Falcon512-Ed25519, id-Falcon512-Ed25519,
+  pk-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
+  id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
+  pk-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
+  id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
+  pk-SPHINCSplusSHA256128sSimple-Ed25519,
+  id-SPHINCSplusSHA256128sSimple-Ed25519
+    FROM CompositeKeys-2023
+	   {iso(1) identified-organization(3) dod(6) internet(1) security(5)
+       mechanisms(5) pkix(7) id-mod(0) id-mod-composite-keys(TBD)};
+
+--
+-- Signature Algorithm
+--
+
+-- Composite Signature Value is just a sequence of OCTET STRINGS
+
+   CompositeSignaturePair{FirstSignatureValue, SecondSignatureValue}  ::= 
+     SEQUENCE {
+      signaturevalue1 FirstSignatureValue,
+      signaturevalue2 SecondSignatureValue }
+
+   -- An Explicit Compsite Signature is a set of Signatures which 
+   -- are composed of OCTET STRINGS
+   ExplicitCompositeSignatureValue ::= CompositeSignaturePair {
+       OCTET STRING,OCTET STRING}
+    
+ 
+							
+ExplicitSignatureParameters{SIGNATURE-ALGORITHM:FirstSignatureAlg, 
+   SIGNATURE-ALGORITHM:SecondSignatureAlg}  ::=     
+      SEQUENCE {
+          signatureAlgorithm1   AlgorithmIdentifier
+                        { SIGNATURE-ALGORITHM, {FirstSignatureAlg}},
+	   signatureAlgorithm2   AlgorithmIdentifier
+                        { SIGNATURE-ALGORITHM, {SecondSignatureAlg}} }								 
+							
+
+sa-explicitCompositeSignature{OBJECT IDENTIFIER:id, 
+   PUBLIC-KEY:publicKeyObject, ExplicitCompositeParams} 
+      SIGNATURE-ALGORITHM ::=  {
+         IDENTIFIER id
+         VALUE ExplicitCompositeSignatureValue
+         PARAMS TYPE ExplicitCompositeParams ARE optional
+         PUBLIC-KEYS {publicKeyObject} }
+
+
+sa-Dilithium3-RSA-PKCS15-SHA256 SIGNATURE-ALGORITHM ::= 
+    sa-explicitCompositeSignature{ id-Dilithium3-RSA-PKCS15-SHA256, 
+    pk-Dilithium3-RSA-PKCS15-SHA256, 
+    ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-rsaWithSHA256}} }
+
+sa-Dilithium3-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::= 
+    sa-explicitCompositeSignature{id-Dilithium3-ECDSA-P256-SHA256, 
+    pk-Dilithium3-ECDSA-P256-SHA256,
+    ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-ecdsaWithSHA256}} }
+
+sa-Dilithium3-ECDSA-brainpoolP256r1-SHA256 SIGNATURE-ALGORITHM ::= 
+    sa-explicitCompositeSignature{id-Dilithium3-ECDSA-brainpoolP256r1-SHA256, 
+    pk-Dilithium3-ECDSA-brainpoolP256r1-SHA256, 
+    ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-ecdsaWithSHA256}} }
+
+sa-Dilithium3-Ed25519 SIGNATURE-ALGORITHM ::= 
+    sa-explicitCompositeSignature{id-Dilithium3-Ed25519,pk-Dilithium3-Ed25519,
+    ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-Ed25519}} }
+
+sa-Dilithium5-ECDSA-P384-SHA384 SIGNATURE-ALGORITHM ::= 
+    sa-explicitCompositeSignature{ id-Dilithium5-ECDSA-P384-SHA384,
+    pk-Dilithium5-ECDSA-P384-SHA384,
+    ExplicitSignatureParameters{{sa-Dilithium5TBD},{sa-ecdsaWithSHA384}} }
+
+sa-Dilithium5-ECDSA-brainpoolP384r1-SHA384 SIGNATURE-ALGORITHM ::= 
+    sa-explicitCompositeSignature{id-Dilithium5-ECDSA-brainpoolP384r1-SHA384, 
+    pk-Dilithium5-ECDSA-brainpoolP384r1-SHA384, 
+    ExplicitSignatureParameters{{sa-Dilithium5TBD},{sa-ecdsaWithSHA384}} }
+
+sa-Dilithium5-Ed448 SIGNATURE-ALGORITHM ::= 
+    sa-explicitCompositeSignature{id-Dilithium5-Ed448,pk-Dilithium5-Ed448,
+    ExplicitSignatureParameters{{sa-Dilithium5TBD},{sa-ed448}} }
+
+sa-Falcon512-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::= 
+    sa-explicitCompositeSignature{id-Falcon512-ECDSA-P256-SHA256,
+    pk-Falcon512-ECDSA-P256-SHA256,
+    ExplicitSignatureParameters{{sa-Falcon512TBD},{sa-ecdsaWithSHA256}} }
+
+sa-Falcon512-ECDSA-brainpoolP256r1-SHA256 SIGNATURE-ALGORITHM ::= 
+    sa-explicitCompositeSignature{id-Falcon512-ECDSA-brainpoolP256r1-SHA256,
+    pk-Falcon512-ECDSA-brainpoolP256r1-SHA256,
+    ExplicitSignatureParameters{{sa-Falcon512TBD},{sa-ecdsaWithSHA256}} }
+
+sa-Falcon512-Ed25519 SIGNATURE-ALGORITHM ::= 
+    sa-explicitCompositeSignature{id-Falcon512-Ed25519,pk-Falcon512-Ed25519,
+    ExplicitSignatureParameters{{sa-Falcon512TBD},{sa-Ed25519}} }
+
+sa-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::= 
+    sa-explicitCompositeSignature{
+    id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
+    pk-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
+    ExplicitSignatureParameters{{sa-SPHINCSTBD},{sa-ecdsaWithSHA256}} }
+
+sa-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256 
+   SIGNATURE-ALGORITHM ::= sa-explicitCompositeSignature {
+      id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
+         pk-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
+            ExplicitSignatureParameters{{sa-SPHINCSTBD},
+               {sa-ecdsaWithSHA256}} }
+
+sa-SPHINCSplusSHA256128sSimple-Ed25519 SIGNATURE-ALGORITHM ::= 
+   sa-explicitCompositeSignature{id-SPHINCSplusSHA256128sSimple-Ed25519,
+      pk-SPHINCSplusSHA256128sSimple-Ed25519,
+         ExplicitSignatureParameters{{sa-SPHINCSTBD},{sa-Ed25519}} }
+
+sa-Dilithium3-RSA-PSS-SHA256 SIGNATURE-ALGORITHM ::= 
+   sa-explicitCompositeSignature{id-Dilithium3-RSA-PSS-SHA256,
+      pk-Dilithium3-RSA-PSS-SHA256,
+         ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-rsaSSA-PSS}} }
+
+
+-- Generic Composite definition
+
+--
+-- Object Identifiers
+--
+
+   id-alg-composite OBJECT IDENTIFIER ::= {
+      iso(1)  identified-organization(3) dod(6) internet(1) private(4)
+         enterprise(1) opencA(18227) algorithms(2) id-alg-composite(1) }
+
+sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
+    IDENTIFIER id-alg-composite
+    VALUE CompositeSignatureValue
+    PARAMS TYPE CompositeSignatureParams ARE required
+    PUBLIC-KEYS { pk-Composite }
+ }
+ 
+ CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
+ 
+ CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF  
+     AlgorithmIdentifier{SIGNATURE-ALGORITHM, {SignatureAlgSet}}
+
+
+END

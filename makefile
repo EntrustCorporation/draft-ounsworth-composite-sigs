@@ -14,9 +14,9 @@ draft-ounsworth-pq-composite-sigs.txt: $(docName).mkd
 xml: $(docName).xml
 
 draft-ounsworth-pq-composite-sigs.xml: $(docName).mkd
-	 kramdown-rfc2629 $(docName).mkd > $(docName).xml
-	 # for some reason the kramdown tool seems to be creating invalid xml, so let's fix it
-	 sed -i 's/consensus="true">/>/g' $(docName).xml 
+	./insertFileIncludes.sh $(docName).mkd "." > $(docName)_tmp.mkd
+	kramdown-rfc2629 $(docName)_tmp.mkd > $(docName).xml
+	rm $(docName)_tmp.mkd
 
 
 
