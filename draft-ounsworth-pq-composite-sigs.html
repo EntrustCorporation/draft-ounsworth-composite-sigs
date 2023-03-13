@@ -1665,7 +1665,8 @@ CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
 <p id="section-3.4-1">Composite signature parameters are defined as follows and MAY be used when a composite signature is used with an AlgorithmIdentifier:<a href="#section-3.4-1" class="pilcrow">¶</a></p>
 <div id="section-3.4-2">
 <pre class="lang-asn.1 sourcecode">
-CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
+CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF
+     AlgorithmIdentifier{SIGNATURE-ALGORITHM, {SignatureAlgSet}}
 </pre><a href="#section-3.4-2" class="pilcrow">¶</a>
 </div>
 <p id="section-3.4-3">The signature's CompositeSignatureParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.<a href="#section-3.4-3" class="pilcrow">¶</a></p>

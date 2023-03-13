@@ -330,7 +330,8 @@ The choice of `SEQUENCE OF BIT STRING`, rather than for example a single BIT STR
 Composite signature parameters are defined as follows and MAY be used when a composite signature is used with an AlgorithmIdentifier:
 
 ~~~ asn.1
-CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
+CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF  
+     AlgorithmIdentifier{SIGNATURE-ALGORITHM, {SignatureAlgSet}}
 ~~~
 {: artwork-name="CompositeSignatureParams-asn.1-structures"}
 

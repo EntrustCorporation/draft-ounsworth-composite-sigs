@@ -450,7 +450,8 @@ Ounsworth, et al.       Expires 14 September 2023               [Page 8]
 Internet-Draft              PQ Composite Sigs                 March 2023
 
 
-   CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
+   CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF
+        AlgorithmIdentifier{SIGNATURE-ALGORITHM, {SignatureAlgSet}}
 
    The signature's CompositeSignatureParams sequence MUST contain the
    same component algorithms listed in the same order as in the
@@ -494,7 +495,6 @@ Internet-Draft              PQ Composite Sigs                 March 2023
    ounsworth-pq-composite-keys}.  A proper implementation should not
    presume that the object ID of a composite key will be the same as its
    composite signature algorithm.
-
 
 
 
