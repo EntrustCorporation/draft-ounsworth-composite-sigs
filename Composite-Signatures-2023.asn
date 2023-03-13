@@ -25,6 +25,11 @@ IMPORTS
       { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
         pkcs-9(9) smime(16) modules(0)
         id-mod-asymmetricKeyPkgV1(50) } 
+
+  sa-rsaSSA-PSS
+    FROM PKIX1-PSS-OAEP-Algorithms-2009
+       {iso(1) identified-organization(3) dod(6) internet(1) security(5)
+       mechanisms(5) pkix(7) id-mod(0) id-mod-pkix1-rsa-pkalgs-02(54)}
         
   pk-Dilithium3-RSA-PSS, id-Dilithium3-RSA-PSS,
   pk-Dilithium3-RSA-PKCS15-SHA256, id-Dilithium3-RSA-PKCS15-SHA256,
@@ -72,7 +77,7 @@ ExplicitSignatureParameters{SIGNATURE-ALGORITHM:FirstSignatureAlg,
       SEQUENCE {
           signatureAlgorithm1   AlgorithmIdentifier
                         { SIGNATURE-ALGORITHM, {FirstSignatureAlg}},
-	   signatureAlgorithm2   AlgorithmIdentifier
+	        signatureAlgorithm2   AlgorithmIdentifier
                         { SIGNATURE-ALGORITHM, {SecondSignatureAlg}} }								 
 							
 
@@ -81,9 +86,14 @@ sa-explicitCompositeSignature{OBJECT IDENTIFIER:id,
       SIGNATURE-ALGORITHM ::=  {
          IDENTIFIER id
          VALUE ExplicitCompositeSignatureValue
-         PARAMS TYPE ExplicitCompositeParams ARE optional
+         PARAMS TYPE ExplicitCompositeParams ARE required
          PUBLIC-KEYS {publicKeyObject} }
 
+
+sa-Dilithium3-RSA-PSS-SHA256 SIGNATURE-ALGORITHM ::= 
+   sa-explicitCompositeSignature{id-Dilithium3-RSA-PSS-SHA256,
+   pk-Dilithium3-RSA-PSS-SHA256,
+   ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-rsaSSA-PSS}} }
 
 sa-Dilithium3-RSA-PKCS15-SHA256 SIGNATURE-ALGORITHM ::= 
     sa-explicitCompositeSignature{ id-Dilithium3-RSA-PKCS15-SHA256, 
@@ -140,20 +150,16 @@ sa-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
 
 sa-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256 
    SIGNATURE-ALGORITHM ::= sa-explicitCompositeSignature {
-      id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
-         pk-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
-            ExplicitSignatureParameters{{sa-SPHINCSTBD},
-               {sa-ecdsaWithSHA256}} }
+    id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
+    pk-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
+      ExplicitSignatureParameters{{sa-SPHINCSTBD},
+          {sa-ecdsaWithSHA256}} }
 
 sa-SPHINCSplusSHA256128sSimple-Ed25519 SIGNATURE-ALGORITHM ::= 
    sa-explicitCompositeSignature{id-SPHINCSplusSHA256128sSimple-Ed25519,
       pk-SPHINCSplusSHA256128sSimple-Ed25519,
          ExplicitSignatureParameters{{sa-SPHINCSTBD},{sa-Ed25519}} }
 
-sa-Dilithium3-RSA-PSS-SHA256 SIGNATURE-ALGORITHM ::= 
-   sa-explicitCompositeSignature{id-Dilithium3-RSA-PSS-SHA256,
-      pk-Dilithium3-RSA-PSS-SHA256,
-         ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-rsaSSA-PSS}} }
 
 
 -- Generic Composite definition
@@ -162,9 +168,9 @@ sa-Dilithium3-RSA-PSS-SHA256 SIGNATURE-ALGORITHM ::=
 -- Object Identifiers
 --
 
-   id-alg-composite OBJECT IDENTIFIER ::= {
-      iso(1)  identified-organization(3) dod(6) internet(1) private(4)
-         enterprise(1) opencA(18227) algorithms(2) id-alg-composite(1) }
+id-alg-composite OBJECT IDENTIFIER ::= {
+  iso(1)  identified-organization(3) dod(6) internet(1) private(4)
+  enterprise(1) opencA(18227) algorithms(2) id-alg-composite(1) }
 
 sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
     IDENTIFIER id-alg-composite

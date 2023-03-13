@@ -52,8 +52,13 @@ normative:
   RFC2986:
   RFC4210:
   RFC5280:
+  RFC5480:
+  RFC5639:
   RFC5652:
+  RFC6090:
+  RFC7748:
   RFC8174:
+  RFC8410:
   RFC8411:
   I-D.draft-massimo-lamps-pq-sig-certificates-00:
   I-D.draft-ietf-lamps-dilithium-certificates-01:
@@ -70,6 +75,12 @@ normative:
 # <!-- EDNOTE: full syntax for this defined here: https://github.com/cabo/kramdown-rfc2629 -->
 
 informative:
+  RFC3279:
+  RFC5990:
+  RFC7296:
+  RFC8446:
+  RFC8551:
+  RFC8017:
   I-D.draft-ounsworth-pq-composite-keys-00:
   I-D.draft-ounsworth-pq-composite-kem-00:
   I-D.draft-becker-guthrie-noncomposite-hybrid-auth-00:
@@ -91,8 +102,6 @@ informative:
         ins: D. Stebila
         name: Douglas Stebila
     date: 2017
-  RFC3279:
-  RFC8017:
 
 
 --- abstract
@@ -116,7 +125,36 @@ This document is intended to be coupled with corresponding documents that define
 - explicit composite combinations defined and ASN.1 module updated
 
 
-# Terminology {#sec-terminology}
+# Introduction {#sec-intro}
+
+During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not
+   fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
+
+The deployment of composite signatures using post-quantum algorithms will face two challenges
+
+- Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
+- Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
+
+This document provides a mechanism to address algorithm strength uncertainty concerns by building on {{I-D.ounsworth-pq-composite-keys}} by providing formats for encoding multiple signature values into existing public signature fields, as well as the process for validating a composite signature. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in {{I-D.becker-guthrie-noncomposite-hybrid-auth}}.
+
+This document is intended for general applicability anywhere that digital signatures are used within PKIX and CMS structures.
+
+
+## Algorithm Selection Criteria
+
+The composite algorithm combinations defined in this document were chosen according to the following guidelines:
+
+1. A single RSA combination is provided (but RSA modulus size not mandated), matched with NIST PQC Level 3 algorithms.
+1. Elliptic curve algorithms are provided with combinations on each of the NIST [RFC6090], Brainpool [RFC5639], and Edwards [RFC7748] curves. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.
+1. NIST level 1 candidates (Falcon512 and Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.
+1. A single SPHINCS+ combination is provided for use cases that wish to put hash-based signatures into hybrid combination.
+1. A generic composite algorithm is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.
+
+The authors wish to note that although all the composite structures defined in this and the companion composite keys {{I-D.ounsworth-pq-composite-keys}} and composite KEM {{I-D.ounsworth-pq-composite-kem}} specifications are defined in such a way as to easily allow 3 or more component algorithms, it was decided to only specify explicit pairs. The generic composite specified in this document allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.
+
+
+
+## Terminology {#sec-terminology}
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 {{RFC2119}}  {{RFC8174}} when, and only when, they appear in all capitals, as shown here.
 
 The following terms are used in this document:
@@ -174,33 +212,6 @@ STRIPPING ATTACK:
           version with fewer components.
 
 
-# Introduction {#sec-intro}
-
-During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not
-   fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
-
-The deployment of composite signatures using post-quantum algorithms will face two challenges
-
-- Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
-- Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
-
-This document provides a mechanism to address algorithm strength uncertainty concerns by building on {{I-D.ounsworth-pq-composite-keys}} by providing formats for encoding multiple signature values into existing public signature fields, as well as the process for validating a composite signature. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in {{I-D.becker-guthrie-noncomposite-hybrid-auth}}.
-
-This document is intended for general applicability anywhere that digital signatures are used within PKIX and CMS structures.
-
-
-## Algorithm Selection Criteria
-
-The composite algorithm combinations defined in this document were chosen according to the following guidelines:
-
-1. A single RSA combination is provided (but RSA modulus size not mandated), matched with NIST PQC Level 3 algorithms.
-1. Elliptic curve algorithms are provided with combinations on each of the NIST [RFC6090], Brainpool [RFC5639], and Edwards [RFC7748] curves. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.
-1. NIST level 1 candidates (Falcon512 and Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.
-1. A single SPHINCS+ combination is provided for use cases that wish to put hash-based signatures into hybrid combination.
-1. A generic composite algorithm is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.
-
-The authors wish to note that although all the composite structures defined in this and the companion composite keys {{I-D.ounsworth-pq-composite-keys}} and composite KEM {{I-D.ounsworth-pq-composite-kem}} specifications are defined in such a way as to easily allow 3 or more component algorithms, it was decided to only specify explicit pairs. The generic composite specified in this document allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.
-
 <!-- End of Introduction section -->
 
 
@@ -246,20 +257,19 @@ sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
     PARAMS ANY DEFINED BY ALGORITHM
     PUBLIC-KEYS { pk-Composite }
     SMIME-CAPS ANY DEFINED BY ALGORITHM }
-}
 ~~~
 
 
 The following is an explanation how SIGNATURE-ALGORITHM elements are used 
 to create Composite Signatures:
 
-SIGNATURE-ALGORITHM element | Definition | 
----------                  | ---------- |
-IDENTIFIER                  | The Object ID used to identify the composite Signature Algorithm | 
-VALUE                       | The Sequence of BIT STRINGS for each component signature value | 
-PARAMS                      | Signature parameters either declared ABSENT, or defined with a type and encoding | 
-PUBLIC-KEYS                 | The composite key required to produce the composite signature | 
-SMIME_CAPS                  | Not needed for composite | 
+| SIGNATURE-ALGORITHM element | Definition | 
+| ---------                  | ---------- |
+| IDENTIFIER                  | The Object ID used to identify the composite Signature Algorithm | 
+| VALUE                       | The Sequence of BIT STRINGS for each component signature value | 
+| PARAMS                      | Signature parameters either declared ABSENT, or defined with a type and encoding | 
+| PUBLIC-KEYS                 | The composite key required to produce the composite signature | 
+| SMIME_CAPS                  | Not needed for composite | 
 
 
 
@@ -278,19 +288,19 @@ A CompositeSignatureValue MUST contain the same number of component signatures a
 
 The choice of `SEQUENCE OF BIT STRING`, rather than for example a single BIT STRING containing the concatenated signature values, is to gracefully handle variable-length signature values by taking advantage of ASN.1's built-in length fields.
 
+
 ## CompositeSignatureParameters {#sec-compositeParameters}
 
-Composite signature parameters are defined as follows and MAY be included in the composite 
-signature AlgorithmIdentifier for the composite signature algorithm:
+Composite signature parameters are defined as follows and MAY be used when a composite signature is used with an AlgorithmIdentifier:
 
 ~~~ asn.1
 CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 ~~~
 {: artwork-name="CompositeSignatureParams-asn.1-structures"}
 
-When composite signature parameters are used, the signature's CompositeSignatureParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.  
+The signature's CompositeSignatureParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.  
 
-For explicit algorithms, it is not necessary to carry a CompositeSignatureParams with the list of component algorithms in the signature algorithm parameters because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in [RFC8017]. {{sec-composite-sig-structs}} defines `PARAMS ANY DEFINED BY ALGORITHM` so that explicit algorithms may define params as ABSENT, or use `CompositeSignatureParams` as defined in ASN.1 module.  For generic compsite algorithms, CompositeSignatureParams MUST be included. 
+For explicit algorithms, it is not strictly necessary to carry a CompositeSignatureParams with the list of component algorithms in the signature algorithm parameters because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in [RFC8017]. {{sec-composite-sig-structs}} defines `PARAMS ANY DEFINED BY ALGORITHM` so that explicit algorithms may define params as ABSENT, or use `CompositeSignatureParams` as defined in ASN.1 module.  For generic compsite algorithms, CompositeSignatureParams MUST be included. 
 
 
 
@@ -353,16 +363,44 @@ Full specifications for the referenced algorithms can be found as follows:
 
 * _Dilithium_: {{I-D.ietf-lamps-dilithium-certificates}}
 * _ECDSA_: [RFC5480]
-  * _ECDSA-P256_: AlgorithmIdentifier.parameters MUST be `secp256r1` as defined in [RFC5480].
-  * _ECDSA-brainpoolP256r1_: AlgorithmIdentifier.parameters MUST be `brainpoolP256r1` as defined in [RFC5639].
-  * _ECDSA-P384_: AlgorithmIdentifier.parameters MUST be `secp384r1` as defined in [RFC5480].
-  * _ECDSA-brainpoolP384r1_: AlgorithmIdentifier.parameters MUST be `brainpoolP384r1` as defined in [RFC5639].
 * _Ed25519 / Ed448_: [RFC8410]
 * _Falcon_: TBD
 * _RSAES-PKCS-v1_5_: [RFC8017]
 * _RSASSA-PSS_: [RFC8017]
 * _SPHICNCSplus_: {{I-D.ietf-lamps-cms-sphincs-plus}}
 * id-composite-sigs: {{I-D.ounsworth-pq-composite-keys}}
+
+
+
+## Notes on id-Dilithium3-RSA-PSS
+
+Use of RSA-PSS [RFC8017] deserves a special explanation.
+
+When the `id-Dilithium3-RSA-PSS` object identifier is used with an `AlgorithmIdentifier`, the `AlgorithmIdentifier.parameters` MUST be of type `CompositeSignatureParams as follows:
+
+~~~
+SEQUENCE {
+    AlgorithmIdentifier {
+        id-Dilithium3TBD
+    },
+    AlgorithmIdentifier {
+        id-RSASSA-PSS,
+        RSASSA-PSS-params
+    }
+}
+~~~
+
+EDNOTE: We probably should pick concrete crypto for the `RSASSA-PSS-params`. Once the crypto is fixed, we could omit the parameters entirely and expect implementations to re-constitute the params structures as necessary in order to call into lower-level crypto libraries.
+
+TODO: there must be a way to put all this the ASN.1 Module rather than just specifying it as text?
+
+
+## Notes on Generic Composite {#sec-generic-composite-kem}
+
+The `id-alg-composite-kem-SHAKE128` and `id-alg-composite-kem-SHAKE256` object identifiers are used for identifying a generic composite KEM algorithm. This allows arbitrary combinations of component key transport, key agreement and KEM algorithms without needing the combination to be pre-registered or standardized. Thes generic KEM composite algorithms use SHAKE128 and SHAKE256-based KEM combiners and so are intended for use with component KEM algorithms that target the 128 bit or 256 bit security levels respectively.
+
+When the `id-alg-composite-kem-SHAKE128` or `id-alg-composite-kem-SHAKE256` object identifiers are used with an `AlgorithmIdentifier`, the `AlgorithmIdentifier.parameters` MUST be of type `CompositeKemParams` containing an `AlgorithmIdentifier for each component algorithm in the same order as the ciphertexts appear in the corresponding `CompositeCiphertextValue`.
+
 
 
 
@@ -477,116 +515,6 @@ In the absence of such a policy mechanism that can be easily updated to reflect 
 
 <!-- End of Composite Signature Algorithm section -->
 
-# Implementation Considerations {#sec-imp-considers}
-
-This section addresses practical issues of how this draft affects other protocols and standards.
-
-
-~~~ BEGIN EDNOTE 10~~~
-
-EDNOTE 10: Possible topics to address:
-
-  - The size of these certs and cert chains.
-  - In particular, implications for (large) composite keys / signatures / certs on the handshake stages of TLS and IKEv2.
-  - If a cert in the chain is a composite cert then does the whole chain need to be of composite Certs?
-  - We could also explain that the root CA cert does not have to be of the same algorithms. The root cert SHOULD NOT be transferred in the authentication exchange to save transport overhead and thus it can be different than the intermediate and leaf certs.
-  - We could talk about overhead (size and processing).
-  - We could also discuss backwards compatibility.
-  - We could include a subsection about implementation considerations.
-
-~~~ END EDNOTE 10~~~
-
-
-## Backwards Compatibility {#sec-backwards-compat}
-
-As noted in the introduction, the post-quantum cryptographic migration will face challenges in both ensuring cryptographic strength against adversaries of unknown capabilities, as well as providing ease of migration. The composite mechanisms defined in this document primarily address cryptographic strength, however this section contains notes on how backwards compatibility may be obtained.
-
-The term "ease of migration" is used here to mean that existing systems can be gracefully transitioned to the new technology without requiring large service disruptions or expensive upgrades. The term "backwards compatibility" is used here to mean something more specific; that existing systems as they are deployed today can interoperate with the upgraded systems of the future.
-
-These migration and interoperability concerns need to be thought about in the context of various types of protocols that make use of X.509 and PKIX with relation to digital signature objects, from online negotiated protocols such as TLS 1.3 [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous protocols such as S/MIME signed email [RFC8551], document signing such as in the context of the European eIDAS regulations [eIDAS2014], and publicly trusted code signing [codeSigningBRsv2.8], as well as myriad other standardized and proprietary protocols and applications that leverage CMS [RFC5652] signed structures.
-
-
-### OR modes
-
-{{sec-comp-sig-gen}} and {{sec-comp-sig-verify}} make reference to subset signature generation and verification modes to achieve an OR relation between component signatures, where senders and / or receivers are permitted to ignore some component keys. Some envisioned uses of this include environments where the client encounters a component signature algorithm for which it does not posses a compatible implementation but wishes to proceed with the signature verification using the subset of component signatures for which it does have compatible implementations. Such a mechanism could be designed to provide ease of migration by allowing for composite keys to be distributed and used before all clients in the environment are fully upgraded, but it does not allow for full backwards compatibility since clients would at least need to be upgraded from their current state to be able to parse the composite structures.
-
-
-### Parallel PKIs
-
-We present the term "Parallel PKI" to refer to the setup where a PKI end entity possesses two or more distinct public keys or certificates for the same identity (name), but containing keys for different cryptographic algorithms. One could imagine a set of parallel PKIs where an existing PKI using legacy algorithms (RSA, ECC) is left operational during the post-quantum migration but is shadowed by one or more parallel PKIs using pure post quantum algorithms or composite algorithms (legacy and post-quantum).
-
-Equipped with a set of parallel public keys in this way, a client would have the flexibility to choose which public key(s) or certificate(s) to use in a given signature operation. 
-
-For negotiated protocols, the client could choose which public key(s) or certificate(s) to use based on the negotiated algorithms, or could combine two of the public keys for example in a non-composite hybrid method such as {{I-D.becker-guthrie-noncomposite-hybrid-auth}} or {{I-D.guthrie-ipsecme-ikev2-hybrid-auth}}. Note that it is possible to use the signature algorithms defined in {{sec-alg-ids}} as a way to carry the multiple signature values generated by one of the non-composite public mechanism in protocols where it is easier to support the composite signature algorithms than to implement such a mechanism in the protocol itself. There is also nothing precluding a composite public key from being one of the components used within a non-composite authentication operation; this may lead to greater convenience in setting up parallel PKI hierarchies that need to service a range of clients implementing different styles of post-quantum migration strategies.
-
-For non-negotiated protocols, the details for obtaining backwards compatibility will vary by protocol, but for example in CMS [RFC5652], the inclusion of multiple SignerInfo objects is often already treated as an OR relationship, so including one for each of the signer's parallel PKI public keys would, in many cases, have the desired effect of allowing the receiver to choose one they are compatible with and ignore the others, thus achieving full backwards compatibility.
-
-
-## External signatures
-
-EDNOTE: This section probably does not belong in this draft. It probably belongs instead in the core Dilithium / Falcon specs such as {{I-D.massimo-lamps-pq-sig-certificates}}.
-
-In many contexts, a signature or a verification operation is performed inside a cryptographic module where it is desirable to provide a message digest to the cryptographic module rather than streaming the entire message (which in some cases can be very large). 
-
-This means that composite signature implementations MUST NOT perform a single message digest operation and then provide that digest value to all component algorithms.
-
-That said, the first step of both the Dilithium and Falcon algoritms is a keyed hash of the message. This section considers modifications to the Dilithium and Falcon algorithms where the first hashing step is performed externally to the cryptographic module.
-
-That said, for use-cases where pre-hashing of messages for Dilithium or Falcon signatures is required for bandwidth or resource contraints, external hashing should be considered. Depending on the algorithm chosen additional contraints on the format of the external hashing may be required to meet the security requirements of the algorithm. The following subsections provide specific instructions for externalizing the message digest step of the Dilithium and Falcon Sign() and Verify() operations.
-
-## Dilithium {#ext-sigs-dilithium}
-
-The Dilithium construction includes 
-
-~~~
-Gen():
-...
-07 tr \in {0, 1}^384 := CRH(rho || t1)
-~~~
-
-where CRH is a collision-resistant hash, and (rho, t1) is the public key.
-
-~~~
-Sign(sk,M):
-...
-10: mu \in {0, 1}^384 := CRH(tr || M) 
-      // which = CRH(CRH(rho || t1) || M)
-~~~
-
-and
-
-~~~
-Verify(pk, M, sigma):
-mu \in {0, 1}^384 := CRH(CRH(rho || t1) || M)
-~~~
-
-These steps of the Sign() and Verify() operations MAY be externalized to a pre-computation step outside of the cryptographic module as they only need access to the public key `(rho, t1)` and the choice of hash function `CRH`, and since doing so does not affect interoperability of the signature algorithm.
-
-
-
-## Falcon {#ext-sigs-falcon}
-
-The Falcon construction includes
-
-~~~
-Sign(m, sk, floor(beta^2)):
-1: r <- {0,1}^320 uniformly
-2: c <- HashToPoint(r||m, q, n)
-~~~
-
-and
-
-~~~
-Verify(m, sig, pk, floor(beta^2)):
-1: c <- HashToPoint(r||m, q, n)
-~~~
-
-where `HashToPoint` is a SHAKE256-based construct that hashes the nonce `r` and the message `m` to a lattice point using the lattice parameters `q` and `n`.
-
-These steps of the Sign() and Verify() operations MAY be externalized to a pre-computation step outside of the cryptographic module as they only need access to the lattice parameters `q` and `n`, and since doing so does not affect interoperability of the signature algorithm. This does require generation of `r` to be performed outside of the cryptographic module for `Sign()` operations, which may or may not have security implications depending on the implementation and runtime environment.
-
-<!-- End of In Practice section -->
-
 
 # ASN.1 Module {#sec-asn1-module}
 
@@ -661,9 +589,8 @@ Risks:
 - Verifications of a subset of signatures leads to ambiguity in the security strength of the signature verification; ie if a message carries two signatures, one at 128 bits and the other at 112 bits of security and clients are verifying in an OR mode with flexible policy, then it becomes difficult to audit the security strength used at runtime.
 - Moreover, verifying multiple algorithms provides security even in the event that one of the algorithms has already been broken, but knowledge of the break has not been made public yet.
 
-
-
 <!-- End of Security Considerations section -->
+
 
 <!-- Start of Appendices -->
 
@@ -679,7 +606,7 @@ For now we have removed combiner modes (AND, OR, KofN) from this draft, but we a
 
 
 
-# Examples {#appdx-examples}
+# Samples {#appdx-samples}
 
 
 ## Generic Composite Signature Examples {#appdx-genComposite-examples}
@@ -689,6 +616,68 @@ TODO
 ## Explicit Composite Signature Examples {#appdx-expComposite-examples}
 
 TODO
+
+
+
+# Implementation Considerations {#sec-imp-considers}
+
+This section addresses practical issues of how this draft affects other protocols and standards.
+
+
+~~~ BEGIN EDNOTE 10~~~
+
+EDNOTE 10: Possible topics to address:
+
+  - The size of these certs and cert chains.
+  - In particular, implications for (large) composite keys / signatures / certs on the handshake stages of TLS and IKEv2.
+  - If a cert in the chain is a composite cert then does the whole chain need to be of composite Certs?
+  - We could also explain that the root CA cert does not have to be of the same algorithms. The root cert SHOULD NOT be transferred in the authentication exchange to save transport overhead and thus it can be different than the intermediate and leaf certs.
+  - We could talk about overhead (size and processing).
+  - We could also discuss backwards compatibility.
+  - We could include a subsection about implementation considerations.
+
+~~~ END EDNOTE 10~~~
+
+
+## Backwards Compatibility {#sec-backwards-compat}
+
+As noted in the introduction, the post-quantum cryptographic migration will face challenges in both ensuring cryptographic strength against adversaries of unknown capabilities, as well as providing ease of migration. The composite mechanisms defined in this document primarily address cryptographic strength, however this section contains notes on how backwards compatibility may be obtained.
+
+The term "ease of migration" is used here to mean that existing systems can be gracefully transitioned to the new technology without requiring large service disruptions or expensive upgrades. The term "backwards compatibility" is used here to mean something more specific; that existing systems as they are deployed today can interoperate with the upgraded systems of the future.
+
+These migration and interoperability concerns need to be thought about in the context of various types of protocols that make use of X.509 and PKIX with relation to digital signature objects, from online negotiated protocols such as TLS 1.3 [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous protocols such as S/MIME signed email [RFC8551], document signing such as in the context of the European eIDAS regulations [eIDAS2014], and publicly trusted code signing [codeSigningBRsv2.8], as well as myriad other standardized and proprietary protocols and applications that leverage CMS [RFC5652] signed structures.
+
+
+### OR modes
+
+{{sec-comp-sig-gen}} and {{sec-comp-sig-verify}} make reference to subset signature generation and verification modes to achieve an OR relation between component signatures, where senders and / or receivers are permitted to ignore some component keys. Some envisioned uses of this include environments where the client encounters a component signature algorithm for which it does not posses a compatible implementation but wishes to proceed with the signature verification using the subset of component signatures for which it does have compatible implementations. Such a mechanism could be designed to provide ease of migration by allowing for composite keys to be distributed and used before all clients in the environment are fully upgraded, but it does not allow for full backwards compatibility since clients would at least need to be upgraded from their current state to be able to parse the composite structures.
+
+
+### Parallel PKIs
+
+We present the term "Parallel PKI" to refer to the setup where a PKI end entity possesses two or more distinct public keys or certificates for the same identity (name), but containing keys for different cryptographic algorithms. One could imagine a set of parallel PKIs where an existing PKI using legacy algorithms (RSA, ECC) is left operational during the post-quantum migration but is shadowed by one or more parallel PKIs using pure post quantum algorithms or composite algorithms (legacy and post-quantum).
+
+Equipped with a set of parallel public keys in this way, a client would have the flexibility to choose which public key(s) or certificate(s) to use in a given signature operation. 
+
+For negotiated protocols, the client could choose which public key(s) or certificate(s) to use based on the negotiated algorithms, or could combine two of the public keys for example in a non-composite hybrid method such as {{I-D.becker-guthrie-noncomposite-hybrid-auth}} or {{I-D.guthrie-ipsecme-ikev2-hybrid-auth}}. Note that it is possible to use the signature algorithms defined in {{sec-alg-ids}} as a way to carry the multiple signature values generated by one of the non-composite public mechanism in protocols where it is easier to support the composite signature algorithms than to implement such a mechanism in the protocol itself. There is also nothing precluding a composite public key from being one of the components used within a non-composite authentication operation; this may lead to greater convenience in setting up parallel PKI hierarchies that need to service a range of clients implementing different styles of post-quantum migration strategies.
+
+For non-negotiated protocols, the details for obtaining backwards compatibility will vary by protocol, but for example in CMS [RFC5652], the inclusion of multiple SignerInfo objects is often already treated as an OR relationship, so including one for each of the signer's parallel PKI public keys would, in many cases, have the desired effect of allowing the receiver to choose one they are compatible with and ignore the others, thus achieving full backwards compatibility.
+
+
+## External signatures
+
+EDNOTE: This section probably does not belong in this draft. It probably belongs instead in the core Dilithium / Falcon specs such as {{I-D.massimo-lamps-pq-sig-certificates}}.
+
+In many contexts, a signature or a verification operation is performed inside a cryptographic module where it is desirable to provide a message digest to the cryptographic module rather than streaming the entire message (which in some cases can be very large). 
+
+This means that composite signature implementations MUST NOT perform a single message digest operation and then provide that digest value to all component algorithms.
+
+That said, the first step of both the Dilithium and Falcon algoritms is a keyed hash of the message. This section considers modifications to the Dilithium and Falcon algorithms where the first hashing step is performed externally to the cryptographic module.
+
+That said, for use-cases where pre-hashing of messages for Dilithium or Falcon signatures is required for bandwidth or resource contraints, external hashing should be considered. Depending on the algorithm chosen additional contraints on the format of the external hashing may be required to meet the security requirements of the algorithm. The following subsections provide specific instructions for externalizing the message digest step of the Dilithium and Falcon Sign() and Verify() operations.
+
+<!-- End of Implementation Considerations section -->
+
 
 
 # Intellectual Property Considerations
