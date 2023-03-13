@@ -65,24 +65,10 @@ normative:
   RFC8174:
   RFC8410:
   RFC8411:
+  I-D.draft-ounsworth-pq-composite-keys-04:
   I-D.draft-massimo-lamps-pq-sig-certificates-00:
   I-D.draft-ietf-lamps-dilithium-certificates-01:
   I-D.draft-ietf-lamps-cms-sphincs-plus-01:
-  I-D.draft-truskovsky-lamps-pq-hybrid-x509:
-    target: https://www.ietf.org/archive/id/draft-pala-klaussner-composite-kofn-00.txt
-    title: Multiple Public-Key Algorithm X.509 Certificates
-    date: August 2018
-    author:
-      - 
-        ins: A. Truskovsky
-        name: Alexander Truskovsky
-      - 
-        ins: D. Van Geest
-        name: Daniel Van Geest
-      - 
-        ins: S. Fluhrer
-        name: Scott Fluhrer
-    
   X.690:
       title: "Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)"
       date: November 2015
@@ -90,34 +76,21 @@ normative:
         org: ITU-T
       seriesinfo:
         ISO/IEC: 8825-1:2015
-  I-D.draft-pala-klaussner-composite-kofn:
-    target: https://www.ietf.org/archive/id/draft-pala-klaussner-composite-kofn-00.txt
-    title: K-threshold Composite Signatures for the Internet PKI
-    date: November 2022
-    author:
-      -
-        ins: M. Pala
-        name: Massimiliano Pala
-        org: CableLabs
-      -
-        ins: J. Klaußner
-        name: Jan Klaussner
-        org: D-Trust GmbH      
 
 
 # <!-- EDNOTE: full syntax for this defined here: https://github.com/cabo/kramdown-rfc2629 -->
 
 informative:
   RFC3279:
-  RFC5990:
   RFC7296:
   RFC8446:
   RFC8551:
   RFC8017:
-  I-D.draft-ounsworth-pq-composite-keys-00:
   I-D.draft-ounsworth-pq-composite-kem-00:
   I-D.draft-becker-guthrie-noncomposite-hybrid-auth-00:
   I-D.draft-guthrie-ipsecme-ikev2-hybrid-auth-00:
+  I-D.draft-truskovsky-lamps-pq-hybrid-x509-01:
+  I-D.draft-pala-klaussner-composite-kofn-00:
   Bindel2017:
     title: "Transitioning to a quantum-resistant public key infrastructure"
     target: "https://link.springer.com/chapter/10.1007/978-3-319-59879-6_22"
@@ -599,7 +572,7 @@ Note on composite inputs: the method of providing the list of component keys, al
 
 Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with OID id-alg-composite or an explicit composite OID.
 
-Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementer MAY, in the interest of performance of compatibility, modify the above process to skip one or more signature validations as per their local client policy. See {{I-D.draft-pala-klaussner-composite-kofn}} for a discussion of implementation and associated risks.
+Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementer MAY, in the interest of performance of compatibility, modify the above process to skip one or more signature validations as per their local client policy. See {{I-D.pala-klaussner-composite-kofn}} for a discussion of implementation and associated risks.
 
 <!-- End of Composite Signature Algorithm section -->
 
@@ -656,7 +629,7 @@ This document defines a composite signature verification process in {{sec-comp-s
 
 The authors recognize that there will be scenarios where the verifier considers a single component algorithm -- or subset of component algorithms -- to provide sufficient security, and therefore for performance, or other practical reasons, wishes to skip the verification of one or more component signatures. For example, it might be the case where the signer (whether it be a CA or an end entity) needs to be able to specify how its signatures are to be interpreted and verified. Another use-case is where one of the composite algorithms' implementation might not be stable yet, possibly causing signature validation or generation issues across different providers or vendors. 
 
-A detailed description of a K of N validation mode that address all these use-cases is described in {{I-D.draft-pala-klaussner-composite-kofn}}.
+A detailed description of a K of N validation mode that address all these use-cases is described in {{I-D.pala-klaussner-composite-kofn}}.
 
 <!-- End of Security Considerations section -->
 
@@ -722,7 +695,7 @@ These migration and interoperability concerns need to be thought about in the co
 
 It is important to notice that although Composite Crypto does not allow for full backwards compatibility (since clients would at least need to be upgraded from their current state to be able to parse the composite structures), upgrading today's systems to be able to handle composite keys and signatures will also provide the tool for the next generation of migration. In other words, the work to support Composite Crypto will also provide crypto agility options for subsequent crypto-migration in a truly crypto-agile fashion (i.e., entities will always able to process composite signatures independent from the individual cryptographic algorithms that are supported today).
 
-Please refer to {{I-D.draft-pala-klaussner-composite-kofn}} for more information.
+Please refer to {{I-D.pala-klaussner-composite-kofn}} for more information.
 
 
 ### Parallel PKIs
@@ -740,7 +713,7 @@ The use of Composite Crypto provides the possibility to process multiple algorit
 backward-compatible approach where clients can simply ignore the post-quantum (or extra) keys and signatures, it also requires
 all applications to be updated for correctly processing multiple algorithms together.
 
-Please refer to {{I-D.draft-truskovsky-lamps-pq-hybrid-x509}} for more information.
+Please refer to {{I-D.truskovsky-lamps-pq-hybrid-x509}} for more information.
 
 
 <!-- End of Implementation Considerations section -->

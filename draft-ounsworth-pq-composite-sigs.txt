@@ -978,7 +978,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
    implementer MAY, in the interest of performance of compatibility,
    modify the above process to skip one or more signature validations as
    per their local client policy.  See
-   [I-D.draft-pala-klaussner-composite-kofn] for a discussion of
+   [I-D.pala-klaussner-composite-kofn] for a discussion of
    implementation and associated risks.
 
 6.  ASN.1 Module
@@ -1303,24 +1303,11 @@ Internet-Draft              PQ Composite Sigs                 March 2023
    different providers or vendors.
 
    A detailed description of a K of N validation mode that address all
-   these use-cases is described in
-   [I-D.draft-pala-klaussner-composite-kofn].
+   these use-cases is described in [I-D.pala-klaussner-composite-kofn].
 
 9.  References
 
 9.1.  Normative References
-
-   [I-D.draft-pala-klaussner-composite-kofn]
-              Pala, M. and J. Klaussner, "K-threshold Composite
-              Signatures for the Internet PKI", November 2022,
-              <https://www.ietf.org/archive/id/draft-pala-klaussner-
-              composite-kofn-00.txt>.
-
-   [I-D.draft-truskovsky-lamps-pq-hybrid-x509]
-              Truskovsky, A., Van Geest, D., and S. Fluhrer, "Multiple
-              Public-Key Algorithm X.509 Certificates", August 2018,
-              <https://www.ietf.org/archive/id/draft-pala-klaussner-
-              composite-kofn-00.txt>.
 
    [I-D.ietf-lamps-cms-sphincs-plus]
               Housley, R., Fluhrer, S., Kampanakis, P., and B.
@@ -1339,13 +1326,6 @@ Internet-Draft              PQ Composite Sigs                 March 2023
               <https://datatracker.ietf.org/doc/html/draft-ietf-lamps-
               dilithium-certificates-01>.
 
-
-
-Ounsworth, et al.       Expires 14 September 2023              [Page 24]
-
-Internet-Draft              PQ Composite Sigs                 March 2023
-
-
    [I-D.massimo-lamps-pq-sig-certificates]
               Massimo, J., Kampanakis, P., Turner, S., and B.
               Westerbaan, "Algorithms and Identifiers for Post-Quantum
@@ -1353,6 +1333,22 @@ Internet-Draft              PQ Composite Sigs                 March 2023
               massimo-lamps-pq-sig-certificates-00, 8 July 2022,
               <https://datatracker.ietf.org/doc/html/draft-massimo-
               lamps-pq-sig-certificates-00>.
+
+   [I-D.ounsworth-pq-composite-keys]
+              Ounsworth, M., Gray, J., Pala, M., and J. Klaussner,
+              "Composite Public and Private Keys For Use In Internet
+              PKI", Work in Progress, Internet-Draft, draft-ounsworth-
+
+
+
+Ounsworth, et al.       Expires 14 September 2023              [Page 24]
+
+Internet-Draft              PQ Composite Sigs                 March 2023
+
+
+              pq-composite-keys-04, 13 March 2023,
+              <https://datatracker.ietf.org/api/v1/doc/document/draft-
+              ounsworth-pq-composite-keys/>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1395,16 +1391,16 @@ Internet-Draft              PQ Composite Sigs                 March 2023
               DOI 10.17487/RFC6090, February 2011,
               <https://www.rfc-editor.org/info/rfc6090>.
 
+   [RFC7748]  Langley, A., Hamburg, M., and S. Turner, "Elliptic Curves
+              for Security", RFC 7748, DOI 10.17487/RFC7748, January
+              2016, <https://www.rfc-editor.org/info/rfc7748>.
+
 
 
 Ounsworth, et al.       Expires 14 September 2023              [Page 25]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
 
-
-   [RFC7748]  Langley, A., Hamburg, M., and S. Turner, "Elliptic Curves
-              for Security", RFC 7748, DOI 10.17487/RFC7748, January
-              2016, <https://www.rfc-editor.org/info/rfc7748>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -1453,6 +1449,10 @@ Internet-Draft              PQ Composite Sigs                 March 2023
 
 
 
+
+
+
+
 Ounsworth, et al.       Expires 14 September 2023              [Page 26]
 
 Internet-Draft              PQ Composite Sigs                 March 2023
@@ -1465,24 +1465,26 @@ Internet-Draft              PQ Composite Sigs                 March 2023
               <https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-
               composite-kem-00>.
 
-   [I-D.ounsworth-pq-composite-keys]
-              Ounsworth, M. and M. Pala, "Composite Public and Private
-              Keys For Use In Internet PKI", Work in Progress, Internet-
-              Draft, draft-ounsworth-pq-composite-keys-00, 12 July 2021,
-              <https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-
-              composite-keys-00>.
+   [I-D.pala-klaussner-composite-kofn]
+              Pala, M. and J. Klaußner, "K-threshold Composite
+              Signatures for the Internet PKI", Work in Progress,
+              Internet-Draft, draft-pala-klaussner-composite-kofn-00, 15
+              November 2022, <https://datatracker.ietf.org/doc/html/
+              draft-pala-klaussner-composite-kofn-00>.
+
+   [I-D.truskovsky-lamps-pq-hybrid-x509]
+              Truskovsky, A., Van Geest, D., Fluhrer, S., Kampanakis,
+              P., Ounsworth, M., and S. Mister, "Multiple Public-Key
+              Algorithm X.509 Certificates", Work in Progress, Internet-
+              Draft, draft-truskovsky-lamps-pq-hybrid-x509-01, 29 August
+              2018, <https://datatracker.ietf.org/doc/html/draft-
+              truskovsky-lamps-pq-hybrid-x509-01>.
 
    [RFC3279]  Bassham, L., Polk, W., and R. Housley, "Algorithms and
               Identifiers for the Internet X.509 Public Key
               Infrastructure Certificate and Certificate Revocation List
               (CRL) Profile", RFC 3279, DOI 10.17487/RFC3279, April
               2002, <https://www.rfc-editor.org/info/rfc3279>.
-
-   [RFC5990]  Randall, J., Kaliski, B., Brainard, J., and S. Turner,
-              "Use of the RSA-KEM Key Transport Algorithm in the
-              Cryptographic Message Syntax (CMS)", RFC 5990,
-              DOI 10.17487/RFC5990, September 2010,
-              <https://www.rfc-editor.org/info/rfc5990>.
 
    [RFC7296]  Kaufman, C., Hoffman, P., Nir, Y., Eronen, P., and T.
               Kivinen, "Internet Key Exchange Protocol Version 2
@@ -1502,8 +1504,6 @@ Internet-Draft              PQ Composite Sigs                 March 2023
               Multipurpose Internet Mail Extensions (S/MIME) Version 4.0
               Message Specification", RFC 8551, DOI 10.17487/RFC8551,
               April 2019, <https://www.rfc-editor.org/info/rfc8551>.
-
-
 
 
 
@@ -1638,7 +1638,7 @@ Internet-Draft              PQ Composite Sigs                 March 2023
    from the individual cryptographic algorithms that are supported
    today).
 
-   Please refer to [I-D.draft-pala-klaussner-composite-kofn] for more
+   Please refer to [I-D.pala-klaussner-composite-kofn] for more
    information.
 
 C.1.2.  Parallel PKIs
@@ -1705,7 +1705,7 @@ C.1.3.  Hybrid Extensions (Keys and Signatures)
    applications to be updated for correctly processing multiple
    algorithms together.
 
-   Please refer to [I-D.draft-truskovsky-lamps-pq-hybrid-x509] for more
+   Please refer to [I-D.truskovsky-lamps-pq-hybrid-x509] for more
    information.
 
 Appendix D.  Intellectual Property Considerations
