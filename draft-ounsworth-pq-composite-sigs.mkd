@@ -45,6 +45,11 @@ author:
       name: Massimiliano Pala
       org: CableLabs
       email: director@openca.org
+      abbrev: CableLabs
+      street: 858 Coal Creek Circle
+      city: Louisville, Colorado
+      country: United States of America
+      code: 80027  
       
   
 normative:
@@ -63,6 +68,21 @@ normative:
   I-D.draft-massimo-lamps-pq-sig-certificates-00:
   I-D.draft-ietf-lamps-dilithium-certificates-01:
   I-D.draft-ietf-lamps-cms-sphincs-plus-01:
+  I-D.draft-truskovsky-lamps-pq-hybrid-x509:
+    target: https://www.ietf.org/archive/id/draft-pala-klaussner-composite-kofn-00.txt
+    title: Multiple Public-Key Algorithm X.509 Certificates
+    date: August 2018
+    author:
+      - 
+        ins: A. Truskovsky
+        name: Alexander Truskovsky
+      - 
+        ins: D. Van Geest
+        name: Daniel Van Geest
+      - 
+        ins: S. Fluhrer
+        name: Scott Fluhrer
+    
   X.690:
       title: "Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)"
       date: November 2015
@@ -70,6 +90,19 @@ normative:
         org: ITU-T
       seriesinfo:
         ISO/IEC: 8825-1:2015
+  I-D.draft-pala-klaussner-composite-kofn:
+    target: https://www.ietf.org/archive/id/draft-pala-klaussner-composite-kofn-00.txt
+    title: K-threshold Composite Signatures for the Internet PKI
+    date: November 2022
+    author:
+      -
+        ins: M. Pala
+        name: Massimiliano Pala
+        org: CableLabs
+      -
+        ins: J. Klaußner
+        name: Jan Klaussner
+        org: D-Trust GmbH      
 
 
 # <!-- EDNOTE: full syntax for this defined here: https://github.com/cabo/kramdown-rfc2629 -->
@@ -123,6 +156,9 @@ This document is intended to be coupled with corresponding documents that define
 # Changes in version -08
 
 - explicit composite combinations defined and ASN.1 module updated
+- Added new OIDs and considerations for the hash-then-sign paradigm for generic composite signatures
+- Removed the OR modes of operation and replaced with K-of-N I-D reference
+- Added considerations for external hashing
 
 
 # Introduction {#sec-intro}
@@ -132,8 +168,8 @@ During the transition to post-quantum cryptography, there will be uncertainty as
 
 The deployment of composite signatures using post-quantum algorithms will face two challenges
 
-- Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
-- Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
+- *Algorithm strength* uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
+- *Backwards compatibility*: During the transition period, post-quantum algorithms will not be supported by all clients.
 
 This document provides a mechanism to address algorithm strength uncertainty concerns by building on {{I-D.ounsworth-pq-composite-keys}} by providing formats for encoding multiple signature values into existing public signature fields, as well as the process for validating a composite signature. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in {{I-D.becker-guthrie-noncomposite-hybrid-auth}}.
 
@@ -303,7 +339,6 @@ The signature's CompositeSignatureParams sequence MUST contain the same componen
 For explicit algorithms, it is not strictly necessary to carry a CompositeSignatureParams with the list of component algorithms in the signature algorithm parameters because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSASSA-PSS-params as defined in [RFC8017]. {{sec-composite-sig-structs}} defines `PARAMS ANY DEFINED BY ALGORITHM` so that explicit algorithms may define params as ABSENT, or use `CompositeSignatureParams` as defined in ASN.1 module.  For generic compsite algorithms, CompositeSignatureParams MUST be included. 
 
 
-
 ## Encoding Rules {#sec-encoding-rules}
 <!-- EDNOTE 7: Examples of how other specifications specify how a data structure is converted to a bit string can be found in RFC 2313, section 10.1.4, 3279 section 2.3.5, and RFC 4055, section 3.2. -->
 
@@ -337,7 +372,7 @@ replace &lt;SPHINCS&gt; with the String "SPHINCSplusSHA256128sSimple"
 
 Signature public key types:
 
-| Composite Key and Signature AlgorithmID | OID | First Algorithm | Second Algorithm | 
+| Composite Signature AlgorithmID | OID | First Algorithm | Second Algorithm | 
 | ----------- | ----------- | ----------- |  ----------- | 
 | id-Dilithium3-RSA-PSS                      | &lt;CompSig&gt;.14 | Dilithium3 | SHA256WithRSAPSS | 
 | id-Dilithium3-RSA-PKCS15-SHA256            | &lt;CompSig&gt;.1  | Dilithium3 | SHA256WithRSAEncryption |
@@ -353,7 +388,10 @@ Signature public key types:
 | id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256  | &lt;CompSig&gt;.11| &lt;SPHINCS&gt; | SHA256withECDSA | 
 | id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.12 | &lt;SPHINCS&gt; | SHA256withECDSA | 
 | id-SPHINCSplusSHA256128sSimple-Ed25519               | &lt;CompSig&gt;.13 | &lt;SPHINCS&gt; | Ed25519 |
-| id-composite-sig                                     | 1.3.6.1.4.1.18227.2.1 | Any | Any |
+| id-SPHINCSplusSHA256128sSimple-Ed25519               | &lt;CompSig&gt;.13 | &lt;SPHINCS&gt; | Ed25519 |
+| id-alg-composite | 1.3.6.1.4.1.18227.2.1  | Any |  Any |
+| id-alg-composite-sha256 | 1.3.6.1.4.1.18227.2.1.2  | Any |  Any |
+| id-alg-composite-sha512 | 1.3.6.1.4.1.18227.2.1.4  | Any |  Any |
 {: #tab-composite-sigs title="Explicit Composite Signature Algorithms"}
 
 The table above contains everything needed to implement the listed explicit composite algorithms. See the ASN.1 module in section {{sec-asn1-module}} for the explicit definitions of the above Composite signature algorithms.   
@@ -368,7 +406,7 @@ Full specifications for the referenced algorithms can be found as follows:
 * _RSAES-PKCS-v1_5_: [RFC8017]
 * _RSASSA-PSS_: [RFC8017]
 * _SPHICNCSplus_: {{I-D.ietf-lamps-cms-sphincs-plus}}
-* id-composite-sigs: {{I-D.ounsworth-pq-composite-keys}}
+* id-alg-composite: {{I-D.ounsworth-pq-composite-keys}}
 
 
 
@@ -395,13 +433,65 @@ EDNOTE: We probably should pick concrete crypto for the `RSASSA-PSS-params`. Onc
 TODO: there must be a way to put all this the ASN.1 Module rather than just specifying it as text?
 
 
-## Notes on Generic Composite {#sec-generic-composite-kem}
+## Notes on Generic Composite {#sec-generic-composite}
 
-The `id-alg-composite-kem-SHAKE128` and `id-alg-composite-kem-SHAKE256` object identifiers are used for identifying a generic composite KEM algorithm. This allows arbitrary combinations of component key transport, key agreement and KEM algorithms without needing the combination to be pre-registered or standardized. Thes generic KEM composite algorithms use SHAKE128 and SHAKE256-based KEM combiners and so are intended for use with component KEM algorithms that target the 128 bit or 256 bit security levels respectively.
+This draft remains backwards compatible with the previous version of composite signatures.   Explicit Composite keys are a rigid subset of generic composite keys.  In previous versions, the composite signature algorihtm Identifier and the composite key identifier used different Object Identifiers.  The generic composite signature algorithm identifier is:
 
-When the `id-alg-composite-kem-SHAKE128` or `id-alg-composite-kem-SHAKE256` object identifiers are used with an `AlgorithmIdentifier`, the `AlgorithmIdentifier.parameters` MUST be of type `CompositeKemParams` containing an `AlgorithmIdentifier for each component algorithm in the same order as the ciphertexts appear in the corresponding `CompositeCiphertextValue`.
+~~~ asn.1
+id-alg-composite OBJECT IDENTIFIER ::= {
+    iso(1)  identified-organization(3) dod(6) internet(1) private(4)
+    enterprise(1) opencA(18227) algorithms(2) id-alg-composite(1) }
+~~~
+{: artwork-name="GenericCompositeSignature-OID"}         
 
 
+As defined in {{I-D.ounsworth-pq-composite-keys}}, a generic composite key uses the following identifier:
+
+~~~ asn.1
+id-composite-key OBJECT IDENTIFIER ::= {
+    joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+    algorithm(80) composite(4) compositekey(1) }
+~~~
+{: artwork-name="GenericCompositeKey-OID"}         
+
+See the ASN.1 module in section {{sec-asn1-module}} for the definitions of Generic Composite algorithms
+
+
+### Pre-Hashed Generic Composite Signatures {#sec-composite-prehash}
+
+The id-alg-composite-sha256 and id-alg-composite-sha512 object identifiers are used for identifying a pre-hashed generic composite signature that uses SHA-256 or SHA-512. These algorithms allow arbitrary combinations of component signature algorithms to be used in the CompositeSignatureValue and CompositeSignatureParams structures without needing the combination to be pre-registered or standardized.
+
+When the id-alg-composite-sha256 and id-alg-composite-sha512 are used, the signature is calculated over the digest of the message rather than the message itself. This mode can be used to generate signatures with any type of key (i.e., classic, post-quantum, or post-post-quantum, etc...) by signing the SHA256 or SHA512 value calculated over the message.
+
+This identifier MAY be used in sa-CompositeSignature.identifier.
+
+~~~ asn.1
+id-alg-composite-sha256 OBJECT IDENTIFIER ::= {
+    iso(1)  identified-organization(3) dod(6) internet(1) private(4)
+    enterprise(1) openCA(18227) algorithms(2) id-alg-composite(1)
+    id-alg-composite-sha256(2) }
+~~~
+EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see {{sec-iana}}.
+
+
+~~~ asn.1
+id-alg-composite-sha512 OBJECT IDENTIFIER ::= {
+    iso(1)  identified-organization(3) dod(6) internet(1) private(4)
+    enterprise(1) openCA(18227) algorithms(2) id-alg-composite(1)
+    id-alg-composite-sha512(4) } 
+~~~    
+EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see {{sec-iana}}.
+
+
+The following algorithm parameters MUST be included:
+
+~~~ asn.1
+CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF  
+     AlgorithmIdentifier{SIGNATURE-ALGORITHM, {SignatureAlgSet}}
+~~~
+{: artwork-name="CompositeSignatureParams-asn.1-structures"}
+
+The signature's CompositeSignatureParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.
 
 
 # Composite Signature Processes {#sec-composite-signature-algorithm}
@@ -449,7 +539,7 @@ Note on composite inputs: the method of providing the list of component keys and
 
 Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite or an explicit composite OID.
 
-A composite signature MUST produce, and include in the output, a signature value for every component key in  and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2, etc. The authors recognize that there may be valid use cases for "subset signature generation"; see {{sec-subset-sig-gen}} for further discussion of security implications, and {{sec-backwards-compat}} for further discussion of backwards compatibility implications.
+A composite signature MUST produce, and include in the output, a signature value for every component key in  and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2, etc. 
 
 For security when using a generic composite signature algorithm, the list of component signature algorithms A1, A2, .., An, which may be carried in a CompositeSignatureParams object, SHOULD be included in the signed message M to prevent an attacker from substituting a weaker algorithm which is compatible with the same public key. This attack is not unique or new to the composite format.
 
@@ -508,10 +598,7 @@ Note on composite inputs: the method of providing the list of component keys, al
 
 Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with OID id-alg-composite or an explicit composite OID.
 
-Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementer MAY, in the interest of performance of compatibility, modify the above process to skip one or more signature validations as per their local client policy. See {{sec-cons-OR-modes}} for a discussion of associated risks.
-
-In the absence of such a policy mechanism that can be easily updated to reflect new cryptanalytic breakthroughs, clients MUST perform signature verifications in the AND mode defined here. See {{sec-subset-sig-gen}} for further discussion of security implications of subset signature verifications, and {{sec-backwards-compat}} for further discussion of backwards compatibility implications.
-
+Some verification clients may include a policy mechanism for specifying acceptable subsets of algorithms. In these cases, implementer MAY, in the interest of performance of compatibility, modify the above process to skip one or more signature validations as per their local client policy. See {{I-D.draft-pala-klaussner-composite-kofn}} for a discussion of implementation and associated risks.
 
 <!-- End of Composite Signature Algorithm section -->
 
@@ -563,31 +650,12 @@ Specifying a modified verification algorithm to handle these situations is beyon
      output "Invalid signature"
 ~~~
 
+## K-of-N Validation Mode {#sec-subset-sig-verif}
+This document defines a composite signature verification process in {{sec-comp-sig-verify}} where the verifier verifies all component signatures and fails if any component fails. 
 
-## OR Modes {#sec-cons-OR-modes}
+The authors recognize that there will be scenarios where the verifier considers a single component algorithm -- or subset of component algorithms -- to provide sufficient security, and therefore for performance, or other practical reasons, wishes to skip the verification of one or more component signatures. For example, it might be the case where the signer (whether it be a CA or an end entity) needs to be able to specify how its signatures are to be interpreted and verified. Another use-case is where one of the composite algorithms' implementation might not be stable yet, possibly causing signature validation or generation issues across different providers or vendors. 
 
-### Subset Signature Generation {#sec-subset-sig-gen}
-
-This document defines a composite signature generation process in {{sec-comp-sig-gen}} where the signer MUST produce a signature value with each of their component private keys, this providing full protection of the content under all available component algorithms. 
-
-The authors recognize that there may be cases where a client may wish to generate a composite signature that only uses a subset of the available component algorithms, for example to save bandwidth, or because a client has been issued a key for which it does not (yet) have implementations of all component algorithms. This could be easily encoded by placing a NULL value into the corresponding field of the CompositeSignatureValue. However, this mode was intentionally omitted from this specification as it trivially allows for stripping attacks where an attacker replaces a valid component signature value with NULL, thus reducing the security of the composite signature to the weakest of the available component algorithms.
-
-Implementer who wish to perform subset signature generations are advised to couple it with an out-of-band policy mechanism that limits the potential for stripping attacks. Note that, in an effort to keep compliant implementations simple and secure, implementations claiming to be compliant with this draft MUST NOT generate subset signatures in this way, and MUST reject during verification any subset signatures that they encounter.
-
-
-### Subset Signature Verification {#sec-subset-sig-verif}
-
-This document defines a composite signature verification process in {{sec-comp-sig-verify}} where the verifier verifies all component signatures and fails if any component fails. The authors recognize that there will be scenarios where the verifier considers a single component algorithm -- or subset of component algorithms -- to provide sufficient security, and therefore for performance reasons wishes to skip the verification of one or more component signatures.
-
--- harmonize this with Serge's blurb --
-
-Implementers who wish to perform subset signature verifications are advised to couple it with an out-of-band policy mechanism that can control the list of acceptable algorithm combinations, and keep this list up to date as new cryptanalytic advances are made.
-
-Risks:
-
-- Failing to update client verification policy in response to advances in cryptanalysis
-- Verifications of a subset of signatures leads to ambiguity in the security strength of the signature verification; ie if a message carries two signatures, one at 128 bits and the other at 112 bits of security and clients are verifying in an OR mode with flexible policy, then it becomes difficult to audit the security strength used at runtime.
-- Moreover, verifying multiple algorithms provides security even in the event that one of the algorithms has already been broken, but knowledge of the break has not been made public yet.
+A detailed description of a K of N validation mode that address all these use-cases is described in {{I-D.draft-pala-klaussner-composite-kofn}}.
 
 <!-- End of Security Considerations section -->
 
@@ -647,10 +715,13 @@ The term "ease of migration" is used here to mean that existing systems can be g
 
 These migration and interoperability concerns need to be thought about in the context of various types of protocols that make use of X.509 and PKIX with relation to digital signature objects, from online negotiated protocols such as TLS 1.3 [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous protocols such as S/MIME signed email [RFC8551], document signing such as in the context of the European eIDAS regulations [eIDAS2014], and publicly trusted code signing [codeSigningBRsv2.8], as well as myriad other standardized and proprietary protocols and applications that leverage CMS [RFC5652] signed structures.
 
+### Composite K-of-N (OR modes)
 
-### OR modes
+{{sec-comp-sig-gen}} and {{sec-comp-sig-verify}} make reference to subset signature generation and verification modes to achieve an OR relation between component signatures, where senders and / or receivers are permitted to ignore some component keys.  Some envisioned uses of this include environments where the client encounters a component signature algorithm for which it does not posses a compatible implementation but wishes to proceed with the signature verification using the subset of component signatures for which it does have compatible implementations. Such a mechanism could be designed to provide ease of migration by allowing for composite keys to be distributed and used before all clients in the environment are fully upgraded. 
 
-{{sec-comp-sig-gen}} and {{sec-comp-sig-verify}} make reference to subset signature generation and verification modes to achieve an OR relation between component signatures, where senders and / or receivers are permitted to ignore some component keys. Some envisioned uses of this include environments where the client encounters a component signature algorithm for which it does not posses a compatible implementation but wishes to proceed with the signature verification using the subset of component signatures for which it does have compatible implementations. Such a mechanism could be designed to provide ease of migration by allowing for composite keys to be distributed and used before all clients in the environment are fully upgraded, but it does not allow for full backwards compatibility since clients would at least need to be upgraded from their current state to be able to parse the composite structures.
+It is important to notice that although Composite Crypto does not allow for full backwards compatibility (since clients would at least need to be upgraded from their current state to be able to parse the composite structures), upgrading today's systems to be able to handle composite keys and signatures will also provide the tool for the next generation of migration. In other words, the work to support Composite Crypto will also provide crypto agility options for subsequent crypto-migration in a truly crypto-agile fashion (i.e., entities will always able to process composite signatures independent from the individual cryptographic algorithms that are supported today).
+
+Please refer to {{I-D.draft-pala-klaussner-composite-kofn}} for more information.
 
 
 ### Parallel PKIs
@@ -663,18 +734,13 @@ For negotiated protocols, the client could choose which public key(s) or certifi
 
 For non-negotiated protocols, the details for obtaining backwards compatibility will vary by protocol, but for example in CMS [RFC5652], the inclusion of multiple SignerInfo objects is often already treated as an OR relationship, so including one for each of the signer's parallel PKI public keys would, in many cases, have the desired effect of allowing the receiver to choose one they are compatible with and ignore the others, thus achieving full backwards compatibility.
 
+### Hybrid Extensions (Keys and Signatures)
+The use of Composite Crypto provides the possibility to process multiple algorithms without changing the logic of applications, but updating the cryptographic libraries: one-time change across the whole system. However, when it is not possible to upgrade the crypto engines/libraries, it is possible to leverage X.509 extensions to encode the additional keys and signatures. When the custom extensions are not marked critical, although this approach provides the most
+backward-compatible approach where clients can simply ignore the post-quantum (or extra) keys and signatures, it also requires
+all applications to be updated for correctly processing multiple algorithms together.
 
-## External signatures
+Please refer to {{I-D.draft-truskovsky-lamps-pq-hybrid-x509}} for more information.
 
-EDNOTE: This section probably does not belong in this draft. It probably belongs instead in the core Dilithium / Falcon specs such as {{I-D.massimo-lamps-pq-sig-certificates}}.
-
-In many contexts, a signature or a verification operation is performed inside a cryptographic module where it is desirable to provide a message digest to the cryptographic module rather than streaming the entire message (which in some cases can be very large). 
-
-This means that composite signature implementations MUST NOT perform a single message digest operation and then provide that digest value to all component algorithms.
-
-That said, the first step of both the Dilithium and Falcon algoritms is a keyed hash of the message. This section considers modifications to the Dilithium and Falcon algorithms where the first hashing step is performed externally to the cryptographic module.
-
-That said, for use-cases where pre-hashing of messages for Dilithium or Falcon signatures is required for bandwidth or resource contraints, external hashing should be considered. Depending on the algorithm chosen additional contraints on the format of the external hashing may be required to meet the security requirements of the algorithm. The following subsections provide specific instructions for externalizing the message digest step of the Dilithium and Falcon Sign() and Verify() operations.
 
 <!-- End of Implementation Considerations section -->
 

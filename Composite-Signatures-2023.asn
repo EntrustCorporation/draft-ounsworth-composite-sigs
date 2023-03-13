@@ -171,9 +171,33 @@ sa-SPHINCSplusSHA256128sSimple-Ed25519 SIGNATURE-ALGORITHM ::=
 id-alg-composite OBJECT IDENTIFIER ::= {
   iso(1)  identified-organization(3) dod(6) internet(1) private(4)
   enterprise(1) opencA(18227) algorithms(2) id-alg-composite(1) }
+  
+id-alg-composite-sha256 OBJECT IDENTIFIER ::= {
+    iso(1)  identified-organization(3) dod(6) internet(1) private(4)
+    enterprise(1) openCA(18227) algorithms(2) id-alg-composite(1)
+    id-alg-composite-sha256(2) }
+      
+id-alg-composite-sha512 OBJECT IDENTIFIER ::= {
+    iso(1)  identified-organization(3) dod(6) internet(1) private(4)
+    enterprise(1) openCA(18227) algorithms(2) id-alg-composite(1)
+    id-alg-composite-sha512(4) } 
 
 sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
     IDENTIFIER id-alg-composite
+    VALUE CompositeSignatureValue
+    PARAMS TYPE CompositeSignatureParams ARE required
+    PUBLIC-KEYS { pk-Composite }
+ }
+ 
+sa-CompositeSignature-SHA256 SIGNATURE-ALGORITHM ::= {
+    IDENTIFIER id-alg-composite-sha256
+    VALUE CompositeSignatureValue
+    PARAMS TYPE CompositeSignatureParams ARE required
+    PUBLIC-KEYS { pk-Composite }
+ }
+ 
+sa-CompositeSignature-SHA512 SIGNATURE-ALGORITHM ::= {
+    IDENTIFIER id-alg-composite-sha512
     VALUE CompositeSignatureValue
     PARAMS TYPE CompositeSignatureParams ARE required
     PUBLIC-KEYS { pk-Composite }
