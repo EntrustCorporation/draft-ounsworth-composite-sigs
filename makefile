@@ -6,17 +6,17 @@ default: all
 
 txt: $(docName).txt
 
-draft-ounsworth-pq-composite-sigs.txt: $(docName).mkd
-	kdrfc $(docName).mkd
+draft-ounsworth-pq-composite-sigs.txt: $(docName).md
+	kdrfc $(docName).md
 
 
 
 xml: $(docName).xml
 
-draft-ounsworth-pq-composite-sigs.xml: $(docName).mkd
-	./insertFileIncludes.sh $(docName).mkd "." > $(docName)_tmp.mkd
-	kramdown-rfc2629 $(docName)_tmp.mkd > $(docName).xml
-	rm $(docName)_tmp.mkd
+draft-ounsworth-pq-composite-sigs.xml: $(docName).md
+	./insertFileIncludes.sh $(docName).md "." > $(docName)_tmp.md
+	kramdown-rfc2629 $(docName)_tmp.md > $(docName).xml
+	rm $(docName)_tmp.md
 
 
 
