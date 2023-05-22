@@ -5,9 +5,9 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
 Intended status: Standards Track                                 Entrust
-Expires: 5 November 2023                                         M. Pala
+Expires: 23 November 2023                                        M. Pala
                                                                CableLabs
-                                                              4 May 2023
+                                                             22 May 2023
 
 
               Composite Signatures For Use In Internet PKI
@@ -53,7 +53,7 @@ Abstract
 
 
 
-Ounsworth, et al.        Expires 5 November 2023                [Page 1]
+Ounsworth, et al.       Expires 23 November 2023                [Page 1]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -73,7 +73,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 November 2023.
+   This Internet-Draft will expire on 23 November 2023.
 
 Copyright Notice
 
@@ -99,48 +99,50 @@ Table of Contents
      3.1.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   6
        3.1.1.  Key Usage Bits  . . . . . . . . . . . . . . . . . . .   6
      3.2.  sa-CompositeSignature . . . . . . . . . . . . . . . . . .   7
-     3.3.  CompositeSignatureValue . . . . . . . . . . . . . . . . .   7
+     3.3.  CompositeSignatureValue . . . . . . . . . . . . . . . . .   8
      3.4.  CompositeSignatureParameters  . . . . . . . . . . . . . .   8
-     3.5.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   8
+     3.5.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   9
    4.  Algorithm Identifiers . . . . . . . . . . . . . . . . . . . .   9
-     4.1.  Notes on id-Dilithium3-RSA-PSS  . . . . . . . . . . . . .  11
-   5.  Composite Signature Processes . . . . . . . . . . . . . . . .  11
-     5.1.  Composite Signature Generation Process  . . . . . . . . .  12
+     4.1.  Notes on id-Dilithium3-RSA-PSS  . . . . . . . . . . . . .  12
+   5.  Composite Signature Processes . . . . . . . . . . . . . . . .  12
+     5.1.  Composite Signature Generation Process  . . . . . . . . .  13
 
 
 
-Ounsworth, et al.        Expires 5 November 2023                [Page 2]
+Ounsworth, et al.       Expires 23 November 2023                [Page 2]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
 
-     5.2.  Composite Signature Verification Process  . . . . . . . .  13
-   6.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . . . .  15
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  19
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  19
-     8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  19
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  19
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  22
-   Appendix A.  Work in Progress . . . . . . . . . . . . . . . . . .  23
-     A.1.  Combiner modes (KofN) . . . . . . . . . . . . . . . . . .  23
-   Appendix B.  Samples  . . . . . . . . . . . . . . . . . . . . . .  23
-     B.1.  Explicit Composite Signature Examples . . . . . . . . . .  23
-   Appendix C.  Implementation Considerations  . . . . . . . . . . .  24
-     C.1.  Backwards Compatibility . . . . . . . . . . . . . . . . .  24
-       C.1.1.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  24
-       C.1.2.  Hybrid Extensions (Keys and Signatures) . . . . . . .  25
-   Appendix D.  Intellectual Property Considerations . . . . . . . .  25
-   Appendix E.  Contributors and Acknowledgements  . . . . . . . . .  25
-     E.1.  Making contributions  . . . . . . . . . . . . . . . . . .  26
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  26
+     5.2.  Composite Signature Verification Process  . . . . . . . .  14
+   6.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . . . .  16
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  20
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  20
+     8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  20
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  23
+   Appendix A.  Work in Progress . . . . . . . . . . . . . . . . . .  24
+     A.1.  Combiner modes (KofN) . . . . . . . . . . . . . . . . . .  24
+   Appendix B.  Samples  . . . . . . . . . . . . . . . . . . . . . .  24
+     B.1.  Explicit Composite Signature Examples . . . . . . . . . .  24
+   Appendix C.  Implementation Considerations  . . . . . . . . . . .  25
+     C.1.  Backwards Compatibility . . . . . . . . . . . . . . . . .  25
+       C.1.1.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  25
+       C.1.2.  Hybrid Extensions (Keys and Signatures) . . . . . . .  26
+   Appendix D.  Intellectual Property Considerations . . . . . . . .  26
+   Appendix E.  Contributors and Acknowledgements  . . . . . . . . .  26
+     E.1.  Making contributions  . . . . . . . . . . . . . . . . . .  27
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  27
 
 1.  Changes in version -09
 
-   *  removed all references to generic composite
+   *  Removed SPHINCS+ hybrids.
+
+   *  Removed all references to generic composite.
 
    *  Added selection criteria note about requesting new explicit
-      combinations
+      combinations.
 
 2.  Introduction
 
@@ -159,17 +161,18 @@ Internet-Draft              PQ Composite Sigs                   May 2023
    The deployment of composite signatures using post-quantum algorithms
    will face two challenges
 
-   *  _Algorithm strength_ uncertainty: During the transition period,
-      some post-quantum signature and encryption algorithms will not be
-      fully trusted, while also the trust in legacy public key
 
 
 
-Ounsworth, et al.        Expires 5 November 2023                [Page 3]
+
+Ounsworth, et al.       Expires 23 November 2023                [Page 3]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
 
+   *  _Algorithm strength_ uncertainty: During the transition period,
+      some post-quantum signature and encryption algorithms will not be
+      fully trusted, while also the trust in legacy public key
       algorithms will start to erode.  A relying party may learn some
       time after deployment that a public key algorithm has become
       untrustworthy, but in the interim, they may not know which
@@ -207,24 +210,32 @@ Internet-Draft              PQ Composite Sigs                   May 2023
        algorithms, and also selecting elliptic curves which already have
        wide adoption.
 
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth, et al.       Expires 23 November 2023                [Page 4]
+
+Internet-Draft              PQ Composite Sigs                   May 2023
+
+
    3.  NIST level 1 candidates (Falcon512 and Kyber512) are provided,
        matched with 256-bit elliptic curves, intended for constrained
        use cases.  The authors wish to note that although all the
-       composite structures defined in this and the companion composite
-       keys [I-D.ounsworth-pq-composite-keys] and composite KEM
+       composite structures defined in this and the companion documents
+       [I-D.ounsworth-pq-composite-keys] and
        [I-D.ounsworth-pq-composite-kem] specifications are defined in
        such a way as to easily allow 3 or more component algorithms, it
        was decided to only specify explicit pairs.  This also does not
        preclude future specification of explicit combinations with three
        or more components.
-
-
-
-
-Ounsworth, et al.        Expires 5 November 2023                [Page 4]
-
-Internet-Draft              PQ Composite Sigs                   May 2023
-
 
    To maximize interoperability, use of the specific algorithm
    combinations specified in this document is encouraged.  If other
@@ -261,6 +272,16 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
    DER: Distinguished Encoding Rules as defined in [X.690].
 
+
+
+
+
+
+Ounsworth, et al.       Expires 23 November 2023                [Page 5]
+
+Internet-Draft              PQ Composite Sigs                   May 2023
+
+
    LEGACY: For the purposes of this document, a legacy algorithm is any
    cryptographic algorithm currently is use which is not believe to be
    resistant to quantum cryptanalysis.
@@ -273,14 +294,6 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
    PUBLIC / PRIVATE KEY: The public and private portion of an asymmetric
    cryptographic key, making no assumptions about which algorithm.
-
-
-
-
-Ounsworth, et al.        Expires 5 November 2023                [Page 5]
-
-Internet-Draft              PQ Composite Sigs                   May 2023
-
 
    SIGNATURE: A digital cryptographic signature, making no assumptions
    about which algorithm.
@@ -317,6 +330,14 @@ Internet-Draft              PQ Composite Sigs                   May 2023
    with the public key, then the composite public key associated with a
    composite signature MUST have a signing-type key usage.
 
+
+
+
+Ounsworth, et al.       Expires 23 November 2023                [Page 6]
+
+Internet-Draft              PQ Composite Sigs                   May 2023
+
+
    If the keyUsage extension is present in a Certification Authority
    (CA) certificate that indicates a composite key, then any combination
    of the following values MAY be present:
@@ -329,14 +350,6 @@ Internet-Draft              PQ Composite Sigs                   May 2023
    If the keyUsage extension is present in an End Entity (EE)
    certificate that indicates a composite key, then any combination of
    the following values MAY be present:
-
-
-
-
-Ounsworth, et al.        Expires 5 November 2023                [Page 6]
-
-Internet-Draft              PQ Composite Sigs                   May 2023
-
 
    digitalSignature; and
    nonRepudiation;
@@ -354,6 +367,32 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
    The following is an explanation how SIGNATURE-ALGORITHM elements are
    used to create Composite Signatures:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth, et al.       Expires 23 November 2023                [Page 7]
+
+Internet-Draft              PQ Composite Sigs                   May 2023
+
 
    +=====================+=============================================+
    | SIGNATURE-ALGORITHM | Definition                                  |
@@ -384,16 +423,6 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
    CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
 
-
-
-
-
-
-Ounsworth, et al.        Expires 5 November 2023                [Page 7]
-
-Internet-Draft              PQ Composite Sigs                   May 2023
-
-
    Where each BIT STRING within the SEQUENCE is a signature value
    produced by one of the component keys.  It MUST contain one signature
    value produced by each component algorithm, and in the same order as
@@ -413,6 +442,13 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
    Composite signature parameters are defined as follows and MAY be used
    when a composite signature is used with an AlgorithmIdentifier:
+
+
+
+Ounsworth, et al.       Expires 23 November 2023                [Page 8]
+
+Internet-Draft              PQ Composite Sigs                   May 2023
+
 
    CompositeSignatureParams ::= SEQUENCE SIZE (2..MAX) OF
         AlgorithmIdentifier{SIGNATURE-ALGORITHM, {SignatureAlgSet}}
@@ -439,17 +475,6 @@ Internet-Draft              PQ Composite Sigs                   May 2023
    When an octet string is required, the DER encoding of the composite
    data structure SHALL be used directly.
 
-
-
-
-
-
-
-Ounsworth, et al.        Expires 5 November 2023                [Page 8]
-
-Internet-Draft              PQ Composite Sigs                   May 2023
-
-
    When a bit string is required, the octets of the DER encoded
    composite data structure SHALL be used as the bits of the bit string,
    with the most significant bit of the first octet becoming the first
@@ -469,6 +494,17 @@ Internet-Draft              PQ Composite Sigs                   May 2023
    ounsworth-pq-composite-keys}.  A proper implementation should not
    presume that the object ID of a composite key will be the same as its
    composite signature algorithm.
+
+
+
+
+
+
+
+Ounsworth, et al.       Expires 23 November 2023                [Page 9]
+
+Internet-Draft              PQ Composite Sigs                   May 2023
+
 
    This section is not intended to be exhaustive and other authors may
    define others composite signature algorithms so long as they are
@@ -501,7 +537,27 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.        Expires 5 November 2023                [Page 9]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth, et al.       Expires 23 November 2023               [Page 10]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -557,7 +613,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 10]
+Ounsworth, et al.       Expires 23 November 2023               [Page 11]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -613,7 +669,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 11]
+Ounsworth, et al.       Expires 23 November 2023               [Page 12]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -669,7 +725,7 @@ Signature Generation Process:
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 12]
+Ounsworth, et al.       Expires 23 November 2023               [Page 13]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -725,7 +781,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 13]
+Ounsworth, et al.       Expires 23 November 2023               [Page 14]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -781,7 +837,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 14]
+Ounsworth, et al.       Expires 23 November 2023               [Page 15]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -837,7 +893,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 15]
+Ounsworth, et al.       Expires 23 November 2023               [Page 16]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -893,7 +949,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 16]
+Ounsworth, et al.       Expires 23 November 2023               [Page 17]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -949,7 +1005,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 17]
+Ounsworth, et al.       Expires 23 November 2023               [Page 18]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -1005,7 +1061,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 18]
+Ounsworth, et al.       Expires 23 November 2023               [Page 19]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -1061,7 +1117,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 19]
+Ounsworth, et al.       Expires 23 November 2023               [Page 20]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -1117,7 +1173,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 20]
+Ounsworth, et al.       Expires 23 November 2023               [Page 21]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -1173,7 +1229,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 21]
+Ounsworth, et al.       Expires 23 November 2023               [Page 22]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -1229,7 +1285,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 22]
+Ounsworth, et al.       Expires 23 November 2023               [Page 23]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -1285,7 +1341,7 @@ B.1.  Explicit Composite Signature Examples
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 23]
+Ounsworth, et al.       Expires 23 November 2023               [Page 24]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -1341,7 +1397,7 @@ C.1.1.  Parallel PKIs
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 24]
+Ounsworth, et al.       Expires 23 November 2023               [Page 25]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -1397,7 +1453,7 @@ Appendix E.  Contributors and Acknowledgements
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 25]
+Ounsworth, et al.       Expires 23 November 2023               [Page 26]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -1453,4 +1509,4 @@ Authors' Addresses
 
 
 
-Ounsworth, et al.        Expires 5 November 2023               [Page 26]
+Ounsworth, et al.       Expires 23 November 2023               [Page 27]

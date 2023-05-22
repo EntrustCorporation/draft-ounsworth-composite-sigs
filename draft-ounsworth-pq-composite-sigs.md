@@ -128,8 +128,9 @@ This document is intended to be coupled with corresponding documents that define
 
 # Changes in version -09
 
-- removed all references to generic composite
-- Added selection criteria note about requesting new explicit combinations
+* Removed SPHINCS+ hybrids.
+* Removed all references to generic composite.
+* Added selection criteria note about requesting new explicit combinations.
 
 
 # Introduction {#sec-intro}
@@ -154,7 +155,7 @@ The composite algorithm combinations defined in this document were chosen accord
 1. A single RSA combination is provided (but RSA modulus size not mandated), matched with NIST PQC Level 3 algorithms.
 1. Elliptic curve algorithms are provided with combinations on each of the NIST [RFC6090], Brainpool [RFC5639], and Edwards [RFC7748] curves. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.
 1. NIST level 1 candidates (Falcon512 and Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.
-The authors wish to note that although all the composite structures defined in this and the companion composite keys {{I-D.ounsworth-pq-composite-keys}} and composite KEM {{I-D.ounsworth-pq-composite-kem}} specifications are defined in such a way as to easily allow 3 or more component algorithms, it was decided to only specify explicit pairs. This also does not preclude future specification of explicit combinations with three or more components.
+The authors wish to note that although all the composite structures defined in this and the companion documents {{I-D.ounsworth-pq-composite-keys}} and {{I-D.ounsworth-pq-composite-kem}} specifications are defined in such a way as to easily allow 3 or more component algorithms, it was decided to only specify explicit pairs. This also does not preclude future specification of explicit combinations with three or more components.
 
 To maximize interoperability, use of the specific algorithm combinations specified in this document is encouraged.  If other combinations are needed, a separate specification should be submitted to the IETF LAMPS working group.  To ease implementation, these specifications are encouraged to follow the construction pattern of the algorithms specified in this document.  
 
