@@ -43,13 +43,7 @@ IMPORTS
   pk-Falcon512-ECDSA-P256-SHA256, id-Falcon512-ECDSA-P256-SHA256,
   pk-Falcon512-ECDSA-brainpoolP256r1-SHA256, 
   id-Falcon512-ECDSA-brainpoolP256r1-SHA256,
-  pk-Falcon512-Ed25519, id-Falcon512-Ed25519,
-  pk-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
-  id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
-  pk-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
-  id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
-  pk-SPHINCSplusSHA256128sSimple-Ed25519,
-  id-SPHINCSplusSHA256128sSimple-Ed25519
+  pk-Falcon512-Ed25519, id-Falcon512-Ed25519
     FROM CompositeKeys-2023
 	   {iso(1) identified-organization(3) dod(6) internet(1) security(5)
        mechanisms(5) pkix(7) id-mod(0) id-mod-composite-keys(TBD)};
@@ -141,23 +135,5 @@ sa-Falcon512-ECDSA-brainpoolP256r1-SHA256 SIGNATURE-ALGORITHM ::=
 sa-Falcon512-Ed25519 SIGNATURE-ALGORITHM ::= 
     sa-explicitCompositeSignature{id-Falcon512-Ed25519,pk-Falcon512-Ed25519,
     ExplicitSignatureParameters{{sa-Falcon512TBD},{sa-Ed25519}} }
-
-sa-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::= 
-    sa-explicitCompositeSignature{
-    id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
-    pk-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
-    ExplicitSignatureParameters{{sa-SPHINCSTBD},{sa-ecdsaWithSHA256}} }
-
-sa-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256 
-   SIGNATURE-ALGORITHM ::= sa-explicitCompositeSignature {
-    id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
-    pk-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
-      ExplicitSignatureParameters{{sa-SPHINCSTBD},
-          {sa-ecdsaWithSHA256}} }
-
-sa-SPHINCSplusSHA256128sSimple-Ed25519 SIGNATURE-ALGORITHM ::= 
-   sa-explicitCompositeSignature{id-SPHINCSplusSHA256128sSimple-Ed25519,
-      pk-SPHINCSplusSHA256128sSimple-Ed25519,
-         ExplicitSignatureParameters{{sa-SPHINCSTBD},{sa-Ed25519}} }
 
 END

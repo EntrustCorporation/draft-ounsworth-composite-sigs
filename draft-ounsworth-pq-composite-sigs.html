@@ -1185,7 +1185,7 @@ li > p:last-of-type {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Ounsworth, et al.</td>
-<td class="center">Expires 23 November 2023</td>
+<td class="center">Expires 25 November 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1198,12 +1198,12 @@ li > p:last-of-type {
 <dd class="internet-draft">draft-ounsworth-pq-composite-sigs-09</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-05-22" class="published">22 May 2023</time>
+<time datetime="2023-05-24" class="published">24 May 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-11-23">23 November 2023</time></dd>
+<dd class="expires"><time datetime="2023-11-25">25 November 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1248,7 +1248,7 @@ li > p:last-of-type {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 23 November 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 25 November 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1904,169 +1904,7 @@ Signature Verification Procedure::
 <pre class="lang-asn.1 sourcecode">
 &lt;CODE STARTS&gt;
 
-
-   Composite-Signatures-2023
-     { joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-       algorithm(80) id-composite-signatures-2023 (TBD) }
-
-DEFINITIONS IMPLICIT TAGS ::= BEGIN
-
-EXPORTS ALL;
-
-IMPORTS
-  PUBLIC-KEY, SIGNATURE-ALGORITHM, AlgorithmIdentifier{}
-    FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
-      { iso(1) identified-organization(3) dod(6) internet(1)
-        security(5) mechanisms(5) pkix(7) id-mod(0)
-        id-mod-algorithmInformation-02(58) }
-
-  SubjectPublicKeyInfo
-    FROM PKIX1Explicit-2009
-      { iso(1) identified-organization(3) dod(6) internet(1)
-        security(5) mechanisms(5) pkix(7) id-mod(0)
-        id-mod-pkix1-explicit-02(51) }
-
-  OneAsymmetricKey
-    FROM AsymmetricKeyPackageModuleV1
-      { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
-        pkcs-9(9) smime(16) modules(0)
-        id-mod-asymmetricKeyPkgV1(50) }
-
-  sa-rsaSSA-PSS
-    FROM PKIX1-PSS-OAEP-Algorithms-2009
-       {iso(1) identified-organization(3) dod(6) internet(1) security(5)
-       mechanisms(5) pkix(7) id-mod(0) id-mod-pkix1-rsa-pkalgs-02(54)}
-
-  pk-Dilithium3-RSA-PSS, id-Dilithium3-RSA-PSS,
-  pk-Dilithium3-RSA-PKCS15-SHA256, id-Dilithium3-RSA-PKCS15-SHA256,
-  pk-Dilithium3-ECDSA-P256-SHA256, id-Dilithium3-ECDSA-P256-SHA256,
-  pk-Dilithium3-ECDSA-brainpoolP256r1, id-Dilithium3-ECDSA-brainpoolP256r1,
-  pk-Dilithium3-Ed25519, id-Dilithium3-Ed25519,
-  pk-Dilithium5-ECDSA-P384, id-Dilithium5-ECDSA-P384,
-  pk-Dilithium5-ECDSA-brainpoolP384r1-SHA384,
-  id-Dilithium5-ECDSA-brainpoolP384r1-SHA384,
-  pk-Dilithium5-Ed448, id-Dilithium5-Ed448,
-  pk-Falcon512-ECDSA-P256-SHA256, id-Falcon512-ECDSA-P256-SHA256,
-  pk-Falcon512-ECDSA-brainpoolP256r1-SHA256,
-  id-Falcon512-ECDSA-brainpoolP256r1-SHA256,
-  pk-Falcon512-Ed25519, id-Falcon512-Ed25519,
-  pk-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
-  id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
-  pk-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
-  id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
-  pk-SPHINCSplusSHA256128sSimple-Ed25519,
-  id-SPHINCSplusSHA256128sSimple-Ed25519
-    FROM CompositeKeys-2023
-           {iso(1) identified-organization(3) dod(6) internet(1) security(5)
-       mechanisms(5) pkix(7) id-mod(0) id-mod-composite-keys(TBD)};
-
---
--- Signature Algorithm
---
-
--- Composite Signature Value is just a sequence of OCTET STRINGS
-
-   CompositeSignaturePair{FirstSignatureValue, SecondSignatureValue} ::=
-     SEQUENCE {
-      signaturevalue1 FirstSignatureValue,
-      signaturevalue2 SecondSignatureValue }
-
-   -- An Explicit Compsite Signature is a set of Signatures which
-   -- are composed of OCTET STRINGS
-   ExplicitCompositeSignatureValue ::= CompositeSignaturePair {
-       OCTET STRING,OCTET STRING}
-
-
-
-ExplicitSignatureParameters{SIGNATURE-ALGORITHM:FirstSignatureAlg,
-   SIGNATURE-ALGORITHM:SecondSignatureAlg}  ::=
-      SEQUENCE {
-          signatureAlgorithm1   AlgorithmIdentifier
-                        { SIGNATURE-ALGORITHM, {FirstSignatureAlg}},
-                signatureAlgorithm2   AlgorithmIdentifier
-                        { SIGNATURE-ALGORITHM, {SecondSignatureAlg}} }
-
-
-sa-explicitCompositeSignature{OBJECT IDENTIFIER:id,
-   PUBLIC-KEY:publicKeyObject, ExplicitCompositeParams}
-      SIGNATURE-ALGORITHM ::=  {
-         IDENTIFIER id
-         VALUE ExplicitCompositeSignatureValue
-         PARAMS TYPE ExplicitCompositeParams ARE required
-         PUBLIC-KEYS {publicKeyObject} }
-
-
-sa-Dilithium3-RSA-PSS-SHA256 SIGNATURE-ALGORITHM ::=
-   sa-explicitCompositeSignature{id-Dilithium3-RSA-PSS-SHA256,
-   pk-Dilithium3-RSA-PSS-SHA256,
-   ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-rsaSSA-PSS}} }
-
-sa-Dilithium3-RSA-PKCS15-SHA256 SIGNATURE-ALGORITHM ::=
-    sa-explicitCompositeSignature{ id-Dilithium3-RSA-PKCS15-SHA256,
-    pk-Dilithium3-RSA-PKCS15-SHA256,
-    ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-rsaWithSHA256}} }
-
-sa-Dilithium3-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
-    sa-explicitCompositeSignature{id-Dilithium3-ECDSA-P256-SHA256,
-    pk-Dilithium3-ECDSA-P256-SHA256,
-    ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-ecdsaWithSHA256}} }
-
-sa-Dilithium3-ECDSA-brainpoolP256r1-SHA256 SIGNATURE-ALGORITHM ::=
-    sa-explicitCompositeSignature{id-Dilithium3-ECDSA-brainpoolP256r1-SHA256,
-    pk-Dilithium3-ECDSA-brainpoolP256r1-SHA256,
-    ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-ecdsaWithSHA256}} }
-
-sa-Dilithium3-Ed25519 SIGNATURE-ALGORITHM ::=
-    sa-explicitCompositeSignature{id-Dilithium3-Ed25519,pk-Dilithium3-Ed25519,
-    ExplicitSignatureParameters{{sa-Dilithium3TBD},{sa-Ed25519}} }
-
-sa-Dilithium5-ECDSA-P384-SHA384 SIGNATURE-ALGORITHM ::=
-    sa-explicitCompositeSignature{ id-Dilithium5-ECDSA-P384-SHA384,
-    pk-Dilithium5-ECDSA-P384-SHA384,
-    ExplicitSignatureParameters{{sa-Dilithium5TBD},{sa-ecdsaWithSHA384}} }
-
-sa-Dilithium5-ECDSA-brainpoolP384r1-SHA384 SIGNATURE-ALGORITHM ::=
-    sa-explicitCompositeSignature{id-Dilithium5-ECDSA-brainpoolP384r1-SHA384,
-    pk-Dilithium5-ECDSA-brainpoolP384r1-SHA384,
-    ExplicitSignatureParameters{{sa-Dilithium5TBD},{sa-ecdsaWithSHA384}} }
-
-sa-Dilithium5-Ed448 SIGNATURE-ALGORITHM ::=
-    sa-explicitCompositeSignature{id-Dilithium5-Ed448,pk-Dilithium5-Ed448,
-    ExplicitSignatureParameters{{sa-Dilithium5TBD},{sa-ed448}} }
-
-sa-Falcon512-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
-    sa-explicitCompositeSignature{id-Falcon512-ECDSA-P256-SHA256,
-    pk-Falcon512-ECDSA-P256-SHA256,
-    ExplicitSignatureParameters{{sa-Falcon512TBD},{sa-ecdsaWithSHA256}} }
-
-sa-Falcon512-ECDSA-brainpoolP256r1-SHA256 SIGNATURE-ALGORITHM ::=
-    sa-explicitCompositeSignature{id-Falcon512-ECDSA-brainpoolP256r1-SHA256,
-    pk-Falcon512-ECDSA-brainpoolP256r1-SHA256,
-    ExplicitSignatureParameters{{sa-Falcon512TBD},{sa-ecdsaWithSHA256}} }
-
-sa-Falcon512-Ed25519 SIGNATURE-ALGORITHM ::=
-    sa-explicitCompositeSignature{id-Falcon512-Ed25519,pk-Falcon512-Ed25519,
-    ExplicitSignatureParameters{{sa-Falcon512TBD},{sa-Ed25519}} }
-
-sa-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
-    sa-explicitCompositeSignature{
-    id-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
-    pk-SPHINCSplusSHA256128sSimple-ECDSA-P256-SHA256,
-    ExplicitSignatureParameters{{sa-SPHINCSTBD},{sa-ecdsaWithSHA256}} }
-
-sa-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256
-   SIGNATURE-ALGORITHM ::= sa-explicitCompositeSignature {
-    id-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
-    pk-SPHINCSplusSHA256128sSimple-ECDSA-brainpoolP256r1-SHA256,
-      ExplicitSignatureParameters{{sa-SPHINCSTBD},
-          {sa-ecdsaWithSHA256}} }
-
-sa-SPHINCSplusSHA256128sSimple-Ed25519 SIGNATURE-ALGORITHM ::=
-   sa-explicitCompositeSignature{id-SPHINCSplusSHA256128sSimple-Ed25519,
-      pk-SPHINCSplusSHA256128sSimple-Ed25519,
-         ExplicitSignatureParameters{{sa-SPHINCSTBD},{sa-Ed25519}} }
-
-END
+!!  Composite-Signatures-2023.asn
 
 &lt;CODE ENDS&gt;
 
@@ -2125,10 +1963,6 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 <a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-normative-references-2" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
-<dt id="I-D.ietf-lamps-cms-sphincs-plus">[I-D.ietf-lamps-cms-sphincs-plus]</dt>
-        <dd>
-<span class="refAuthor">Housley, R.</span>, <span class="refAuthor">Fluhrer, S.</span>, <span class="refAuthor">Kampanakis, P.</span>, and <span class="refAuthor">B. Westerbaan</span>, <span class="refTitle">"Use of the SPHINCS+ Signature Algorithm in the Cryptographic Message Syntax (CMS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-cms-sphincs-plus-01</span>, <time datetime="2022-11-21" class="refDate">21 November 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-sphincs-plus-01">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-cms-sphincs-plus-01</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="I-D.ietf-lamps-dilithium-certificates">[I-D.ietf-lamps-dilithium-certificates]</dt>
         <dd>
 <span class="refAuthor">Massimo, J.</span>, <span class="refAuthor">Kampanakis, P.</span>, <span class="refAuthor">Turner, S.</span>, and <span class="refAuthor">B. Westerbaan</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure: Algorithm Identifiers for Dilithium"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-dilithium-certificates-01</span>, <time datetime="2023-02-06" class="refDate">6 February 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-dilithium-certificates-01">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-dilithium-certificates-01</a>&gt;</span>. </dd>

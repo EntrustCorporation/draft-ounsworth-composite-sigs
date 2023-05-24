@@ -68,7 +68,6 @@ normative:
   I-D.draft-ounsworth-pq-composite-keys-04:
   I-D.draft-massimo-lamps-pq-sig-certificates-00:
   I-D.draft-ietf-lamps-dilithium-certificates-01:
-  I-D.draft-ietf-lamps-cms-sphincs-plus-01:
   X.690:
       title: "Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)"
       date: November 2015
@@ -504,7 +503,7 @@ Some verification clients may include a policy mechanism for specifying acceptab
 
 <CODE STARTS>
 
-!!Composite-Signatures-2023.asn
+!!  Composite-Signatures-2023.asn
  
 <CODE ENDS>
 
