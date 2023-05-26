@@ -5,9 +5,9 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
 Intended status: Standards Track                                 Entrust
-Expires: 25 November 2023                                        M. Pala
+Expires: 27 November 2023                                        M. Pala
                                                                CableLabs
-                                                             24 May 2023
+                                                             26 May 2023
 
 
               Composite Signatures For Use In Internet PKI
@@ -53,7 +53,7 @@ Abstract
 
 
 
-Ounsworth, et al.       Expires 25 November 2023                [Page 1]
+Ounsworth, et al.       Expires 27 November 2023                [Page 1]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -73,7 +73,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 November 2023.
+   This Internet-Draft will expire on 27 November 2023.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth, et al.       Expires 25 November 2023                [Page 2]
+Ounsworth, et al.       Expires 27 November 2023                [Page 2]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -122,15 +122,15 @@ Internet-Draft              PQ Composite Sigs                   May 2023
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  17
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  19
-   Appendix A.  Work in Progress . . . . . . . . . . . . . . . . . .  21
-     A.1.  Combiner modes (KofN) . . . . . . . . . . . . . . . . . .  21
+   Appendix A.  Work in Progress . . . . . . . . . . . . . . . . . .  20
+     A.1.  Combiner modes (KofN) . . . . . . . . . . . . . . . . . .  20
    Appendix B.  Samples  . . . . . . . . . . . . . . . . . . . . . .  21
      B.1.  Explicit Composite Signature Examples . . . . . . . . . .  21
    Appendix C.  Implementation Considerations  . . . . . . . . . . .  21
      C.1.  Backwards Compatibility . . . . . . . . . . . . . . . . .  21
-       C.1.1.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  22
+       C.1.1.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  21
        C.1.2.  Hybrid Extensions (Keys and Signatures) . . . . . . .  22
-   Appendix D.  Intellectual Property Considerations . . . . . . . .  23
+   Appendix D.  Intellectual Property Considerations . . . . . . . .  22
    Appendix E.  Contributors and Acknowledgements  . . . . . . . . .  23
      E.1.  Making contributions  . . . . . . . . . . . . . . . . . .  23
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  23
@@ -165,7 +165,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023                [Page 3]
+Ounsworth, et al.       Expires 27 November 2023                [Page 3]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -221,7 +221,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023                [Page 4]
+Ounsworth, et al.       Expires 27 November 2023                [Page 4]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -277,7 +277,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023                [Page 5]
+Ounsworth, et al.       Expires 27 November 2023                [Page 5]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -333,7 +333,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023                [Page 6]
+Ounsworth, et al.       Expires 27 November 2023                [Page 6]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -389,7 +389,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023                [Page 7]
+Ounsworth, et al.       Expires 27 November 2023                [Page 7]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -445,7 +445,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023                [Page 8]
+Ounsworth, et al.       Expires 27 November 2023                [Page 8]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -501,7 +501,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023                [Page 9]
+Ounsworth, et al.       Expires 27 November 2023                [Page 9]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -557,7 +557,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023               [Page 10]
+Ounsworth, et al.       Expires 27 November 2023               [Page 10]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -613,7 +613,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023               [Page 11]
+Ounsworth, et al.       Expires 27 November 2023               [Page 11]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -669,7 +669,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023               [Page 12]
+Ounsworth, et al.       Expires 27 November 2023               [Page 12]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -725,7 +725,7 @@ Signature Generation Process:
 
 
 
-Ounsworth, et al.       Expires 25 November 2023               [Page 13]
+Ounsworth, et al.       Expires 27 November 2023               [Page 13]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -781,7 +781,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023               [Page 14]
+Ounsworth, et al.       Expires 27 November 2023               [Page 14]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -837,7 +837,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023               [Page 15]
+Ounsworth, et al.       Expires 27 November 2023               [Page 15]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -893,7 +893,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023               [Page 16]
+Ounsworth, et al.       Expires 27 November 2023               [Page 16]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -949,7 +949,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023               [Page 17]
+Ounsworth, et al.       Expires 27 November 2023               [Page 17]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -1005,7 +1005,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023               [Page 18]
+Ounsworth, et al.       Expires 27 November 2023               [Page 18]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -1061,7 +1061,7 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023               [Page 19]
+Ounsworth, et al.       Expires 27 November 2023               [Page 19]
 
 Internet-Draft              PQ Composite Sigs                   May 2023
 
@@ -1079,14 +1079,6 @@ Internet-Draft              PQ Composite Sigs                   May 2023
               Internet-Draft, draft-pala-klaussner-composite-kofn-00, 15
               November 2022, <https://datatracker.ietf.org/doc/html/
               draft-pala-klaussner-composite-kofn-00>.
-
-   [I-D.truskovsky-lamps-pq-hybrid-x509]
-              Truskovsky, A., Van Geest, D., Fluhrer, S., Kampanakis,
-              P., Ounsworth, M., and S. Mister, "Multiple Public-Key
-              Algorithm X.509 Certificates", Work in Progress, Internet-
-              Draft, draft-truskovsky-lamps-pq-hybrid-x509-01, 29 August
-              2018, <https://datatracker.ietf.org/doc/html/draft-
-              truskovsky-lamps-pq-hybrid-x509-01>.
 
    [RFC3279]  Bassham, L., Polk, W., and R. Housley, "Algorithms and
               Identifiers for the Internet X.509 Public Key
@@ -1113,15 +1105,6 @@ Internet-Draft              PQ Composite Sigs                   May 2023
               Message Specification", RFC 8551, DOI 10.17487/RFC8551,
               April 2019, <https://www.rfc-editor.org/info/rfc8551>.
 
-
-
-
-
-Ounsworth, et al.       Expires 25 November 2023               [Page 20]
-
-Internet-Draft              PQ Composite Sigs                   May 2023
-
-
 Appendix A.  Work in Progress
 
 A.1.  Combiner modes (KofN)
@@ -1130,6 +1113,14 @@ A.1.  Combiner modes (KofN)
    repudiation, the signer (whether it be a CA or an end entity) needs
    to be able to specify how its signature is to be interpreted and
    verified.
+
+
+
+
+Ounsworth, et al.       Expires 27 November 2023               [Page 20]
+
+Internet-Draft              PQ Composite Sigs                   May 2023
+
 
    For now we have removed combiner modes (AND, OR, KofN) from this
    draft, but we are still discussing how to incorporate this for the
@@ -1169,15 +1160,6 @@ C.1.  Backwards Compatibility
    design work because it can be implemented as a signature algorithm
    that fits into existing systems.
 
-
-
-
-
-Ounsworth, et al.       Expires 25 November 2023               [Page 21]
-
-Internet-Draft              PQ Composite Sigs                   May 2023
-
-
 C.1.1.  Parallel PKIs
 
    We present the term "Parallel PKI" to refer to the setup where a PKI
@@ -1188,6 +1170,13 @@ C.1.1.  Parallel PKIs
    operational during the post-quantum migration but is shadowed by one
    or more parallel PKIs using pure post quantum algorithms or composite
    algorithms (legacy and post-quantum).
+
+
+
+Ounsworth, et al.       Expires 27 November 2023               [Page 21]
+
+Internet-Draft              PQ Composite Sigs                   May 2023
+
 
    Equipped with a set of parallel public keys in this way, a client
    would have the flexibility to choose which public key(s) or
@@ -1226,14 +1215,6 @@ C.1.2.  Hybrid Extensions (Keys and Signatures)
    whole system.  However, when it is not possible to upgrade the crypto
    engines/libraries, it is possible to leverage X.509 extensions to
    encode the additional keys and signatures.  When the custom
-
-
-
-Ounsworth, et al.       Expires 25 November 2023               [Page 22]
-
-Internet-Draft              PQ Composite Sigs                   May 2023
-
-
    extensions are not marked critical, although this approach provides
    the most backward-compatible approach where clients can simply ignore
    the post-quantum (or extra) keys and signatures, it also requires all
@@ -1245,6 +1226,13 @@ Appendix D.  Intellectual Property Considerations
    The following IPR Disclosure relates to this draft:
 
    https://datatracker.ietf.org/ipr/3588/
+
+
+
+Ounsworth, et al.       Expires 27 November 2023               [Page 22]
+
+Internet-Draft              PQ Composite Sigs                   May 2023
+
 
 Appendix E.  Contributors and Acknowledgements
 
@@ -1284,18 +1272,22 @@ Authors' Addresses
    Email: mike.ounsworth@entrust.com
 
 
-
-Ounsworth, et al.       Expires 25 November 2023               [Page 23]
-
-Internet-Draft              PQ Composite Sigs                   May 2023
-
-
    John Gray
    Entrust Limited
    2500 Solandt Road -- Suite 100
    Ottawa, Ontario  K2K 3G5
    Canada
    Email: john.gray@entrust.com
+
+
+
+
+
+
+
+Ounsworth, et al.       Expires 27 November 2023               [Page 23]
+
+Internet-Draft              PQ Composite Sigs                   May 2023
 
 
    Massimiliano Pala
@@ -1341,4 +1333,12 @@ Internet-Draft              PQ Composite Sigs                   May 2023
 
 
 
-Ounsworth, et al.       Expires 25 November 2023               [Page 24]
+
+
+
+
+
+
+
+
+Ounsworth, et al.       Expires 27 November 2023               [Page 24]

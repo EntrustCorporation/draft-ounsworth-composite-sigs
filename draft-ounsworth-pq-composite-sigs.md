@@ -88,7 +88,6 @@ informative:
   I-D.draft-ounsworth-pq-composite-kem-00:
   I-D.draft-becker-guthrie-noncomposite-hybrid-auth-00:
   I-D.draft-guthrie-ipsecme-ikev2-hybrid-auth-00:
-  I-D.draft-truskovsky-lamps-pq-hybrid-x509-01:
   I-D.draft-pala-klaussner-composite-kofn-00:
   Bindel2017:
     title: "Transitioning to a quantum-resistant public key infrastructure"
@@ -596,8 +595,6 @@ For non-negotiated protocols, the details for obtaining backwards compatibility 
 The use of Composite Crypto provides the possibility to process multiple algorithms without changing the logic of applications, but updating the cryptographic libraries: one-time change across the whole system. However, when it is not possible to upgrade the crypto engines/libraries, it is possible to leverage X.509 extensions to encode the additional keys and signatures. When the custom extensions are not marked critical, although this approach provides the most
 backward-compatible approach where clients can simply ignore the post-quantum (or extra) keys and signatures, it also requires
 all applications to be updated for correctly processing multiple algorithms together. 
-
-<!-- Please refer to {{I-D.draft-truskovsky-lamps-pq-hybrid-x509}} for more information. -->
 
 
 <!-- End of Implementation Considerations section -->
