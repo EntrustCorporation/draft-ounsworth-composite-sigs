@@ -189,8 +189,8 @@ DER:
           Distinguished Encoding Rules as defined in [X.690].
 
 LEGACY:   For the purposes of this document, a legacy algorithm is
-          any cryptographic algorithm currently is use which is 
-          not believe to be resistant to quantum cryptanalysis.
+          any cryptographic algorithm currently in use which is 
+          not believed to be resistant to quantum cryptanalysis.
 
 PKI:
           Public Key Infrastructure, as defined in [RFC5280].
@@ -323,7 +323,7 @@ In the interests of simplicity and avoiding compatibility issues, implementation
 
 This section defines the algorithm identifiers for explicit combinations.  For simplicity and prototyping purposes, the signature algorithm object identifiers specified in this document are the same as the composite key object Identifiers specified in {draft-ounsworth-pq-composite-keys}.  A proper implementation should not presume that the object ID of a composite key will be the same as its composite signature algorithm.   
 
-This section is not intended to be exhaustive and other authors may define others composite signature algorithms so long as they are compatible with the structures and processes defined in this and companion public and private key documents.
+This section is not intended to be exhaustive and other authors may define other composite signature algorithms so long as they are compatible with the structures and processes defined in this and companion public and private key documents.
 
 Some use-cases desire the flexibility for clients to use any combination of supported algorithms, while others desire the rigidity of explicitly-specified combinations of algorithms.
 
@@ -370,7 +370,7 @@ Full specifications for the referenced algorithms can be found as follows:
 
 Use of RSA-PSS [RFC8017] deserves a special explanation.
 
-When the `id-Dilithium3-RSA-PSS` object identifier is used with an `AlgorithmIdentifier`, the `AlgorithmIdentifier.parameters` MUST be of type `CompositeSignatureParams as follows:
+When the `id-Dilithium3-RSA-PSS` object identifier is used with an `AlgorithmIdentifier`, the `AlgorithmIdentifier.parameters` MUST be of type `CompositeSignatureParams` as follows:
 
 ~~~
 SEQUENCE {
@@ -452,7 +452,7 @@ Input:
                         composite inputs.
 
      M                  Message whose signature is to be verified, 
-                        an octet string
+                        an octet string.
      
      S1, S2, .., Sn    Component signature values to be verified.
                        See note below on composite inputs.
@@ -487,7 +487,7 @@ Signature Verification Procedure::
 ~~~
 {: artwork-name="alg-sig-verif"}
 
-Note on composite inputs: the method of providing the list of component keys, algorithms and signatures is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey, CompositeSignatureParams, and compositesignaturevalue structures. It is also possible to verify a composite signature where the component public verification keys belong, for example, to separate X.509 certificates or cryptographic modules. Variations in the process to accommodate particular public verification key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
+Note on composite inputs: the method of providing the list of component keys, algorithms and signatures is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey, CompositeSignatureParams, and CompositeSignatureValue structures. It is also possible to verify a composite signature where the component public verification keys belong, for example, to separate X.509 certificates or cryptographic modules. Variations in the process to accommodate particular public verification key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
 
 Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with OID id-alg-composite or an explicit composite OID.
 
@@ -576,7 +576,7 @@ This section addresses practical issues of how this draft affects other protocol
 
 ## Backwards Compatibility {#sec-backwards-compat}
 
-The term "backwards compatibility" is used here to mean something more specific; that existing systems as they are deployed today can interoperate with the upgraded systems of the future.  This draft explicitly does not provide backwards compatibilitym, only upgraded systems will understand the OIDs defined in this document.
+The term "backwards compatibility" is used here to mean something more specific; that existing systems as they are deployed today can interoperate with the upgraded systems of the future.  This draft explicitly does not provide backwards compatibility, only upgraded systems will understand the OIDs defined in this document.
 
 If backwards compatibility is required, then additional mechanisms will be needed.  Migration and interoperability concerns need to be thought about in the context of various types of protocols that make use of X.509 and PKIX with relation to digital signature objects, from online negotiated protocols such as TLS 1.3 [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous protocols such as S/MIME signed email [RFC8551], document signing such as in the context of the European eIDAS regulations [eIDAS2014], and publicly trusted code signing [codeSigningBRsv2.8], as well as myriad other standardized and proprietary protocols and applications that leverage CMS [RFC5652] signed structures.  Composite simplifies the protocol design work because it can be implemented as a signature algorithm that fits into existing systems.
 
