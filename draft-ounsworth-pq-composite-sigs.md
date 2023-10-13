@@ -2,7 +2,7 @@
 title: Composite Signatures For Use In Internet PKI
 abbrev: PQ Composite Sigs
 # <!-- EDNOTE: Edits the draft name -->
-docname: draft-ounsworth-pq-composite-sigs-09
+docname: draft-ounsworth-pq-composite-sigs-10
 
 # <!-- stand_alone: true -->
 ipr: trust200902
@@ -150,9 +150,10 @@ Editorial changes:
 * Added a section on pre-hashing
 * Rename Dilithium to ML-DSA and Falcon to FN-DSA
 * Added an Implementation Consideration about FIPS validation where only one component algorithm is FIPS-approved.
+* Added a section on Signature APIs (Keygen, Sign, Verify) in introduction
 * TODO  Refactored to use MartinThomson github template
 * TODO Worked on Use cases references
-* TODO Add Section on Signature APIs (Keygen, Sign, Verify) in introduction
+
 
 
 # Introduction {#sec-intro}
@@ -417,9 +418,9 @@ As noted in the composite signature generation process and composite signature v
 
 1. For Dilithium signing a digest of the message is allowed as long as the hash function provides at least y bits of classical security strength against both collision and second preimage attacks.   For MLDSA44 y is 128 bits, MLDSA65 y is 192 bits and for MLDSA87 y is 256 bits.  Therefore SHA256 paired with RSA and SHA256 and SHA384 paired with ECDSA match the appropriate security strength.
 
-1. For Ed25519 [RFC8032] uses SHA512 for prehashing, it is therefore used to prehash the message when an Ed25519 component is used.
+1. Ed25519 [RFC8032] uses SHA512 internally, therefore SHA512 is used to pre-hash the message when Ed25519 is a component algorithm.  
 
-1. For Ed448 [RFC8032] uses SHAKE256 for prehashing, it is therefore used to prehash the message when an Ed448 component is used.
+1. Ed448 [RFC8032] uses SHAKE256 internally, therefore SHA256 with an output length of 512 bits is used to pre-hash the message when Ed448 is a component algorithm.  This is denoted in the table in {{sec-alg-ids}} as SHAKE256/512. 
   
 1. TODO:  For Falcon signing it is expected prehashing digest accomodations will be allowed.  
 
@@ -596,7 +597,7 @@ The choice of `SEQUENCE SIZE (2) OF BIT STRING`, rather than for example a singl
 
 # Algorithm Identifiers {#sec-alg-ids}
 
-This section defines the algorithm identifiers for explicit combinations.  For simplicity and prototyping purposes, the signature algorithm object identifiers specified in this document are the same as the composite key object Identifiers specified in {draft-ounsworth-pq-composite-keys}.  A proper implementation should not presume that the object ID of a composite key will be the same as its composite signature algorithm.   
+This section defines the algorithm identifiers for explicit combinations.  For simplicity and prototyping purposes, the signature algorithm object identifiers specified in this document are the same as the composite key object Identifiers.  A proper implementation should not presume that the object ID of a composite key will be the same as its composite signature algorithm.   
 
 This section is not intended to be exhaustive and other authors may define others composite signature algorithms so long as they are compatible with the structures and processes defined in this and companion public and private key documents.
 
@@ -613,24 +614,24 @@ Therefore &lt;CompSig&gt;.1 is equal to 2.16.840.1.114027.80.7.1.1
 
 Signature public key types:
 
-| Composite Signature AlgorithmID | OID | First Algorithm | Second Algorithm | 
+| Composite Signature AlgorithmID | OID | First Algorithm | Second Algorithm | Pre-Hash |
 | ----------- | ----------- | ----------- |  ----------- | 
-| id-MLDSA44-RSA2048-PSS-SHA256      | &lt;CompSig&gt;.1 | MLDSA44  | SHA256WithRSAEncryption| 
-| id-MLDSA44-RSA2048-PKCS15-SHA256    | &lt;CompSig&gt;.2 | MLDSA44  | SHA256WithRSAEncryption| 
-| id-MLDSA44-Ed25519-SHA512             | &lt;CompSig&gt;.3 | MLDSA44  | Ed25519| 
-| id-MLDSA44-ECDSA-P256-SHA256         | &lt;CompSig&gt;.4 | MLDSA44  | SHA256withECDSA | 
-| id-MLDSA44-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.5 | MLDSA44  | SHA256withECDSA|
-| id-MLDSA65-RSA3072-PSS-SHA256           | &lt;CompSig&gt;.6 | MLDSA65 | SHA256WithRSAPSS | 
-| id-MLDSA65-RSA3072-PKCS15-SHA256        | &lt;CompSig&gt;.7  | MLDSA65 | SHA256WithRSAEncryption |
-| id-MLDSA65-ECDSA-P256-SHA256            | &lt;CompSig&gt;.8  | MLDSA65 | SHA256withECDSA | 
-| id-MLDSA65-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.9  | MLDSA65 | SHA256withECDSA |  
-| id-MLDSA65-Ed25519-SHA512              | &lt;CompSig&gt;.10  | MLDSA65 | Ed25519 | 
-| id-MLDSA87-ECDSA-P384-SHA384            | &lt;CompSig&gt;.11  | MLDSA87 | SHA384withECDSA | 
-| id-MLDSA87-ECDSA-brainpoolP384r1-SHA384 | &lt;CompSig&gt;.12 | MLDSA87 | SHA384withECDSA | 
-| id-MLDSA87-Ed448-SHAKE256               | &lt;CompSig&gt;.13 | MLDSA87 | Ed448 | 
-| id-Falon512-ECDSA-P256-SHA256             | &lt;CompSig&gt;.14  | Falcon512  | SHA256withECDSA | 
-| id-Falcon512-ECDSA-brainpoolP256r1-SHA256  | &lt;CompSig&gt;.15  | Falcon512  | SHA256withECDSA | 
-| id-Falcon512-Ed25519-SHA512            | &lt;CompSig&gt;.16 | Falcon512  | Ed25519| 
+| id-MLDSA44-RSA2048-PSS-SHA256      | &lt;CompSig&gt;.1 | MLDSA44  | SHA256WithRSAEncryption| SHA256 |
+| id-MLDSA44-RSA2048-PKCS15-SHA256    | &lt;CompSig&gt;.2 | MLDSA44  | SHA256WithRSAEncryption| SHA256 | 
+| id-MLDSA44-Ed25519-SHA512             | &lt;CompSig&gt;.3 | MLDSA44  | Ed25519| SHA512 |
+| id-MLDSA44-ECDSA-P256-SHA256         | &lt;CompSig&gt;.4 | MLDSA44  | SHA256withECDSA | SHA256 |
+| id-MLDSA44-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.5 | MLDSA44  | SHA256withECDSA| SHA256 |
+| id-MLDSA65-RSA3072-PSS-SHA256           | &lt;CompSig&gt;.6 | MLDSA65 | SHA256WithRSAPSS |SHA256 | 
+| id-MLDSA65-RSA3072-PKCS15-SHA256        | &lt;CompSig&gt;.7  | MLDSA65 | SHA256WithRSAEncryption |SHA256 |
+| id-MLDSA65-ECDSA-P256-SHA256            | &lt;CompSig&gt;.8  | MLDSA65 | SHA256withECDSA |SHA256 | 
+| id-MLDSA65-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.9  | MLDSA65 | SHA256withECDSA |SHA256 |
+| id-MLDSA65-Ed25519-SHA512              | &lt;CompSig&gt;.10  | MLDSA65 | Ed25519 |SHA512 | 
+| id-MLDSA87-ECDSA-P384-SHA384            | &lt;CompSig&gt;.11  | MLDSA87 | SHA384withECDSA |SHA384 |
+| id-MLDSA87-ECDSA-brainpoolP384r1-SHA384 | &lt;CompSig&gt;.12 | MLDSA87 | SHA384withECDSA | SHA384 |
+| id-MLDSA87-Ed448-SHAKE256               | &lt;CompSig&gt;.13 | MLDSA87 | Ed448 |SHAKE256/512 |
+| id-Falon512-ECDSA-P256-SHA256             | &lt;CompSig&gt;.14  | Falcon512  | SHA256withECDSA | SHA256 |
+| id-Falcon512-ECDSA-brainpoolP256r1-SHA256  | &lt;CompSig&gt;.15  | Falcon512  | SHA256withECDSA |SHA256 | 
+| id-Falcon512-Ed25519-SHA512            | &lt;CompSig&gt;.16 | Falcon512  | Ed25519| SHA512 |
 {: #tab-sig-algs title="Composite Signature Algorithms"}
 
 The table above contains everything needed to implement the listed explicit composite algorithms. See the ASN.1 module in section {{sec-asn1-module}} for the explicit definitions of the above Composite signature algorithms.   
