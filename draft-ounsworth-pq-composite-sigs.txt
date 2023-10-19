@@ -5,9 +5,9 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
 Intended status: Standards Track                                 Entrust
-Expires: 14 April 2024                                           M. Pala
+Expires: 20 April 2024                                           M. Pala
                                                                CableLabs
-                                                         12 October 2023
+                                                         18 October 2023
 
 
               Composite Signatures For Use In Internet PKI
@@ -53,7 +53,7 @@ Abstract
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                 [Page 1]
+Ounsworth, et al.         Expires 20 April 2024                 [Page 1]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -73,7 +73,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 April 2024.
+   This Internet-Draft will expire on 20 April 2024.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                 [Page 2]
+Ounsworth, et al.         Expires 20 April 2024                 [Page 2]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -123,28 +123,28 @@ Internet-Draft              PQ Composite Sigs               October 2023
      5.1.  Notes on id-MLDSA44-RSA2048-PSS-SHA256 and
            id-MLDSA65-RSA3072-PSS-SHA256 . . . . . . . . . . . . . .  21
    6.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . . . .  22
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  22
-     7.1.  Object Identifier Allocations . . . . . . . . . . . . . .  22
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  29
+     7.1.  Object Identifier Allocations . . . . . . . . . . . . . .  29
        7.1.1.  Module Registration - SMI Security for PKIX Module
-               Identifier  . . . . . . . . . . . . . . . . . . . . .  22
+               Identifier  . . . . . . . . . . . . . . . . . . . . .  29
        7.1.2.  Object Identifier Registrations - SMI Security for PKIX
-               Algorithms  . . . . . . . . . . . . . . . . . . . . .  22
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  25
-     8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  25
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  25
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  25
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  28
-   Appendix A.  Samples  . . . . . . . . . . . . . . . . . . . . . .  29
-     A.1.  Explicit Composite Signature Examples . . . . . . . . . .  29
-   Appendix B.  Implementation Considerations  . . . . . . . . . . .  29
-     B.1.  FIPS certification  . . . . . . . . . . . . . . . . . . .  30
-     B.2.  Backwards Compatibility . . . . . . . . . . . . . . . . .  30
-       B.2.1.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  31
-       B.2.2.  Hybrid Extensions (Keys and Signatures) . . . . . . .  31
-   Appendix C.  Intellectual Property Considerations . . . . . . . .  32
-   Appendix D.  Contributors and Acknowledgements  . . . . . . . . .  32
-     D.1.  Making contributions  . . . . . . . . . . . . . . . . . .  32
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  32
+               Algorithms  . . . . . . . . . . . . . . . . . . . . .  29
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  32
+     8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  32
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  33
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  33
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  35
+   Appendix A.  Samples  . . . . . . . . . . . . . . . . . . . . . .  37
+     A.1.  Explicit Composite Signature Examples . . . . . . . . . .  37
+   Appendix B.  Implementation Considerations  . . . . . . . . . . .  37
+     B.1.  FIPS certification  . . . . . . . . . . . . . . . . . . .  37
+     B.2.  Backwards Compatibility . . . . . . . . . . . . . . . . .  37
+       B.2.1.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  38
+       B.2.2.  Hybrid Extensions (Keys and Signatures) . . . . . . .  39
+   Appendix C.  Intellectual Property Considerations . . . . . . . .  39
+   Appendix D.  Contributors and Acknowledgements  . . . . . . . . .  39
+     D.1.  Making contributions  . . . . . . . . . . . . . . . . . .  39
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  40
 
 1.  Changes in version -10
 
@@ -165,7 +165,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                 [Page 3]
+Ounsworth, et al.         Expires 20 April 2024                 [Page 3]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -221,7 +221,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                 [Page 4]
+Ounsworth, et al.         Expires 20 April 2024                 [Page 4]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -277,7 +277,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                 [Page 5]
+Ounsworth, et al.         Expires 20 April 2024                 [Page 5]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -333,7 +333,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                 [Page 6]
+Ounsworth, et al.         Expires 20 April 2024                 [Page 6]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -389,7 +389,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                 [Page 7]
+Ounsworth, et al.         Expires 20 April 2024                 [Page 7]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -445,7 +445,7 @@ Signature Generation Process:
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                 [Page 8]
+Ounsworth, et al.         Expires 20 April 2024                 [Page 8]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -501,7 +501,7 @@ Input:
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                 [Page 9]
+Ounsworth, et al.         Expires 20 April 2024                 [Page 9]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -557,7 +557,7 @@ Signature Verification Procedure::
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                [Page 10]
+Ounsworth, et al.         Expires 20 April 2024                [Page 10]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -613,7 +613,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                [Page 11]
+Ounsworth, et al.         Expires 20 April 2024                [Page 11]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -669,7 +669,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                [Page 12]
+Ounsworth, et al.         Expires 20 April 2024                [Page 12]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -725,7 +725,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                [Page 13]
+Ounsworth, et al.         Expires 20 April 2024                [Page 13]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -781,7 +781,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                [Page 14]
+Ounsworth, et al.         Expires 20 April 2024                [Page 14]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -837,7 +837,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                [Page 15]
+Ounsworth, et al.         Expires 20 April 2024                [Page 15]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -893,7 +893,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                [Page 16]
+Ounsworth, et al.         Expires 20 April 2024                [Page 16]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -949,7 +949,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                [Page 17]
+Ounsworth, et al.         Expires 20 April 2024                [Page 17]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1005,7 +1005,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                [Page 18]
+Ounsworth, et al.         Expires 20 April 2024                [Page 18]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1061,7 +1061,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                [Page 19]
+Ounsworth, et al.         Expires 20 April 2024                [Page 19]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1117,7 +1117,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                [Page 20]
+Ounsworth, et al.         Expires 20 April 2024                [Page 20]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1173,7 +1173,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 14 April 2024                [Page 21]
+Ounsworth, et al.         Expires 20 April 2024                [Page 21]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1188,7 +1188,409 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
    <CODE STARTS>
 
-   !!  Composite-Signatures-2023.asn
+
+      Composite-Signatures-2023
+        { joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+          algorithm(80) id-composite-signatures-2023 (TBDMOD) }
+
+   DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+   EXPORTS ALL;
+
+   IMPORTS
+     PUBLIC-KEY, SIGNATURE-ALGORITHM, AlgorithmIdentifier{}
+       FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
+         { iso(1) identified-organization(3) dod(6) internet(1)
+           security(5) mechanisms(5) pkix(7) id-mod(0)
+           id-mod-algorithmInformation-02(58) }
+
+     SubjectPublicKeyInfo
+       FROM PKIX1Explicit-2009
+         { iso(1) identified-organization(3) dod(6) internet(1)
+           security(5) mechanisms(5) pkix(7) id-mod(0)
+           id-mod-pkix1-explicit-02(51) }
+
+     OneAsymmetricKey
+       FROM AsymmetricKeyPackageModuleV1
+         { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
+           pkcs-9(9) smime(16) modules(0)
+           id-mod-asymmetricKeyPkgV1(50) }
+
+     RSAPublicKey, ECPoint
+       FROM PKIXAlgs-2009
+         { iso(1) identified-organization(3) dod(6)
+           internet(1) security(5) mechanisms(5) pkix(7) id-mod(0)
+           id-mod-pkix1-algorithms2008-02(56) }
+
+     sa-rsaSSA-PSS
+       FROM PKIX1-PSS-OAEP-Algorithms-2009
+          {iso(1) identified-organization(3) dod(6) internet(1) security(5)
+          mechanisms(5) pkix(7) id-mod(0) id-mod-pkix1-rsa-pkalgs-02(54)}
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 22]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
+   ;
+
+   --
+   -- Object Identifiers
+   --
+
+   -- Defined in ITU-T X.690
+   der OBJECT IDENTIFIER ::=
+     {joint-iso-itu-t asn1(1) ber-derived(2) distinguished-encoding(1)}
+
+
+
+
+   --
+   -- Signature Algorithm
+   --
+
+
+   --
+   -- Composite Signature basic structures
+   --
+
+   CompositeSignaturePublicKey ::= SEQUENCE SIZE (2) OF BIT STRING
+
+   CompositeSignaturePublicKeyOs ::= OCTET STRING (CONTAINING
+                                   CompositeSignaturePublicKey ENCODED BY der)
+
+   CompositeSignaturePublicKeyBs ::= BIT STRING (CONTAINING
+                                   CompositeSignaturePublicKey ENCODED BY der)
+
+   CompositeSignaturePrivateKey ::= SEQUENCE SIZE (2) OF OneAsymmetricKey
+
+   CompositeSignatureValue ::= SEQUENCE SIZE (2) OF OCTET STRING
+
+   -- Composite Signature Value is just a sequence of OCTET STRINGS
+
+   --   CompositeSignaturePair{FirstSignatureValue, SecondSignatureValue} ::=
+   --     SEQUENCE {
+   --      signaturevalue1 FirstSignatureValue,
+   --      signaturevalue2 SecondSignatureValue }
+
+      -- An Explicit Compsite Signature is a set of Signatures which
+      -- are composed of OCTET STRINGS
+   --   ExplicitCompositeSignatureValue ::= CompositeSignaturePair {
+   --       OCTET STRING,OCTET STRING}
+
+
+   --
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 23]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
+   -- Information Object Classes
+   --
+
+   pk-CompositeSignature {
+        OBJECT IDENTIFIER:id, FirstPublicKeyType,
+        SecondPublicKeyType} PUBLIC-KEY ::=
+        {
+          IDENTIFIER id
+          KEY SEQUENCE {
+           BIT STRING (CONTAINING FirstPublicKeyType)
+           BIT STRING (CONTAINING SecondPublicKeyType)
+          }
+          PARAMS ARE absent
+          CERT-KEY-USAGE { digitalSignature, nonRepudiation, keyCertSign, cRLSign }
+        }
+
+
+   sa-CompositeSignature{OBJECT IDENTIFIER:id,
+      PUBLIC-KEY:publicKeyType }
+         SIGNATURE-ALGORITHM ::=  {
+            IDENTIFIER id
+            VALUE CompositeSignatureValue
+            PARAMS ARE absent
+            PUBLIC-KEYS {publicKeyType}
+         }
+
+   -- TODO: OID to be replaced by IANA
+   id-MLDSA44-RSA2048-PSS-SHA256 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+      entrust(114027) algorithm(80) composite(7) signature(1) 1 }
+
+   pk-MLDSA44-RSA2048-PSS-SHA256 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-MLDSA44-RSA2048-PSS-SHA256,
+     OCTET STRING, RSAPublicKey}
+
+   sa-MLDSA44-RSA2048-PSS-SHA256 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-MLDSA44-RSA2048-PSS-SHA256,
+          pk-MLDSA44-RSA2048-PSS-SHA256 }
+
+   -- TODO: OID to be replaced by IANA
+   id-MLDSA44-RSA2048-PKCS15-SHA256 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+      entrust(114027) algorithm(80) composite(7) signature(1) 2 }
+
+   pk-MLDSA44-RSA2048-PKCS15-SHA256 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-MLDSA44-RSA2048-PKCS15-SHA256,
+     OCTET STRING, RSAPublicKey}
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 24]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
+   sa-MLDSA44-RSA2048-PKCS15-SHA256 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-MLDSA44-RSA2048-PKCS15-SHA256,
+          pk-MLDSA44-RSA2048-PKCS15-SHA256 }
+
+
+   -- TODO: OID to be replaced by IANA
+   id-MLDSA44-Ed25519-SHA512 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+      entrust(114027) algorithm(80) composite(7) signature(1) 3 }
+
+   pk-MLDSA44-Ed25519-SHA512 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-MLDSA44-Ed25519-SHA512,
+     OCTET STRING, ECPoint}
+
+   sa-MLDSA44-Ed25519-SHA512 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-MLDSA44-Ed25519-SHA512,
+          pk-MLDSA44-Ed25519-SHA512 }
+
+
+   -- TODO: OID to be replaced by IANA
+   id-MLDSA44-ECDSA-P256-SHA256 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+      entrust(114027) algorithm(80) composite(7) signature(1) 4 }
+
+   pk-MLDSA44-ECDSA-P256-SHA256 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-MLDSA44-ECDSA-P256-SHA256,
+     OCTET STRING, ECPoint}
+
+   sa-MLDSA44-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-MLDSA44-ECDSA-P256-SHA256,
+          pk-MLDSA44-ECDSA-P256-SHA256 }
+
+
+   -- TODO: OID to be replaced by IANA
+   id-MLDSA44-ECDSA-brainpoolP256r1-SHA256 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+      entrust(114027) algorithm(80) composite(7) signature(1) 5 }
+
+   pk-MLDSA44-ECDSA-brainpoolP256r1-SHA256 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-MLDSA44-ECDSA-brainpoolP256r1-SHA256,
+     OCTET STRING, ECPoint}
+
+   sa-MLDSA44-ECDSA-brainpoolP256r1-SHA256 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-MLDSA44-ECDSA-brainpoolP256r1-SHA256,
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 25]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
+          pk-MLDSA44-ECDSA-brainpoolP256r1-SHA256 }
+
+
+   -- TODO: OID to be replaced by IANA
+   id-MLDSA65-RSA3072-PSS-SHA256 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+      entrust(114027) algorithm(80) composite(7) signature(1) 6 }
+
+   pk-MLDSA65-RSA3072-PSS-SHA256 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-MLDSA65-RSA3072-PSS-SHA256,
+     OCTET STRING, RSAPublicKey}
+
+   sa-MLDSA65-RSA3072-PSS-SHA256 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-MLDSA65-RSA3072-PSS-SHA256,
+          pk-MLDSA65-RSA3072-PSS-SHA256 }
+
+
+   -- TODO: OID to be replaced by IANA
+   id-MLDSA65-RSA3072-PKCS15-SHA256 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+      entrust(114027) algorithm(80) composite(7) signature(1) 7 }
+
+   pk-MLDSA65-RSA3072-PKCS15-SHA256 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-MLDSA65-RSA3072-PKCS15-SHA256,
+     OCTET STRING, RSAPublicKey}
+
+   sa-MLDSA65-RSA3072-PKCS15-SHA256 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-MLDSA65-RSA3072-PKCS15-SHA256,
+          pk-MLDSA65-RSA3072-PKCS15-SHA256 }
+
+
+   -- TODO: OID to be replaced by IANA
+   id-MLDSA65-ECDSA-P256-SHA256 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+      entrust(114027) algorithm(80) composite(7) signature(1) 8 }
+
+   pk-MLDSA65-ECDSA-P256-SHA256 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-MLDSA65-ECDSA-P256-SHA256,
+     OCTET STRING, ECPoint}
+
+   sa-MLDSA65-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-MLDSA65-ECDSA-P256-SHA256,
+          pk-MLDSA65-ECDSA-P256-SHA256 }
+
+
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 26]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
+   -- TODO: OID to be replaced by IANA
+   id-id-MLDSA65-ECDSA-brainpoolP256r1-SHA256 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+      entrust(114027) algorithm(80) composite(7) signature(1) 9 }
+
+   pk-id-MLDSA65-ECDSA-brainpoolP256r1-SHA256 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-MLDSA65-ECDSA-brainpoolP256r1-SHA256,
+     OCTET STRING, ECPoint}
+
+   sa-id-MLDSA65-ECDSA-brainpoolP256r1-SHA256 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-id-MLDSA65-ECDSA-brainpoolP256r1-SHA256,
+          pk-id-MLDSA65-ECDSA-brainpoolP256r1-SHA256 }
+
+
+   -- TODO: OID to be replaced by IANA
+   id-MLDSA65-Ed25519-SHA512 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+      entrust(114027) algorithm(80) composite(7) signature(1) 10 }
+
+   pk-MLDSA65-Ed25519-SHA512 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-MLDSA65-Ed25519-SHA512,
+     OCTET STRING, ECPoint}
+
+   sa-MLDSA65-Ed25519-SHA512 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-MLDSA65-Ed25519-SHA512,
+          pk-MLDSA65-Ed25519-SHA512 }
+
+
+   -- TODO: OID to be replaced by IANA
+   id-MLDSA87-ECDSA-P384-SHA384 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+      entrust(114027) algorithm(80) composite(7) signature(1) 11 }
+
+   pk-MLDSA87-ECDSA-P384-SHA384 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-MLDSA87-ECDSA-P384-SHA384,
+     OCTET STRING, ECPoint}
+
+   sa-MLDSA87-ECDSA-P384-SHA384 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-MLDSA87-ECDSA-P384-SHA384,
+          pk-MLDSA87-ECDSA-P384-SHA384 }
+
+
+   -- TODO: OID to be replaced by IANA
+   id-MLDSA87-ECDSA-brainpoolP384r1-SHA384 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 27]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
+      entrust(114027) algorithm(80) composite(7) signature(1) 12 }
+
+   pk-MLDSA87-ECDSA-brainpoolP384r1-SHA384 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-MLDSA87-ECDSA-brainpoolP384r1-SHA384,
+     OCTET STRING, ECPoint}
+
+   sa-MLDSA87-ECDSA-brainpoolP384r1-SHA384 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-MLDSA87-ECDSA-brainpoolP384r1-SHA384,
+          pk-MLDSA87-ECDSA-brainpoolP384r1-SHA384 }
+
+
+   -- TODO: OID to be replaced by IANA
+   id-MLDSA87-Ed448-SHAKE256 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+      entrust(114027) algorithm(80) composite(7) signature(1) 13 }
+
+   pk-MLDSA87-Ed448-SHAKE256 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-MLDSA87-Ed448-SHAKE256,
+     OCTET STRING, ECPoint}
+
+   sa-MLDSA87-Ed448-SHAKE256 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-MLDSA87-Ed448-SHAKE256,
+          pk-MLDSA87-Ed448-SHAKE256 }
+
+   -- TODO: OID to be replaced by IANA
+   id-Falon512-ECDSA-P256-SHA256 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+      entrust(114027) algorithm(80) composite(7) signature(1) 14 }
+
+   pk-Falon512-ECDSA-P256-SHA256 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-MLDSA87-Ed448-SHAKE256,
+     OCTET STRING, ECPoint}
+
+   sa-Falon512-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-Falon512-ECDSA-P256-SHA256,
+          pk-Falon512-ECDSA-P256-SHA256 }
+
+   -- TODO: OID to be replaced by IANA
+   id-Falcon512-ECDSA-brainpoolP256r1-SHA256 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+      entrust(114027) algorithm(80) composite(7) signature(1) 15 }
+
+   pk-Falcon512-ECDSA-brainpoolP256r1-SHA256 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-Falcon512-ECDSA-brainpoolP256r1-SHA256,
+     OCTET STRING, ECPoint}
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 28]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
+   sa-Falcon512-ECDSA-brainpoolP256r1-SHA256 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-Falcon512-ECDSA-brainpoolP256r1-SHA256,
+          pk-Falcon512-ECDSA-brainpoolP256r1-SHA256 }
+
+   -- TODO: OID to be replaced by IANA
+   id-Falcon512-Ed25519-SHA512 OBJECT IDENTIFIER ::= {
+      joint-iso-itu-t(2) country(16) us(840) organization(1)
+      entrust(114027) algorithm(80) composite(7) signature(1) 16 }
+
+   pk-Falcon512-Ed25519-SHA512 PUBLIC-KEY ::=
+     pk-CompositeSignature{ id-Falcon512-Ed25519-SHA512,
+     OCTET STRING, ECPoint}
+
+   sa-Falcon512-Ed25519-SHA512 SIGNATURE-ALGORITHM ::=
+       sa-CompositeSignature{
+          id-Falcon512-Ed25519-SHA512,
+          pk-Falcon512-Ed25519-SHA512 }
+
+
+   END
 
    <CODE ENDS>
 
@@ -1217,6 +1619,13 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
    *  Description: id-MLDSA44-RSA2048-PSS-SHA256
 
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 29]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    *  References: This Document
 
    *  id-MLDSA44-RSA2048-PKCS15-SHA256
@@ -1226,13 +1635,6 @@ Internet-Draft              PQ Composite Sigs               October 2023
    *  Description: id-MLDSA44-RSA2048-PKCS15-SHA256
 
    *  References: This Document
-
-
-
-Ounsworth, et al.         Expires 14 April 2024                [Page 22]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
    *  id-MLDSA44-Ed25519-SHA512
 
@@ -1272,6 +1674,14 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
    *  Description: id-MLDSA65-RSA3072-PKCS15-SHA256
 
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 30]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    *  References: This Document
 
    *  id-MLDSA65-ECDSA-P256-SHA256
@@ -1281,14 +1691,6 @@ Internet-Draft              PQ Composite Sigs               October 2023
    *  Description: id-MLDSA65-ECDSA-P256-SHA256
 
    *  References: This Document
-
-
-
-
-Ounsworth, et al.         Expires 14 April 2024                [Page 23]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
    *  id-MLDSA65-ECDSA-brainpoolP256r1-SHA256
 
@@ -1328,6 +1730,14 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
    *  Description: id-MLDSA87-Ed448
 
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 31]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    *  References: This Document
 
    *  id-Falon512-ECDSA-P256-SHA256
@@ -1337,14 +1747,6 @@ Internet-Draft              PQ Composite Sigs               October 2023
    *  Description: id-Falon512-ECDSA-P256-SHA256
 
    *  References: This Document
-
-
-
-
-Ounsworth, et al.         Expires 14 April 2024                [Page 24]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
    *  id-Falcon512-ECDSA-brainpoolP256r1-SHA256
 
@@ -1385,6 +1787,13 @@ Internet-Draft              PQ Composite Sigs               October 2023
    policy might continue to allow id-MLDSA65-ECDSA-P256-SHA256 even
    after ECDH-P256 is deprecated.
 
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 32]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
 9.  References
 
 9.1.  Normative References
@@ -1394,14 +1803,6 @@ Internet-Draft              PQ Composite Sigs               October 2023
               Westerbaan, "Internet X.509 Public Key Infrastructure:
               Algorithm Identifiers for Dilithium", Work in Progress,
               Internet-Draft, draft-ietf-lamps-dilithium-certificates-
-
-
-
-Ounsworth, et al.         Expires 14 April 2024                [Page 25]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
-
               01, 6 February 2023,
               <https://datatracker.ietf.org/doc/html/draft-ietf-lamps-
               dilithium-certificates-01>.
@@ -1438,6 +1839,17 @@ Internet-Draft              PQ Composite Sigs               October 2023
               DOI 10.17487/RFC4210, September 2005,
               <https://www.rfc-editor.org/info/rfc4210>.
 
+
+
+
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 33]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    [RFC4211]  Schaad, J., "Internet X.509 Public Key Infrastructure
               Certificate Request Message Format (CRMF)", RFC 4211,
               DOI 10.17487/RFC4211, September 2005,
@@ -1448,15 +1860,6 @@ Internet-Draft              PQ Composite Sigs               October 2023
               Infrastructure Certificate and Certificate Revocation List
               (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
               <https://www.rfc-editor.org/info/rfc5280>.
-
-
-
-
-
-Ounsworth, et al.         Expires 14 April 2024                [Page 26]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
    [RFC5480]  Turner, S., Brown, D., Yiu, K., Housley, R., and T. Polk,
               "Elliptic Curve Cryptography Subject Public Key
@@ -1495,6 +1898,14 @@ Internet-Draft              PQ Composite Sigs               October 2023
               DOI 10.17487/RFC8032, January 2017,
               <https://www.rfc-editor.org/info/rfc8032>.
 
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 34]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
@@ -1504,15 +1915,6 @@ Internet-Draft              PQ Composite Sigs               October 2023
               X.509 Public Key Infrastructure", RFC 8410,
               DOI 10.17487/RFC8410, August 2018,
               <https://www.rfc-editor.org/info/rfc8410>.
-
-
-
-
-
-Ounsworth, et al.         Expires 14 April 2024                [Page 27]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
    [RFC8411]  Schaad, J. and R. Andrews, "IANA Registration for the
               Cryptographic Algorithm Object Identifier Range",
@@ -1547,6 +1949,19 @@ Internet-Draft              PQ Composite Sigs               October 2023
               <https://datatracker.ietf.org/doc/html/draft-driscoll-pqt-
               hybrid-terminology-01>.
 
+
+
+
+
+
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 35]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    [I-D.guthrie-ipsecme-ikev2-hybrid-auth]
               Guthrie, R., "Hybrid Non-Composite Authentication in
               IKEv2", Work in Progress, Internet-Draft, draft-guthrie-
@@ -1560,15 +1975,6 @@ Internet-Draft              PQ Composite Sigs               October 2023
               ounsworth-pq-composite-kem-01, 13 March 2023,
               <https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-
               composite-kem-01>.
-
-
-
-
-
-Ounsworth, et al.         Expires 14 April 2024                [Page 28]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
    [I-D.pala-klaussner-composite-kofn]
               Pala, M. and J. Klaußner, "K-threshold Composite
@@ -1602,6 +2008,16 @@ Internet-Draft              PQ Composite Sigs               October 2023
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/info/rfc8446>.
 
+
+
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 36]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    [RFC8551]  Schaad, J., Ramsdell, B., and S. Turner, "Secure/
               Multipurpose Internet Mail Extensions (S/MIME) Version 4.0
               Message Specification", RFC 8551, DOI 10.17487/RFC8551,
@@ -1614,17 +2030,6 @@ A.1.  Explicit Composite Signature Examples
    TODO
 
 Appendix B.  Implementation Considerations
-
-
-
-
-
-
-
-Ounsworth, et al.         Expires 14 April 2024                [Page 29]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
 B.1.  FIPS certification
 
@@ -1661,26 +2066,19 @@ B.2.  Backwards Compatibility
    [RFC7296], to non-negotiated asynchronous protocols such as S/MIME
    signed email [RFC8551], document signing such as in the context of
    the European eIDAS regulations [eIDAS2014], and publicly trusted code
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 37]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    signing [codeSigningBRsv2.8], as well as myriad other standardized
    and proprietary protocols and applications that leverage CMS
    [RFC5652] signed structures.  Composite simplifies the protocol
    design work because it can be implemented as a signature algorithm
    that fits into existing systems.
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth, et al.         Expires 14 April 2024                [Page 30]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
 B.2.1.  Parallel PKIs
 
@@ -1722,6 +2120,16 @@ B.2.1.  Parallel PKIs
    compatible with and ignore the others, thus achieving full backwards
    compatibility.
 
+
+
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 38]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
 B.2.2.  Hybrid Extensions (Keys and Signatures)
 
    The use of Composite Crypto provides the possibility to process
@@ -1730,14 +2138,6 @@ B.2.2.  Hybrid Extensions (Keys and Signatures)
    whole system.  However, when it is not possible to upgrade the crypto
    engines/libraries, it is possible to leverage X.509 extensions to
    encode the additional keys and signatures.  When the custom
-
-
-
-Ounsworth, et al.         Expires 14 April 2024                [Page 31]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
-
    extensions are not marked critical, although this approach provides
    the most backward-compatible approach where clients can simply ignore
    the post-quantum (or extra) keys and signatures, it also requires all
@@ -1778,6 +2178,14 @@ D.1.  Making contributions
 
    https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs
 
+
+
+
+Ounsworth, et al.         Expires 20 April 2024                [Page 39]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
 Authors' Addresses
 
    Mike Ounsworth
@@ -1786,12 +2194,6 @@ Authors' Addresses
    Ottawa, Ontario  K2K 3G5
    Canada
    Email: mike.ounsworth@entrust.com
-
-
-
-Ounsworth, et al.         Expires 14 April 2024                [Page 32]
-
-Internet-Draft              PQ Composite Sigs               October 2023
 
 
    John Gray
@@ -1835,14 +2237,4 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-
-
-
-
-
-
-
-
-
-
-Ounsworth, et al.         Expires 14 April 2024                [Page 33]
+Ounsworth, et al.         Expires 20 April 2024                [Page 40]

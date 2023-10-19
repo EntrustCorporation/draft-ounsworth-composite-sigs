@@ -677,7 +677,7 @@ where:
 
 <CODE STARTS>
 
-!!  Composite-Signatures-2023.asn
+{::include Composite-Signatures-2023.asn}
  
 <CODE ENDS>
 
