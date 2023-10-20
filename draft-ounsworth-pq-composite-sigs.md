@@ -317,7 +317,7 @@ Note on composite inputs: the method of providing the list of component keys and
 
 Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1 or K2 is a composite.
 
-A composite signature MUST produce, and include in the output, a signature value for every component key in and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2. 
+A composite signature MUST produce, and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2. 
 
 
 ### Composite Verify {#sec-comp-sig-verify}
