@@ -5,9 +5,11 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
 Intended status: Standards Track                                 Entrust
-Expires: 20 April 2024                                           M. Pala
+Expires: 25 April 2024                                           M. Pala
                                                                CableLabs
-                                                         18 October 2023
+                                                            J. Klaussner
+                                                            D-Trust GmbH
+                                                         23 October 2023
 
 
               Composite Signatures For Use In Internet PKI
@@ -31,37 +33,30 @@ Abstract
    Traditional Hybrid, Post-Quantum / Post-Quantum Hybrid, or
    combinations thereof.  This document, and its companions, defines a
    specific instantiation of hybrid paradigm called "composite" where
-   multiple cryptographic algorithms are combined to form a single key,
-   signature, or key encapsulation mechanism (KEM) such that they can be
-   treated as a single atomic object at the protocol level.
+   multiple cryptographic algorithms are combined to form a single key
+   or signature such that they can be treated as a single atomic object
+   at the protocol level.
 
-   This document defines the structures CompositeSignatureValue, and
-   CompositeSignatureParams, which are sequences of the respective
-   structure for each component algorithm.  The explicit variant is
-   defined which allows for a set of signature algorithm identifier OIDs
-   to be registered together as an explicit composite signature
-   algorithm and assigned an OID.
-
-   This document is intended to be coupled with corresponding documents
-   that define the structure and semantics of composite public and
-   private keys and encryption [I-D.ounsworth-pq-composite-keys],
-   however may also be used with non-composite keys, such as when a
-   protocol combines multiple certificates into a single cryptographic
-   operation.
-
-
-
-
-
-Ounsworth, et al.         Expires 20 April 2024                 [Page 1]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
+   This document defines the structures CompositeSignaturePublicKey,
+   CompositeSignaturePrivateKey and CompositeSignatureValue, which are
+   sequences of the respective structure for each component algorithm.
+   Composite signature algorithm identifiers are specified in this
+   document which represent the explicit combinations of the underlying
+   component algorithms.
 
 Status of This Memo
 
    This Internet-Draft is submitted in full conformance with the
    provisions of BCP 78 and BCP 79.
+
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                 [Page 1]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
 
    Internet-Drafts are working documents of the Internet Engineering
    Task Force (IETF).  Note that other groups may also distribute
@@ -73,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 April 2024.
+   This Internet-Draft will expire on 25 April 2024.
 
 Copyright Notice
 
@@ -97,7 +92,7 @@ Table of Contents
      2.2.  Composite Design Philosophy . . . . . . . . . . . . . . .   6
      2.3.  Composite Signatures  . . . . . . . . . . . . . . . . . .   7
        2.3.1.  Composite KeyGen  . . . . . . . . . . . . . . . . . .   7
-       2.3.2.  Composite Sign  . . . . . . . . . . . . . . . . . . .   8
+       2.3.2.  Composite Sign  . . . . . . . . . . . . . . . . . . .   7
        2.3.3.  Composite Verify  . . . . . . . . . . . . . . . . . .   9
      2.4.  OID Concatenation . . . . . . . . . . . . . . . . . . . .  11
      2.5.  PreHashing the Message  . . . . . . . . . . . . . . . . .  13
@@ -106,19 +101,19 @@ Table of Contents
      3.1.  pk-CompositeSignature . . . . . . . . . . . . . . . . . .  14
      3.2.  CompositeSignaturePublicKey . . . . . . . . . . . . . . .  15
      3.3.  CompositeSignaturePrivateKey  . . . . . . . . . . . . . .  15
-
-
-
-Ounsworth, et al.         Expires 20 April 2024                 [Page 2]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
-
      3.4.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .  16
      3.5.  Key Usage Bits  . . . . . . . . . . . . . . . . . . . . .  16
    4.  Composite Signature Structures  . . . . . . . . . . . . . . .  17
      4.1.  sa-CompositeSignature . . . . . . . . . . . . . . . . . .  17
      4.2.  CompositeSignatureValue . . . . . . . . . . . . . . . . .  18
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                 [Page 2]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    5.  Algorithm Identifiers . . . . . . . . . . . . . . . . . . . .  18
      5.1.  Notes on id-MLDSA44-RSA2048-PSS-SHA256 and
            id-MLDSA65-RSA3072-PSS-SHA256 . . . . . . . . . . . . . .  21
@@ -133,18 +128,21 @@ Internet-Draft              PQ Composite Sigs               October 2023
      8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  32
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  33
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  33
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  35
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  34
    Appendix A.  Samples  . . . . . . . . . . . . . . . . . . . . . .  37
      A.1.  Explicit Composite Signature Examples . . . . . . . . . .  37
-   Appendix B.  Implementation Considerations  . . . . . . . . . . .  37
-     B.1.  FIPS certification  . . . . . . . . . . . . . . . . . . .  37
-     B.2.  Backwards Compatibility . . . . . . . . . . . . . . . . .  37
-       B.2.1.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  38
-       B.2.2.  Hybrid Extensions (Keys and Signatures) . . . . . . .  39
-   Appendix C.  Intellectual Property Considerations . . . . . . . .  39
-   Appendix D.  Contributors and Acknowledgements  . . . . . . . . .  39
-     D.1.  Making contributions  . . . . . . . . . . . . . . . . . .  39
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  40
+       A.1.1.  MLDSA44-ECDSA-P256-SHA256 Public Key  . . . . . . . .  37
+       A.1.2.  MLDSA44-ECDSA-P256 Private Key  . . . . . . . . . . .  37
+       A.1.3.  MLDSA44-ECDSA-P256 Self-Signed X509 Certificate . . .  39
+   Appendix B.  Implementation Considerations  . . . . . . . . . . .  41
+     B.1.  FIPS certification  . . . . . . . . . . . . . . . . . . .  41
+     B.2.  Backwards Compatibility . . . . . . . . . . . . . . . . .  42
+       B.2.1.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  42
+       B.2.2.  Hybrid Extensions (Keys and Signatures) . . . . . . .  43
+   Appendix C.  Intellectual Property Considerations . . . . . . . .  43
+   Appendix D.  Contributors and Acknowledgements  . . . . . . . . .  43
+     D.1.  Making contributions  . . . . . . . . . . . . . . . . . .  44
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  44
 
 1.  Changes in version -10
 
@@ -153,7 +151,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
    *  Changed all SEQUENCE OF SIZE (2..MAX) to SEQUENCE OF SIZE (2).
 
    *  Removed CompositeSignatureParams since all params are now explicit
-      in the OID
+      in the Object IDs
 
    *  Made RSA keys fixed-length at 3072
 
@@ -161,11 +159,13 @@ Internet-Draft              PQ Composite Sigs               October 2023
       specifies the keytype and parameters
 
    *  Re-worked wire format of the composite signature by prehashing and
-      concatenating the OID to each component signature.
+      concatenating the OID to each component signature.  This is
+      believed to give the binding between the two component algorithms
+      a stronger non-separability property.
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                 [Page 3]
+Ounsworth, et al.         Expires 25 April 2024                 [Page 3]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -175,7 +175,8 @@ Internet-Draft              PQ Composite Sigs               October 2023
    *  Made this document standalone by folding in the minimum necessary
       content from composite-keys
 
-   *  Added a paragraph describing how to reconstitute component SPKIs.
+   *  Added a paragraph describing how to reconstitute component Subject
+      Public Key Infos
 
    *  Added a section showing the HEX encoding of the String Algorithm
       Names
@@ -190,9 +191,9 @@ Internet-Draft              PQ Composite Sigs               October 2023
    *  Added a section on Signature APIs (Keygen, Sign, Verify) in
       introduction
 
-   *  TODO Refactored to use MartinThomson github template
+   *  Added reference to draft-vaira-pquip-pqc-use-cases-00
 
-   *  TODO Worked on Use cases references
+   *  TODO Refactored to use MartinThomson github template
 
 2.  Introduction
 
@@ -220,8 +221,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-
-Ounsworth, et al.         Expires 20 April 2024                 [Page 4]
+Ounsworth, et al.         Expires 25 April 2024                 [Page 4]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -238,6 +238,12 @@ Internet-Draft              PQ Composite Sigs               October 2023
       require mechanisms that allow for staged migrations from fully
       classical to fully post-quantum-aware cryptography.
 
+   *  Safeguard against faulty algorithm implementations and compromised
+      keys: Even for long known algorithms there is a non-negligible
+      risk of severe implementation faults.  Latest examples are the
+      ROCA attack and ECDSA psychic signatures.  Using more than one
+      algorithms will mitigate these risks.
+
    This document defines a specific instantiation of the PQ/T Hybrid
    paradigm called "composite" where multiple cryptographic algorithms
    are combined to form a single signature such that it can be treated
@@ -247,9 +253,12 @@ Internet-Draft              PQ Composite Sigs               October 2023
    remains strong.  Concrete instantiations of composite signature
    algorithms are provided based on ML-DSA, Falcon, RSA and ECDSA.
    Backwards compatibility is not directly covered in this document, but
-   is the subject of Appendix B.2.  This document is intended for
-   general applicability anywhere that digital signatures are used
-   within PKIX and CMS structures.
+   is the subject of Appendix B.2.
+
+   This document is intended for general applicability anywhere that
+   digital signatures are used within PKIX and CMS structures.  For a
+   more detailed use-case discussion for composite signatures, the
+   reader is encouraged to look at [I-D.vaira-pquip-pqc-use-cases]
 
 2.1.  Terminology
 
@@ -266,6 +275,13 @@ Internet-Draft              PQ Composite Sigs               October 2023
    the algorithm.  This document is primarily concerned with algorithms
    for producing digital signatures.
 
+
+
+Ounsworth, et al.         Expires 25 April 2024                 [Page 5]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    BER: Basic Encoding Rules (BER) as defined in [X.690].
 
    CLIENT: Any software that is making use of a cryptographic key.  This
@@ -273,14 +289,6 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
    COMPONENT ALGORITHM: A single basic algorithm which is contained
    within a composite algorithm.
-
-
-
-
-Ounsworth, et al.         Expires 20 April 2024                 [Page 5]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
    COMPOSITE ALGORITHM: An algorithm which is a sequence of two or more
    component algorithms, as defined in Section 3.
@@ -317,32 +325,19 @@ Internet-Draft              PQ Composite Sigs               October 2023
       incorporates multiple component cryptographic elements of the same
       type in a multi-algorithm scheme.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth, et al.         Expires 20 April 2024                 [Page 6]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
-
    Composite keys as defined here follow this definition and should be
    regarded as a single key that performs a single cryptographic
    operation such key generation, signing, verifying, encapsulating, or
    decapsulating -- using its internal sequence of component keys as if
    they form a single key.  This generally means that the complexity of
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                 [Page 6]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    combining algorithms can and should be handled by the cryptographic
    library or cryptographic module, and the single composite public key,
    private key, and ciphertext can be carried in existing fields in
@@ -383,17 +378,6 @@ Internet-Draft              PQ Composite Sigs               October 2023
    and it produces a composite public key pk as per Section 3.2 and a
    composite secret key sk is per Section 3.3.
 
-
-
-
-
-
-
-Ounsworth, et al.         Expires 20 April 2024                 [Page 7]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
-
 2.3.2.  Composite Sign
 
    Generation of a composite signature involves applying each component
@@ -402,6 +386,13 @@ Internet-Draft              PQ Composite Sigs               October 2023
    the CompositeSignatureValue structure defined in Section 4.1.
 
    The following process is used to generate composite signature values.
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                 [Page 7]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
 
 Sign (sk, Message) -> (signature)
 Input:
@@ -442,15 +433,22 @@ Signature Generation Process:
 
    4. Output signature
 
+                Figure 1: Composite Sign(sk, Message)
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                 [Page 8]
+
+
+
+
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                 [Page 8]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
-
-                Figure 1: Composite Sign(sk, Message)
 
    Note on composite inputs: the method of providing the list of
    component keys and algorithms is flexible and beyond the scope of
@@ -462,14 +460,12 @@ Internet-Draft              PQ Composite Sigs               October 2023
    conformant to this document so long as it produces the same output as
    the process sketched above.
 
-   Since recursive composite public keys are disallowed in
-   [I-D.ounsworth-pq-composite-keys], no component signature may itself
-   be a composite; ie the signature generation process MUST fail if one
-   of the private keys K1 or K2 is a composite.
+   Since recursive composite public keys are disallowed, no component
+   signature may itself be a composite; ie the signature generation
+   process MUST fail if one of the private keys K1 or K2 is a composite.
 
    A composite signature MUST produce, and include in the output, a
-   signature value for every component key in and include in the output,
-   a signature value for every component key in the corresponding
+   signature value for every component key in the corresponding
    CompositePublicKey, and they MUST be in the same order; ie in the
    output, S1 MUST correspond to K1, S2 to K2.
 
@@ -498,18 +494,17 @@ Input:
                         signature values (S1 and S2) to be verified.
 
      A1, A2             Component signature algorithms. See note
-
-
-
-Ounsworth, et al.         Expires 20 April 2024                 [Page 9]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
-
                         below on composite inputs.
 
      HASH               The Message Digest Algorithm for pre-hashing.  See
                         section on pre-hashing the message below.
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                 [Page 9]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
 
      OID                The Composite Signature String Algorithm Name converted
                         from ASCII to bytes.  See section on OID concatenation
@@ -546,22 +541,6 @@ Signature Verification Procedure::
 
           Figure 2: Composite Verify(pk, Message, signature)
 
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth, et al.         Expires 20 April 2024                [Page 10]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
-
    Note on composite inputs: the method of providing the list of
    component keys and algorithms is flexible and beyond the scope of
    this pseudo-code.  When passed to the Composite Verify(pk, Message,
@@ -572,10 +551,16 @@ Internet-Draft              PQ Composite Sigs               October 2023
    to be conformant to this document so long as it produces the same
    output as the process sketched above.
 
-   Since recursive composite public keys are disallowed in
-   [I-D.ounsworth-pq-composite-keys], no component signature may itself
-   be a composite; ie the signature generation process MUST fail if one
-   of the private keys K1 or K2 is a composite.
+   Since recursive composite public keys are disallowed, no component
+   signature may itself be a composite; ie the signature generation
+   process MUST fail if one of the private keys K1 or K2 is a composite.
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 10]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
 
 2.4.  OID Concatenation
 
@@ -613,7 +598,22 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 11]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 11]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -669,7 +669,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 12]
+Ounsworth, et al.         Expires 25 April 2024                [Page 12]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -725,7 +725,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 13]
+Ounsworth, et al.         Expires 25 April 2024                [Page 13]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -781,7 +781,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 14]
+Ounsworth, et al.         Expires 25 April 2024                [Page 14]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -837,7 +837,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 15]
+Ounsworth, et al.         Expires 25 April 2024                [Page 15]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -893,7 +893,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 16]
+Ounsworth, et al.         Expires 25 April 2024                [Page 16]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -949,7 +949,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 17]
+Ounsworth, et al.         Expires 25 April 2024                [Page 17]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1005,7 +1005,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 18]
+Ounsworth, et al.         Expires 25 April 2024                [Page 18]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1061,7 +1061,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 19]
+Ounsworth, et al.         Expires 25 April 2024                [Page 19]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1117,7 +1117,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 20]
+Ounsworth, et al.         Expires 25 April 2024                [Page 20]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1173,7 +1173,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 21]
+Ounsworth, et al.         Expires 25 April 2024                [Page 21]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1229,7 +1229,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 22]
+Ounsworth, et al.         Expires 25 April 2024                [Page 22]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1285,7 +1285,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 23]
+Ounsworth, et al.         Expires 25 April 2024                [Page 23]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1341,7 +1341,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 24]
+Ounsworth, et al.         Expires 25 April 2024                [Page 24]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1397,7 +1397,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 25]
+Ounsworth, et al.         Expires 25 April 2024                [Page 25]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1453,7 +1453,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 26]
+Ounsworth, et al.         Expires 25 April 2024                [Page 26]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1509,7 +1509,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 27]
+Ounsworth, et al.         Expires 25 April 2024                [Page 27]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1565,7 +1565,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 28]
+Ounsworth, et al.         Expires 25 April 2024                [Page 28]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1621,7 +1621,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 29]
+Ounsworth, et al.         Expires 25 April 2024                [Page 29]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1677,7 +1677,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 30]
+Ounsworth, et al.         Expires 25 April 2024                [Page 30]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1733,7 +1733,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 31]
+Ounsworth, et al.         Expires 25 April 2024                [Page 31]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1789,7 +1789,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 20 April 2024                [Page 32]
+Ounsworth, et al.         Expires 25 April 2024                [Page 32]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1797,31 +1797,6 @@ Internet-Draft              PQ Composite Sigs               October 2023
 9.  References
 
 9.1.  Normative References
-
-   [I-D.ietf-lamps-dilithium-certificates]
-              Massimo, J., Kampanakis, P., Turner, S., and B.
-              Westerbaan, "Internet X.509 Public Key Infrastructure:
-              Algorithm Identifiers for Dilithium", Work in Progress,
-              Internet-Draft, draft-ietf-lamps-dilithium-certificates-
-              01, 6 February 2023,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-lamps-
-              dilithium-certificates-01>.
-
-   [I-D.massimo-lamps-pq-sig-certificates]
-              Massimo, J., Kampanakis, P., Turner, S., and B.
-              Westerbaan, "Algorithms and Identifiers for Post-Quantum
-              Algorithms", Work in Progress, Internet-Draft, draft-
-              massimo-lamps-pq-sig-certificates-00, 8 July 2022,
-              <https://datatracker.ietf.org/doc/html/draft-massimo-
-              lamps-pq-sig-certificates-00>.
-
-   [I-D.ounsworth-pq-composite-keys]
-              Ounsworth, M., Gray, J., Pala, M., and J. Klaußner,
-              "Composite Public and Private Keys For Use In Internet
-              PKI", Work in Progress, Internet-Draft, draft-ounsworth-
-              pq-composite-keys-04, 13 March 2023,
-              <https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-
-              composite-keys-04>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1838,17 +1813,6 @@ Internet-Draft              PQ Composite Sigs               October 2023
               Management Protocol (CMP)", RFC 4210,
               DOI 10.17487/RFC4210, September 2005,
               <https://www.rfc-editor.org/info/rfc4210>.
-
-
-
-
-
-
-
-Ounsworth, et al.         Expires 20 April 2024                [Page 33]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
    [RFC4211]  Schaad, J., "Internet X.509 Public Key Infrastructure
               Certificate Request Message Format (CRMF)", RFC 4211,
@@ -1879,6 +1843,13 @@ Internet-Draft              PQ Composite Sigs               October 2023
               DOI 10.17487/RFC5958, August 2010,
               <https://www.rfc-editor.org/info/rfc5958>.
 
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 33]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    [RFC6090]  McGrew, D., Igoe, K., and M. Salter, "Fundamental Elliptic
               Curve Cryptography Algorithms", RFC 6090,
               DOI 10.17487/RFC6090, February 2011,
@@ -1897,14 +1868,6 @@ Internet-Draft              PQ Composite Sigs               October 2023
               Signature Algorithm (EdDSA)", RFC 8032,
               DOI 10.17487/RFC8032, January 2017,
               <https://www.rfc-editor.org/info/rfc8032>.
-
-
-
-
-Ounsworth, et al.         Expires 20 April 2024                [Page 34]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -1934,6 +1897,15 @@ Internet-Draft              PQ Composite Sigs               October 2023
               infrastructure", 2017, <https://link.springer.com/
               chapter/10.1007/978-3-319-59879-6_22>.
 
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 34]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    [I-D.becker-guthrie-noncomposite-hybrid-auth]
               Becker, A., Guthrie, R., and M. J. Jenkins, "Non-Composite
               Hybrid Authentication in PKIX and Applications to Internet
@@ -1949,25 +1921,29 @@ Internet-Draft              PQ Composite Sigs               October 2023
               <https://datatracker.ietf.org/doc/html/draft-driscoll-pqt-
               hybrid-terminology-01>.
 
-
-
-
-
-
-
-
-
-Ounsworth, et al.         Expires 20 April 2024                [Page 35]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
-
    [I-D.guthrie-ipsecme-ikev2-hybrid-auth]
               Guthrie, R., "Hybrid Non-Composite Authentication in
               IKEv2", Work in Progress, Internet-Draft, draft-guthrie-
               ipsecme-ikev2-hybrid-auth-00, 25 March 2022,
               <https://datatracker.ietf.org/doc/html/draft-guthrie-
               ipsecme-ikev2-hybrid-auth-00>.
+
+   [I-D.ietf-lamps-dilithium-certificates]
+              Massimo, J., Kampanakis, P., Turner, S., and B.
+              Westerbaan, "Internet X.509 Public Key Infrastructure:
+              Algorithm Identifiers for Dilithium", Work in Progress,
+              Internet-Draft, draft-ietf-lamps-dilithium-certificates-
+              01, 6 February 2023,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-lamps-
+              dilithium-certificates-01>.
+
+   [I-D.massimo-lamps-pq-sig-certificates]
+              Massimo, J., Kampanakis, P., Turner, S., and B.
+              Westerbaan, "Algorithms and Identifiers for Post-Quantum
+              Algorithms", Work in Progress, Internet-Draft, draft-
+              massimo-lamps-pq-sig-certificates-00, 8 July 2022,
+              <https://datatracker.ietf.org/doc/html/draft-massimo-
+              lamps-pq-sig-certificates-00>.
 
    [I-D.ounsworth-pq-composite-kem]
               Ounsworth, M. and J. Gray, "Composite KEM For Use In
@@ -1976,12 +1952,30 @@ Internet-Draft              PQ Composite Sigs               October 2023
               <https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-
               composite-kem-01>.
 
+
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 35]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    [I-D.pala-klaussner-composite-kofn]
               Pala, M. and J. Klaußner, "K-threshold Composite
               Signatures for the Internet PKI", Work in Progress,
               Internet-Draft, draft-pala-klaussner-composite-kofn-00, 15
               November 2022, <https://datatracker.ietf.org/doc/html/
               draft-pala-klaussner-composite-kofn-00>.
+
+   [I-D.vaira-pquip-pqc-use-cases]
+              Vaira, A., Brockhaus, H., Railean, A., Gray, J., and M.
+              Ounsworth, "Post-quantum cryptography use cases", Work in
+              Progress, Internet-Draft, draft-vaira-pquip-pqc-use-cases-
+              00, 23 October 2023,
+              <https://datatracker.ietf.org/api/v1/doc/document/draft-
+              vaira-pquip-pqc-use-cases/>.
 
    [RFC3279]  Bassham, L., Polk, W., and R. Housley, "Algorithms and
               Identifiers for the Internet X.509 Public Key
@@ -2008,26 +2002,269 @@ Internet-Draft              PQ Composite Sigs               October 2023
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/info/rfc8446>.
 
-
-
-
-
-
-Ounsworth, et al.         Expires 20 April 2024                [Page 36]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
-
    [RFC8551]  Schaad, J., Ramsdell, B., and S. Turner, "Secure/
               Multipurpose Internet Mail Extensions (S/MIME) Version 4.0
               Message Specification", RFC 8551, DOI 10.17487/RFC8551,
               April 2019, <https://www.rfc-editor.org/info/rfc8551>.
 
+
+
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 36]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
 Appendix A.  Samples
 
 A.1.  Explicit Composite Signature Examples
 
-   TODO
+A.1.1.  MLDSA44-ECDSA-P256-SHA256 Public Key
+
+   -----BEGIN PUBLIC KEY-----
+   MIIFfzANBgtghkgBhvprUAcBBAOCBWwAMIIFZwSCBSA+LrUqGdS5RSYzFWfGEmNS
+   ZhiNF7vW+lTyoUESmu1iWjPNA8ILNB8fyxMi3TApDYNHlniiz7ogh9VKvGuUWrgl
+   IUoX+f2FaErDnh3Fz24xpO7n0j7E7dqZYU0iSUTFekex+rRxr0hCNtuZQ++qYVSa
+   CQOxScsuWrLjSW6Q6KzVAeHGoJIAL28JckUZ8KCg6AaMyqZwIFIw6NJ678K4c+Zy
+   mFSusvyQ7LorxqAkHl03RGLy4BjMohDA2SzVW3W3Eez6rjvWoM8XMu8pWN1kJaqi
+   JQLQx/HPqgnu1qmgcFqmTWHil6Z0sRH7XSZyhYpU4rNZr9/1yxFCw0WjYymATrzt
+   CAGpfSzf8Igg/NL4mhOpSNkCzDnnC7ge/kskDHgHCDVWGPB9myTcXmVRsgCd53rh
+   CDhR8csztl29tzYwgSqkraNTnfrlMPY9iMCzi/V9ShMfh60DoOBRsLjxr4pDra88
+   vzHekDm084lEIghrkNZdswmCxELZSGpsPsiVyn32k4y1MdTorhiRTZn1Q+NlSk7t
+   YH5XzdnDY4DByL/azaAQ4IThHc9tn9fra8icox4Ov3pdDosvyu6pvUEPpQv8vfOM
+   vm156SFgS4JEj/ykqGF35E+9F96IS0aM9GBTjLQnM52DTm85BYSELx+EYb2AHxAr
+   jhD4fUXnjK/g5V1kxBLxFmAxBmU/PGNkYILrOdPxl8f79LH6+PCehgZS4QqzF943
+   FqO53B62Cp7F+zE2xpvUXeZ2ThuGGHce2cEE6lADa3Y3vX0rON7oWRHpBXRbSeP0
+   X85TS0M6svSpgR2bMou/a7V2+NFHcU/dHteOqszhL1w1wxDcEnoy+FKNnVS3U/pi
+   bFcGWzG63mxEgQc/wU0n7bBvOaFj29jnSmm6KsQrC/2J+AlX3uYqGCA4F3vzhPIP
+   bj34TfUWPCIvgdGey8M5PDbNpj9yVXELTN3EEViFTA4W3+yr7Pf8Z9GlwJ6Oxbic
+   E57oif1mKLRa3eIQ8R6T2/bTYCON1OtU///WJn8kE0A1Yayyr7AlBula/tM69aW0
+   WctoEda2TgcYbDmE4fdMtgwKCfCjw2zP88KLiQUs3m6ZcBvx/CqKmB6xZpx5pNYq
+   WqP4/YxhYLiTK6BNjW3gw5N1V+zIcTokeCClwwIzP/roO/sS2sMu1Y6znLfmawsY
+   7aK5bmb/icPQU+DPq/v6YIxwTq2FYNxrsXSjKs+JJG0PqYeRXJ8GJfLbYMHddSaR
+   CEXgYFIvAw4vn1Zqqqpm7OnRaIbV4EtzzxXDdy+vZUnMFs6hPEpGYCb+/DHYCfND
+   QMpb5Xxcn9ighN0dzyL3pPvliPQIFgmpniuPpXnv1eBAmjc4UQlfMgyhfCXngUNR
+   CjOJjEhWF+p4+26cDf25kLhO77gpog2JrV963GkQhHSyXoipvs0tK2/35Ec4/+bt
+   2mbT0kErQyRfQw73E0OHO3TmHVExqCvqLQFkonEyYL+tD9ne0m3TGFmokcIItgUk
+   09dAfeUOlcfvRfGYZlIxLTIFgep6UamMK+XNuOUNoq9S0UA7JZM+8YwCB61jI3oG
+   Vq9Y3ohtQAr5+3HYwatD9a2Poks6Fqr0UCc0F0CSPLaqdiEVbZW92b+z44c33KGo
+   E7QJgNfLsMazHsI+6bC5Ss8edJ07tGUKpiDzvQhMlvTMN8aqIyREuqSqNFc1CbF6
+   v2opDdRte5aeGJKrVp0H5EO9oIkAsDwJ/cfroye514dlJ/CQuBYzARnueVghPWti
+   BEEE5WF0F9l42el2mFaXWuOx5LvkUe5rxqlps10b0sgHUls5PPOeslgT9bVzhLu7
+   Uuwkv4949UUnIzx58SRKIJ3DJg== -----END PUBLIC KEY-----
+
+A.1.2.  MLDSA44-ECDSA-P256 Private Key
+
+   -----BEGIN PRIVATE KEY----- MIIPmQIBADANBgtghkgBhvprUAcBBASCD4Mwgg9/
+   BIIPAD4utSoZ1LlFJjMVZ8YS Y1JmGI0Xu9b6VPKhQRKa7WJa8O4O357Umw24m9Pd/
+   Jg06IDz9AmosfLTjayQT5j9
+   tRaYa9SlMtuRa++YF0vtPF5KCc2GSbvH8nHNJaKc8to8JSCAYIKyJNtEchq1gIoG
+   ZYDCZKIQkSDFaSRDKSKQcRmIYVkUSlsAAdoiKcTEZJQoLQGyTIgQAViyaWAkERwR
+   DSNHYRhACcwWJhMRJROHLFoWScIGMpFIkQIBUEGEUIEyShPGCJPIjaPECZoYSACn
+   jYNIToxGSIKgEViAkEgIQRDDhFsGbQwxjuJIMUumDBNIgRqnkQIxJQpDiknIaeJG
+   ZcLGSQITclFEcJIojNMwQVsEDUA2ShsWiFlCAFA2Ssy4gNGiTQHISRMWglG4EEgi
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 37]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
+   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
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 38]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
+   MaTu59I+xO3amWFNIklExXpHsfq0ca9IQjbbmUPvqmFUmgkDsUnLLlqy40lukOis
+   1QHhxqCSAC9vCXJFGfCgoOgGjMqmcCBSMOjSeu/CuHPmcphUrrL8kOy6K8agJB5d
+   N0Ri8uAYzKIQwNks1Vt1txHs+q471qDPFzLvKVjdZCWqoiUC0Mfxz6oJ7tapoHBa
+   pk1h4pemdLER+10mcoWKVOKzWa/f9csRQsNFo2MpgE687QgBqX0s3/CIIPzS+JoT
+   qUjZAsw55wu4Hv5LJAx4Bwg1VhjwfZsk3F5lUbIAned64Qg4UfHLM7Zdvbc2MIEq
+   pK2jU5365TD2PYjAs4v1fUoTH4etA6DgUbC48a+KQ62vPL8x3pA5tPOJRCIIa5DW
+   XbMJgsRC2UhqbD7Ilcp99pOMtTHU6K4YkU2Z9UPjZUpO7WB+V83Zw2OAwci/2s2g
+   EOCE4R3PbZ/X62vInKMeDr96XQ6LL8ruqb1BD6UL/L3zjL5teekhYEuCRI/8pKhh
+   d+RPvRfeiEtGjPRgU4y0JzOdg05vOQWEhC8fhGG9gB8QK44Q+H1F54yv4OVdZMQS
+   8RZgMQZlPzxjZGCC6znT8ZfH+/Sx+vjwnoYGUuEKsxfeNxajudwetgqexfsxNsab
+   1F3mdk4bhhh3HtnBBOpQA2t2N719Kzje6FkR6QV0W0nj9F/OU0tDOrL0qYEdmzKL
+   v2u1dvjRR3FP3R7XjqrM4S9cNcMQ3BJ6MvhSjZ1Ut1P6YmxXBlsxut5sRIEHP8FN
+   J+2wbzmhY9vY50ppuirEKwv9ifgJV97mKhggOBd784TyD249+E31FjwiL4HRnsvD
+   OTw2zaY/clVxC0zdxBFYhUwOFt/sq+z3/GfRpcCejsW4nBOe6In9Zii0Wt3iEPEe
+   k9v202AjjdTrVP//1iZ/JBNANWGssq+wJQbpWv7TOvWltFnLaBHWtk4HGGw5hOH3
+   TLYMCgnwo8Nsz/PCi4kFLN5umXAb8fwqipgesWaceaTWKlqj+P2MYWC4kyugTY1t
+   4MOTdVfsyHE6JHggpcMCMz/66Dv7EtrDLtWOs5y35msLGO2iuW5m/4nD0FPgz6v7
+   +mCMcE6thWDca7F0oyrPiSRtD6mHkVyfBiXy22DB3XUmkQhF4GBSLwMOL59Waqqq
+   Zuzp0WiG1eBLc88Vw3cvr2VJzBbOoTxKRmAm/vwx2AnzQ0DKW+V8XJ/YoITdHc8i
+   96T75Yj0CBYJqZ4rj6V579XgQJo3OFEJXzIMoXwl54FDUQoziYxIVhfqePtunA39
+   uZC4Tu+4KaINia1fetxpEIR0sl6Iqb7NLStv9+RHOP/m7dpm09JBK0MkX0MO9xND
+   hzt05h1RMagr6i0BZKJxMmC/rQ/Z3tJt0xhZqJHCCLYFJNPXQH3lDpXH70XxmGZS
+   MS0yBYHqelGpjCvlzbjlDaKvUtFAOyWTPvGMAgetYyN6BlavWN6IbUAK+ftx2MGr
+   Q/Wtj6JLOhaq9FAnNBdAkjy2qnYhFW2Vvdm/s+OHN9yhqBO0CYDXy7DGsx7CPumw
+   uUrPHnSdO7RlCqYg870ITJb0zDfGqiMkRLqkqjRXNQmxer9qKQ3UbXuWnhiSq1ad
+   B+RDvaCJALA8Cf3H66MnudeHZSfwkLgWMwEZ7nlYIT1rYgR5MHcCAQEEICNcwpss
+   HyyHcp4sFiQfXGBHkt4Ful/+xUioOUgxpmhZoAoGCCqGSM49AwEHoUQDQgAE5WF0
+   F9l42el2mFaXWuOx5LvkUe5rxqlps10b0sgHUls5PPOeslgT9bVzhLu7Uuwkv494
+   9UUnIzx58SRKIJ3DJg== -----END PRIVATE KEY-----
+
+A.1.3.  MLDSA44-ECDSA-P256 Self-Signed X509 Certificate
+
+   -----BEGIN CERTIFICATE-----
+   MIIP9zCCBhigAwIBAgIUQDaCiOd3IecnO16Hko3aeFCPLnAwDQYLYIZIAYb6a1AH
+   AQQwEjEQMA4GA1UEAwwHb3FzdGVzdDAeFw0yMzEwMTgyMDQ2MTZaFw0yNDEwMTcy
+   MDQ2MTZaMBIxEDAOBgNVBAMMB29xc3Rlc3QwggV/MA0GC2CGSAGG+mtQBwEEA4IF
+   bAAwggVnBIIFID4utSoZ1LlFJjMVZ8YSY1JmGI0Xu9b6VPKhQRKa7WJaM80Dwgs0
+   Hx/LEyLdMCkNg0eWeKLPuiCH1Uq8a5RauCUhShf5/YVoSsOeHcXPbjGk7ufSPsTt
+   2plhTSJJRMV6R7H6tHGvSEI225lD76phVJoJA7FJyy5asuNJbpDorNUB4cagkgAv
+   bwlyRRnwoKDoBozKpnAgUjDo0nrvwrhz5nKYVK6y/JDsuivGoCQeXTdEYvLgGMyi
+   EMDZLNVbdbcR7PquO9agzxcy7ylY3WQlqqIlAtDH8c+qCe7WqaBwWqZNYeKXpnSx
+   EftdJnKFilTis1mv3/XLEULDRaNjKYBOvO0IAal9LN/wiCD80viaE6lI2QLMOecL
+   uB7+SyQMeAcINVYY8H2bJNxeZVGyAJ3neuEIOFHxyzO2Xb23NjCBKqSto1Od+uUw
+   9j2IwLOL9X1KEx+HrQOg4FGwuPGvikOtrzy/Md6QObTziUQiCGuQ1l2zCYLEQtlI
+   amw+yJXKffaTjLUx1OiuGJFNmfVD42VKTu1gflfN2cNjgMHIv9rNoBDghOEdz22f
+   1+tryJyjHg6/el0Oiy/K7qm9QQ+lC/y984y+bXnpIWBLgkSP/KSoYXfkT70X3ohL
+   Roz0YFOMtCcznYNObzkFhIQvH4RhvYAfECuOEPh9ReeMr+DlXWTEEvEWYDEGZT88
+   Y2Rggus50/GXx/v0sfr48J6GBlLhCrMX3jcWo7ncHrYKnsX7MTbGm9Rd5nZOG4YY
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 39]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
+   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
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 40]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
+   l6j+aBvCKD58BmTtK4yyccvwYrDrbQUOyuehs6DNCFkP1uMbaDvoO8ksWDNA4r9l
+   yqRqmRGJ+4B5bqtf/3d9YlUI0Ri20DVRbCA2vH0QCWGpT1MnhDunWmMO0RFPm9U8
+   vl4Q5t5Fjz/x4DS9/eRb9JOwZcMsWdlLrHeVPSBZXyg8WCgarEjBton6WksmIBfw
+   cpRTIvVb5EPwHZYUrF4NXzHJvvfIPFYgDMlKwRQPaEeEWol8onKxaAYrnDoNhdyO
+   CyfH0EmuLEaPVu6R3UvO0u9fiphLwD523tjGx1zT2zSADOjvo6WgvKsrMuiH3plu
+   b/NcPeZPgWpaA/rSg2xN53qa4f56SO1hKCDh9c8npd8iu1axmyu6Yk5jdbD2vZRO
+   CVHTyds6gIzkm+UrxO5OLWLOASrLR/UOpslqgOM/uiAyWnKZ78ijmRVHlBzNtVi6
+   /2G8Mp7OnhX7CrYrjG13ma++LD9pupAKqUMhmiAC4eBvPXo88VNBG7iUL8i1FiMJ
+   in+tBqZjVPnoTCtiMu+O7NTA+3XqjukxbxRYXOvIu2np6jBlWKVWPWxuPH/x5MM1
+   KWWOaDAubAOGKpmt74fluwBhsJhE3V3VxvDZ2Bsl07PFKl5TRnak/mfay93op+U9
+   OBETCW7doNvI7hLg7P7kx/HjGr1P1Ioy4D2dlai/D158C5p5KNagL83FTZY2DjAX
+   b1dwzSUI7WzelEFr/hjVaiYosllMQHt/BXoYTBEbPMpmWA/Nfz9DB0bYOcjz2coB
+   9UXjSMpMeKNaC2gXx3g0jq9OukfKRKN6HZIW5WVc+jEa3c3vQQkKbuHvT5+fyIrz
+   iKedQO9bpaKC+79VPY315Ay44tws2bUmOqfyR+9WGlEWH3NHVsDJf0UVChLGbAt4
+   0o73qsrcGMr3NgGU3MuFzITEhYqB4s/YzP4R14k1iyx7z97JzrjWGBRA9KUGYb+T
+   8plXUoTS1Qjf5yDrR/KMEY4747YqST/UVe2epb7xFWW7lTnqryXBvn3E8TM1s/uU
+   +vgLBbkW9d9yNzswBQQ1YDAYv8rh0NCXsnKAn8pxgqSYJhTK45KhZxmRgk3jDec9
+   E1wp9huoFqzmEy71XGOL94HFPEXANJd0j7dHegBg83IC7kjUpRTcBiFow2CPldtg
+   6zm4pmx7pIECrbAANoW9wCbv1DUnRUS4kiZf3GD6nxDZYML7R1KDmOc1zrM3ExUY
+   HT9NXmx/l7DQ3P8aHjU+coPCxyA0P0tPVFWgprC3xM/7CFNUXWRwcoPN7fP3AAAA
+   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOFiQwA0gAMEUCIBZgPd/De2z8
+   KVaX4IdLzKwgoTxOvQbM2VFO79bQmwhVAiEAw7plaHGiHrVngE1TDaTjNpVZKpMh
+   6VjbIrd6yvAdXUA= -----END CERTIFICATE-----
 
 Appendix B.  Implementation Considerations
 
@@ -2050,6 +2287,17 @@ B.1.  FIPS certification
    algorithms which combine FIPS cryptography with cryptography from a
    different national standards body.
 
+
+
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 41]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
 B.2.  Backwards Compatibility
 
    The term "backwards compatibility" is used here to mean something
@@ -2066,14 +2314,6 @@ B.2.  Backwards Compatibility
    [RFC7296], to non-negotiated asynchronous protocols such as S/MIME
    signed email [RFC8551], document signing such as in the context of
    the European eIDAS regulations [eIDAS2014], and publicly trusted code
-
-
-
-Ounsworth, et al.         Expires 20 April 2024                [Page 37]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
-
    signing [codeSigningBRsv2.8], as well as myriad other standardized
    and proprietary protocols and applications that leverage CMS
    [RFC5652] signed structures.  Composite simplifies the protocol
@@ -2106,6 +2346,14 @@ B.2.1.  Parallel PKIs
    composite signature algorithms than to implement such a mechanism in
    the protocol itself.  There is also nothing precluding a composite
    public key from being one of the components used within a non-
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 42]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    composite authentication operation; this may lead to greater
    convenience in setting up parallel PKI hierarchies that need to
    service a range of clients implementing different styles of post-
@@ -2119,16 +2367,6 @@ B.2.1.  Parallel PKIs
    desired effect of allowing the receiver to choose one they are
    compatible with and ignore the others, thus achieving full backwards
    compatibility.
-
-
-
-
-
-
-Ounsworth, et al.         Expires 20 April 2024                [Page 38]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
 B.2.2.  Hybrid Extensions (Keys and Signatures)
 
@@ -2163,6 +2401,15 @@ Appendix D.  Contributors and Acknowledgements
    Kampanakis (Cisco Systems), Daniel Van Geest (ISARA), Tim Hollebeek
    (Digicert), and Francois Rousseau.
 
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 43]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    We are grateful to all, including any contributors who may have been
    inadvertently omitted from this list.
 
@@ -2177,14 +2424,6 @@ D.1.  Making contributions
    working copy of this draft at, as well as open issues at:
 
    https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs
-
-
-
-
-Ounsworth, et al.         Expires 20 April 2024                [Page 39]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
 Authors' Addresses
 
@@ -2212,29 +2451,14 @@ Authors' Addresses
    Email: director@openca.org
 
 
+   Jan Klaussner
+   D-Trust GmbH
+   Kommandantenstr. 15
+   10969 Berlin
+   Germany
+   Email: jan.klaussner@d-trust.net
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth, et al.         Expires 20 April 2024                [Page 40]
+Ounsworth, et al.         Expires 25 April 2024                [Page 44]

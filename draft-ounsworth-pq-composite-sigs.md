@@ -51,6 +51,16 @@ author:
       country: United States of America
       code: 80027  
       
+    -
+      ins: J. Klaussner
+      name: Jan Klaussner
+      org: D-Trust GmbH
+      email: jan.klaussner@d-trust.net
+      street: Kommandantenstr. 15
+      code: 10969
+      city: Berlin
+      country: Germany
+      
   
 normative:
   RFC2119:
@@ -69,9 +79,6 @@ normative:
   RFC8174:
   RFC8410:
   RFC8411:
-  I-D.draft-ounsworth-pq-composite-keys-04:
-  I-D.draft-massimo-lamps-pq-sig-certificates-00:
-  I-D.draft-ietf-lamps-dilithium-certificates-01:
   X.690:
       title: "Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)"
       date: November 2015
@@ -95,6 +102,9 @@ informative:
   I-D.draft-guthrie-ipsecme-ikev2-hybrid-auth-00:
   I-D.draft-pala-klaussner-composite-kofn-00:
   I-D.draft-driscoll-pqt-hybrid-terminology-01:
+  I-D.draft-vaira-pquip-pqc-use-cases-00:
+  I-D.draft-massimo-lamps-pq-sig-certificates-00:
+  I-D.draft-ietf-lamps-dilithium-certificates-01:
   Bindel2017:
     title: "Transitioning to a quantum-resistant public key infrastructure"
     target: "https://link.springer.com/chapter/10.1007/978-3-319-59879-6_22"
@@ -118,12 +128,9 @@ informative:
 
 The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs.
 
-Cautious implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected using either a Post-Quantum / Traditional Hybrid, Post-Quantum / Post-Quantum Hybrid, or combinations thereof. This document, and its companions, defines a specific instantiation of hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level.
+Cautious implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected using either a Post-Quantum / Traditional Hybrid, Post-Quantum / Post-Quantum Hybrid, or combinations thereof. This document, and its companions, defines a specific instantiation of hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key or signature such that they can be treated as a single atomic object at the protocol level.
 
-This document defines the structures CompositeSignatureValue, and CompositeSignatureParams, which are sequences of the respective structure for each component algorithm. The explicit variant is defined which allows for a set of signature algorithm identifier OIDs to be registered together as an explicit composite signature algorithm and assigned an OID. 
-
-
-This document is intended to be coupled with corresponding documents that define the structure and semantics of composite public and private keys and encryption {{I-D.ounsworth-pq-composite-keys}}, however may also be used with non-composite keys, such as when a protocol combines multiple certificates into a single cryptographic operation.
+This document defines the structures CompositeSignaturePublicKey, CompositeSignaturePrivateKey and CompositeSignatureValue, which are sequences of the respective structure for each component algorithm.  Composite signature algorithm identifiers are specified in this document which represent the explicit combinations of the underlying component algorithms. 
 
 <!-- End of Abstract -->
 
@@ -136,30 +143,28 @@ This document is intended to be coupled with corresponding documents that define
 Changes affecting interoperability:
 
 * Changed all `SEQUENCE OF SIZE (2..MAX)` to `SEQUENCE OF SIZE (2)`.
-* Removed CompositeSignatureParams since all params are now explicit in the OID
+* Removed CompositeSignatureParams since all params are now explicit in the Object IDs
 * Made RSA keys fixed-length at 3072
 * Removee redundency of subject public key overhead since OID fully specifies the keytype and parameters
 * Re-worked wire format of the composite signature by prehashing and concatenating the OID to 
-       each component signature. 
+  each component signature.  This is believed to give the binding between the two component algorithms 
+  a stronger non-separability property.
 
 Editorial changes:
 
 * Made this document standalone by folding in the minimum necessary content from composite-keys
-* Added a paragraph describing how to reconstitute component SPKIs.
+* Added a paragraph describing how to reconstitute component Subject Public Key Infos
 * Added a section showing the HEX encoding of the String Algorithm Names
 * Added a section on pre-hashing
 * Rename Dilithium to ML-DSA and Falcon to FN-DSA
 * Added an Implementation Consideration about FIPS validation where only one component algorithm is FIPS-approved.
 * Added a section on Signature APIs (Keygen, Sign, Verify) in introduction
+* Added reference to draft-vaira-pquip-pqc-use-cases-00
 * TODO  Refactored to use MartinThomson github template
-* TODO Worked on Use cases references
-
-
 
 # Introduction {#sec-intro}
 
-During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not
-   fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
+During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
 
 Cautious implementers may wish to combine cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. Such mechanisms are referred to as Post-Quantum / Traditional Hybrids {{I-D.driscoll-pqt-hybrid-terminology}}.
 
@@ -167,9 +172,11 @@ PQ/T Hybrid cryptography can, in general, provide solutions to two migration pro
 
 - Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
 - Ease-of-migration: During the transition period, systems will require mechanisms that allow for staged migrations from fully classical to fully post-quantum-aware cryptography.
+- Safeguard against faulty algorithm implementations and compromised keys: Even for long known algorithms there is a non-negligible risk of severe implementation faults. Latest examples are the ROCA attack and ECDSA psychic signatures. Using more than one algorithms will mitigate these risks.
 
 This document defines a specific instantiation of the PQ/T Hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single signature such that it can be treated as a single atomic algorithm at the protocol level. Composite algorithms address algorithm strength uncertainty because the composite algorithm remains strong so long as one of its components remains strong. Concrete instantiations of composite signature algorithms are provided based on ML-DSA, Falcon, RSA and ECDSA. Backwards compatibility is not directly covered in this document, but is the subject of {{sec-backwards-compat}}.
-This document is intended for general applicability anywhere that digital signatures are used within PKIX and CMS structures.
+
+This document is intended for general applicability anywhere that digital signatures are used within PKIX and CMS structures.   For a more detailed use-case discussion for composite signatures, the reader is encouraged to look at {{I-D.vaira-pquip-pqc-use-cases}}
 
 ## Terminology {#sec-terminology}
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 {{RFC2119}}  {{RFC8174}} when, and only when, they appear in all capitals, as shown here.
@@ -315,9 +322,9 @@ Signature Generation Process:
 
 Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code.  When passed to the Composite Sign(sk, Message) API the sk is a CompositePrivateKey. It is possible to construct a CompositePrivateKey from component keys stored in separate software or hardware keystores. Variations in the process to accommodate particular private key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
 
-Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1 or K2 is a composite.
+Since recursive composite public keys are disallowed, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1 or K2 is a composite.
 
-A composite signature MUST produce, and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2. 
+A composite signature MUST produce, and include in the output, a signature value for every component key in the corresponding CompositePublicKey, and they MUST be in the same order; ie in the output, S1 MUST correspond to K1, S2 to K2.
 
 
 ### Composite Verify {#sec-comp-sig-verify}
@@ -384,7 +391,7 @@ Signature Verification Procedure::
 
 Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code.  When passed to the Composite Verify(pk, Message, signature) API the pk is a CompositePublicKey. It is possible to construct a CompositePublicKey from component keys stored in separate software or hardware keystores. Variations in the process to accommodate particular private key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
 
-Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1 or K2 is a composite.
+Since recursive composite public keys are disallowed, no component signature may itself be a composite; ie the signature generation process MUST fail if one of the private keys K1 or K2 is a composite.
 
 ## OID Concatenation {#sec-oid-concat}
 
@@ -807,9 +814,19 @@ Since composite algorithms are registered independently of their component algor
 
 ## Explicit Composite Signature Examples {#appdx-expComposite-examples}
 
-TODO
+
+### MLDSA44-ECDSA-P256-SHA256 Public Key
+
+{::include examples/MLDSA44-ECDSA-P256-SHA256.pub}
 
 
+### MLDSA44-ECDSA-P256 Private Key
+
+{::include examples/MLDSA44-ECDSA-P256-SHA256.pvt}
+
+### MLDSA44-ECDSA-P256 Self-Signed X509 Certificate
+
+{::include examples/MLDSA44-ECDSA-P256-SHA256.crt}
 
 # Implementation Considerations {#sec-imp-considers}
 
