@@ -124,7 +124,7 @@ The migration to post-quantum cryptography is unique in the history of modern di
 
 Cautious implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected using either a Post-Quantum / Traditional Hybrid, Post-Quantum / Post-Quantum Hybrid, or combinations thereof. This document, and its companions, defines a specific instantiation of hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key or signature such that they can be treated as a single atomic object at the protocol level.
 
-This document defines the structures CompositeSignaturePublicKey, CompositeSignaturePrivateKey and CompositeSignatureValue, which are sequences of the respective structure for each component algorithm.  Composite signature algorithm identifiers are specified in this document which represent the explicit combinations of the underlying component algorithms. 
+This document defines the structures CompositeSignaturePublicKey, CompositeSignaturePrivateKey, and CompositeSignatureValue, which are sequences of the respective structure for each component algorithm.  Composite signature algorithm identifiers are specified in this document which represent the explicit combinations of the underlying component algorithms.
 
 Although this document focuses on the use of Composite signatures generated via Composite Keys, composite signatures can be used with
 non-composite keys, such as when a protocol combines multiple certificates into a single cryptographic operation.
@@ -169,7 +169,7 @@ PQ/T Hybrid cryptography can, in general, provide solutions to two migration pro
 * Ease-of-migration: During the transition period, systems will require mechanisms that allow for staged migrations from fully classical to fully post-quantum-aware cryptography.
 * Safeguard against faulty algorithm implementations and compromised keys: Even for long known algorithms there is a non-negligible risk of severe implementation faults. Latest examples are the ROCA attack and ECDSA psychic signatures. Using more than one algorithms will mitigate these risks.
 
-This document defines a specific instantiation of the PQ/T Hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single signature such that it can be treated as a single atomic algorithm at the protocol level. Composite algorithms address algorithm strength uncertainty because the composite algorithm remains strong so long as one of its components remains strong. Concrete instantiations of composite signature algorithms are provided based on ML-DSA, Falcon, RSA and ECDSA. Backwards compatibility is not directly covered in this document, but is the subject of {{sec-backwards-compat}}.
+This document defines a specific instantiation of the PQ/T Hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single signature such that it can be treated as a single atomic algorithm at the protocol level. Composite algorithms address algorithm strength uncertainty because the composite algorithm remains strong so long as one of its components remains strong. Concrete instantiations of composite signature algorithms are provided based on ML-DSA, FN-DSA, RSA and ECDSA. Backwards and Forwards compatibility is not directly covered in this document, but is the subject of Sections {{sec-backwards-compat}} and {{sec-forwards-compat}} respectively.
 
 This document is intended for general applicability anywhere that digital signatures are used within PKIX and CMS structures.   For a more detailed use-case discussion for composite signatures, the reader is encouraged to look at {{I-D.vaira-pquip-pqc-use-cases}}
 
@@ -239,19 +239,20 @@ STRIPPING ATTACK:
 > incorporates multiple component cryptographic elements of the same
 > type in a multi-algorithm scheme.
 
-Composite keys as defined here follow this definition and should be regarded as a single key that performs a single cryptographic operation such key generation, signing, verifying, encapsulating, or decapsulating -- using its internal sequence of component keys as if they form a single key. This generally means that the complexity of combining algorithms can and should be handled by the cryptographic library or cryptographic module, and the single composite public key, private key, and ciphertext can be carried in existing fields in protocols such as PKCS#10 [RFC2986], CMP [RFC4210], X.509 [RFC5280], CMS [RFC5652], and the Trust Anchor Format [RFC5914]. In this way, composites achieve "protocol backwards-compatibility" in that they will drop cleanly into any protocol that accepts KEM algorithms without requiring any modification of the protocol to handle multiple keys.
+Composite keys as defined here follow this definition and should be regarded as a single key that performs a single cryptographic operation such key generation, signing, or verifying -- using its internal sequence of component keys as if they form a single key. This generally means that the complexity of combining algorithms can and should be handled by the cryptographic library or cryptographic module, and the single composite public key, private key, and ciphertext can be carried in existing fields in protocols such as PKCS#10 [RFC2986], CMP [RFC4210], X.509 [RFC5280], CMS [RFC5652], and the Trust Anchor Format [RFC5914]. In this way, composites achieve "protocol backwards-compatibility" in that they will drop cleanly into any protocol that accepts KEM algorithms without requiring any modification of the protocol to handle multiple keys.
 
 <!-- End of Introduction section -->
 
-## Composite Signatures {#sec-sigs}
+## Composite Algorithms {#sec-sigs}
 
-Here we define the signature mechanism in which a signature is a cryptographic primitive that consists of three algorithms:
+Here we define Composite Signatures as a cryptographic primitive that consists of
+three algorithms:
 
 * KeyGen() -> (pk, sk): A probabilistic key generation algorithm,
   which generates a public key pk and a secret key sk.
 
 * Sign(sk, Message) -> (signature): A signing algorithm which takes
-  as input a secret key sk and a Message, and outputs a signature
+  as input a secret key sk and a Message, and outputs a signature.
 
 * Verify(pk, Message, signature) -> true or false: A verification algorithm
   which takes as input a public key, a Message and signature and outputs true
@@ -261,6 +262,7 @@ Here we define the signature mechanism in which a signature is a cryptographic p
   key cannot verify the Message, it returns false.
 
 A composite signature allows two or more underlying signature algorithms to be combined into a single cryptographic signature operation and can be used for applications that require signatures.
+Although composite signatures are defined as a sequence of component signatures, as detailed in many parts of this document, the sign and verify algorithms are to be considered as a single atomic operations.
 
 ### Composite KeyGen
 
@@ -403,7 +405,7 @@ representation for each Signature AlgorithmID
 | id-MLDSA87-ECDSA-P384-SHA384 |69642D4D4C44534138372D45434453412D503338342D534841333834|
 | id-MLDSA87-ECDSA-brainpoolP384r1-SHA384 |69642D4D4C44534138372D45434453412D627261696E706F6F6C5033383472312D534841333834|
 | id-MLDSA87-Ed448-SHAKE256 |69642D4D4C44534138372D45643434382D5348414B45323536|
-| id-Falon512-ECDSA-P256-SHA256 |69642D46616C6F6E3531322D45434453412D503235362D534841323536|
+| id-Falcon512-ECDSA-P256-SHA256 |69642D46616C6F6E3531322D45434453412D503235362D534841323536|
 | id-Falcon512-ECDSA-brainpoolP256r1-SHA256 |69642D46616C636F6E3531322D45434453412D627261696E706F6F6C5032353672312D534841323536|
 | id-Falcon512-Ed25519-SHA512 |69642D46616C636F6E3531322D456432353531392D534841353132|
 {: #tab-sig-alg-oids title="Composite Signature OID Concatenations"}
@@ -550,7 +552,7 @@ The ASN.1 algorithm object for a composite signature is:
 The following is an explanation how SIGNATURE-ALGORITHM elements are used to create Composite Signatures:
 
 | SIGNATURE-ALGORITHM element | Definition |
-| ---------                  | ---------- |
+| ---------                   | ---------- |
 | IDENTIFIER                  | The Object ID used to identify the composite Signature Algorithm |
 | VALUE                       | The Sequence of BIT STRINGS for each component signature value |
 | PARAMS                      | Parameters are absent  |
@@ -600,7 +602,7 @@ Signature public key types:
 | id-MLDSA87-ECDSA-P384-SHA384            | &lt;CompSig&gt;.11  | MLDSA87 | SHA384withECDSA |SHA384 |
 | id-MLDSA87-ECDSA-brainpoolP384r1-SHA384 | &lt;CompSig&gt;.12 | MLDSA87 | SHA384withECDSA | SHA384 |
 | id-MLDSA87-Ed448-SHAKE256               | &lt;CompSig&gt;.13 | MLDSA87 | Ed448 |SHAKE256/512 |
-| id-Falon512-ECDSA-P256-SHA256             | &lt;CompSig&gt;.14  | Falcon512  | SHA256withECDSA | SHA256 |
+| id-Falcon512-ECDSA-P256-SHA256             | &lt;CompSig&gt;.14  | Falcon512  | SHA256withECDSA | SHA256 |
 | id-Falcon512-ECDSA-brainpoolP256r1-SHA256  | &lt;CompSig&gt;.15  | Falcon512  | SHA256withECDSA |SHA256 | 
 | id-Falcon512-Ed25519-SHA512            | &lt;CompSig&gt;.16 | Falcon512  | Ed25519| SHA512 |
 {: #tab-sig-algs title="Composite Signature Algorithms"}
