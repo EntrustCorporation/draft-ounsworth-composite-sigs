@@ -38,16 +38,16 @@ Abstract
    at the protocol level.
 
    This document defines the structures CompositeSignaturePublicKey,
-   CompositeSignaturePrivateKey and CompositeSignatureValue, which are
+   CompositeSignaturePrivateKey, and CompositeSignatureValue, which are
    sequences of the respective structure for each component algorithm.
    Composite signature algorithm identifiers are specified in this
    document which represent the explicit combinations of the underlying
    component algorithms.
 
-Status of This Memo
-
-   This Internet-Draft is submitted in full conformance with the
-   provisions of BCP 78 and BCP 79.
+   Although this document focuses on the use of Composite signatures
+   generated via Composite Keys, composite signatures can be used with
+   non-composite keys, such as when a protocol combines multiple
+   certificates into a single cryptographic operation.
 
 
 
@@ -57,6 +57,11 @@ Ounsworth, et al.         Expires 25 April 2024                 [Page 1]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
 
    Internet-Drafts are working documents of the Internet Engineering
    Task Force (IETF).  Note that other groups may also distribute
@@ -88,24 +93,19 @@ Table of Contents
 
    1.  Changes in version -10  . . . . . . . . . . . . . . . . . . .   3
    2.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   4
-     2.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   5
-     2.2.  Composite Design Philosophy . . . . . . . . . . . . . . .   6
-     2.3.  Composite Signatures  . . . . . . . . . . . . . . . . . .   7
-       2.3.1.  Composite KeyGen  . . . . . . . . . . . . . . . . . .   7
-       2.3.2.  Composite Sign  . . . . . . . . . . . . . . . . . . .   7
-       2.3.3.  Composite Verify  . . . . . . . . . . . . . . . . . .   9
-     2.4.  OID Concatenation . . . . . . . . . . . . . . . . . . . .  11
-     2.5.  PreHashing the Message  . . . . . . . . . . . . . . . . .  13
-     2.6.  Algorithm Selection Criteria  . . . . . . . . . . . . . .  13
-   3.  Composite Signature Structures  . . . . . . . . . . . . . . .  14
-     3.1.  pk-CompositeSignature . . . . . . . . . . . . . . . . . .  14
-     3.2.  CompositeSignaturePublicKey . . . . . . . . . . . . . . .  15
-     3.3.  CompositeSignaturePrivateKey  . . . . . . . . . . . . . .  15
-     3.4.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .  16
-     3.5.  Key Usage Bits  . . . . . . . . . . . . . . . . . . . . .  16
-   4.  Composite Signature Structures  . . . . . . . . . . . . . . .  17
-     4.1.  sa-CompositeSignature . . . . . . . . . . . . . . . . . .  17
-     4.2.  CompositeSignatureValue . . . . . . . . . . . . . . . . .  18
+     2.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   6
+     2.2.  Composite Design Philosophy . . . . . . . . . . . . . . .   7
+     2.3.  Composite Algorithms  . . . . . . . . . . . . . . . . . .   7
+       2.3.1.  Composite KeyGen  . . . . . . . . . . . . . . . . . .   8
+       2.3.2.  Composite Sign  . . . . . . . . . . . . . . . . . . .   8
+       2.3.3.  Composite Verify  . . . . . . . . . . . . . . . . . .  10
+     2.4.  OID Concatenation . . . . . . . . . . . . . . . . . . . .  12
+     2.5.  PreHashing the Message  . . . . . . . . . . . . . . . . .  14
+     2.6.  Algorithm Selection Criteria  . . . . . . . . . . . . . .  14
+   3.  Composite Signature Structures  . . . . . . . . . . . . . . .  15
+     3.1.  pk-CompositeSignature . . . . . . . . . . . . . . . . . .  15
+     3.2.  CompositeSignaturePublicKey . . . . . . . . . . . . . . .  16
+     3.3.  CompositeSignaturePrivateKey  . . . . . . . . . . . . . .  16
 
 
 
@@ -114,35 +114,41 @@ Ounsworth, et al.         Expires 25 April 2024                 [Page 2]
 Internet-Draft              PQ Composite Sigs               October 2023
 
 
-   5.  Algorithm Identifiers . . . . . . . . . . . . . . . . . . . .  18
+     3.4.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .  17
+     3.5.  Key Usage Bits  . . . . . . . . . . . . . . . . . . . . .  18
+   4.  Composite Signature Structures  . . . . . . . . . . . . . . .  18
+     4.1.  sa-CompositeSignature . . . . . . . . . . . . . . . . . .  18
+     4.2.  CompositeSignatureValue . . . . . . . . . . . . . . . . .  19
+   5.  Algorithm Identifiers . . . . . . . . . . . . . . . . . . . .  19
      5.1.  Notes on id-MLDSA44-RSA2048-PSS-SHA256 and
-           id-MLDSA65-RSA3072-PSS-SHA256 . . . . . . . . . . . . . .  21
-   6.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . . . .  22
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  29
-     7.1.  Object Identifier Allocations . . . . . . . . . . . . . .  29
+           id-MLDSA65-RSA3072-PSS-SHA256 . . . . . . . . . . . . . .  22
+   6.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . . . .  23
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  30
+     7.1.  Object Identifier Allocations . . . . . . . . . . . . . .  30
        7.1.1.  Module Registration - SMI Security for PKIX Module
-               Identifier  . . . . . . . . . . . . . . . . . . . . .  29
+               Identifier  . . . . . . . . . . . . . . . . . . . . .  30
        7.1.2.  Object Identifier Registrations - SMI Security for PKIX
-               Algorithms  . . . . . . . . . . . . . . . . . . . . .  29
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  32
-     8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  32
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  33
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  33
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  34
-   Appendix A.  Samples  . . . . . . . . . . . . . . . . . . . . . .  37
-     A.1.  Explicit Composite Signature Examples . . . . . . . . . .  37
-       A.1.1.  MLDSA44-ECDSA-P256-SHA256 Public Key  . . . . . . . .  37
-       A.1.2.  MLDSA44-ECDSA-P256 Private Key  . . . . . . . . . . .  37
-       A.1.3.  MLDSA44-ECDSA-P256 Self-Signed X509 Certificate . . .  39
-   Appendix B.  Implementation Considerations  . . . . . . . . . . .  41
-     B.1.  FIPS certification  . . . . . . . . . . . . . . . . . . .  41
-     B.2.  Backwards Compatibility . . . . . . . . . . . . . . . . .  42
-       B.2.1.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  42
-       B.2.2.  Hybrid Extensions (Keys and Signatures) . . . . . . .  43
-   Appendix C.  Intellectual Property Considerations . . . . . . . .  43
-   Appendix D.  Contributors and Acknowledgements  . . . . . . . . .  43
-     D.1.  Making contributions  . . . . . . . . . . . . . . . . . .  44
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  44
+               Algorithms  . . . . . . . . . . . . . . . . . . . . .  30
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  33
+     8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  33
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  34
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  34
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  35
+   Appendix A.  Samples  . . . . . . . . . . . . . . . . . . . . . .  38
+     A.1.  Explicit Composite Signature Examples . . . . . . . . . .  38
+       A.1.1.  MLDSA44-ECDSA-P256-SHA256 Public Key  . . . . . . . .  38
+       A.1.2.  MLDSA44-ECDSA-P256 Private Key  . . . . . . . . . . .  38
+       A.1.3.  MLDSA44-ECDSA-P256 Self-Signed X509 Certificate . . .  40
+   Appendix B.  Implementation Considerations  . . . . . . . . . . .  42
+     B.1.  FIPS certification  . . . . . . . . . . . . . . . . . . .  42
+     B.2.  Backwards Compatibility . . . . . . . . . . . . . . . . .  43
+     B.3.  Forwards Compatibility  . . . . . . . . . . . . . . . . .  43
+       B.3.1.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  44
+       B.3.2.  Hybrid Extensions (Keys and Signatures) . . . . . . .  44
+   Appendix C.  Intellectual Property Considerations . . . . . . . .  45
+   Appendix D.  Contributors and Acknowledgements  . . . . . . . . .  45
+     D.1.  Making contributions  . . . . . . . . . . . . . . . . . .  45
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  45
 
 1.  Changes in version -10
 
@@ -155,13 +161,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
    *  Made RSA keys fixed-length at 3072
 
-   *  Removee redundency of subject public key overhead since OID fully
-      specifies the keytype and parameters
 
-   *  Re-worked wire format of the composite signature by prehashing and
-      concatenating the OID to each component signature.  This is
-      believed to give the binding between the two component algorithms
-      a stronger non-separability property.
 
 
 
@@ -169,6 +169,14 @@ Ounsworth, et al.         Expires 25 April 2024                 [Page 3]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
+
+   *  Removee redundency of subject public key overhead since OID fully
+      specifies the keytype and parameters
+
+   *  Re-worked wire format of the composite signature by prehashing and
+      concatenating the OID to each component signature.  This is
+      believed to give the binding between the two component algorithms
+      a stronger non-separability property.
 
    Editorial changes:
 
@@ -209,14 +217,6 @@ Internet-Draft              PQ Composite Sigs               October 2023
    entity's cryptographic identity to be composed of multiple public-key
    algorithms.
 
-   Cautious implementers may wish to combine cryptographic algorithms
-   such that an attacker would need to break all of them in order to
-   compromise the data being protected.  Such mechanisms are referred to
-   as Post-Quantum / Traditional Hybrids
-   [I-D.driscoll-pqt-hybrid-terminology].
-
-   PQ/T Hybrid cryptography can, in general, provide solutions to two
-   migration problems:
 
 
 
@@ -225,6 +225,15 @@ Ounsworth, et al.         Expires 25 April 2024                 [Page 4]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
+
+   Cautious implementers may wish to combine cryptographic algorithms
+   such that an attacker would need to break all of them in order to
+   compromise the data being protected.  Such mechanisms are referred to
+   as Post-Quantum / Traditional Hybrids
+   [I-D.driscoll-pqt-hybrid-terminology].
+
+   PQ/T Hybrid cryptography can, in general, provide solutions to two
+   migration problems:
 
    *  Algorithm strength uncertainty: During the transition period, some
       post-quantum signature and encryption algorithms will not be fully
@@ -251,14 +260,27 @@ Internet-Draft              PQ Composite Sigs               October 2023
    algorithms address algorithm strength uncertainty because the
    composite algorithm remains strong so long as one of its components
    remains strong.  Concrete instantiations of composite signature
-   algorithms are provided based on ML-DSA, Falcon, RSA and ECDSA.
-   Backwards compatibility is not directly covered in this document, but
-   is the subject of Appendix B.2.
+   algorithms are provided based on ML-DSA, FN-DSA, RSA and ECDSA.
+   Backwards and Forwards compatibility is not directly covered in this
+   document, but is the subject of Sections Appendix B.2 and
+   Appendix B.3 respectively.
 
    This document is intended for general applicability anywhere that
    digital signatures are used within PKIX and CMS structures.  For a
    more detailed use-case discussion for composite signatures, the
    reader is encouraged to look at [I-D.vaira-pquip-pqc-use-cases]
+
+
+
+
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                 [Page 5]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
 
 2.1.  Terminology
 
@@ -274,13 +296,6 @@ Internet-Draft              PQ Composite Sigs               October 2023
    ASN.1 structures needed for encoding data and metadata needed to use
    the algorithm.  This document is primarily concerned with algorithms
    for producing digital signatures.
-
-
-
-Ounsworth, et al.         Expires 25 April 2024                 [Page 5]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
    BER: Basic Encoding Rules (BER) as defined in [X.690].
 
@@ -311,6 +326,18 @@ Internet-Draft              PQ Composite Sigs               October 2023
    SIGNATURE: A digital cryptographic signature, making no assumptions
    about which algorithm.
 
+
+
+
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                 [Page 6]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    STRIPPING ATTACK: An attack in which the attacker is able to
    downgrade the cryptographic object to an attacker-chosen subset of
    original set of component algorithms in such a way that it is not
@@ -327,37 +354,28 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
    Composite keys as defined here follow this definition and should be
    regarded as a single key that performs a single cryptographic
-   operation such key generation, signing, verifying, encapsulating, or
-   decapsulating -- using its internal sequence of component keys as if
-   they form a single key.  This generally means that the complexity of
+   operation such key generation, signing, or verifying -- using its
+   internal sequence of component keys as if they form a single key.
+   This generally means that the complexity of combining algorithms can
+   and should be handled by the cryptographic library or cryptographic
+   module, and the single composite public key, private key, and
+   ciphertext can be carried in existing fields in protocols such as
+   PKCS#10 [RFC2986], CMP [RFC4210], X.509 [RFC5280], CMS [RFC5652], and
+   the Trust Anchor Format [RFC5914].  In this way, composites achieve
+   "protocol backwards-compatibility" in that they will drop cleanly
+   into any protocol that accepts KEM algorithms without requiring any
+   modification of the protocol to handle multiple keys.
 
+2.3.  Composite Algorithms
 
-
-Ounsworth, et al.         Expires 25 April 2024                 [Page 6]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
-
-   combining algorithms can and should be handled by the cryptographic
-   library or cryptographic module, and the single composite public key,
-   private key, and ciphertext can be carried in existing fields in
-   protocols such as PKCS#10 [RFC2986], CMP [RFC4210], X.509 [RFC5280],
-   CMS [RFC5652], and the Trust Anchor Format [RFC5914].  In this way,
-   composites achieve "protocol backwards-compatibility" in that they
-   will drop cleanly into any protocol that accepts KEM algorithms
-   without requiring any modification of the protocol to handle multiple
-   keys.
-
-2.3.  Composite Signatures
-
-   Here we define the signature mechanism in which a signature is a
-   cryptographic primitive that consists of three algorithms:
+   Here we define Composite Signatures as a cryptographic primitive that
+   consists of three algorithms:
 
    *  KeyGen() -> (pk, sk): A probabilistic key generation algorithm,
       which generates a public key pk and a secret key sk.
 
    *  Sign(sk, Message) -> (signature): A signing algorithm which takes
-      as input a secret key sk and a Message, and outputs a signature
+      as input a secret key sk and a Message, and outputs a signature.
 
    *  Verify(pk, Message, signature) -> true or false: A verification
       algorithm which takes as input a public key, a Message and
@@ -367,9 +385,21 @@ Internet-Draft              PQ Composite Sigs               October 2023
       the integrity of the Message.  If the signature and public key
       cannot verify the Message, it returns false.
 
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                 [Page 7]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    A composite signature allows two or more underlying signature
    algorithms to be combined into a single cryptographic signature
    operation and can be used for applications that require signatures.
+   Although composite signatures are defined as a sequence of component
+   signatures, as detailed in many parts of this document, the sign and
+   verify algorithms are to be considered as a single atomic operations.
 
 2.3.1.  Composite KeyGen
 
@@ -389,49 +419,75 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                 [Page 7]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                 [Page 8]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
 
 Sign (sk, Message) -> (signature)
 Input:
-     K1, K2             Signing private keys for each component. See note below on
+    K1, K2             Signing private keys for each component. See note below on
                         composite inputs.
 
-     A1, A2             Component signature algorithms. See note below on
+    A1, A2             Component signature algorithms. See note below on
                         composite inputs.
 
-     Message            The Message to be signed, an octet string
+    Message            The Message to be signed, an octet string
 
-     HASH               The Message Digest Algorithm used for pre-hashing.  See section
+    HASH               The Message Digest Algorithm used for pre-hashing.  See section
                         on pre-hashing below.
 
-     OID                The Composite Signature String Algorithm Name converted
+    OID                The Composite Signature String Algorithm Name converted
                         from ASCII to bytes.  See section on OID concatenation
                         below.
 
 Output:
-     signature          The composite signature, a CompositeSignatureValue
+    signature          The composite signature, a CompositeSignatureValue
 
 Signature Generation Process:
 
-   1. Compute a Hash of the Message
+  1. Compute a Hash of the Message
 
-         M' = HASH(Message)
+        M' = HASH(Message)
 
-   2. Generate the n component signatures independently,
+  2. Generate the n component signatures independently,
       according to their algorithm specifications.
 
-         S1 := Sign( K1, A1, OID || M' )
-         S2 := Sign( K2, A2, OID || M' )
+        S1 := Sign( K1, A1, OID || M' )
+        S2 := Sign( K2, A2, OID || M' )
 
-   3. Encode each component signature S1 and S2 into a BIT STRING
+  3. Encode each component signature S1 and S2 into a BIT STRING
       according to its algorithm specification.
 
         signature ::= Sequence { S1, S2 }
 
-   4. Output signature
+  4. Output signature
 
                 Figure 1: Composite Sign(sk, Message)
 
@@ -445,7 +501,7 @@ Signature Generation Process:
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                 [Page 8]
+Ounsworth, et al.         Expires 25 April 2024                 [Page 9]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -484,29 +540,29 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 Composite Verify(pk, Message, signature)
 Input:
-     P1, P2             Public verification keys. See note below on
+    P1, P2             Public verification keys. See note below on
                         composite inputs.
 
-     Message            Message whose signature is to be verified,
+    Message            Message whose signature is to be verified,
                         an octet string
 
-     signature          CompositeSignatureValue containing the component
+    signature          CompositeSignatureValue containing the component
                         signature values (S1 and S2) to be verified.
 
-     A1, A2             Component signature algorithms. See note
+    A1, A2             Component signature algorithms. See note
                         below on composite inputs.
 
-     HASH               The Message Digest Algorithm for pre-hashing.  See
+    HASH               The Message Digest Algorithm for pre-hashing.  See
                         section on pre-hashing the message below.
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                 [Page 9]
+Ounsworth, et al.         Expires 25 April 2024                [Page 10]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
 
-     OID                The Composite Signature String Algorithm Name converted
+    OID                The Composite Signature String Algorithm Name converted
                         from ASCII to bytes.  See section on OID concatenation
                         below
 
@@ -516,27 +572,27 @@ Output:
                         (false) otherwise.
 
 Signature Verification Procedure::
-   1. Check keys, signatures, and algorithms lists for consistency.
+  1. Check keys, signatures, and algorithms lists for consistency.
 
       If Error during Desequencing, or the sequences have
       different numbers of elements, or any of the public keys
       P1 or P2 and the algorithm identifiers A1 or A2 are
       composite then output "Invalid signature" and stop.
 
-   2. Compute a Hash of the Message
+  2. Compute a Hash of the Message
 
-         M' = HASH(Message)
+        M' = HASH(Message)
 
-   3. Check each component signature individually, according to its
-       algorithm specification.
-       If any fail, then the entire signature validation fails.
+  3. Check each component signature individually, according to its
+      algorithm specification.
+      If any fail, then the entire signature validation fails.
 
-       if not verify( P1, OID || M', S1, A1 ) then
+      if not verify( P1, OID || M', S1, A1 ) then
             output "Invalid signature"
-       if not verify( P2, OID || M', S2, A2 ) then
+      if not verify( P2, OID || M', S2, A2 ) then
             output "Invalid signature"
 
-       if all succeeded, then
+      if all succeeded, then
         output "Valid signature"
 
           Figure 2: Composite Verify(pk, Message, signature)
@@ -557,7 +613,7 @@ Signature Verification Procedure::
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 10]
+Ounsworth, et al.         Expires 25 April 2024                [Page 11]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -613,53 +669,53 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 11]
+Ounsworth, et al.         Expires 25 April 2024                [Page 12]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
 
-   +=============================+==================================================================================+
-   |Composite Signature          |HEX Encoding to be prepended to each Message                                      |
-   |AlgorithmID                  |                                                                                  |
-   +=============================+==================================================================================+
-   |id-MLDSA44-RSA2048-PSS-SHA256|69642D4D4C44534134342D525341323034382D5053532D534841323536                        |
-   +-----------------------------+----------------------------------------------------------------------------------+
-   |id-                          |69642D4D4C44534134342D525341323034382D504B435331352D534841323536                  |
-   |MLDSA44-RSA2048-PKCS15-SHA256|                                                                                  |
-   +-----------------------------+----------------------------------------------------------------------------------+
-   |id-MLDSA44-Ed25519-SHA512    |69642D4D4C44534134342D456432353531392D534841353132                                |
-   +-----------------------------+----------------------------------------------------------------------------------+
-   |id-MLDSA44-ECDSA-P256-SHA256 |69642D4D4C44534134342D45434453412D503235362D534841323536                          |
-   +-----------------------------+----------------------------------------------------------------------------------+
-   |id-MLDSA44-ECDSA-            |69642D4D4C44534134342D45434453412D627261696E706F6F6C5032353672312D534841323536    |
-   |brainpoolP256r1-SHA256       |                                                                                  |
-   +-----------------------------+----------------------------------------------------------------------------------+
-   |id-MLDSA65-RSA3072-PSS-SHA256|69642D4D4C44534136352D525341333037322D5053532D534841323536                        |
-   +-----------------------------+----------------------------------------------------------------------------------+
-   |id-                          |69642D4D4C44534136352D525341333037322D504B435331352D534841323536                  |
-   |MLDSA65-RSA3072-PKCS15-SHA256|                                                                                  |
-   +-----------------------------+----------------------------------------------------------------------------------+
-   |id-MLDSA65-ECDSA-P256-SHA256 |69642D4D4C44534136352D45434453412D503235362D534841323536                          |
-   +-----------------------------+----------------------------------------------------------------------------------+
-   |id-MLDSA65-ECDSA-            |69642D4D4C44534136352D45434453412D627261696E706F6F6C5032353672312D534841323536    |
-   |brainpoolP256r1-SHA256       |                                                                                  |
-   +-----------------------------+----------------------------------------------------------------------------------+
-   |id-MLDSA65-Ed25519-SHA512    |69642D4D4C44534136352D456432353531392D534841353132                                |
-   +-----------------------------+----------------------------------------------------------------------------------+
-   |id-MLDSA87-ECDSA-P384-SHA384 |69642D4D4C44534138372D45434453412D503338342D534841333834                          |
-   +-----------------------------+----------------------------------------------------------------------------------+
-   |id-MLDSA87-ECDSA-            |69642D4D4C44534138372D45434453412D627261696E706F6F6C5033383472312D534841333834    |
-   |brainpoolP384r1-SHA384       |                                                                                  |
-   +-----------------------------+----------------------------------------------------------------------------------+
-   |id-MLDSA87-Ed448-SHAKE256    |69642D4D4C44534138372D45643434382D5348414B45323536                                |
-   +-----------------------------+----------------------------------------------------------------------------------+
-   |id-Falon512-ECDSA-P256-SHA256|69642D46616C6F6E3531322D45434453412D503235362D534841323536                        |
-   +-----------------------------+----------------------------------------------------------------------------------+
-   |id-Falcon512-ECDSA-          |69642D46616C636F6E3531322D45434453412D627261696E706F6F6C5032353672312D534841323536|
-   |brainpoolP256r1-SHA256       |                                                                                  |
-   +-----------------------------+----------------------------------------------------------------------------------+
-   |id-Falcon512-Ed25519-SHA512  |69642D46616C636F6E3531322D456432353531392D534841353132                            |
-   +-----------------------------+----------------------------------------------------------------------------------+
+   +=============================+================================================================================+
+   |Composite Signature          |HEX Encoding to be prepended to each Message                                    |
+   |AlgorithmID                  |                                                                                |
+   +=============================+================================================================================+
+   |id-MLDSA44-RSA3072-PSS-SHA256|69642D4D4C44534134342D525341333037322D5053532D534841323536                      |
+   +-----------------------------+--------------------------------------------------------------------------------+
+   |id-                          |69642D4D4C44534134342D525341333037322D504B435331352D534841323536                |
+   |MLDSA44-RSA3072-PKCS15-SHA256|                                                                                |
+   +-----------------------------+--------------------------------------------------------------------------------+
+   |id-MLDSA44-Ed25519-SHA512    |69642D4D4C44534134342D456432353531392D534841353132                              |
+   +-----------------------------+--------------------------------------------------------------------------------+
+   |id-MLDSA44-ECDSA-P256-SHA256 |69642D4D4C44534134342D45434453412D503235362D534841323536                        |
+   +-----------------------------+--------------------------------------------------------------------------------+
+   |id-MLDSA44-ECDSA-            |69642D4D4C44534134342D45434453412D627261696E706F6F6C5032353672312D534841323536  |
+   |brainpoolP256r1-SHA256       |                                                                                |
+   +-----------------------------+--------------------------------------------------------------------------------+
+   |id-MLDSA65-RSA3072-PSS-SHA256|69642D4D4C44534136352D525341333037322D5053532D534841323536                      |
+   +-----------------------------+--------------------------------------------------------------------------------+
+   |id-                          |69642D4D4C44534136352D525341333037322D504B435331352D534841323536                |
+   |MLDSA65-RSA3072-PKCS15-SHA256|                                                                                |
+   +-----------------------------+--------------------------------------------------------------------------------+
+   |id-MLDSA65-ECDSA-P256-SHA256 |69642D4D4C44534136352D45434453412D503235362D534841323536                        |
+   +-----------------------------+--------------------------------------------------------------------------------+
+   |id-MLDSA65-ECDSA-            |69642D4D4C44534136352D45434453412D627261696E706F6F6C5032353672312D534841323536  |
+   |brainpoolP256r1-SHA256       |                                                                                |
+   +-----------------------------+--------------------------------------------------------------------------------+
+   |id-MLDSA65-Ed25519-SHA512    |69642D4D4C44534136352D456432353531392D534841353132                              |
+   +-----------------------------+--------------------------------------------------------------------------------+
+   |id-MLDSA87-ECDSA-P384-SHA384 |69642D4D4C44534138372D45434453412D503338342D534841333834                        |
+   +-----------------------------+--------------------------------------------------------------------------------+
+   |id-MLDSA87-ECDSA-            |69642D4D4C44534138372D45434453412D627261696E706F6F6C5033383472312D534841333834  |
+   |brainpoolP384r1-SHA384       |                                                                                |
+   +-----------------------------+--------------------------------------------------------------------------------+
+   |id-MLDSA87-Ed448-SHAKE256    |69642D4D4C44534138372D45643434382D5348414B45323536                              |
+   +-----------------------------+--------------------------------------------------------------------------------+
+   |id-FNDSA512-ECDSA-P256-SHA256|69642D464E4453413531322D45434453412D503235362D534841323536                      |
+   +-----------------------------+--------------------------------------------------------------------------------+
+   |id-FNDSA512-ECDSA-           |69642D464E4453413531322D45434453412D627261696E706F6F6C5032353672312D534841323536|
+   |brainpoolP256r1-SHA256       |                                                                                |
+   +-----------------------------+--------------------------------------------------------------------------------+
+   |id-FNDSA512-Ed25519-SHA512   |69642D464E4453413531322D456432353531392D534841353132                            |
+   +-----------------------------+--------------------------------------------------------------------------------+
 
               Table 1: Composite Signature OID Concatenations
 
@@ -669,7 +725,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 12]
+Ounsworth, et al.         Expires 25 April 2024                [Page 13]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -725,7 +781,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 13]
+Ounsworth, et al.         Expires 25 April 2024                [Page 14]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -772,8 +828,8 @@ Internet-Draft              PQ Composite Sigs               October 2023
      {
        IDENTIFIER id
        KEY SEQUENCE {
-        BIT STRING (CONTAINING FirstPublicKeyType)
-        BIT STRING (CONTAINING SecondPublicKeyType)
+       BIT STRING (CONTAINING FirstPublicKeyType)
+       BIT STRING (CONTAINING SecondPublicKeyType)
        }
        PARAMS ARE absent
        CERT-KEY-USAGE { digitalSignature, nonRepudiation, keyCertSign, cRLSign }
@@ -781,10 +837,12 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 14]
+Ounsworth, et al.         Expires 25 April 2024                [Page 15]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
+
+               Figure 3: CompositeKeyObject-asn.1-structures
 
    As an example, the public key type pk-MLDSA65-ECDSA-P256-SHA256 is
    defined as:
@@ -792,6 +850,8 @@ Internet-Draft              PQ Composite Sigs               October 2023
    pk-MLDSA65-ECDSA-P256-SHA256 PUBLIC-KEY ::=
      pk-CompositeSignature{ id-MLDSA65-ECDSA-P256-SHA256,
      OCTET STRING, ECPoint}
+
+          Figure 4: pk-MLDSA65-ECDSA-P256-SHA256-asn.1-structures
 
    The full set of key types defined by this specification can be found
    in the ASN.1 Module in Section 6.
@@ -801,6 +861,8 @@ Internet-Draft              PQ Composite Sigs               October 2023
    Composite public key data is represented by the following structure:
 
    CompositeSignaturePublicKey ::= SEQUENCE SIZE (2) OF BIT STRING
+
+           Figure 5: CompositeSignaturePublicKey-asn.1-structures
 
    A composite key MUST contain two component public keys.  The order of
    the component keys is determined by the definition of the
@@ -825,7 +887,16 @@ Internet-Draft              PQ Composite Sigs               October 2023
    keys, such as when private keys are carried in PKCS #12 [RFC7292],
    CMP [RFC4210] or CRMF [RFC4211] MUST use the following structure.
 
-   CompositeSignaturePrivateKey ::= SEQUENCE SIZE (2) OF OneAsymmetricKey
+     CompositeSignaturePrivateKey ::= SEQUENCE SIZE (2) OF OneAsymmetricKey
+
+          Figure 6: CompositeSignaturePrivateKey-asn.1-structures
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 16]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
 
    Each element is a OneAsymmetricKey` [RFC5958] object for a component
    private key.
@@ -835,20 +906,13 @@ Internet-Draft              PQ Composite Sigs               October 2023
    The order of the component keys is the same as the order defined in
    Section 3.2 for the components of CompositeSignaturePublicKey.
 
-
-
-Ounsworth, et al.         Expires 25 April 2024                [Page 15]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
-
    When a CompositePrivateKey is conveyed inside a OneAsymmetricKey
    structure (version 1 of which is also known as PrivateKeyInfo)
    [RFC5958], the privateKeyAlgorithm field SHALL be set to the
    corresponding composite algorithm identifier defined according to
    Section 5, the privateKey field SHALL contain the
-   CompositeSignaturePrivateKey, and the publicKey field MUST NOT be
-   present.  Associated public key material MAY be present in the
+   CompositeSignaturePrivateKey.  Associated public key material MAY be
+   present in the the publicKey field or in the
    CompositeSignaturePrivateKey.
 
    In some usecases the private keys that comprise a composite key may
@@ -869,7 +933,9 @@ Internet-Draft              PQ Composite Sigs               October 2023
    When an octet string is required, the DER encoding of the composite
    data structure SHALL be used directly.
 
-   CompositeSignaturePublicKeyOs ::= OCTET STRING (CONTAINING CompositeSignaturePublicKey ENCODED BY der)
+     CompositeSignaturePublicKeyOs ::= OCTET STRING (CONTAINING CompositeSignaturePublicKey ENCODED BY der)
+
+          Figure 7: CompositeSignaturePublicKeyOs-asn.1-structures
 
    When a bit string is required, the octets of the DER encoded
    composite data structure SHALL be used as the bits of the bit string,
@@ -877,7 +943,16 @@ Internet-Draft              PQ Composite Sigs               October 2023
    bit, and so on, ending with the least significant bit of the last
    octet becoming the last bit of the bit string.
 
-   CompositeSignaturePublicKeyBs ::= BIT STRING (CONTAINING CompositeSignaturePublicKey ENCODED BY der)
+     CompositeSignaturePublicKeyBs ::= BIT STRING (CONTAINING CompositeSignaturePublicKey ENCODED BY der)
+
+          Figure 8: CompositeSignaturePublicKeyBs-asn.1-structures
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 17]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
 
    In the interests of simplicity and avoiding compatibility issues,
    implementations that parse these structures MAY accept both BER and
@@ -889,30 +964,25 @@ Internet-Draft              PQ Composite Sigs               October 2023
    with the public key, then the composite public key associated with a
    composite signature MUST have a signing-type key usage.
 
-
-
-
-
-Ounsworth, et al.         Expires 25 April 2024                [Page 16]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
-
    If the keyUsage extension is present in a Certification Authority
    (CA) certificate that indicates a composite key, then any combination
    of the following values MAY be present:
 
-   digitalSignature;
-   nonRepudiation;
-   keyCertSign; and
-   cRLSign.
+   *  digitalSignature
+
+   *  nonRepudiation
+
+   *  keyCertSign
+
+   *  cRLSign
 
    If the keyUsage extension is present in an End Entity (EE)
    certificate that indicates a composite key, then any combination of
    the following values MAY be present:
 
-   digitalSignature; and
-   nonRepudiation;
+   *  digitalSignature
+
+   *  nonRepudiation
 
 4.  Composite Signature Structures
 
@@ -920,39 +990,28 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
    The ASN.1 algorithm object for a composite signature is:
 
-   sa-CompositeSignature {
-     OBJECT IDENTIFIER:id,
-       PUBLIC-KEY:publicKeyType }
-       SIGNATURE-ALGORITHM ::= {
-           IDENTIFIER id
-           VALUE CompositeSignatureValue
-           PARAMS ARE absent
-           PUBLIC-KEYS { publicKeyType }
-       }
+     sa-CompositeSignature {
+       OBJECT IDENTIFIER:id,
+         PUBLIC-KEY:publicKeyType }
+         SIGNATURE-ALGORITHM ::= {
+             IDENTIFIER id
+             VALUE CompositeSignatureValue
+             PARAMS ARE absent
+             PUBLIC-KEYS { publicKeyType }
+         }
 
-   The following is an explanation how SIGNATURE-ALGORITHM elements are
-   used to create Composite Signatures:
-
+            Figure 9: CompositeSignatureObject-asn.1-structures
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth, et al.         Expires 25 April 2024                [Page 17]
+Ounsworth, et al.         Expires 25 April 2024                [Page 18]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
+
+   The following is an explanation how SIGNATURE-ALGORITHM elements are
+   used to create Composite Signatures:
 
     +=============================+===================================+
     | SIGNATURE-ALGORITHM element | Definition                        |
@@ -976,7 +1035,9 @@ Internet-Draft              PQ Composite Sigs               October 2023
    The output of the composite signature algorithm is the DER encoding
    of the following structure:
 
-   CompositeSignatureValue ::= SEQUENCE SIZE (2) OF BIT STRING
+     CompositeSignatureValue ::= SEQUENCE SIZE (2) OF BIT STRING
+
+                       Figure 10: composite-sig-asn.1
 
    Where each BIT STRING within the SEQUENCE is a signature value
    produced by one of the component keys.  It MUST contain one signature
@@ -997,18 +1058,18 @@ Internet-Draft              PQ Composite Sigs               October 2023
    should not presume that the object ID of a composite key will be the
    same as its composite signature algorithm.
 
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 19]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    This section is not intended to be exhaustive and other authors may
    define others composite signature algorithms so long as they are
    compatible with the structures and processes defined in this and
    companion public and private key documents.
-
-
-
-
-Ounsworth, et al.         Expires 25 April 2024                [Page 18]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
    Some use-cases desire the flexibility for clients to use any
    combination of supported algorithms, while others desire the rigidity
@@ -1056,12 +1117,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-
-
-
-
-
-Ounsworth, et al.         Expires 25 April 2024                [Page 19]
+Ounsworth, et al.         Expires 25 April 2024                [Page 20]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1101,7 +1157,8 @@ Internet-Draft              PQ Composite Sigs               October 2023
    +-----------------------------+------------+---------+-----------------------+------------+
    |id-MLDSA87-Ed448-SHAKE256    |<CompSig>.13|MLDSA87  |Ed448                  |SHAKE256/512|
    +-----------------------------+------------+---------+-----------------------+------------+
-   |id-Falon512-ECDSA-P256-SHA256|<CompSig>.14|Falcon512|SHA256withECDSA        |SHA256      |
+   |id-Falcon512-ECDSA-          |<CompSig>.14|Falcon512|SHA256withECDSA        |SHA256      |
+   |P256-SHA256                  |            |         |                       |            |
    +-----------------------------+------------+---------+-----------------------+------------+
    |id-Falcon512-ECDSA-          |<CompSig>.15|Falcon512|SHA256withECDSA        |SHA256      |
    |brainpoolP256r1-SHA256       |            |         |                       |            |
@@ -1116,8 +1173,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-
-Ounsworth, et al.         Expires 25 April 2024                [Page 20]
+Ounsworth, et al.         Expires 25 April 2024                [Page 21]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1173,7 +1229,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 21]
+Ounsworth, et al.         Expires 25 April 2024                [Page 22]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1229,7 +1285,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 22]
+Ounsworth, et al.         Expires 25 April 2024                [Page 23]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1285,7 +1341,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 23]
+Ounsworth, et al.         Expires 25 April 2024                [Page 24]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1341,7 +1397,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 24]
+Ounsworth, et al.         Expires 25 April 2024                [Page 25]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1397,7 +1453,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 25]
+Ounsworth, et al.         Expires 25 April 2024                [Page 26]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1453,7 +1509,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 26]
+Ounsworth, et al.         Expires 25 April 2024                [Page 27]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1509,7 +1565,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 27]
+Ounsworth, et al.         Expires 25 April 2024                [Page 28]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1565,7 +1621,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 28]
+Ounsworth, et al.         Expires 25 April 2024                [Page 29]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1615,65 +1671,9 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
    *  id-MLDSA44-RSA2048-PSS-SHA256
 
-   *  Decimal: IANA Assigned
+      -  Decimal: IANA Assigned
 
-   *  Description: id-MLDSA44-RSA2048-PSS-SHA256
-
-
-
-Ounsworth, et al.         Expires 25 April 2024                [Page 29]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
-
-   *  References: This Document
-
-   *  id-MLDSA44-RSA2048-PKCS15-SHA256
-
-   *  Decimal: IANA Assigned
-
-   *  Description: id-MLDSA44-RSA2048-PKCS15-SHA256
-
-   *  References: This Document
-
-   *  id-MLDSA44-Ed25519-SHA512
-
-   *  Decimal: IANA Assigned
-
-   *  Description: id-MLDSA44-Ed25519-SHA512
-
-   *  References: This Document
-
-   *  id-MLDSA44-ECDSA-P256-SHA256
-
-   *  Decimal: IANA Assigned
-
-   *  Description: id-MLDSA44-ECDSA-P256-SHA256
-
-   *  References: This Document
-
-   *  id-MLDSA44-ECDSA-brainpoolP256r1-SHA256
-
-   *  Decimal: IANA Assigned
-
-   *  Description: id-MLDSA44-ECDSA-brainpoolP256r1-SHA256
-
-   *  References: This Document
-
-   *  id-MLDSA65-RSA3072-PSS-SHA256
-
-   *  Decimal: IANA Assigned
-
-   *  Description: id-MLDSA65-RSA3072-PSS-SHA256
-
-   *  References: This Document
-
-   *  id-MLDSA65-RSA3072-PKCS15-SHA256
-
-   *  Decimal: IANA Assigned
-
-   *  Description: id-MLDSA65-RSA3072-PKCS15-SHA256
-
+      -  Description: id-MLDSA44-RSA2048-PSS-SHA256
 
 
 
@@ -1682,53 +1682,53 @@ Ounsworth, et al.         Expires 25 April 2024                [Page 30]
 Internet-Draft              PQ Composite Sigs               October 2023
 
 
-   *  References: This Document
+      -  References: This Document
 
-   *  id-MLDSA65-ECDSA-P256-SHA256
+   *  id-MLDSA44-RSA2048-PKCS15-SHA256
 
-   *  Decimal: IANA Assigned
+      -  Decimal: IANA Assigned
 
-   *  Description: id-MLDSA65-ECDSA-P256-SHA256
+      -  Description: id-MLDSA44-RSA2048-PKCS15-SHA256
 
-   *  References: This Document
+      -  References: This Document
 
-   *  id-MLDSA65-ECDSA-brainpoolP256r1-SHA256
+   *  id-MLDSA44-Ed25519-SHA512
 
-   *  Decimal: IANA Assigned
+      -  Decimal: IANA Assigned
 
-   *  Description: id-MLDSA65-ECDSA-brainpoolP256r1-SHA256
+      -  Description: id-MLDSA44-Ed25519-SHA512
 
-   *  References: This Document
+      -  References: This Document
 
-   *  id-MLDSA65-Ed25519-SHA512
+   *  id-MLDSA44-ECDSA-P256-SHA256
 
-   *  Decimal: IANA Assigned
+      -  Decimal: IANA Assigned
 
-   *  Description: id-MLDSA65-Ed25519-SHA512
+      -  Description: id-MLDSA44-ECDSA-P256-SHA256
 
-   *  References: This Document
+      -  References: This Document
 
-   *  id-MLDSA87-ECDSA-P384-SHA384
+   *  id-MLDSA44-ECDSA-brainpoolP256r1-SHA256
 
-   *  Decimal: IANA Assigned
+      -  Decimal: IANA Assigned
 
-   *  Description: id-MLDSA87-ECDSA-P384-SHA384
+      -  Description: id-MLDSA44-ECDSA-brainpoolP256r1-SHA256
 
-   *  References: This Document
+      -  References: This Document
 
-   *  id-MLDSA87-ECDSA-brainpoolP384r1-SHA384
+   *  id-MLDSA65-RSA3072-PSS-SHA256
 
-   *  Decimal: IANA Assigned
+      -  Decimal: IANA Assigned
 
-   *  Description: id-MLDSA87-ECDSA-brainpoolP384r1-SHA384
+      -  Description: id-MLDSA65-RSA3072-PSS-SHA256
 
-   *  References: This Document
+      -  References: This Document
 
-   *  id-MLDSA87-Ed448-SHAKE256
+   *  id-MLDSA65-RSA3072-PKCS15-SHA256
 
-   *  Decimal: IANA Assigned
+      -  Decimal: IANA Assigned
 
-   *  Description: id-MLDSA87-Ed448
+      -  Description: id-MLDSA65-RSA3072-PKCS15-SHA256
 
 
 
@@ -1738,31 +1738,87 @@ Ounsworth, et al.         Expires 25 April 2024                [Page 31]
 Internet-Draft              PQ Composite Sigs               October 2023
 
 
-   *  References: This Document
+      -  References: This Document
 
-   *  id-Falon512-ECDSA-P256-SHA256
+   *  id-MLDSA65-ECDSA-P256-SHA256
 
-   *  Decimal: IANA Assigned
+      -  Decimal: IANA Assigned
 
-   *  Description: id-Falon512-ECDSA-P256-SHA256
+      -  Description: id-MLDSA65-ECDSA-P256-SHA256
 
-   *  References: This Document
+      -  References: This Document
+
+   *  id-MLDSA65-ECDSA-brainpoolP256r1-SHA256
+
+      -  Decimal: IANA Assigned
+
+      -  Description: id-MLDSA65-ECDSA-brainpoolP256r1-SHA256
+
+      -  References: This Document
+
+   *  id-MLDSA65-Ed25519-SHA512
+
+      -  Decimal: IANA Assigned
+
+      -  Description: id-MLDSA65-Ed25519-SHA512
+
+      -  References: This Document
+
+   *  id-MLDSA87-ECDSA-P384-SHA384
+
+      -  Decimal: IANA Assigned
+
+      -  Description: id-MLDSA87-ECDSA-P384-SHA384
+
+      -  References: This Document
+
+   *  id-MLDSA87-ECDSA-brainpoolP384r1-SHA384
+
+      -  Decimal: IANA Assigned
+
+      -  Description: id-MLDSA87-ECDSA-brainpoolP384r1-SHA384
+
+      -  References: This Document
+
+   *  id-MLDSA87-Ed448-SHAKE256
+
+      -  Decimal: IANA Assigned
+
+      -  Description: id-MLDSA87-Ed448
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 32]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
+      -  References: This Document
+
+   *  id-FNDSA512-ECDSA-P256-SHA256
+
+      -  Decimal: IANA Assigned
+
+      -  Description: id-FNDSA512-ECDSA-P256-SHA256
+
+      -  References: This Document
 
    *  id-Falcon512-ECDSA-brainpoolP256r1-SHA256
 
-   *  Decimal: IANA Assigned
+      -  Decimal: IANA Assigned
 
-   *  Description: id-Falcon512-ECDSA-brainpoolP256r1-SHA256
+      -  Description: id-Falcon512-ECDSA-brainpoolP256r1-SHA256
 
-   *  References: This Document
+      -  References: This Document
 
    *  id-Falcon512-Ed25519-SHA512
 
-   *  Decimal: IANA Assigned
+      -  Decimal: IANA Assigned
 
-   *  Description: id-Falcon512-Ed25519
+      -  Description: id-Falcon512-Ed25519
 
-   *  References: This Document
+      -  References: This Document
 
 8.  Security Considerations
 
@@ -1789,7 +1845,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 32]
+Ounsworth, et al.         Expires 25 April 2024                [Page 33]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -1839,16 +1895,20 @@ Internet-Draft              PQ Composite Sigs               October 2023
               RFC 5652, DOI 10.17487/RFC5652, September 2009,
               <https://www.rfc-editor.org/info/rfc5652>.
 
-   [RFC5958]  Turner, S., "Asymmetric Key Packages", RFC 5958,
-              DOI 10.17487/RFC5958, August 2010,
-              <https://www.rfc-editor.org/info/rfc5958>.
+   [RFC5914]  Housley, R., Ashmore, S., and C. Wallace, "Trust Anchor
+              Format", RFC 5914, DOI 10.17487/RFC5914, June 2010,
+              <https://www.rfc-editor.org/info/rfc5914>.
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 33]
+Ounsworth, et al.         Expires 25 April 2024                [Page 34]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
+
+   [RFC5958]  Turner, S., "Asymmetric Key Packages", RFC 5958,
+              DOI 10.17487/RFC5958, August 2010,
+              <https://www.rfc-editor.org/info/rfc5958>.
 
    [RFC6090]  McGrew, D., Igoe, K., and M. Salter, "Fundamental Elliptic
               Curve Cryptography Algorithms", RFC 6090,
@@ -1891,20 +1951,22 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 9.2.  Informative References
 
-   [Bindel2017]
-              Bindel, N., Herath, U., McKague, M., and D. Stebila,
-              "Transitioning to a quantum-resistant public key
-              infrastructure", 2017, <https://link.springer.com/
-              chapter/10.1007/978-3-319-59879-6_22>.
 
 
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 34]
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 35]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
+
+   [Bindel2017]
+              Bindel, N., Herath, U., McKague, M., and D. Stebila,
+              "Transitioning to a quantum-resistant public key
+              infrastructure", 2017, <<https://link.springer.com/
+              chapter/10.1007/978-3-319-59879-6_22>>.
 
    [I-D.becker-guthrie-noncomposite-hybrid-auth]
               Becker, A., Guthrie, R., and M. J. Jenkins, "Non-Composite
@@ -1948,19 +2010,17 @@ Internet-Draft              PQ Composite Sigs               October 2023
    [I-D.ounsworth-pq-composite-kem]
               Ounsworth, M. and J. Gray, "Composite KEM For Use In
               Internet PKI", Work in Progress, Internet-Draft, draft-
-              ounsworth-pq-composite-kem-01, 13 March 2023,
-              <https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-
-              composite-kem-01>.
 
 
 
-
-
-
-Ounsworth, et al.         Expires 25 April 2024                [Page 35]
+Ounsworth, et al.         Expires 25 April 2024                [Page 36]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
+
+              ounsworth-pq-composite-kem-01, 13 March 2023,
+              <https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-
+              composite-kem-01>.
 
    [I-D.pala-klaussner-composite-kofn]
               Pala, M. and J. Klaußner, "K-threshold Composite
@@ -1974,14 +2034,8 @@ Internet-Draft              PQ Composite Sigs               October 2023
               Ounsworth, "Post-quantum cryptography use cases", Work in
               Progress, Internet-Draft, draft-vaira-pquip-pqc-use-cases-
               00, 23 October 2023,
-              <https://datatracker.ietf.org/api/v1/doc/document/draft-
-              vaira-pquip-pqc-use-cases/>.
-
-   [RFC3279]  Bassham, L., Polk, W., and R. Housley, "Algorithms and
-              Identifiers for the Internet X.509 Public Key
-              Infrastructure Certificate and Certificate Revocation List
-              (CRL) Profile", RFC 3279, DOI 10.17487/RFC3279, April
-              2002, <https://www.rfc-editor.org/info/rfc3279>.
+              <https://datatracker.ietf.org/doc/html/draft-vaira-pquip-
+              pqc-use-cases-00>.
 
    [RFC7292]  Moriarty, K., Ed., Nystrom, M., Parkinson, S., Rusch, A.,
               and M. Scott, "PKCS #12: Personal Information Exchange
@@ -2013,7 +2067,9 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 36]
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 37]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -2069,7 +2125,7 @@ A.1.2.  MLDSA44-ECDSA-P256 Private Key
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 37]
+Ounsworth, et al.         Expires 25 April 2024                [Page 38]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -2125,7 +2181,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 38]
+Ounsworth, et al.         Expires 25 April 2024                [Page 39]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -2181,7 +2237,7 @@ A.1.3.  MLDSA44-ECDSA-P256 Self-Signed X509 Certificate
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 39]
+Ounsworth, et al.         Expires 25 April 2024                [Page 40]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -2237,7 +2293,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 40]
+Ounsworth, et al.         Expires 25 April 2024                [Page 41]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -2293,7 +2349,7 @@ B.1.  FIPS certification
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 41]
+Ounsworth, et al.         Expires 25 April 2024                [Page 42]
 
 Internet-Draft              PQ Composite Sigs               October 2023
 
@@ -2307,20 +2363,54 @@ B.2.  Backwards Compatibility
    systems will understand the OIDs defined in this document.
 
    If backwards compatibility is required, then additional mechanisms
-   will be needed.  Migration and interoperability concerns need to be
-   thought about in the context of various types of protocols that make
-   use of X.509 and PKIX with relation to digital signature objects,
-   from online negotiated protocols such as TLS 1.3 [RFC8446] and IKEv2
-   [RFC7296], to non-negotiated asynchronous protocols such as S/MIME
-   signed email [RFC8551], document signing such as in the context of
-   the European eIDAS regulations [eIDAS2014], and publicly trusted code
-   signing [codeSigningBRsv2.8], as well as myriad other standardized
-   and proprietary protocols and applications that leverage CMS
-   [RFC5652] signed structures.  Composite simplifies the protocol
-   design work because it can be implemented as a signature algorithm
-   that fits into existing systems.
+   will be needed such as, for example, in
+   [I-D.pala-klaussner-composite-kofn].  Migration and interoperability
+   concerns need to be thought about in the context of various types of
+   protocols that make use of X.509 and PKIX with relation to digital
+   signature objects, from online negotiated protocols such as TLS 1.3
+   [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous
+   protocols such as S/MIME signed email [RFC8551], document signing
+   such as in the context of the European eIDAS regulations [eIDAS2014],
+   and publicly trusted code signing [codeSigningBRsv2.8], as well as
+   myriad other standardized and proprietary protocols and applications
+   that leverage CMS [RFC5652] signed structures.  Composite simplifies
+   the protocol design work because it can be implemented as a signature
+   algorithm that fits into existing systems.
 
-B.2.1.  Parallel PKIs
+B.3.  Forwards Compatibility
+
+   Similarly to the "backward compatibility", the term "forwards
+   compatibility" is used here to mean something more specific; that
+   first generation systems as they will be deployed today can
+   interoperate with later generations of the upgraded systems of the
+   future where support for classical cryptography (or first generation
+   of quantum-safe cryptography) might have be removed.  For example,
+   while this document defines support for combinations between a
+   traditional and a fist-generation quantum-safe algorithms, future
+   documents might support combinations between a first and second
+   generation of quantum-safe algorithms, thus providing at least one
+   common algorithm between the two generations.
+
+   This draft explicitly does not provide forwards compatibility, a more
+   generic solution is needed for this purpose such as
+   [I-D.pala-klaussner-composite-kofn].
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 43]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
+B.3.1.  Parallel PKIs
 
    We present the term "Parallel PKI" to refer to the setup where a PKI
    end entity possesses two or more distinct public keys or certificates
@@ -2346,14 +2436,6 @@ B.2.1.  Parallel PKIs
    composite signature algorithms than to implement such a mechanism in
    the protocol itself.  There is also nothing precluding a composite
    public key from being one of the components used within a non-
-
-
-
-Ounsworth, et al.         Expires 25 April 2024                [Page 42]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
-
    composite authentication operation; this may lead to greater
    convenience in setting up parallel PKI hierarchies that need to
    service a range of clients implementing different styles of post-
@@ -2368,7 +2450,7 @@ Internet-Draft              PQ Composite Sigs               October 2023
    compatible with and ignore the others, thus achieving full backwards
    compatibility.
 
-B.2.2.  Hybrid Extensions (Keys and Signatures)
+B.3.2.  Hybrid Extensions (Keys and Signatures)
 
    The use of Composite Crypto provides the possibility to process
    multiple algorithms without changing the logic of applications, but
@@ -2376,6 +2458,14 @@ B.2.2.  Hybrid Extensions (Keys and Signatures)
    whole system.  However, when it is not possible to upgrade the crypto
    engines/libraries, it is possible to leverage X.509 extensions to
    encode the additional keys and signatures.  When the custom
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 44]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    extensions are not marked critical, although this approach provides
    the most backward-compatible approach where clients can simply ignore
    the post-quantum (or extra) keys and signatures, it also requires all
@@ -2386,7 +2476,8 @@ Appendix C.  Intellectual Property Considerations
 
    The following IPR Disclosure relates to this draft:
 
-   https://datatracker.ietf.org/ipr/3588/
+   https://datatracker.ietf.org/ipr/3588/ (https://datatracker.ietf.org/
+   ipr/3588/)
 
 Appendix D.  Contributors and Acknowledgements
 
@@ -2400,15 +2491,6 @@ Appendix D.  Contributors and Acknowledgements
    Serge Mister (Entrust), Scott Fluhrer (Cisco Systems), Panos
    Kampanakis (Cisco Systems), Daniel Van Geest (ISARA), Tim Hollebeek
    (Digicert), and Francois Rousseau.
-
-
-
-
-
-Ounsworth, et al.         Expires 25 April 2024                [Page 43]
-
-Internet-Draft              PQ Composite Sigs               October 2023
-
 
    We are grateful to all, including any contributors who may have been
    inadvertently omitted from this list.
@@ -2424,15 +2506,26 @@ D.1.  Making contributions
    working copy of this draft at, as well as open issues at:
 
    https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs
+   (https://github.com/EntrustCorporation/draft-ounsworth-composite-
+   sigs)
 
 Authors' Addresses
 
    Mike Ounsworth
    Entrust Limited
    2500 Solandt Road -- Suite 100
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 45]
+
+Internet-Draft              PQ Composite Sigs               October 2023
+
+
    Ottawa, Ontario  K2K 3G5
    Canada
-   Email: mike.ounsworth@entrust.com
+
+   Email: <mike.ounsworth@entrust.com>
 
 
    John Gray
@@ -2440,7 +2533,8 @@ Authors' Addresses
    2500 Solandt Road -- Suite 100
    Ottawa, Ontario  K2K 3G5
    Canada
-   Email: john.gray@entrust.com
+
+   Email: <john.gray@entrust.com>
 
 
    Massimiliano Pala
@@ -2448,7 +2542,8 @@ Authors' Addresses
    858 Coal Creek Circle
    Louisville, Colorado,  80027
    United States of America
-   Email: director@openca.org
+
+   Email: <director@openca.org>
 
 
    Jan Klaussner
@@ -2456,9 +2551,26 @@ Authors' Addresses
    Kommandantenstr. 15
    10969 Berlin
    Germany
+
    Email: jan.klaussner@d-trust.net
 
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 44]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 46]
