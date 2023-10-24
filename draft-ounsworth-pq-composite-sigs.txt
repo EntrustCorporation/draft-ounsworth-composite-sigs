@@ -1974,8 +1974,8 @@ Internet-Draft              PQ Composite Sigs               October 2023
               Ounsworth, "Post-quantum cryptography use cases", Work in
               Progress, Internet-Draft, draft-vaira-pquip-pqc-use-cases-
               00, 23 October 2023,
-              <https://datatracker.ietf.org/api/v1/doc/document/draft-
-              vaira-pquip-pqc-use-cases/>.
+              <https://datatracker.ietf.org/doc/html/draft-vaira-pquip-
+              pqc-use-cases-00>.
 
    [RFC3279]  Bassham, L., Polk, W., and R. Housley, "Algorithms and
               Identifiers for the Internet X.509 Public Key
@@ -2432,6 +2432,7 @@ Authors' Addresses
    2500 Solandt Road -- Suite 100
    Ottawa, Ontario  K2K 3G5
    Canada
+
    Email: mike.ounsworth@entrust.com
 
 
@@ -2440,6 +2441,7 @@ Authors' Addresses
    2500 Solandt Road -- Suite 100
    Ottawa, Ontario  K2K 3G5
    Canada
+
    Email: john.gray@entrust.com
 
 
@@ -2448,7 +2450,20 @@ Authors' Addresses
    858 Coal Creek Circle
    Louisville, Colorado,  80027
    United States of America
+
    Email: director@openca.org
+
+
+
+
+
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 44]
+
+Internet-Draft              PQ Composite Sigs               October 2023
 
 
    Jan Klaussner
@@ -2456,9 +2471,50 @@ Authors' Addresses
    Kommandantenstr. 15
    10969 Berlin
    Germany
+
    Email: jan.klaussner@d-trust.net
 
 
 
 
-Ounsworth, et al.         Expires 25 April 2024                [Page 44]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth, et al.         Expires 25 April 2024                [Page 45]

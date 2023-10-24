@@ -310,10 +310,10 @@ The following process is used to generate composite signature values.
         according to its algorithm specification.
 
           signature ::= Sequence { S1, S2 }
-          
-    4. Output signature
 
-  {: #alg-composite-sign title="Composite Sign(sk, Message)"}
+    4. Output signature
+  
+  {: #alg-composite-sign title="The Composite Sign(sk, Message) algorithm"}
 
 Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code.  When passed to the Composite Sign(sk, Message) API the sk is a CompositePrivateKey. It is possible to construct a CompositePrivateKey from component keys stored in separate software or hardware keystores. Variations in the process to accommodate particular private key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
 
@@ -379,7 +379,7 @@ The following process is used to perform this verification.
         if all succeeded, then
           output "Valid signature"
 
-  {: #alg-composite-verify title="Composite Verify(pk, Message, signature)"}
+  {: #alg-composite-verify title="The Composite Verify(pk, Message, signature) algorithm."}
 
 Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code.  When passed to the Composite Verify(pk, Message, signature) API the pk is a CompositePublicKey. It is possible to construct a CompositePublicKey from component keys stored in separate software or hardware keystores. Variations in the process to accommodate particular private key storage mechanisms are considered to be conformant to this document so long as it produces the same output as the process sketched above.
 
@@ -804,13 +804,18 @@ Implementors seeking FIPS certification of a composite Signature algorithm where
 
 The authors wish to note that this gives composite algorithms great future utility both for future cryptographic migrations as well as bridging across jurisdictions; for example defining composite algorithms which combine FIPS cryptography with cryptography from a different national standards body.
 
-
 ## Backwards Compatibility {#sec-backwards-compat}
 
 The term "backwards compatibility" is used here to mean something more specific; that existing systems as they are deployed today can interoperate with the upgraded systems of the future.  This draft explicitly does not provide backwards compatibility, only upgraded systems will understand the OIDs defined in this document.
 
 If backwards compatibility is required, then additional mechanisms will be needed.  Migration and interoperability concerns need to be thought about in the context of various types of protocols that make use of X.509 and PKIX with relation to digital signature objects, from online negotiated protocols such as TLS 1.3 [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous protocols such as S/MIME signed email [RFC8551], document signing such as in the context of the European eIDAS regulations [eIDAS2014], and publicly trusted code signing [codeSigningBRsv2.8], as well as myriad other standardized and proprietary protocols and applications that leverage CMS [RFC5652] signed structures.  Composite simplifies the protocol design work because it can be implemented as a signature algorithm that fits into existing systems.
 
+## Forwards Compatibility {#sec-forwards-compat}
+
+Similarly to the "backward compatibility", the term "forwards compatibility" is used here to mean something more specific; that first generation systems as they will be deployed today can interoperate with later generations of the upgraded systems of the future where support for classical cryptography (or first generation of quantum-safe cryptography) might have be removed.  For example, while this document defines support for combinations between a traditional and a fist-generation quantum-safe algorithms, future documents might support combinations between
+a first and second generation of quantum-safe algorithms, thus providing at least one common algorithm between the two generations.
+
+This draft explicitly does not provide forwards compatibility, a more generic solution is needed for this purpose.
 
 ### Parallel PKIs
 
