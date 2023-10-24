@@ -5,7 +5,7 @@ default: $(docName)/text
 $(docName)/text:: $(docName).xml
 	@xml2rfc $(docName).xml --html --text
 
-$(docName).xml:
+$(docName).xml::
 	@./insertFileIncludes.sh $(docName).md "." > $(docName)_tmp.md ; \
 	   kramdown-rfc2629 $(docName)_tmp.md > $(docName).xml ; \
 	   rm $(docName)_tmp.md
