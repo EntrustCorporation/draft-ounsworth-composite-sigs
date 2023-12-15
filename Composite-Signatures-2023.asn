@@ -186,7 +186,7 @@ sa-MLDSA44-ECDSA-brainpoolP256r1-SHA256 SIGNATURE-ALGORITHM ::=
        
 
 -- TODO: OID to be replaced by IANA
-id-MLDSA65-RSA3072-PSS-SHA256 OBJECT IDENTIFIER ::= {     
+id-MLDSA65-RSA3072-PSS-SHA512 OBJECT IDENTIFIER ::= {     
    joint-iso-itu-t(2) country(16) us(840) organization(1) 
    entrust(114027) algorithm(80) composite(8) signature(1) 6 }
 

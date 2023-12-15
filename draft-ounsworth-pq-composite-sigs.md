@@ -403,8 +403,6 @@ As mentioned above, the OID input value for the Composite Signature Generation a
 | id-Falcon512-Ed25519-SHA512 |060B6086480186FA6B50070110|
 {: #tab-sig-alg-oids title="Composite Signature OID Concatenations"}
 
-TODO Update OIDS, Don't include ASN.1 overhead
-
 ## PreHashing the Message {#sec-prehash}
 As noted in the composite signature generation process and composite signature verification process, the Message should be pre-hashed into M' with the digest algorithm specified in the composite signature algorithm identifier.  The choice of the digest algorithm was chosen with the following criteria:
 
@@ -740,24 +738,24 @@ EDNOTE to IANA: OIDs will need to be replaced in both the ASN.1 module and in {{
   - Description:  id-MLDSA44-ECDSA-brainpoolP256r1-SHA256
   - References: This Document
   
--  id-MLDSA65-RSA3072-PSS-SHA256
+-  id-MLDSA65-RSA3072-PSS-SHA512
   - Decimal: IANA Assigned
-  - Description:  id-MLDSA65-RSA3072-PSS-SHA256
+  - Description:  id-MLDSA65-RSA3072-PSS-SHA512
   - References: This Document  
   
--  id-MLDSA65-RSA3072-PKCS15-SHA256
+-  id-MLDSA65-RSA3072-PKCS15-SHA512
   - Decimal: IANA Assigned
-  - Description:  id-MLDSA65-RSA3072-PKCS15-SHA256
+  - Description:  id-MLDSA65-RSA3072-PKCS15-SHA512
   - References: This Document
   
--  id-MLDSA65-ECDSA-P256-SHA256
+-  id-MLDSA65-ECDSA-P256-SHA512
   - Decimal: IANA Assigned
-  - Description:  id-MLDSA65-ECDSA-P256-SHA256
+  - Description:  id-MLDSA65-ECDSA-P256-SHA512
   - References: This Document  
   
--  id-MLDSA65-ECDSA-brainpoolP256r1-SHA256
+-  id-MLDSA65-ECDSA-brainpoolP256r1-SHA512
   - Decimal: IANA Assigned
-  - Description:  id-MLDSA65-ECDSA-brainpoolP256r1-SHA256
+  - Description:  id-MLDSA65-ECDSA-brainpoolP256r1-SHA512
   - References: This Document  
   
 -  id-MLDSA65-Ed25519-SHA512
@@ -891,6 +889,7 @@ Daniel Van Geest (ISARA),
 Britta Hale,
 Tim Hollebeek (Digicert),
 Panos Kampanakis (Cisco Systems),
+Richard Kisley (IBM),
 Serge Mister (Entrust),
 François Rousseau,
 Falko Strenzke and
