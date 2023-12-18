@@ -412,7 +412,7 @@ As noted in the composite signature generation process and composite signature v
 
 1. Ed25519 [RFC8032] uses SHA512 internally, therefore SHA512 is used to pre-hash the message when Ed25519 is a component algorithm.  
 
-1. Ed448 [RFC8032] uses SHAKE256 internally, but do reduce the set of prehashing algorihtms, SHA512 was select to pre-hash the message when Ed448 is a component algorithm.
+1. Ed448 [RFC8032] uses SHAKE256 internally, but to reduce the set of prehashing algorihtms, SHA512 was select to pre-hash the message when Ed448 is a component algorithm.
   
 1. TODO:  For Falcon signing it is expected prehashing digest accomodations will be allowed.  
 
