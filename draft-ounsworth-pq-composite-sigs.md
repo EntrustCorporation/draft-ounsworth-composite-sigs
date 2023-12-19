@@ -98,6 +98,7 @@ informative:
   RFC8446:
   RFC8551:
   RFC8017:
+  I-D.draft-hale-pquip-hybrid-signature-spectrums-01:
   I-D.draft-ounsworth-pq-composite-kem-01:
   I-D.draft-becker-guthrie-noncomposite-hybrid-auth-00:
   I-D.draft-guthrie-ipsecme-ikev2-hybrid-auth-00:
@@ -701,7 +702,7 @@ where:
 
 
 # IANA Considerations {#sec-iana}
-IANA is requested to allocate a value from the "SMI Security for PKIX Module Identifier" registry for the included ASN.1 module, and allocate values from "SMI Security for PKIX Algorithms" to identify the fourteen Algorithms  defined within.
+IANA is requested to allocate a value from the "SMI Security for PKIX Module Identifier" registry [RFC7299] for the included ASN.1 module, and allocate values from "SMI Security for PKIX Algorithms" to identify the fourteen Algorithms defined within.
 
 ##  Object Identifier Allocations
 EDNOTE to IANA: OIDs will need to be replaced in both the ASN.1 module and in {{tab-sig-algs}}.
