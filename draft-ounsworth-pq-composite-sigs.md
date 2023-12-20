@@ -332,8 +332,8 @@ Input:
      Message            Message whose signature is to be verified, 
                         an octet string
      
-     signature          CompositeSignatureValue containing the component 
-                        signature values (S1 and S2) to be verified.                 
+     signature          CompositeSignatureValue containing the component
+                        signature values (S1 and S2) to be verified.            
      
      A1, A2             Component signature algorithms. See note 
                         below on composite inputs.
@@ -614,7 +614,7 @@ Signature public key types:
 | Composite Signature AlgorithmID | OID | First Algorithm | Second Algorithm | Pre-Hash |
 | ----------- | ----------- | ----------- |  ----------- | 
 | id-MLDSA44-RSA2048-PSS-SHA256      | &lt;CompSig&gt;.1 | MLDSA44  | SHA256WithRSAEncryption| SHA256 |
-| id-MLDSA44-RSA2048-PKCS15-SHA256    | &lt;CompSig&gt;.2 | MLDSA44  | SHA256WithRSAEncryption| SHA256 | 
+| id-MLDSA44-RSA2048-PKCS15-SHA256    | &lt;CompSig&gt;.2 | MLDSA44  | SHA256WithRSAPSS| SHA256 | 
 | id-MLDSA44-Ed25519-SHA512             | &lt;CompSig&gt;.3 | MLDSA44  | Ed25519| SHA512 |
 | id-MLDSA44-ECDSA-P256-SHA256         | &lt;CompSig&gt;.4 | MLDSA44  | SHA256withECDSA | SHA256 |
 | id-MLDSA44-ECDSA-brainpoolP256r1-SHA256 | &lt;CompSig&gt;.5 | MLDSA44  | SHA256withECDSA| SHA256 |
@@ -809,9 +809,7 @@ In the composite model this is less obvious since implementers may decide that c
 Since composite algorithms are registered independently of their component algorithms, their deprecation can be handled indpendently from that of their component algorithms. For example a cryptographic policy might continue to allow `id-MLDSA65-ECDSA-P256-SHA256` even after ECDH-P256 is deprecated.
 
 
-
 <!-- End of Security Considerations section -->
-
 
 <!-- Start of Appendices -->
 
@@ -821,20 +819,19 @@ Since composite algorithms are registered independently of their component algor
 # Samples {#appdx-samples}
 
 ## Explicit Composite Signature Examples {#appdx-expComposite-examples}
-TBD - Email authors for samples or check https://github.com/IETF-Hackathon/pqc-certificates
 
 ### MLDSA44-ECDSA-P256-SHA256 Public Key
 
-<!-- {::include examples/MLDSA44-ECDSA-P256-SHA256.pub} -->
-
+{::include examples/MLDSA44-ECDSA-P256-SHA256.pub}
 
 ### MLDSA44-ECDSA-P256 Private Key
 
-<!-- {::include examples/MLDSA44-ECDSA-P256-SHA256.pvt} -->
+{::include examples/MLDSA44-ECDSA-P256-SHA256.pvt}
+
 
 ### MLDSA44-ECDSA-P256 Self-Signed X509 Certificate
 
-<!-- {::include examples/MLDSA44-ECDSA-P256-SHA256.crt} -->
+{::include examples/MLDSA44-ECDSA-P256-SHA256.crt}
 
 # Implementation Considerations {#sec-imp-considers}
 
