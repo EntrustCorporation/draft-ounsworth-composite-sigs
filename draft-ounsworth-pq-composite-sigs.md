@@ -2,7 +2,7 @@
 title: Composite Signatures For Use In Internet PKI
 abbrev: PQ Composite Sigs
 # <!-- EDNOTE: Edits the draft name -->
-docname: draft-ounsworth-pq-composite-sigs-10
+docname: draft-ounsworth-pq-composite-sigs-11
 
 # <!-- stand_alone: true -->
 ipr: trust200902
