@@ -20,7 +20,7 @@
     ' name="description">
 <meta content="xml2rfc 3.15.1" name="generator">
 <meta content="Internet-Draft" name="keyword">
-<meta content="draft-ounsworth-pq-composite-sigs-10" name="ietf.draft">
+<meta content="draft-ounsworth-pq-composite-sigs-11" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.15.1
     Python 3.8.10
@@ -1199,11 +1199,11 @@ li > p:last-of-type {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">PQ Composite Sigs</td>
-<td class="right">October 2023</td>
+<td class="right">December 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Ounsworth, et al.</td>
-<td class="center">Expires 25 April 2024</td>
+<td class="center">Expires 22 June 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1213,15 +1213,15 @@ li > p:last-of-type {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">LAMPS</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-ounsworth-pq-composite-sigs-10</dd>
+<dd class="internet-draft">draft-ounsworth-pq-composite-sigs-11</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-10-23" class="published">23 October 2023</time>
+<time datetime="2023-12-20" class="published">20 December 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-04-25">25 April 2024</time></dd>
+<dd class="expires"><time datetime="2024-06-22">22 June 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1269,7 +1269,7 @@ li > p:last-of-type {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 25 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 22 June 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1299,7 +1299,7 @@ li > p:last-of-type {
         </h2>
 <nav class="toc"><ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
-            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-changes-in-version-10-2" class="internal xref">Changes in version -10</a></p>
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-changes-in-version-11-2" class="internal xref">Changes in version -11</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-introduction-2" class="internal xref">Introduction</a></p>
@@ -1370,7 +1370,10 @@ li > p:last-of-type {
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-algorithm-identifiers-2" class="internal xref">Algorithm Identifiers</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-notes-on-id-mldsa44-rsa2048-" class="internal xref">Notes on id-MLDSA44-RSA2048-PSS-SHA256 and id-MLDSA65-RSA3072-PSS-SHA256</a></p>
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-notes-on-id-mldsa44-rsa2048-" class="internal xref">Notes on id-MLDSA44-RSA2048-PSS-SHA256</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-notes-on-id-mldsa65-rsa3072-" class="internal xref">Notes on id-MLDSA65-RSA3072-PSS-SHA512</a></p>
 </li>
             </ul>
 </li>
@@ -1468,45 +1471,23 @@ li > p:last-of-type {
 </nav>
 </section>
 </div>
-<div id="changes-in-version-10">
+<div id="changes-in-version-11">
 <section id="section-1">
-      <h2 id="name-changes-in-version-10-2">
-<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-changes-in-version-10-2" class="section-name selfRef">Changes in version -10</a>
+      <h2 id="name-changes-in-version-11-2">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-changes-in-version-11-2" class="section-name selfRef">Changes in version -11</a>
       </h2>
-<p id="section-1-1">Changes affecting interoperability:<a href="#section-1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-1-2.1">Changed all <code>SEQUENCE OF SIZE (2..MAX)</code> to <code>SEQUENCE OF SIZE (2)</code>.<a href="#section-1-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-1-1.1">Remove ambiguity and made it clear that all component signature MUST be verified<a href="#section-1-1.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-2.2">Removed CompositeSignatureParams since all params are now explicit in the Object IDs<a href="#section-1-2.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-1.2">Added language to ensure that component keys MUST not be used in any other context<a href="#section-1-1.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-2.3">Made RSA keys fixed-length at 3072<a href="#section-1-2.3" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-1.3">Changed the content of the OID artifact to the DER encoded OID<a href="#section-1-1.3" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-2.4">Removee redundency of subject public key overhead since OID fully specifies the keytype and parameters<a href="#section-1-2.4" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-1.4">Reduced number of pre-hashing algorithm by removing SHA384 and SHAKE and replacing those with SHA512<a href="#section-1-1.4" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-2.5">Re-worked wire format of the composite signature by prehashing and concatenating the OID to 
-each component signature.  This is believed to give the binding between the two component algorithms 
-a stronger non-separability property.<a href="#section-1-2.5" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-1.5">Updated the prototype OIDs since the changes in this draft are not compatible with version -10<a href="#section-1-1.5" class="pilcrow">¶</a>
 </li>
-      </ul>
-<p id="section-1-3">Editorial changes:<a href="#section-1-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-1-4.1">Made this document standalone by folding in the minimum necessary content from composite-keys<a href="#section-1-4.1" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-1-4.2">Added a paragraph describing how to reconstitute component Subject Public Key Infos<a href="#section-1-4.2" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-1-4.3">Added a section showing the HEX encoding of the String Algorithm Names<a href="#section-1-4.3" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-1-4.4">Added a section on pre-hashing<a href="#section-1-4.4" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-1-4.5">Rename Dilithium to ML-DSA and Falcon to FN-DSA<a href="#section-1-4.5" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-1-4.6">Added an Implementation Consideration about FIPS validation where only one component algorithm is FIPS-approved.<a href="#section-1-4.6" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-1-4.7">Added a section on Signature APIs (Keygen, Sign, Verify) in introduction<a href="#section-1-4.7" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-1-4.8">Added reference to draft-vaira-pquip-pqc-use-cases-00<a href="#section-1-4.8" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-1-4.9">TODO  Refactored to use MartinThomson github template<a href="#section-1-4.9" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-1.6">Fixed other nits<a href="#section-1-1.6" class="pilcrow">¶</a>
 </li>
       </ul>
 </section>
@@ -1591,7 +1572,7 @@ a stronger non-separability property.<a href="#section-1-2.5" class="pilcrow">¶
      type in a multi-algorithm scheme.<a href="#section-2.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-2.2-3">Composite keys as defined here follow this definition and should be regarded as a single key that performs a single cryptographic operation such key generation, signing, verifying, encapsulating, or decapsulating -- using its internal sequence of component keys as if they form a single key. This generally means that the complexity of combining algorithms can and should be handled by the cryptographic library or cryptographic module, and the single composite public key, private key, and ciphertext can be carried in existing fields in protocols such as PKCS#10 <span>[<a href="#RFC2986" class="cite xref">RFC2986</a>]</span>, CMP <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span>, X.509 <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>, CMS <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span>, and the Trust Anchor Format [RFC5914]. In this way, composites achieve "protocol backwards-compatibility" in that they will drop cleanly into any protocol that accepts KEM algorithms without requiring any modification of the protocol to handle multiple keys.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.2-3">Composite keys as defined here follow this definition and should be regarded as a single key that performs a single cryptographic operation such key generation, signing, verifying, encapsulating, or decapsulating -- using its internal sequence of component keys as if they form a single key. This generally means that the complexity of combining algorithms can and should be handled by the cryptographic library or cryptographic module, and the single composite public key, private key, and ciphertext can be carried in existing fields in protocols such as PKCS#10 <span>[<a href="#RFC2986" class="cite xref">RFC2986</a>]</span>, CMP <span>[<a href="#RFC4210" class="cite xref">RFC4210</a>]</span>, X.509 <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>, CMS <span>[<a href="#RFC5652" class="cite xref">RFC5652</a>]</span>, and the Trust Anchor Format [RFC5914]. In this way, composites achieve "protocol backwards-compatibility" in that they will drop cleanly into any protocol that accepts signature algorithms without requiring any modification of the protocol to handle multiple keys.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-sigs">
@@ -1621,7 +1602,7 @@ key cannot verify the Message, it returns false.<a href="#section-2.3-2.3" class
           <h4 id="name-composite-keygen-2">
 <a href="#section-2.3.1" class="section-number selfRef">2.3.1. </a><a href="#name-composite-keygen-2" class="section-name selfRef">Composite KeyGen</a>
           </h4>
-<p id="section-2.3.1-1">The <code>KeyGen() -&gt; (pk, sk)</code> of a composite signature algorithm will perform the <code>KeyGen()</code> of the respective component signature algorithms and it produces a composite public key <code>pk</code> as per <a href="#sec-composite-pub-keys" class="auto internal xref">Section 3.2</a> and a composite secret key <code>sk</code> is per <a href="#sec-priv-key" class="auto internal xref">Section 3.3</a>.<a href="#section-2.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.3.1-1">The <code>KeyGen() -&gt; (pk, sk)</code> of a composite signature algorithm will perform the <code>KeyGen()</code> of the respective component signature algorithms and it produces a composite public key <code>pk</code> as per <a href="#sec-composite-pub-keys" class="auto internal xref">Section 3.2</a> and a composite secret key <code>sk</code> is per <a href="#sec-priv-key" class="auto internal xref">Section 3.3</a>.  The component keys MUST be uniquely generated for each component key of a Composite and MUST NOT be used in any other keys or as a standalone key.<a href="#section-2.3.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-comp-sig-gen">
@@ -1664,8 +1645,8 @@ Signature Generation Process:
    2. Generate the n component signatures independently,
       according to their algorithm specifications.
 
-         S1 := Sign( K1, A1, OID || M' )
-         S2 := Sign( K2, A2, OID || M' )
+         S1 := Sign( K1, A1, DER(OID) || M' )
+         S2 := Sign( K2, A2, DER(OID) || M' )
 
    3. Encode each component signature S1 and S2 into a BIT STRING
       according to its algorithm specification.
@@ -1690,7 +1671,7 @@ Signature Generation Process:
 <a href="#section-2.3.3" class="section-number selfRef">2.3.3. </a><a href="#name-composite-verify-2" class="section-name selfRef">Composite Verify</a>
           </h4>
 <p id="section-2.3.3-1">Verification of a composite signature involves applying each component algorithm's verification process according to its specification.<a href="#section-2.3.3-1" class="pilcrow">¶</a></p>
-<p id="section-2.3.3-2">In the absence of an application profile specifying otherwise, compliant applications MUST output "Valid signature" (true) if and only if all component signatures were successfully validated, and "Invalid signature" (false) otherwise.<a href="#section-2.3.3-2" class="pilcrow">¶</a></p>
+<p id="section-2.3.3-2">Compliant applications MUST output "Valid signature" (true) if and only if all component signatures were successfully validated, and "Invalid signature" (false) otherwise.<a href="#section-2.3.3-2" class="pilcrow">¶</a></p>
 <p id="section-2.3.3-3">The following process is used to perform this verification.<a href="#section-2.3.3-3" class="pilcrow">¶</a></p>
 <span id="name-composite-verifypk-message-s"></span><div id="alg-composite-verify">
 <figure id="figure-2">
@@ -1738,9 +1719,9 @@ Signature Verification Procedure::
        algorithm specification.
        If any fail, then the entire signature validation fails.
 
-       if not verify( P1, OID || M', S1, A1 ) then
+       if not verify( P1, DER(OID) || M', S1, A1 ) then
             output "Invalid signature"
-       if not verify( P2, OID || M', S2, A2 ) then
+       if not verify( P2, DER(OID) || M', S2, A2 ) then
             output "Invalid signature"
 
        if all succeeded, then
@@ -1762,8 +1743,7 @@ Signature Verification Procedure::
         <h3 id="name-oid-concatenation-2">
 <a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-oid-concatenation-2" class="section-name selfRef">OID Concatenation</a>
         </h3>
-<p id="section-2.4-1">As mentioned above, the OID input value for the Composite Signature Generation and verification process is the String representation of the OID converted from ASCII to bytes.   The following table shows the HEX encoding of the ASCII String
-representation for each Signature AlgorithmID<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.4-1">As mentioned above, the OID input value for the Composite Signature Generation and verification process is the DER encoding of the OID represented in Hexidecimal bytes.   The following table shows the HEX encoding for each Signature AlgorithmID<a href="#section-2.4-1" class="pilcrow">¶</a></p>
 <span id="name-composite-signature-oid-conc"></span><div id="tab-sig-alg-oids">
 <table class="center" id="table-1">
           <caption>
@@ -1773,73 +1753,73 @@ representation for each Signature AlgorithmID<a href="#section-2.4-1" class="pil
 <thead>
             <tr>
               <th class="text-left" rowspan="1" colspan="1">Composite Signature AlgorithmID</th>
-              <th class="text-left" rowspan="1" colspan="1">HEX Encoding to be prepended to each Message</th>
+              <th class="text-left" rowspan="1" colspan="1">DER Encoding to be prepended to each Message</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">id-MLDSA44-RSA2048-PSS-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D4D4C44534134342D525341323034382D5053532D534841323536</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B50080101</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">id-MLDSA44-RSA2048-PKCS15-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D4D4C44534134342D525341323034382D504B435331352D534841323536</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B50080102</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">id-MLDSA44-Ed25519-SHA512</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D4D4C44534134342D456432353531392D534841353132</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B50080103</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">id-MLDSA44-ECDSA-P256-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D4D4C44534134342D45434453412D503235362D534841323536</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B50080104</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">id-MLDSA44-ECDSA-brainpoolP256r1-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D4D4C44534134342D45434453412D627261696E706F6F6C5032353672312D534841323536</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B50080105</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-RSA3072-PSS-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D4D4C44534136352D525341333037322D5053532D534841323536</td>
+              <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-RSA3072-PSS-SHA512</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B50080106</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-RSA3072-PKCS15-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D4D4C44534136352D525341333037322D504B435331352D534841323536</td>
+              <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-RSA3072-PKCS15-SHA512</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B50080107</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-ECDSA-P256-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D4D4C44534136352D45434453412D503235362D534841323536</td>
+              <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-ECDSA-P256-SHA512</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B50080108</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-ECDSA-brainpoolP256r1-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D4D4C44534136352D45434453412D627261696E706F6F6C5032353672312D534841323536</td>
+              <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-ECDSA-brainpoolP256r1-SHA512</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B50080109</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-Ed25519-SHA512</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D4D4C44534136352D456432353531392D534841353132</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B5008010A</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-MLDSA87-ECDSA-P384-SHA384</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D4D4C44534138372D45434453412D503338342D534841333834</td>
+              <td class="text-left" rowspan="1" colspan="1">id-MLDSA87-ECDSA-P384-SHA512</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B5008010B</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-MLDSA87-ECDSA-brainpoolP384r1-SHA384</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D4D4C44534138372D45434453412D627261696E706F6F6C5033383472312D534841333834</td>
+              <td class="text-left" rowspan="1" colspan="1">id-MLDSA87-ECDSA-brainpoolP384r1-SHA512</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B5008010C</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">id-MLDSA87-Ed448-SHAKE256</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D4D4C44534138372D45643434382D5348414B45323536</td>
+              <td class="text-left" rowspan="1" colspan="1">id-MLDSA87-Ed448-SHA512</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B5008010D</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">id-Falon512-ECDSA-P256-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D46616C6F6E3531322D45434453412D503235362D534841323536</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B5008010E</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">id-Falcon512-ECDSA-brainpoolP256r1-SHA256</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D46616C636F6E3531322D45434453412D627261696E706F6F6C5032353672312D534841323536</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B5008010F</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">id-Falcon512-Ed25519-SHA512</td>
-              <td class="text-left" rowspan="1" colspan="1">69642D46616C636F6E3531322D456432353531392D534841353132</td>
+              <td class="text-left" rowspan="1" colspan="1">060B6086480186FA6B50080110</td>
             </tr>
           </tbody>
         </table>
@@ -1853,13 +1833,13 @@ representation for each Signature AlgorithmID<a href="#section-2.4-1" class="pil
         </h3>
 <p id="section-2.5-1">As noted in the composite signature generation process and composite signature verification process, the Message should be pre-hashed into M' with the digest algorithm specified in the composite signature algorithm identifier.  The choice of the digest algorithm was chosen with the following criteria:<a href="#section-2.5-1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-2.5-2">
-<li id="section-2.5-2.1">For composites paired with RSA or ECDSA, the hashing algorithm SHA256 or SHA384 is used as part of the RSA or ECDSA signature algorithm and is therefore also used as the composite prehashing algorithm.<a href="#section-2.5-2.1" class="pilcrow">¶</a>
+<li id="section-2.5-2.1">For composites paired with RSA or ECDSA, the hashing algorithm SHA256 or SHA512 is used as part of the RSA or ECDSA signature algorithm and is therefore also used as the composite prehashing algorithm.<a href="#section-2.5-2.1" class="pilcrow">¶</a>
 </li>
-          <li id="section-2.5-2.2">For Dilithium signing a digest of the message is allowed as long as the hash function provides at least y bits of classical security strength against both collision and second preimage attacks.   For MLDSA44 y is 128 bits, MLDSA65 y is 192 bits and for MLDSA87 y is 256 bits.  Therefore SHA256 paired with RSA and SHA256 and SHA384 paired with ECDSA match the appropriate security strength.<a href="#section-2.5-2.2" class="pilcrow">¶</a>
+          <li id="section-2.5-2.2">For ML-DSA signing a digest of the message is allowed as long as the hash function provides at least y bits of classical security strength against both collision and second preimage attacks.   For MLDSA44 y is 128 bits, MLDSA65 y is 192 bits and for MLDSA87 y is 256 bits.  Therefore SHA256 is paired with RSA and ECDSA with MLDSA44 and SHA512 is paired with RSA and ECDSA with MLDSA65 and MLDSA87 to match the appropriate security strength.<a href="#section-2.5-2.2" class="pilcrow">¶</a>
 </li>
           <li id="section-2.5-2.3">Ed25519 <span>[<a href="#RFC8032" class="cite xref">RFC8032</a>]</span> uses SHA512 internally, therefore SHA512 is used to pre-hash the message when Ed25519 is a component algorithm.<a href="#section-2.5-2.3" class="pilcrow">¶</a>
 </li>
-          <li id="section-2.5-2.4">Ed448 <span>[<a href="#RFC8032" class="cite xref">RFC8032</a>]</span> uses SHAKE256 internally, therefore SHA256 with an output length of 512 bits is used to pre-hash the message when Ed448 is a component algorithm.  This is denoted in the table in <a href="#sec-alg-ids" class="auto internal xref">Section 5</a> as SHAKE256/512.<a href="#section-2.5-2.4" class="pilcrow">¶</a>
+          <li id="section-2.5-2.4">Ed448 <span>[<a href="#RFC8032" class="cite xref">RFC8032</a>]</span> uses SHAKE256 internally, but to reduce the set of prehashing algorihtms, SHA512 was selected to pre-hash the message when Ed448 is a component algorithm.<a href="#section-2.5-2.4" class="pilcrow">¶</a>
 </li>
           <li id="section-2.5-2.5">TODO:  For Falcon signing it is expected prehashing digest accomodations will be allowed.<a href="#section-2.5-2.5" class="pilcrow">¶</a>
 </li>
@@ -1939,6 +1919,7 @@ CompositeSignaturePublicKey ::= SEQUENCE SIZE (2) OF BIT STRING
 <p id="section-3.2-3">A composite key MUST contain two component public keys. The order of the component keys is determined by the definition of the corresponding algorithm identifier as defined in section <a href="#sec-alg-ids" class="auto internal xref">Section 5</a>.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
 <p id="section-3.2-4">Some applications may need to reconstruct the <code>SubjectPublicKeyInfo</code> objects corresponding to each component public key. <a href="#tab-sig-algs" class="auto internal xref">Table 3</a> in <a href="#sec-alg-ids" class="auto internal xref">Section 5</a> provides the necessary mapping between composite and their component algorithms for doing this reconstruction. This also motivates the design choice of <code>SEQUENCE OF BIT STRING</code> instead of <code>SEQUENCE OF OCTET STRING</code>; using <code>BIT STRING</code> allows for easier transcription between CompositeSignaturePublicKey and SubjectPublicKeyInfo.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
 <p id="section-3.2-5">When the CompositeSignaturePublicKey must be provided in octet string or bit string format, the data structure is encoded as specified in <a href="#sec-encoding-rules" class="auto internal xref">Section 3.4</a>.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
+<p id="section-3.2-6">Component keys of a CompositeSignaturePublicKey MUST NOT be used in any other type of key or as a standalone key.<a href="#section-3.2-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-priv-key">
@@ -1955,8 +1936,9 @@ CompositeSignaturePrivateKey ::= SEQUENCE SIZE (2) OF OneAsymmetricKey
 <p id="section-3.3-3">Each element is a <code>OneAsymmetricKey</code>` <span>[<a href="#RFC5958" class="cite xref">RFC5958</a>]</span> object for a component private key.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
 <p id="section-3.3-4">The parameters field MUST be absent.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
 <p id="section-3.3-5">The order of the component keys is the same as the order defined in <a href="#sec-composite-pub-keys" class="auto internal xref">Section 3.2</a> for the components of CompositeSignaturePublicKey.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
-<p id="section-3.3-6">When a <code>CompositePrivateKey</code> is conveyed inside a OneAsymmetricKey structure (version 1 of which is also known as PrivateKeyInfo) <span>[<a href="#RFC5958" class="cite xref">RFC5958</a>]</span>, the privateKeyAlgorithm field SHALL be set to the corresponding composite algorithm identifier defined according to <a href="#sec-alg-ids" class="auto internal xref">Section 5</a>, the privateKey field SHALL contain the CompositeSignaturePrivateKey, and the publicKey field MUST NOT be present. Associated public key material MAY be present in the CompositeSignaturePrivateKey.<a href="#section-3.3-6" class="pilcrow">¶</a></p>
+<p id="section-3.3-6">When a <code>CompositeSignaturePrivateKey</code> is conveyed inside a OneAsymmetricKey structure (version 1 of which is also known as PrivateKeyInfo) <span>[<a href="#RFC5958" class="cite xref">RFC5958</a>]</span>, the privateKeyAlgorithm field SHALL be set to the corresponding composite algorithm identifier defined according to <a href="#sec-alg-ids" class="auto internal xref">Section 5</a>, the privateKey field SHALL contain the CompositeSignaturePrivateKey, and the publicKey field MUST NOT be present. Associated public key material MAY be present in the CompositeSignaturePrivateKey.<a href="#section-3.3-6" class="pilcrow">¶</a></p>
 <p id="section-3.3-7">In some usecases the private keys that comprise a composite key may not be represented in a single structure or even be contained in a single cryptographic module; for example if one component is within the FIPS boundary of a cryptographic module and the other is not; see {sec-fips} for more discussion. The establishment of correspondence between public keys in a CompositeSignaturePublicKey and private keys not represented in a single composite structure is beyond the scope of this document.<a href="#section-3.3-7" class="pilcrow">¶</a></p>
+<p id="section-3.3-8">Component keys of a CompositeSignaturePrivateKey MUST NOT be used in any other type of key or as a standalone key.<a href="#section-3.3-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-encoding-rules">
@@ -2088,8 +2070,8 @@ CompositeSignatureValue ::= SEQUENCE SIZE (2) OF BIT STRING
 <p id="section-5-3">Some use-cases desire the flexibility for clients to use any combination of supported algorithms, while others desire the rigidity of explicitly-specified combinations of algorithms.<a href="#section-5-3" class="pilcrow">¶</a></p>
 <p id="section-5-4">The following table summarizes the details for each explicit composite signature algorithms:<a href="#section-5-4" class="pilcrow">¶</a></p>
 <p id="section-5-5">The OID referenced are TBD for prototyping only, and the following prefix is used for each:<a href="#section-5-5" class="pilcrow">¶</a></p>
-<p id="section-5-6">replace &lt;CompSig&gt; with the String "2.16.840.1.114027.80.7.1"<a href="#section-5-6" class="pilcrow">¶</a></p>
-<p id="section-5-7">Therefore &lt;CompSig&gt;.1 is equal to 2.16.840.1.114027.80.7.1.1<a href="#section-5-7" class="pilcrow">¶</a></p>
+<p id="section-5-6">replace &lt;CompSig&gt; with the String "2.16.840.1.114027.80.8.1"<a href="#section-5-6" class="pilcrow">¶</a></p>
+<p id="section-5-7">Therefore &lt;CompSig&gt;.1 is equal to 2.16.840.1.114027.80.8.1.1<a href="#section-5-7" class="pilcrow">¶</a></p>
 <p id="section-5-8">Signature public key types:<a href="#section-5-8" class="pilcrow">¶</a></p>
 <span id="name-composite-signature-algorith"></span><div id="tab-sig-algs">
 <table class="center" id="table-3">
@@ -2111,7 +2093,7 @@ CompositeSignatureValue ::= SEQUENCE SIZE (2) OF BIT STRING
             <td class="text-left" rowspan="1" colspan="1">id-MLDSA44-RSA2048-PSS-SHA256</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.1</td>
             <td class="text-left" rowspan="1" colspan="1">MLDSA44</td>
-            <td class="text-left" rowspan="1" colspan="1">SHA256WithRSAEncryption</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA256WithRSAPSS</td>
             <td class="text-left" rowspan="1" colspan="1">SHA256</td>
           </tr>
           <tr>
@@ -2143,32 +2125,32 @@ CompositeSignatureValue ::= SEQUENCE SIZE (2) OF BIT STRING
             <td class="text-left" rowspan="1" colspan="1">SHA256</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-RSA3072-PSS-SHA256</td>
+            <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-RSA3072-PSS-SHA512</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.6</td>
             <td class="text-left" rowspan="1" colspan="1">MLDSA65</td>
-            <td class="text-left" rowspan="1" colspan="1">SHA256WithRSAPSS</td>
-            <td class="text-left" rowspan="1" colspan="1">SHA256</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA512WithRSAPSS</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA512</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-RSA3072-PKCS15-SHA256</td>
+            <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-RSA3072-PKCS15-SHA512</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.7</td>
             <td class="text-left" rowspan="1" colspan="1">MLDSA65</td>
-            <td class="text-left" rowspan="1" colspan="1">SHA256WithRSAEncryption</td>
-            <td class="text-left" rowspan="1" colspan="1">SHA256</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA512WithRSAEncryption</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA512</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-ECDSA-P256-SHA256</td>
+            <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-ECDSA-P256-SHA512</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.8</td>
             <td class="text-left" rowspan="1" colspan="1">MLDSA65</td>
-            <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
-            <td class="text-left" rowspan="1" colspan="1">SHA256</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA512withECDSA</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA512</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-ECDSA-brainpoolP256r1-SHA256</td>
+            <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-ECDSA-brainpoolP256r1-SHA512</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.9</td>
             <td class="text-left" rowspan="1" colspan="1">MLDSA65</td>
-            <td class="text-left" rowspan="1" colspan="1">SHA256withECDSA</td>
-            <td class="text-left" rowspan="1" colspan="1">SHA256</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA512withECDSA</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA512</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-MLDSA65-Ed25519-SHA512</td>
@@ -2178,25 +2160,25 @@ CompositeSignatureValue ::= SEQUENCE SIZE (2) OF BIT STRING
             <td class="text-left" rowspan="1" colspan="1">SHA512</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">id-MLDSA87-ECDSA-P384-SHA384</td>
+            <td class="text-left" rowspan="1" colspan="1">id-MLDSA87-ECDSA-P384-SHA512</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.11</td>
             <td class="text-left" rowspan="1" colspan="1">MLDSA87</td>
-            <td class="text-left" rowspan="1" colspan="1">SHA384withECDSA</td>
-            <td class="text-left" rowspan="1" colspan="1">SHA384</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA512withECDSA</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA512</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">id-MLDSA87-ECDSA-brainpoolP384r1-SHA384</td>
+            <td class="text-left" rowspan="1" colspan="1">id-MLDSA87-ECDSA-brainpoolP384r1-SHA512</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.12</td>
             <td class="text-left" rowspan="1" colspan="1">MLDSA87</td>
-            <td class="text-left" rowspan="1" colspan="1">SHA384withECDSA</td>
-            <td class="text-left" rowspan="1" colspan="1">SHA384</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA512withECDSA</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA512</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">id-MLDSA87-Ed448-SHAKE256</td>
+            <td class="text-left" rowspan="1" colspan="1">id-MLDSA87-Ed448-SHA512</td>
             <td class="text-left" rowspan="1" colspan="1">&lt;CompSig&gt;.13</td>
             <td class="text-left" rowspan="1" colspan="1">MLDSA87</td>
             <td class="text-left" rowspan="1" colspan="1">Ed448</td>
-            <td class="text-left" rowspan="1" colspan="1">SHAKE256/512</td>
+            <td class="text-left" rowspan="1" colspan="1">SHA512</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Falon512-ECDSA-P256-SHA256</td>
@@ -2244,19 +2226,19 @@ CompositeSignatureValue ::= SEQUENCE SIZE (2) OF BIT STRING
           <em>RSASSA-PSS</em>: <span>[<a href="#RFC8017" class="cite xref">RFC8017</a>]</span><a href="#section-5-12.6" class="pilcrow">¶</a>
 </li>
       </ul>
-<div id="notes-on-id-mldsa44-rsa2048-pss-sha256-and-id-mldsa65-rsa3072-pss-sha256">
+<div id="notes-on-id-mldsa44-rsa2048-pss-sha256">
 <section id="section-5.1">
         <h3 id="name-notes-on-id-mldsa44-rsa2048-">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-notes-on-id-mldsa44-rsa2048-" class="section-name selfRef">Notes on id-MLDSA44-RSA2048-PSS-SHA256 and id-MLDSA65-RSA3072-PSS-SHA256</a>
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-notes-on-id-mldsa44-rsa2048-" class="section-name selfRef">Notes on id-MLDSA44-RSA2048-PSS-SHA256</a>
         </h3>
 <p id="section-5.1-1">Use of RSA-PSS <span>[<a href="#RFC8017" class="cite xref">RFC8017</a>]</span> deserves a special explanation.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.1-2">The RSA component keys MUST be generated at the 2048-bit security level in order to match security level with ML-DSA-44 or at 3072-bits to match ML-DSA-65.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
-<p id="section-5.1-3">As with the other composite signature algorithms, when <code>id-MLDSA44-RSA2048-PSS-SHA256</code> or <code>id-MLDSA65-RSA3072-PSS-SHA256</code>  is used in an AlgorithmIdentifier, the parameters MUST be absent. <code>id-MLDSA44-RSA2048-PSS-SHA256</code> and <code>id-MLDSA65-RSA3072-PSS-SHA256</code> SHALL instantiate RSA-PSS with the following parameters:<a href="#section-5.1-3" class="pilcrow">¶</a></p>
-<span id="name-rsa-pss-2048-and-3072-parame"></span><div id="rsa-pss-params3072">
+<p id="section-5.1-2">The RSA component keys MUST be generated at the 2048-bit security level in order to match with ML-DSA-44<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">As with the other composite signature algorithms, when <code>id-MLDSA44-RSA2048-PSS-SHA256</code> is used in an AlgorithmIdentifier, the parameters MUST be absent. <code>id-MLDSA44-RSA2048-PSS-SHA256</code> SHALL instantiate RSA-PSS with the following parameters:<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<span id="name-rsa-pss-2048-parameters-2"></span><div id="rsa-pss-params2048">
 <table class="center" id="table-4">
           <caption>
 <a href="#table-4" class="selfRef">Table 4</a>:
-<a href="#name-rsa-pss-2048-and-3072-parame" class="selfRef">RSA-PSS 2048 and 3072 Parameters</a>
+<a href="#name-rsa-pss-2048-parameters-2" class="selfRef">RSA-PSS 2048 Parameters</a>
           </caption>
 <thead>
             <tr>
@@ -2287,6 +2269,52 @@ CompositeSignatureValue ::= SEQUENCE SIZE (2) OF BIT STRING
 </li>
           <li class="normal" id="section-5.1-6.2">
             <code>SHA-256</code> is defined in <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>.<a href="#section-5.1-6.2" class="pilcrow">¶</a>
+</li>
+        </ul>
+</section>
+</div>
+<div id="notes-on-id-mldsa65-rsa3072-pss-sha512">
+<section id="section-5.2">
+        <h3 id="name-notes-on-id-mldsa65-rsa3072-">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-notes-on-id-mldsa65-rsa3072-" class="section-name selfRef">Notes on id-MLDSA65-RSA3072-PSS-SHA512</a>
+        </h3>
+<p id="section-5.2-1">The RSA component keys MUST be generated at the 3072-bit security level in order to match with ML-DSA-65.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">As with the other composite signature algorithms, when <code>id-MLDSA65-RSA3072-PSS-SHA512</code>  is used in an AlgorithmIdentifier, the parameters MUST be absent. <code>id-MLDSA65-RSA3072-PSS-SHA512</code> SHALL instantiate RSA-PSS with the following parameters:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<span id="name-rsa-pss-3072-parameters-2"></span><div id="rsa-pss-params3072">
+<table class="center" id="table-5">
+          <caption>
+<a href="#table-5" class="selfRef">Table 5</a>:
+<a href="#name-rsa-pss-3072-parameters-2" class="selfRef">RSA-PSS 3072 Parameters</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">RSA-PSS Parameter</th>
+              <th class="text-left" rowspan="1" colspan="1">Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Mask Generation Function</td>
+              <td class="text-left" rowspan="1" colspan="1">mgf1</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Mask Generation params</td>
+              <td class="text-left" rowspan="1" colspan="1">SHA-512</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">Message Digest Algorithm</td>
+              <td class="text-left" rowspan="1" colspan="1">SHA-512</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+<p id="section-5.2-4">where:<a href="#section-5.2-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.2-5.1">
+            <code>Mask Generation Function (mgf1)</code> is defined in <span>[<a href="#RFC8017" class="cite xref">RFC8017</a>]</span><a href="#section-5.2-5.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-5.2-5.2">
+            <code>SHA-512</code> is defined in <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>.<a href="#section-5.2-5.2" class="pilcrow">¶</a>
 </li>
         </ul>
 </section>
@@ -2373,7 +2401,7 @@ CompositeSignaturePublicKeyBs ::= BIT STRING (CONTAINING
 
 CompositeSignaturePrivateKey ::= SEQUENCE SIZE (2) OF OneAsymmetricKey
 
-CompositeSignatureValue ::= SEQUENCE SIZE (2) OF OCTET STRING
+CompositeSignatureValue ::= SEQUENCE SIZE (2) OF BIT STRING
 
 -- Composite Signature Value is just a sequence of OCTET STRINGS
 
@@ -2418,7 +2446,7 @@ sa-CompositeSignature{OBJECT IDENTIFIER:id,
 -- TODO: OID to be replaced by IANA
 id-MLDSA44-RSA2048-PSS-SHA256 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 1 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 1 }
 
 pk-MLDSA44-RSA2048-PSS-SHA256 PUBLIC-KEY ::=
   pk-CompositeSignature{ id-MLDSA44-RSA2048-PSS-SHA256,
@@ -2432,7 +2460,7 @@ sa-MLDSA44-RSA2048-PSS-SHA256 SIGNATURE-ALGORITHM ::=
 -- TODO: OID to be replaced by IANA
 id-MLDSA44-RSA2048-PKCS15-SHA256 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 2 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 2 }
 
 pk-MLDSA44-RSA2048-PKCS15-SHA256 PUBLIC-KEY ::=
   pk-CompositeSignature{ id-MLDSA44-RSA2048-PKCS15-SHA256,
@@ -2447,7 +2475,7 @@ sa-MLDSA44-RSA2048-PKCS15-SHA256 SIGNATURE-ALGORITHM ::=
 -- TODO: OID to be replaced by IANA
 id-MLDSA44-Ed25519-SHA512 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 3 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 3 }
 
 pk-MLDSA44-Ed25519-SHA512 PUBLIC-KEY ::=
   pk-CompositeSignature{ id-MLDSA44-Ed25519-SHA512,
@@ -2462,7 +2490,7 @@ sa-MLDSA44-Ed25519-SHA512 SIGNATURE-ALGORITHM ::=
 -- TODO: OID to be replaced by IANA
 id-MLDSA44-ECDSA-P256-SHA256 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 4 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 4 }
 
 pk-MLDSA44-ECDSA-P256-SHA256 PUBLIC-KEY ::=
   pk-CompositeSignature{ id-MLDSA44-ECDSA-P256-SHA256,
@@ -2477,7 +2505,7 @@ sa-MLDSA44-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
 -- TODO: OID to be replaced by IANA
 id-MLDSA44-ECDSA-brainpoolP256r1-SHA256 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 5 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 5 }
 
 pk-MLDSA44-ECDSA-brainpoolP256r1-SHA256 PUBLIC-KEY ::=
   pk-CompositeSignature{ id-MLDSA44-ECDSA-brainpoolP256r1-SHA256,
@@ -2490,69 +2518,69 @@ sa-MLDSA44-ECDSA-brainpoolP256r1-SHA256 SIGNATURE-ALGORITHM ::=
 
 
 -- TODO: OID to be replaced by IANA
-id-MLDSA65-RSA3072-PSS-SHA256 OBJECT IDENTIFIER ::= {
+id-MLDSA65-RSA3072-PSS-SHA512 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 6 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 6 }
 
-pk-MLDSA65-RSA3072-PSS-SHA256 PUBLIC-KEY ::=
-  pk-CompositeSignature{ id-MLDSA65-RSA3072-PSS-SHA256,
+pk-MLDSA65-RSA3072-PSS-SHA512 PUBLIC-KEY ::=
+  pk-CompositeSignature{ id-MLDSA65-RSA3072-PSS-SHA512,
   OCTET STRING, RSAPublicKey}
 
-sa-MLDSA65-RSA3072-PSS-SHA256 SIGNATURE-ALGORITHM ::=
+sa-MLDSA65-RSA3072-PSS-SHA512 SIGNATURE-ALGORITHM ::=
     sa-CompositeSignature{
-       id-MLDSA65-RSA3072-PSS-SHA256,
-       pk-MLDSA65-RSA3072-PSS-SHA256 }
+       id-MLDSA65-RSA3072-PSS-SHA512,
+       pk-MLDSA65-RSA3072-PSS-SHA512 }
 
 
 -- TODO: OID to be replaced by IANA
-id-MLDSA65-RSA3072-PKCS15-SHA256 OBJECT IDENTIFIER ::= {
+id-MLDSA65-RSA3072-PKCS15-SHA512 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 7 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 7 }
 
-pk-MLDSA65-RSA3072-PKCS15-SHA256 PUBLIC-KEY ::=
-  pk-CompositeSignature{ id-MLDSA65-RSA3072-PKCS15-SHA256,
+pk-MLDSA65-RSA3072-PKCS15-SHA512 PUBLIC-KEY ::=
+  pk-CompositeSignature{ id-MLDSA65-RSA3072-PKCS15-SHA512,
   OCTET STRING, RSAPublicKey}
 
-sa-MLDSA65-RSA3072-PKCS15-SHA256 SIGNATURE-ALGORITHM ::=
+sa-MLDSA65-RSA3072-PKCS15-SHA512 SIGNATURE-ALGORITHM ::=
     sa-CompositeSignature{
-       id-MLDSA65-RSA3072-PKCS15-SHA256,
-       pk-MLDSA65-RSA3072-PKCS15-SHA256 }
+       id-MLDSA65-RSA3072-PKCS15-SHA512,
+       pk-MLDSA65-RSA3072-PKCS15-SHA512 }
 
 
 -- TODO: OID to be replaced by IANA
-id-MLDSA65-ECDSA-P256-SHA256 OBJECT IDENTIFIER ::= {
+id-MLDSA65-ECDSA-P256-SHA512 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 8 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 8 }
 
-pk-MLDSA65-ECDSA-P256-SHA256 PUBLIC-KEY ::=
-  pk-CompositeSignature{ id-MLDSA65-ECDSA-P256-SHA256,
+pk-MLDSA65-ECDSA-P256-SHA512 PUBLIC-KEY ::=
+  pk-CompositeSignature{ id-MLDSA65-ECDSA-P256-SHA512,
   OCTET STRING, ECPoint}
 
-sa-MLDSA65-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
+sa-MLDSA65-ECDSA-P256-SHA512 SIGNATURE-ALGORITHM ::=
     sa-CompositeSignature{
-       id-MLDSA65-ECDSA-P256-SHA256,
-       pk-MLDSA65-ECDSA-P256-SHA256 }
+       id-MLDSA65-ECDSA-P256-SHA512,
+       pk-MLDSA65-ECDSA-P256-SHA512 }
 
 
 -- TODO: OID to be replaced by IANA
-id-id-MLDSA65-ECDSA-brainpoolP256r1-SHA256 OBJECT IDENTIFIER ::= {
+id-id-MLDSA65-ECDSA-brainpoolP256r1-SHA512 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 9 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 9 }
 
-pk-id-MLDSA65-ECDSA-brainpoolP256r1-SHA256 PUBLIC-KEY ::=
-  pk-CompositeSignature{ id-MLDSA65-ECDSA-brainpoolP256r1-SHA256,
+pk-id-MLDSA65-ECDSA-brainpoolP256r1-SHA512 PUBLIC-KEY ::=
+  pk-CompositeSignature{ id-MLDSA65-ECDSA-brainpoolP256r1-SHA512,
   OCTET STRING, ECPoint}
 
-sa-id-MLDSA65-ECDSA-brainpoolP256r1-SHA256 SIGNATURE-ALGORITHM ::=
+sa-id-MLDSA65-ECDSA-brainpoolP256r1-SHA512 SIGNATURE-ALGORITHM ::=
     sa-CompositeSignature{
-       id-id-MLDSA65-ECDSA-brainpoolP256r1-SHA256,
-       pk-id-MLDSA65-ECDSA-brainpoolP256r1-SHA256 }
+       id-id-MLDSA65-ECDSA-brainpoolP256r1-SHA512,
+       pk-id-MLDSA65-ECDSA-brainpoolP256r1-SHA512 }
 
 
 -- TODO: OID to be replaced by IANA
 id-MLDSA65-Ed25519-SHA512 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 10 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 10 }
 
 pk-MLDSA65-Ed25519-SHA512 PUBLIC-KEY ::=
   pk-CompositeSignature{ id-MLDSA65-Ed25519-SHA512,
@@ -2565,56 +2593,56 @@ sa-MLDSA65-Ed25519-SHA512 SIGNATURE-ALGORITHM ::=
 
 
 -- TODO: OID to be replaced by IANA
-id-MLDSA87-ECDSA-P384-SHA384 OBJECT IDENTIFIER ::= {
+id-MLDSA87-ECDSA-P384-SHA512 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 11 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 11 }
 
-pk-MLDSA87-ECDSA-P384-SHA384 PUBLIC-KEY ::=
-  pk-CompositeSignature{ id-MLDSA87-ECDSA-P384-SHA384,
+pk-MLDSA87-ECDSA-P384-SHA512 PUBLIC-KEY ::=
+  pk-CompositeSignature{ id-MLDSA87-ECDSA-P384-SHA512,
   OCTET STRING, ECPoint}
 
-sa-MLDSA87-ECDSA-P384-SHA384 SIGNATURE-ALGORITHM ::=
+sa-MLDSA87-ECDSA-P384-SHA512 SIGNATURE-ALGORITHM ::=
     sa-CompositeSignature{
-       id-MLDSA87-ECDSA-P384-SHA384,
-       pk-MLDSA87-ECDSA-P384-SHA384 }
+       id-MLDSA87-ECDSA-P384-SHA512,
+       pk-MLDSA87-ECDSA-P384-SHA512 }
 
 
 -- TODO: OID to be replaced by IANA
-id-MLDSA87-ECDSA-brainpoolP384r1-SHA384 OBJECT IDENTIFIER ::= {
+id-MLDSA87-ECDSA-brainpoolP384r1-SHA512 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 12 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 12 }
 
-pk-MLDSA87-ECDSA-brainpoolP384r1-SHA384 PUBLIC-KEY ::=
-  pk-CompositeSignature{ id-MLDSA87-ECDSA-brainpoolP384r1-SHA384,
+pk-MLDSA87-ECDSA-brainpoolP384r1-SHA512 PUBLIC-KEY ::=
+  pk-CompositeSignature{ id-MLDSA87-ECDSA-brainpoolP384r1-SHA512,
   OCTET STRING, ECPoint}
 
-sa-MLDSA87-ECDSA-brainpoolP384r1-SHA384 SIGNATURE-ALGORITHM ::=
+sa-MLDSA87-ECDSA-brainpoolP384r1-SHA512 SIGNATURE-ALGORITHM ::=
     sa-CompositeSignature{
-       id-MLDSA87-ECDSA-brainpoolP384r1-SHA384,
-       pk-MLDSA87-ECDSA-brainpoolP384r1-SHA384 }
+       id-MLDSA87-ECDSA-brainpoolP384r1-SHA512,
+       pk-MLDSA87-ECDSA-brainpoolP384r1-SHA512 }
 
 
 -- TODO: OID to be replaced by IANA
-id-MLDSA87-Ed448-SHAKE256 OBJECT IDENTIFIER ::= {
+id-MLDSA87-Ed448-SHA512 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 13 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 13 }
 
-pk-MLDSA87-Ed448-SHAKE256 PUBLIC-KEY ::=
-  pk-CompositeSignature{ id-MLDSA87-Ed448-SHAKE256,
+pk-MLDSA87-Ed448-SHA512 PUBLIC-KEY ::=
+  pk-CompositeSignature{ id-MLDSA87-Ed448-SHA512,
   OCTET STRING, ECPoint}
 
-sa-MLDSA87-Ed448-SHAKE256 SIGNATURE-ALGORITHM ::=
+sa-MLDSA87-Ed448-SHA512 SIGNATURE-ALGORITHM ::=
     sa-CompositeSignature{
-       id-MLDSA87-Ed448-SHAKE256,
-       pk-MLDSA87-Ed448-SHAKE256 }
+       id-MLDSA87-Ed448-SHA512,
+       pk-MLDSA87-Ed448-SHA512 }
 
 -- TODO: OID to be replaced by IANA
 id-Falon512-ECDSA-P256-SHA256 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 14 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 14 }
 
 pk-Falon512-ECDSA-P256-SHA256 PUBLIC-KEY ::=
-  pk-CompositeSignature{ id-MLDSA87-Ed448-SHAKE256,
+  pk-CompositeSignature{ id-Falon512-ECDSA-P256-SHA256,
   OCTET STRING, ECPoint}
 
 sa-Falon512-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
@@ -2625,7 +2653,7 @@ sa-Falon512-ECDSA-P256-SHA256 SIGNATURE-ALGORITHM ::=
 -- TODO: OID to be replaced by IANA
 id-Falcon512-ECDSA-brainpoolP256r1-SHA256 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 15 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 15 }
 
 pk-Falcon512-ECDSA-brainpoolP256r1-SHA256 PUBLIC-KEY ::=
   pk-CompositeSignature{ id-Falcon512-ECDSA-brainpoolP256r1-SHA256,
@@ -2639,7 +2667,7 @@ sa-Falcon512-ECDSA-brainpoolP256r1-SHA256 SIGNATURE-ALGORITHM ::=
 -- TODO: OID to be replaced by IANA
 id-Falcon512-Ed25519-SHA512 OBJECT IDENTIFIER ::= {
    joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) algorithm(80) composite(7) signature(1) 16 }
+   entrust(114027) algorithm(80) composite(8) signature(1) 16 }
 
 pk-Falcon512-Ed25519-SHA512 PUBLIC-KEY ::=
   pk-CompositeSignature{ id-Falcon512-Ed25519-SHA512,
@@ -2664,6 +2692,7 @@ END
       <h2 id="name-iana-considerations-2">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations-2" class="section-name selfRef">IANA Considerations</a>
       </h2>
+<p id="section-7-1">IANA is requested to allocate a value from the "SMI Security for PKIX Module Identifier" registry <span>[<a href="#RFC7299" class="cite xref">RFC7299</a>]</span> for the included ASN.1 module, and allocate values from "SMI Security for PKIX Algorithms" to identify the fourteen Algorithms defined within.<a href="#section-7-1" class="pilcrow">¶</a></p>
 <div id="object-identifier-allocations">
 <section id="section-7.1">
         <h3 id="name-object-identifier-allocation">
@@ -2731,35 +2760,35 @@ END
 </li>
             <li class="normal" id="section-7.1.2-1.20">References: This Document<a href="#section-7.1.2-1.20" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7.1.2-1.21">id-MLDSA65-RSA3072-PSS-SHA256<a href="#section-7.1.2-1.21" class="pilcrow">¶</a>
+            <li class="normal" id="section-7.1.2-1.21">id-MLDSA65-RSA3072-PSS-SHA512<a href="#section-7.1.2-1.21" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7.1.2-1.22">Decimal: IANA Assigned<a href="#section-7.1.2-1.22" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7.1.2-1.23">Description:  id-MLDSA65-RSA3072-PSS-SHA256<a href="#section-7.1.2-1.23" class="pilcrow">¶</a>
+            <li class="normal" id="section-7.1.2-1.23">Description:  id-MLDSA65-RSA3072-PSS-SHA512<a href="#section-7.1.2-1.23" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7.1.2-1.24">References: This Document<a href="#section-7.1.2-1.24" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7.1.2-1.25">id-MLDSA65-RSA3072-PKCS15-SHA256<a href="#section-7.1.2-1.25" class="pilcrow">¶</a>
+            <li class="normal" id="section-7.1.2-1.25">id-MLDSA65-RSA3072-PKCS15-SHA512<a href="#section-7.1.2-1.25" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7.1.2-1.26">Decimal: IANA Assigned<a href="#section-7.1.2-1.26" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7.1.2-1.27">Description:  id-MLDSA65-RSA3072-PKCS15-SHA256<a href="#section-7.1.2-1.27" class="pilcrow">¶</a>
+            <li class="normal" id="section-7.1.2-1.27">Description:  id-MLDSA65-RSA3072-PKCS15-SHA512<a href="#section-7.1.2-1.27" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7.1.2-1.28">References: This Document<a href="#section-7.1.2-1.28" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7.1.2-1.29">id-MLDSA65-ECDSA-P256-SHA256<a href="#section-7.1.2-1.29" class="pilcrow">¶</a>
+            <li class="normal" id="section-7.1.2-1.29">id-MLDSA65-ECDSA-P256-SHA512<a href="#section-7.1.2-1.29" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7.1.2-1.30">Decimal: IANA Assigned<a href="#section-7.1.2-1.30" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7.1.2-1.31">Description:  id-MLDSA65-ECDSA-P256-SHA256<a href="#section-7.1.2-1.31" class="pilcrow">¶</a>
+            <li class="normal" id="section-7.1.2-1.31">Description:  id-MLDSA65-ECDSA-P256-SHA512<a href="#section-7.1.2-1.31" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7.1.2-1.32">References: This Document<a href="#section-7.1.2-1.32" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7.1.2-1.33">id-MLDSA65-ECDSA-brainpoolP256r1-SHA256<a href="#section-7.1.2-1.33" class="pilcrow">¶</a>
+            <li class="normal" id="section-7.1.2-1.33">id-MLDSA65-ECDSA-brainpoolP256r1-SHA512<a href="#section-7.1.2-1.33" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7.1.2-1.34">Decimal: IANA Assigned<a href="#section-7.1.2-1.34" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7.1.2-1.35">Description:  id-MLDSA65-ECDSA-brainpoolP256r1-SHA256<a href="#section-7.1.2-1.35" class="pilcrow">¶</a>
+            <li class="normal" id="section-7.1.2-1.35">Description:  id-MLDSA65-ECDSA-brainpoolP256r1-SHA512<a href="#section-7.1.2-1.35" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7.1.2-1.36">References: This Document<a href="#section-7.1.2-1.36" class="pilcrow">¶</a>
 </li>
@@ -2771,27 +2800,27 @@ END
 </li>
             <li class="normal" id="section-7.1.2-1.40">References: This Document<a href="#section-7.1.2-1.40" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7.1.2-1.41">id-MLDSA87-ECDSA-P384-SHA384<a href="#section-7.1.2-1.41" class="pilcrow">¶</a>
+            <li class="normal" id="section-7.1.2-1.41">id-MLDSA87-ECDSA-P384-SHA512<a href="#section-7.1.2-1.41" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7.1.2-1.42">Decimal: IANA Assigned<a href="#section-7.1.2-1.42" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7.1.2-1.43">Description:  id-MLDSA87-ECDSA-P384-SHA384<a href="#section-7.1.2-1.43" class="pilcrow">¶</a>
+            <li class="normal" id="section-7.1.2-1.43">Description:  id-MLDSA87-ECDSA-P384-SHA512<a href="#section-7.1.2-1.43" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7.1.2-1.44">References: This Document<a href="#section-7.1.2-1.44" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7.1.2-1.45">id-MLDSA87-ECDSA-brainpoolP384r1-SHA384<a href="#section-7.1.2-1.45" class="pilcrow">¶</a>
+            <li class="normal" id="section-7.1.2-1.45">id-MLDSA87-ECDSA-brainpoolP384r1-SHA512<a href="#section-7.1.2-1.45" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7.1.2-1.46">Decimal: IANA Assigned<a href="#section-7.1.2-1.46" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7.1.2-1.47">Description:  id-MLDSA87-ECDSA-brainpoolP384r1-SHA384<a href="#section-7.1.2-1.47" class="pilcrow">¶</a>
+            <li class="normal" id="section-7.1.2-1.47">Description:  id-MLDSA87-ECDSA-brainpoolP384r1-SHA512<a href="#section-7.1.2-1.47" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7.1.2-1.48">References: This Document<a href="#section-7.1.2-1.48" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7.1.2-1.49">id-MLDSA87-Ed448-SHAKE256<a href="#section-7.1.2-1.49" class="pilcrow">¶</a>
+            <li class="normal" id="section-7.1.2-1.49">id-MLDSA87-Ed448-SHA512<a href="#section-7.1.2-1.49" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7.1.2-1.50">Decimal: IANA Assigned<a href="#section-7.1.2-1.50" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7.1.2-1.51">Description:  id-MLDSA87-Ed448<a href="#section-7.1.2-1.51" class="pilcrow">¶</a>
+            <li class="normal" id="section-7.1.2-1.51">Description:  id-MLDSA87-Ed448-SHA512<a href="#section-7.1.2-1.51" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7.1.2-1.52">References: This Document<a href="#section-7.1.2-1.52" class="pilcrow">¶</a>
 </li>
@@ -2815,7 +2844,7 @@ END
 </li>
             <li class="normal" id="section-7.1.2-1.62">Decimal: IANA Assigned<a href="#section-7.1.2-1.62" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-7.1.2-1.63">Description:  id-Falcon512-Ed25519<a href="#section-7.1.2-1.63" class="pilcrow">¶</a>
+            <li class="normal" id="section-7.1.2-1.63">Description:  id-Falcon512-Ed25519-SHA512<a href="#section-7.1.2-1.63" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-7.1.2-1.64">References: This Document<a href="#section-7.1.2-1.64" class="pilcrow">¶</a>
 </li>
@@ -2943,6 +2972,10 @@ END
         <dd>
 <span class="refAuthor">Guthrie, R.</span>, <span class="refTitle">"Hybrid Non-Composite Authentication in IKEv2"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-guthrie-ipsecme-ikev2-hybrid-auth-00</span>, <time datetime="2022-03-25" class="refDate">25 March 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-guthrie-ipsecme-ikev2-hybrid-auth-00">https://datatracker.ietf.org/doc/html/draft-guthrie-ipsecme-ikev2-hybrid-auth-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="I-D.hale-pquip-hybrid-signature-spectrums">[I-D.hale-pquip-hybrid-signature-spectrums]</dt>
+        <dd>
+<span class="refAuthor">Bindel, N.</span>, <span class="refAuthor">Hale, B.</span>, <span class="refAuthor">Connolly, D.</span>, and <span class="refAuthor">F. D</span>, <span class="refTitle">"Hybrid signature spectrums"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-hale-pquip-hybrid-signature-spectrums-01</span>, <time datetime="2023-11-06" class="refDate">6 November 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-hale-pquip-hybrid-signature-spectrums-01">https://datatracker.ietf.org/doc/html/draft-hale-pquip-hybrid-signature-spectrums-01</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="I-D.ietf-lamps-dilithium-certificates">[I-D.ietf-lamps-dilithium-certificates]</dt>
         <dd>
 <span class="refAuthor">Massimo, J.</span>, <span class="refAuthor">Kampanakis, P.</span>, <span class="refAuthor">Turner, S.</span>, and <span class="refAuthor">B. Westerbaan</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure: Algorithm Identifiers for Dilithium"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-dilithium-certificates-01</span>, <time datetime="2023-02-06" class="refDate">6 February 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-dilithium-certificates-01">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-dilithium-certificates-01</a>&gt;</span>. </dd>
@@ -2961,7 +2994,7 @@ END
 <dd class="break"></dd>
 <dt id="I-D.vaira-pquip-pqc-use-cases">[I-D.vaira-pquip-pqc-use-cases]</dt>
         <dd>
-<span class="refAuthor">Vaira, A.</span>, <span class="refAuthor">Brockhaus, H.</span>, <span class="refAuthor">Railean, A.</span>, <span class="refAuthor">Gray, J.</span>, and <span class="refAuthor">M. Ounsworth</span>, <span class="refTitle">"Post-quantum cryptography use cases"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-vaira-pquip-pqc-use-cases-00</span>, <time datetime="2023-10-23" class="refDate">23 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/api/v1/doc/document/draft-vaira-pquip-pqc-use-cases/">https://datatracker.ietf.org/api/v1/doc/document/draft-vaira-pquip-pqc-use-cases/</a>&gt;</span>. </dd>
+<span class="refAuthor">Vaira, A.</span>, <span class="refAuthor">Brockhaus, H.</span>, <span class="refAuthor">Railean, A.</span>, <span class="refAuthor">Gray, J.</span>, and <span class="refAuthor">M. Ounsworth</span>, <span class="refTitle">"Post-quantum cryptography use cases"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-vaira-pquip-pqc-use-cases-00</span>, <time datetime="2023-10-23" class="refDate">23 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-vaira-pquip-pqc-use-cases-00">https://datatracker.ietf.org/doc/html/draft-vaira-pquip-pqc-use-cases-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC3279">[RFC3279]</dt>
         <dd>
@@ -2974,6 +3007,10 @@ END
 <dt id="RFC7296">[RFC7296]</dt>
         <dd>
 <span class="refAuthor">Kaufman, C.</span>, <span class="refAuthor">Hoffman, P.</span>, <span class="refAuthor">Nir, Y.</span>, <span class="refAuthor">Eronen, P.</span>, and <span class="refAuthor">T. Kivinen</span>, <span class="refTitle">"Internet Key Exchange Protocol Version 2 (IKEv2)"</span>, <span class="seriesInfo">STD 79</span>, <span class="seriesInfo">RFC 7296</span>, <span class="seriesInfo">DOI 10.17487/RFC7296</span>, <time datetime="2014-10" class="refDate">October 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7296">https://www.rfc-editor.org/info/rfc7296</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7299">[RFC7299]</dt>
+        <dd>
+<span class="refAuthor">Housley, R.</span>, <span class="refTitle">"Object Identifier Registry for the PKIX Working Group"</span>, <span class="seriesInfo">RFC 7299</span>, <span class="seriesInfo">DOI 10.17487/RFC7299</span>, <time datetime="2014-07" class="refDate">July 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7299">https://www.rfc-editor.org/info/rfc7299</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8017">[RFC8017]</dt>
         <dd>
@@ -3006,36 +3043,36 @@ END
 <a href="#appendix-A.1.1" class="section-number selfRef">A.1.1. </a><a href="#name-mldsa44-ecdsa-p256-sha256-pu" class="section-name selfRef">MLDSA44-ECDSA-P256-SHA256 Public Key</a>
           </h4>
 <p id="appendix-A.1.1-1">-----BEGIN PUBLIC KEY-----
-MIIFfzANBgtghkgBhvprUAcBBAOCBWwAMIIFZwSCBSA+LrUqGdS5RSYzFWfGEmNS
-ZhiNF7vW+lTyoUESmu1iWjPNA8ILNB8fyxMi3TApDYNHlniiz7ogh9VKvGuUWrgl
-IUoX+f2FaErDnh3Fz24xpO7n0j7E7dqZYU0iSUTFekex+rRxr0hCNtuZQ++qYVSa
-CQOxScsuWrLjSW6Q6KzVAeHGoJIAL28JckUZ8KCg6AaMyqZwIFIw6NJ678K4c+Zy
-mFSusvyQ7LorxqAkHl03RGLy4BjMohDA2SzVW3W3Eez6rjvWoM8XMu8pWN1kJaqi
-JQLQx/HPqgnu1qmgcFqmTWHil6Z0sRH7XSZyhYpU4rNZr9/1yxFCw0WjYymATrzt
-CAGpfSzf8Igg/NL4mhOpSNkCzDnnC7ge/kskDHgHCDVWGPB9myTcXmVRsgCd53rh
-CDhR8csztl29tzYwgSqkraNTnfrlMPY9iMCzi/V9ShMfh60DoOBRsLjxr4pDra88
-vzHekDm084lEIghrkNZdswmCxELZSGpsPsiVyn32k4y1MdTorhiRTZn1Q+NlSk7t
-YH5XzdnDY4DByL/azaAQ4IThHc9tn9fra8icox4Ov3pdDosvyu6pvUEPpQv8vfOM
-vm156SFgS4JEj/ykqGF35E+9F96IS0aM9GBTjLQnM52DTm85BYSELx+EYb2AHxAr
-jhD4fUXnjK/g5V1kxBLxFmAxBmU/PGNkYILrOdPxl8f79LH6+PCehgZS4QqzF943
-FqO53B62Cp7F+zE2xpvUXeZ2ThuGGHce2cEE6lADa3Y3vX0rON7oWRHpBXRbSeP0
-X85TS0M6svSpgR2bMou/a7V2+NFHcU/dHteOqszhL1w1wxDcEnoy+FKNnVS3U/pi
-bFcGWzG63mxEgQc/wU0n7bBvOaFj29jnSmm6KsQrC/2J+AlX3uYqGCA4F3vzhPIP
-bj34TfUWPCIvgdGey8M5PDbNpj9yVXELTN3EEViFTA4W3+yr7Pf8Z9GlwJ6Oxbic
-E57oif1mKLRa3eIQ8R6T2/bTYCON1OtU///WJn8kE0A1Yayyr7AlBula/tM69aW0
-WctoEda2TgcYbDmE4fdMtgwKCfCjw2zP88KLiQUs3m6ZcBvx/CqKmB6xZpx5pNYq
-WqP4/YxhYLiTK6BNjW3gw5N1V+zIcTokeCClwwIzP/roO/sS2sMu1Y6znLfmawsY
-7aK5bmb/icPQU+DPq/v6YIxwTq2FYNxrsXSjKs+JJG0PqYeRXJ8GJfLbYMHddSaR
-CEXgYFIvAw4vn1Zqqqpm7OnRaIbV4EtzzxXDdy+vZUnMFs6hPEpGYCb+/DHYCfND
-QMpb5Xxcn9ighN0dzyL3pPvliPQIFgmpniuPpXnv1eBAmjc4UQlfMgyhfCXngUNR
-CjOJjEhWF+p4+26cDf25kLhO77gpog2JrV963GkQhHSyXoipvs0tK2/35Ec4/+bt
-2mbT0kErQyRfQw73E0OHO3TmHVExqCvqLQFkonEyYL+tD9ne0m3TGFmokcIItgUk
-09dAfeUOlcfvRfGYZlIxLTIFgep6UamMK+XNuOUNoq9S0UA7JZM+8YwCB61jI3oG
-Vq9Y3ohtQAr5+3HYwatD9a2Poks6Fqr0UCc0F0CSPLaqdiEVbZW92b+z44c33KGo
-E7QJgNfLsMazHsI+6bC5Ss8edJ07tGUKpiDzvQhMlvTMN8aqIyREuqSqNFc1CbF6
-v2opDdRte5aeGJKrVp0H5EO9oIkAsDwJ/cfroye514dlJ/CQuBYzARnueVghPWti
-BEEE5WF0F9l42el2mFaXWuOx5LvkUe5rxqlps10b0sgHUls5PPOeslgT9bVzhLu7
-Uuwkv4949UUnIzx58SRKIJ3DJg==
+MIIFfzANBgtghkgBhvprUAgBBAOCBWwAMIIFZwSCBSAA9DTYoQys3PVrayi9zTam
+kTzpqf6vuNI5+UaMENvnrq3Rps5LmiQ5gSXaQMu0HYjVpCEQVQWl/8nbJavELelk
+gCVn528ndGBQUChAnffxhRdxgaFmOb2SEySTnHIh6QO1UFPO2kGiGx9zU6F9xZGK
+FZFBm8B076UvRHCbaw+BTvu4o+Kg1irOFRPI3hLN4ku3si2nwWSZNhDoiLaPTfJe
+7TRziBznEyrnSV3I2Xn7QdKxIWUFOwPXWBnnk/FGG/A2HdxGpiqIWxZ0gNLNcb+j
+Cz6CWZSJhoOLoJWdOD5zyojPPrH5iFIGM96p0PZ4mv5PhmZDPA/RTIg/PcG1rywn
+OJYqAsazntGyEhHEFLRe8QYOVEbiBuv20tNzkFaaulQRdW+boStcW8NefSkKG/9D
+FgGnyR87W4Z/ieHEyIva4FBamvRm60xrblAyI0Z7II4l7LTStDzL/ghFq06RVria
+au+mY5laq8rAGmRbWkUxNeKeGOVHxjGFYB3uaAkHef0o7tSMMkCSSjiDQlNk5ReQ
+xgJMkuTRE7YRN1bDXv/0uPPjg7zfa3M0tMCD9wTXFhIk04HDLVV5WAsH0EK6Nytd
+gqnsjGCwfZb2+Fw/QytBei50DUBHpIG3da4dBrxcaRTMiQPzPzL8FaDascE0ZIJM
+9ilKvxgq02ryEHLGALFN8eZD1r6zq43KFlRzaynWBWqJ27MiUzK2dk8oC+dH5cz6
++xGXAhLJ+MipoO9k9dLg8re3dOAufsKaY5DLuuluo7dO6IF7rG9xblbiIzWpyfu3
+7kJvUdwk36QzsQNGsxpELk65LaWYnaebV7wKyIaaniLysuNCG0dIcAicxRNLgpX9
+jic5pi+BzlJI1IuPk+DqOG57pNnU7lTg3op08MUslNyeUH5yaag8DNsLG7uZHzvx
+jcqffaqcqS+v6FVmbV2tDF07jn8a754Fnn/QNgsNcdfw9Ov4w7Ty+q5nT2wg2Lsg
+bAuzN6b6FiWEuHHMw/I5aIL5cLj2GUpjHtlUHL4KEHpxZ2J5jbBgeqpTWEy1TuPQ
+R34lryVASmue/kmk2liah6wNK5RXlGa8uidBm7RT8b5SkIMsrosLx9KpC5lKobzn
+8ttK1NSy0ZuMDw9wtnePUbROGjEuw5Na/K1VgO68dATj/7rscvz7C+ZuQORrt88X
++OZmoyw+fEDWAocDnhzI6rJIHLPB0p+rSJ8iSKZpFZYeIy+CD0t6E98RJQHll8BJ
+lLyJiMT0xAyelOMzrCJayHxD01aLw6LLOddFbiIRMq4lni5Ha4noWmdO2C80xy3A
+jskUEK5sbD8KFl910JUHwaGvb/gDCqW+n10mRa9+cB0tRVjo5OZeSiB01Bkagu7a
+f+bRv2i8cBa2ZoGVyW3xFFFhIkHzLgHaU+RLaGwJDe0qxKtwKYz5c/YpAsH+lodM
+NV2E/PzHtNY+sg0PijblN6IVO+yiLkxJspKIjf0I1+s8hczhz3QkLRed7dU2nvID
+puJQfgraKyS6rawlqLyWo66/PDtdd3tngw50wnDNZik0hz/usDc6o7IN5J9ha7XO
+0vZQluMb9R5l+W6RLD2nRd4mlKVqm/Yfq0R8PKoIh8f7uLVk1kbN4prkfpsokvqR
+rli5h4URG7WCNvp4bg/i1Ix/CEEjH56LRj83dhVB0O6WXorrZMAChQShMhwnEgeS
+USaB5au7xRAM+9fWvF9cmju3hXSTT1zv0owyoSgp36OHcy2HzwZXxA7YWtRDbhMX
+BEEEkSZvSVDhZlBXhAkaTBxlrRt624URpHlDVrd0njnPiR92XNs+NTjjvAImETMh
+EPbQ/KPspugi6gkrLFhcmy/OiA==
 -----END PUBLIC KEY-----<a href="#appendix-A.1.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3045,90 +3082,90 @@ Uuwkv4949UUnIzx58SRKIJ3DJg==
 <a href="#appendix-A.1.2" class="section-number selfRef">A.1.2. </a><a href="#name-mldsa44-ecdsa-p256-private-k" class="section-name selfRef">MLDSA44-ECDSA-P256 Private Key</a>
           </h4>
 <p id="appendix-A.1.2-1">-----BEGIN PRIVATE KEY-----
-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
-9UUnIzx58SRKIJ3DJg==
+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
+pugi6gkrLFhcmy/OiA==
 -----END PRIVATE KEY-----<a href="#appendix-A.1.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3138,92 +3175,92 @@ F9l42el2mFaXWuOx5LvkUe5rxqlps10b0sgHUls5PPOeslgT9bVzhLu7Uuwkv494
 <a href="#appendix-A.1.3" class="section-number selfRef">A.1.3. </a><a href="#name-mldsa44-ecdsa-p256-self-sign" class="section-name selfRef">MLDSA44-ECDSA-P256 Self-Signed X509 Certificate</a>
           </h4>
 <p id="appendix-A.1.3-1">-----BEGIN CERTIFICATE-----
-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
-6VjbIrd6yvAdXUA=
+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
+1nbSe/5A4mF87n0=
 -----END CERTIFICATE-----<a href="#appendix-A.1.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3293,12 +3330,16 @@ all applications to be updated for correctly processing multiple algorithms toge
 <a href="#appendix-D" class="section-number selfRef">Appendix D. </a><a href="#name-contributors-and-acknowledge" class="section-name selfRef">Contributors and Acknowledgements</a>
       </h2>
 <p id="appendix-D-1">This document incorporates contributions and comments from a large group of experts. The Editors would especially like to acknowledge the expertise and tireless dedication of the following people, who attended many long meetings and generated millions of bytes of electronic mail and VOIP traffic over the past year in pursuit of this document:<a href="#appendix-D-1" class="pilcrow">¶</a></p>
-<p id="appendix-D-2">Serge Mister (Entrust),
-Scott Fluhrer (Cisco Systems),
-Panos Kampanakis (Cisco Systems),
+<p id="appendix-D-2">Scott Fluhrer (Cisco Systems),
 Daniel Van Geest (ISARA),
-Tim Hollebeek (Digicert), and
-Francois Rousseau.<a href="#appendix-D-2" class="pilcrow">¶</a></p>
+Britta Hale,
+Tim Hollebeek (Digicert),
+Panos Kampanakis (Cisco Systems),
+Richard Kisley (IBM),
+Serge Mister (Entrust),
+Francois Rousseau,
+Falko Strenzke and
+Felipe Ventura (Entrust)<a href="#appendix-D-2" class="pilcrow">¶</a></p>
 <p id="appendix-D-3">We are grateful to all, including any contributors who may have
 been inadvertently omitted from this list.<a href="#appendix-D-3" class="pilcrow">¶</a></p>
 <p id="appendix-D-4">This document borrows text from similar documents, including those referenced below. Thanks go to the authors of those
