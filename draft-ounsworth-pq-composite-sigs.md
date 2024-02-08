@@ -175,7 +175,7 @@ During the transition to post-quantum cryptography, there will be uncertainty as
 
 Cautious implementers may wish to combine cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. Such mechanisms are referred to as Post-Quantum / Traditional Hybrids {{I-D.driscoll-pqt-hybrid-terminology}}.
 
-In particular, certain jusrisdictions are recommending or requiring that PQC lattice schemes only be used withinin a PQ/T hybrid. As an example, we point to [BSI2021] which includes the followin recommendation:
+In particular, certain jurisdictions are recommending or requiring that PQC lattice schemes only be used within in a PQ/T hybrid. As an example, we point to [BSI2021] which includes the following recommendation:
 
 "Therefore, quantum computer-resistant methods should
 not be used alone - at least in a transitional period - but

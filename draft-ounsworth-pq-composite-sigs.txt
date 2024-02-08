@@ -182,9 +182,9 @@ Internet-Draft              PQ Composite Sigs              February 2024
    as Post-Quantum / Traditional Hybrids
    [I-D.driscoll-pqt-hybrid-terminology].
 
-   In particular, certain jusrisdictions are recommending or requiring
-   that PQC lattice schemes only be used withinin a PQ/T hybrid.  As an
-   example, we point to [BSI2021] which includes the followin
+   In particular, certain jurisdictions are recommending or requiring
+   that PQC lattice schemes only be used within in a PQ/T hybrid.  As an
+   example, we point to [BSI2021] which includes the following
    recommendation:
 
    "Therefore, quantum computer-resistant methods should not be used
