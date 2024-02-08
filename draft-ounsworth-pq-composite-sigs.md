@@ -124,20 +124,36 @@ informative:
         ins: D. Stebila
         name: Douglas Stebila
     date: 2017
-
+  BSI2021:
+    title: "Quantum-safe cryptography - fundamentals, current developments and recommendations"
+    target: https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/Brochure/quantum-safe-cryptography.pdf
+    author: 
+      - org: "Federal Office for Information Security (BSI)"
+    date: October 2021
+  ANSSI2024:
+    title: "Position Paper on Quantum Key Distribution"
+    target: https://cyber.gouv.fr/sites/default/files/document/Quantum_Key_Distribution_Position_Paper.pdf
+    author:
+      - org: "French Cybersecurity Agency (ANSSI)"
+      - org: "Federal Office for Information Security (BSI)"
+      - org: "Netherlands National Communications Security Agency (NLNCSA)"
+      - org: "Swedish National Communications Security Authority, Swedish Armed Forces"
 
 --- abstract
 
-The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs.
+This document defines Post-Quantum / Traditional composite Key Signaturem algorithms suitable for use within X.509, PKIX and CMS protocols. Composite algorithms are provided which combine ML-DSA and Falcon with RSA, ECDSA, Ed25519, and Ed448. The provided set of composite algorithms should meet most X.509, PKIX, and CMS needs. 
 
-Cautious implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected using either a Post-Quantum / Traditional Hybrid, Post-Quantum / Post-Quantum Hybrid, or combinations thereof. This document, and its companions, defines a specific instantiation of hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key or signature such that they can be treated as a single atomic object at the protocol level.
 
-This document defines the structures CompositeSignaturePublicKey, CompositeSignaturePrivateKey and CompositeSignatureValue, which are sequences of the respective structure for each component algorithm.  Composite signature algorithm identifiers are specified in this document which represent the explicit combinations of the underlying component algorithms. 
 
 <!-- End of Abstract -->
 
 
 --- middle
+
+# Changes in version -13
+
+* Shortened Abstract.
+* Added text to Introduction to justify where and why this mechanism would be used.
 
 # Changes in version -12
 
@@ -158,6 +174,26 @@ This document defines the structures CompositeSignaturePublicKey, CompositeSigna
 During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
 
 Cautious implementers may wish to combine cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. Such mechanisms are referred to as Post-Quantum / Traditional Hybrids {{I-D.driscoll-pqt-hybrid-terminology}}.
+
+In particular, certain jusrisdictions are recommending or requiring that PQC lattice schemes only be used withinin a PQ/T hybrid. As an example, we point to [BSI2021] which includes the followin recommendation:
+
+"Therefore, quantum computer-resistant methods should
+not be used alone - at least in a transitional period - but
+only in hybrid mode, i.e. in combination with a classical
+method. For this purpose, protocols must be modified
+or supplemented accordingly. In addition, public key
+infrastructures, for example, must also be adapted"
+
+In addition, [BSI2021] specifically references this specification as a concrete example of hybrid X.509 certificates.
+
+A more recent example is [ANSSI2024], a document co-authored by French Cybersecurity Agency (ANSSI), 
+Federal Office for Information Security (BSI), Netherlands National Communications Security Agency (NLNCSA), and
+Swedish National Communications Security Authority, Swedish Armed Forces which makes the following statement:
+
+“In light of the urgent need to stop relying only on quantum-vulnerable public-key cryptography for key establishment, the clear priority should therefore be the migration to post-quantum cryptography in hybrid solutions”
+
+This specification represents the straightforward implementation of the hybrid solutions called for by European cyber security agencies.
+
 
 PQ/T Hybrid cryptography can, in general, provide solutions to two migration problems:
 
