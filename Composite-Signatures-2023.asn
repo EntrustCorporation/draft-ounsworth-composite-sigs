@@ -1,7 +1,7 @@
 
    Composite-Signatures-2023
-     { joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027) 
-       algorithm(80) id-composite-signatures-2023 (TBDMOD) }
+      { joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+        algorithm(80) id-composite-signatures-2023 (TBDMOD) }
 
 DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
@@ -88,18 +88,17 @@ CompositeSignatureValue ::= SEQUENCE SIZE (2) OF BIT STRING
 -- Information Object Classes
 --
 
-pk-CompositeSignature {
-     OBJECT IDENTIFIER:id, FirstPublicKeyType,
-     SecondPublicKeyType} PUBLIC-KEY ::=
-     {
-       IDENTIFIER id
-       KEY SEQUENCE {
-        BIT STRING (CONTAINING FirstPublicKeyType)
-        BIT STRING (CONTAINING SecondPublicKeyType)
-       }
-       PARAMS ARE absent
-       CERT-KEY-USAGE { digitalSignature, nonRepudiation, keyCertSign, cRLSign }
-     } 
+pk-CompositeSignature {OBJECT IDENTIFIER:id, 
+  FirstPublicKeyType,SecondPublicKeyType} 
+    PUBLIC-KEY ::= {
+      IDENTIFIER id
+      KEY SEQUENCE {
+        firstPublicKey BIT STRING (CONTAINING FirstPublicKeyType),
+        secondPublicKey BIT STRING (CONTAINING SecondPublicKeyType)
+      }
+      PARAMS ARE absent
+      CERT-KEY-USAGE { digitalSignature, nonRepudiation, keyCertSign, cRLSign}
+    } 
 								 							
 
 sa-CompositeSignature{OBJECT IDENTIFIER:id, 
@@ -231,7 +230,7 @@ sa-MLDSA65-ECDSA-P256-SHA512 SIGNATURE-ALGORITHM ::=
        
 
 -- TODO: OID to be replaced by IANA
-id-id-MLDSA65-ECDSA-brainpoolP256r1-SHA512 OBJECT IDENTIFIER ::= {     
+id-MLDSA65-ECDSA-brainpoolP256r1-SHA512 OBJECT IDENTIFIER ::= {     
    joint-iso-itu-t(2) country(16) us(840) organization(1) 
    entrust(114027) algorithm(80) composite(8) signature(1) 9 }
 
@@ -241,7 +240,7 @@ pk-id-MLDSA65-ECDSA-brainpoolP256r1-SHA512 PUBLIC-KEY ::=
 
 sa-id-MLDSA65-ECDSA-brainpoolP256r1-SHA512 SIGNATURE-ALGORITHM ::= 
     sa-CompositeSignature{
-       id-id-MLDSA65-ECDSA-brainpoolP256r1-SHA512, 
+       id-MLDSA65-ECDSA-brainpoolP256r1-SHA512, 
        pk-id-MLDSA65-ECDSA-brainpoolP256r1-SHA512 }       
 
 

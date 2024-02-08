@@ -2,7 +2,7 @@
 title: Composite Signatures For Use In Internet PKI
 abbrev: PQ Composite Sigs
 # <!-- EDNOTE: Edits the draft name -->
-docname: draft-ounsworth-pq-composite-sigs-11
+docname: draft-ounsworth-pq-composite-sigs-12
 
 # <!-- stand_alone: true -->
 ipr: trust200902
@@ -138,6 +138,10 @@ This document defines the structures CompositeSignaturePublicKey, CompositeSigna
 
 
 --- middle
+
+# Changes in version -12
+
+* Fixed the ASN.1 module pk-CompositeSignature Information Object Class so it now compiles
 
 # Changes in version -11
 
@@ -446,18 +450,17 @@ In order for signatures to be composed of multiple algorithms, we define encodin
 The following ASN.1 Information Object Class is a template to be used in defining all composite Signature public key types.
 
 ~~~ ASN.1  
-pk-CompositeSignature {
-  OBJECT IDENTIFIER:id, FirstPublicKeyType,
-  SecondPublicKeyType} PUBLIC-KEY ::=
-  {
-    IDENTIFIER id
-    KEY SEQUENCE {
-     BIT STRING (CONTAINING FirstPublicKeyType)
-     BIT STRING (CONTAINING SecondPublicKeyType) 
-    }
-    PARAMS ARE absent
-    CERT-KEY-USAGE { digitalSignature, nonRepudiation, keyCertSign, cRLSign }
-  }  
+pk-CompositeSignature {OBJECT IDENTIFIER:id, 
+  FirstPublicKeyType,SecondPublicKeyType} 
+    PUBLIC-KEY ::= {
+      IDENTIFIER id
+      KEY SEQUENCE {
+        firstPublicKey BIT STRING (CONTAINING FirstPublicKeyType),
+        secondPublicKey BIT STRING (CONTAINING SecondPublicKeyType)
+      }
+      PARAMS ARE absent
+      CERT-KEY-USAGE { digitalSignature, nonRepudiation, keyCertSign, cRLSign}
+    } 
 ~~~
 {: artwork-name="CompositeKeyObject-asn.1-structures"}
 
