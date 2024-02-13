@@ -5,11 +5,11 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
 Intended status: Standards Track                                 Entrust
-Expires: 11 August 2024                                          M. Pala
+Expires: 16 August 2024                                          M. Pala
                                                                CableLabs
                                                             J. Klaussner
                                                             D-Trust GmbH
-                                                         8 February 2024
+                                                        13 February 2024
 
 
               Composite Signatures For Use In Internet PKI
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                 [Page 1]
+Ounsworth, et al.        Expires 16 August 2024                 [Page 1]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -68,7 +68,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 August 2024.
+   This Internet-Draft will expire on 16 August 2024.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                 [Page 2]
+Ounsworth, et al.        Expires 16 August 2024                 [Page 2]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -165,7 +165,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                 [Page 3]
+Ounsworth, et al.        Expires 16 August 2024                 [Page 3]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -221,7 +221,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                 [Page 4]
+Ounsworth, et al.        Expires 16 August 2024                 [Page 4]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -277,7 +277,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                 [Page 5]
+Ounsworth, et al.        Expires 16 August 2024                 [Page 5]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -333,7 +333,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                 [Page 6]
+Ounsworth, et al.        Expires 16 August 2024                 [Page 6]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -389,7 +389,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                 [Page 7]
+Ounsworth, et al.        Expires 16 August 2024                 [Page 7]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -445,7 +445,7 @@ Signature Generation Process:
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                 [Page 8]
+Ounsworth, et al.        Expires 16 August 2024                 [Page 8]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -501,7 +501,7 @@ Input:
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                 [Page 9]
+Ounsworth, et al.        Expires 16 August 2024                 [Page 9]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -557,7 +557,7 @@ Signature Verification Procedure::
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 10]
+Ounsworth, et al.        Expires 16 August 2024                [Page 10]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -613,7 +613,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 11]
+Ounsworth, et al.        Expires 16 August 2024                [Page 11]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -669,7 +669,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 12]
+Ounsworth, et al.        Expires 16 August 2024                [Page 12]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -725,7 +725,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 13]
+Ounsworth, et al.        Expires 16 August 2024                [Page 13]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -781,7 +781,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 14]
+Ounsworth, et al.        Expires 16 August 2024                [Page 14]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -837,7 +837,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 15]
+Ounsworth, et al.        Expires 16 August 2024                [Page 15]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -893,7 +893,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 16]
+Ounsworth, et al.        Expires 16 August 2024                [Page 16]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -902,7 +902,11 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
    For protocols such as X.509 [RFC5280] that specify key usage along
    with the public key, then the composite public key associated with a
-   composite signature MUST have a signing-type key usage.
+   composite signature MUST have a signing-type key usage.  This is
+   because the composite public key can only be used in situations that
+   are appropriate for both component algorithms, so even if the
+   classical component key supports both signing and encryption, the
+   post-quantum algorithms do not.
 
    If the keyUsage extension is present in a Certification Authority
    (CA) certificate that indicates a composite key, then any combination
@@ -945,11 +949,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-
-
-
-
-Ounsworth, et al.        Expires 11 August 2024                [Page 17]
+Ounsworth, et al.        Expires 16 August 2024                [Page 17]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1005,7 +1005,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 18]
+Ounsworth, et al.        Expires 16 August 2024                [Page 18]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1061,7 +1061,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 19]
+Ounsworth, et al.        Expires 16 August 2024                [Page 19]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1117,7 +1117,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 20]
+Ounsworth, et al.        Expires 16 August 2024                [Page 20]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1173,7 +1173,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 21]
+Ounsworth, et al.        Expires 16 August 2024                [Page 21]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1229,7 +1229,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 22]
+Ounsworth, et al.        Expires 16 August 2024                [Page 22]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1285,7 +1285,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 23]
+Ounsworth, et al.        Expires 16 August 2024                [Page 23]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1341,7 +1341,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 24]
+Ounsworth, et al.        Expires 16 August 2024                [Page 24]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1397,7 +1397,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 25]
+Ounsworth, et al.        Expires 16 August 2024                [Page 25]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1453,7 +1453,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 26]
+Ounsworth, et al.        Expires 16 August 2024                [Page 26]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1509,7 +1509,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 27]
+Ounsworth, et al.        Expires 16 August 2024                [Page 27]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1565,7 +1565,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 28]
+Ounsworth, et al.        Expires 16 August 2024                [Page 28]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1621,7 +1621,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 29]
+Ounsworth, et al.        Expires 16 August 2024                [Page 29]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1677,7 +1677,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 30]
+Ounsworth, et al.        Expires 16 August 2024                [Page 30]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1733,7 +1733,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 31]
+Ounsworth, et al.        Expires 16 August 2024                [Page 31]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1789,7 +1789,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 32]
+Ounsworth, et al.        Expires 16 August 2024                [Page 32]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1845,7 +1845,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 33]
+Ounsworth, et al.        Expires 16 August 2024                [Page 33]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1901,7 +1901,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 34]
+Ounsworth, et al.        Expires 16 August 2024                [Page 34]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -1957,7 +1957,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 35]
+Ounsworth, et al.        Expires 16 August 2024                [Page 35]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -2013,7 +2013,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 36]
+Ounsworth, et al.        Expires 16 August 2024                [Page 36]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -2069,7 +2069,7 @@ A.1.  Explicit Composite Signature Examples
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 37]
+Ounsworth, et al.        Expires 16 August 2024                [Page 37]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -2125,7 +2125,7 @@ A.1.2.  MLDSA44-ECDSA-P256 Private Key
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 38]
+Ounsworth, et al.        Expires 16 August 2024                [Page 38]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -2181,7 +2181,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 39]
+Ounsworth, et al.        Expires 16 August 2024                [Page 39]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -2237,7 +2237,7 @@ A.1.3.  MLDSA44-ECDSA-P256 Self-Signed X509 Certificate
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 40]
+Ounsworth, et al.        Expires 16 August 2024                [Page 40]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -2293,7 +2293,7 @@ Internet-Draft              PQ Composite Sigs              February 2024
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 41]
+Ounsworth, et al.        Expires 16 August 2024                [Page 41]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -2349,7 +2349,7 @@ B.2.  Backwards Compatibility
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 42]
+Ounsworth, et al.        Expires 16 August 2024                [Page 42]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -2405,7 +2405,7 @@ B.2.1.  Parallel PKIs
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 43]
+Ounsworth, et al.        Expires 16 August 2024                [Page 43]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -2461,7 +2461,7 @@ Appendix D.  Contributors and Acknowledgements
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 44]
+Ounsworth, et al.        Expires 16 August 2024                [Page 44]
 
 Internet-Draft              PQ Composite Sigs              February 2024
 
@@ -2517,4 +2517,4 @@ Authors' Addresses
 
 
 
-Ounsworth, et al.        Expires 11 August 2024                [Page 45]
+Ounsworth, et al.        Expires 16 August 2024                [Page 45]
