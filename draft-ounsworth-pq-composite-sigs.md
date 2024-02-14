@@ -154,26 +154,15 @@ This document defines Post-Quantum / Traditional composite Key Signaturem algori
 
 * Shortened Abstract.
 * Added text to Introduction to justify where and why this mechanism would be used.
-
-# Changes in version -12
-
-* Fixed the ASN.1 module pk-CompositeSignature Information Object Class so it now compiles
-
-# Changes in version -11
-
-* Remove ambiguity and made it clear that all component signature MUST be verified
-* Added language to ensure that component keys MUST not be used in any other context
-* Changed the content of the OID artifact to the DER encoded OID
-* Reduced number of pre-hashing algorithm by removing SHA384 and SHAKE and replacing those with SHA512
-* Updated the prototype OIDs since the changes in this draft are not compatible with version -10
-* Fixed other nits
+* Resolved comments from Kris Kwiatkowski
+* Fixed up Algorithm names in Algorithm Deprecation section
 
 
 # Introduction {#sec-intro}
 
 During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
 
-Cautious implementers may wish to combine cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. Such mechanisms are referred to as Post-Quantum / Traditional Hybrids {{I-D.driscoll-pqt-hybrid-terminology}}.
+Cautious implementers may wish to combine cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. Such mechanisms are referred to as Post-Quantum / Traditional Hybrids {{I-D.driscoll-pqt-hybrid-terminology}}.  
 
 In particular, certain jurisdictions are recommending or requiring that PQC lattice schemes only be used within in a PQ/T hybrid. As an example, we point to [BSI2021] which includes the following recommendation:
 
@@ -205,6 +194,8 @@ This document defines a specific instantiation of the PQ/T Hybrid paradigm calle
 
 This document is intended for general applicability anywhere that digital signatures are used within PKIX and CMS structures.   For a more detailed use-case discussion for composite signatures, the reader is encouraged to look at {{I-D.vaira-pquip-pqc-use-cases}}
 
+This document attemps to bind the composite component keys together to achieve the weak non-separability property as defined in {{I-D.hale-pquip-hybrid-signature-spectrums}}.
+
 ## Terminology {#sec-terminology}
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 {{RFC2119}}  {{RFC8174}} when, and only when, they appear in all capitals, as shown here.
 
@@ -229,7 +220,7 @@ COMPONENT ALGORITHM:
             composite algorithm.
 
 COMPOSITE ALGORITHM:
-          An algorithm which is a sequence of two or more component
+          An algorithm which is a sequence of two component
             algorithms, as defined in {{sec-composite-structs}}.
 
 DER:
@@ -287,12 +278,12 @@ Here we define the signature mechanism in which a signature is a cryptographic p
 
    *  Verify(pk, Message, signature) -> true or false: A verification algorithm
       which takes as input a public key, a Message and signature and outputs true
-      if the signature and public key can be used to verify the message.  Thus it
-      proves the Message was signed with the secret key associated with the public 
-      key and verifies the integrity of the Message.  If the signature and public
-      key cannot verify the Message, it returns false.   
+      if the signature verifies correctly.  Thus it proves the Message was signed
+      with the secret key associated with the public key and verifies the integrity
+      of the Message.  If the signature and public key cannot verify the Message,
+      it returns false.   
 
-A composite signature allows two or more underlying signature algorithms to be combined into a single cryptographic signature operation and can be used for applications that require signatures.  
+A composite signature allows two underlying signature algorithms to be combined into a single cryptographic signature operation and can be used for applications that require signatures.  
 
 ### Composite KeyGen
 
@@ -571,7 +562,6 @@ In the interests of simplicity and avoiding compatibility issues, implementation
 
 For protocols such as X.509 [RFC5280] that specify key usage along with the public key, then the composite public key associated with a composite signature MUST have a signing-type key usage.
 
-
 If the keyUsage extension is present in a Certification Authority (CA) certificate that indicates a composite key, then any combination of the following values MAY be present:
 
 ~~~
@@ -845,7 +835,7 @@ Traditionally, a public key, certificate, or signature contains a single cryptog
 
 In the composite model this is less obvious since implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though one or both algorithms are deprecated for individual use. As such, a single composite public key or certificate may contain a mixture of deprecated and non-deprecated algorithms.
 
-Since composite algorithms are registered independently of their component algorithms, their deprecation can be handled indpendently from that of their component algorithms. For example a cryptographic policy might continue to allow `id-MLDSA65-ECDSA-P256-SHA256` even after ECDH-P256 is deprecated.
+Since composite algorithms are registered independently of their component algorithms, their deprecation can be handled indpendently from that of their component algorithms. For example a cryptographic policy might continue to allow `id-MLDSA65-ECDSA-P256-SHA512` even after ECDSA-P256 is deprecated.
 
 
 <!-- End of Security Considerations section -->
