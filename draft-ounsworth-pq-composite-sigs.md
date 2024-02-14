@@ -43,7 +43,7 @@ author:
     -
       ins: M. Pala
       name: Massimiliano Pala
-      org: CableLabs
+      org: OpenCA
       email: director@openca.org
       abbrev: CableLabs
       street: 858 Coal Creek Circle
