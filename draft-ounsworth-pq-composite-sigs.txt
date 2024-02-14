@@ -2492,7 +2492,7 @@ Authors' Addresses
 
 
    Massimiliano Pala
-   OpenCA
+   OpenCA Labs
    858 Coal Creek Circle
    Louisville, Colorado,  80027
    United States of America
