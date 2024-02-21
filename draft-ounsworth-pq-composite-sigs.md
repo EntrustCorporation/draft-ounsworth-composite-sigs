@@ -540,7 +540,7 @@ classical component key supports both signing and encryption,
 the post-quantum algorithms do not.
 
 
-If the keyUsage extension is present in a Certification Authority (CA) certificate that indicates a composite key, then any combination of the following values MAY be present:
+If the keyUsage extension is present in a Certification Authority (CA) certificate that indicates a composite key, then any combination of the following values MAY be present and any other values MUST NOT be present:
 
 ~~~
 digitalSignature;
@@ -549,7 +549,7 @@ keyCertSign; and
 cRLSign.
 ~~~
 
-If the keyUsage extension is present in an End Entity (EE) certificate that indicates a composite key, then any combination of the following values MAY be present:
+If the keyUsage extension is present in an End Entity (EE) certificate that indicates a composite key, then any combination of the following values MAY be present and any other values MUST NOT be present:
 
 ~~~
 digitalSignature; and
