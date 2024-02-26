@@ -554,9 +554,15 @@ In the interests of simplicity and avoiding compatibility issues, implementation
 
 ## Key Usage Bits
 
-For protocols such as X.509 [RFC5280] that specify key usage along with the public key, then the composite public key associated with a composite signature MUST only have a signing-type key usage.
+For protocols such as X.509 [RFC5280] that specify key usage along with the public key, then the composite public key associated with a composite signature MUST have a signing-type key usage.
+This is because the composite public key can only be used in situations
+that are appropriate for both component algorithms, so even if the
+classical component key supports both signing and encryption,
+the post-quantum algorithms do not.
 
-If the keyUsage extension is present in a Certification Authority (CA) certificate that indicates a composite signature key, then any combination of the following values MAY be present:
+
+If the keyUsage extension is present in a Certification Authority (CA) certificate that indicates a composite key, then any combination of the following values MAY be present and any other values MUST NOT be present:
+
 
 ~~~
 digitalSignature;
@@ -565,7 +571,8 @@ keyCertSign; and
 cRLSign.
 ~~~
 
-If the keyUsage extension is present in an End Entity (EE) certificate that indicates a composite signature key, then any combination of the following values MAY be present:
+If the keyUsage extension is present in an End Entity (EE) certificate that indicates a composite key, then any combination of the following values MAY be present and any other values MUST NOT be present:
+
 
 ~~~
 digitalSignature; and
