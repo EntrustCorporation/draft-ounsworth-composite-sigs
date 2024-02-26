@@ -164,7 +164,7 @@ During the transition to post-quantum cryptography, there will be uncertainty as
 
 Cautious implementers may wish to combine cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. Such mechanisms are referred to as Post-Quantum / Traditional Hybrids {{I-D.driscoll-pqt-hybrid-terminology}}.  
 
-In particular, certain jurisdictions are recommending or requiring that PQC lattice schemes only be used within in a PQ/T hybrid. As an example, we point to [BSI2021] which includes the following recommendation:
+In particular, certain jurisdictions are recommending or requiring that PQC lattice schemes only be used within a PQ/T hybrid. As an example, we point to [BSI2021] which includes the following recommendation:
 
 "Therefore, quantum computer-resistant methods should
 not be used alone - at least in a transitional period - but
@@ -173,13 +173,7 @@ method. For this purpose, protocols must be modified
 or supplemented accordingly. In addition, public key
 infrastructures, for example, must also be adapted"
 
-In addition, [BSI2021] specifically references this specification as a concrete example of hybrid X.509 certificates.
-
-A more recent example is [ANSSI2024], a document co-authored by French Cybersecurity Agency (ANSSI), 
-Federal Office for Information Security (BSI), Netherlands National Communications Security Agency (NLNCSA), and
-Swedish National Communications Security Authority, Swedish Armed Forces which makes the following statement:
-
-“In light of the urgent need to stop relying only on quantum-vulnerable public-key cryptography for key establishment, the clear priority should therefore be the migration to post-quantum cryptography in hybrid solutions”
+TODO:  Dive through Stravos?
 
 This specification represents the straightforward implementation of the hybrid solutions called for by European cyber security agencies.
 
@@ -560,9 +554,9 @@ In the interests of simplicity and avoiding compatibility issues, implementation
 
 ## Key Usage Bits
 
-For protocols such as X.509 [RFC5280] that specify key usage along with the public key, then the composite public key associated with a composite signature MUST have a signing-type key usage.
+For protocols such as X.509 [RFC5280] that specify key usage along with the public key, then the composite public key associated with a composite signature MUST only have a signing-type key usage.
 
-If the keyUsage extension is present in a Certification Authority (CA) certificate that indicates a composite key, then any combination of the following values MAY be present:
+If the keyUsage extension is present in a Certification Authority (CA) certificate that indicates a composite signature key, then any combination of the following values MAY be present:
 
 ~~~
 digitalSignature;
@@ -571,7 +565,7 @@ keyCertSign; and
 cRLSign.
 ~~~
 
-If the keyUsage extension is present in an End Entity (EE) certificate that indicates a composite key, then any combination of the following values MAY be present:
+If the keyUsage extension is present in an End Entity (EE) certificate that indicates a composite signature key, then any combination of the following values MAY be present:
 
 ~~~
 digitalSignature; and
@@ -836,6 +830,8 @@ Traditionally, a public key, certificate, or signature contains a single cryptog
 In the composite model this is less obvious since implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though one or both algorithms are deprecated for individual use. As such, a single composite public key or certificate may contain a mixture of deprecated and non-deprecated algorithms.
 
 Since composite algorithms are registered independently of their component algorithms, their deprecation can be handled indpendently from that of their component algorithms. For example a cryptographic policy might continue to allow `id-MLDSA65-ECDSA-P256-SHA512` even after ECDSA-P256 is deprecated.
+
+This specification makes an assumption that composite public keys will be bound in a structure that contains a signature over the public key (for example, and X.509 Certificate), which is chained back to a trust anchor. Without such a mechanism in place (such as RFC 5914), it is possible that the component keys can be separated without detection. If a composite public key will appear in an unsigned structure, then they MUST be distributed in a way that prevents tampering. 
 
 
 <!-- End of Security Considerations section -->
