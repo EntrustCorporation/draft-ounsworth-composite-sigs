@@ -155,7 +155,10 @@ This document defines Post-Quantum / Traditional composite Key Signaturem algori
 * Shortened Abstract.
 * Added text to Introduction to justify where and why this mechanism would be used.
 * Resolved comments from Kris Kwiatkowski
+* Resolved Key Usage comments from Tim Hollebeek
 * Fixed up Algorithm names in Algorithm Deprecation section
+* Removed Falcon composites to not delay the release of this document.  Falcon (FN-DSA) composites can be added in 
+a separate document
 
 
 # Introduction {#sec-intro}
