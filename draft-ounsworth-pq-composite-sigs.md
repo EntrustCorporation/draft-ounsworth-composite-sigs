@@ -1,8 +1,8 @@
 ---
-title: Composite Signatures For Use In Internet PKI
-abbrev: PQ Composite Sigs
+title: Composite ML-DSA for use in Internet PKI
+abbrev: PQ Composite ML-DSA
 # <!-- EDNOTE: Edits the draft name -->
-docname: draft-ounsworth-pq-composite-sigs-12
+docname: draft-ounsworth-pq-composite-sigs-13
 
 # <!-- stand_alone: true -->
 ipr: trust200902
@@ -141,7 +141,7 @@ informative:
 
 --- abstract
 
-This document defines Post-Quantum / Traditional composite Key Signaturem algorithms suitable for use within X.509, PKIX and CMS protocols. Composite algorithms are provided which combine ML-DSA and Falcon with RSA, ECDSA, Ed25519, and Ed448. The provided set of composite algorithms should meet most X.509, PKIX, and CMS needs. 
+This document defines Post-Quantum / Traditional composite Key Signaturem algorithms suitable for use within X.509, PKIX and CMS protocols. Composite algorithms are provided which combine ML-DSA with RSA, ECDSA, Ed25519, and Ed448. The provided set of composite algorithms should meet most X.509, PKIX, and CMS needs. 
 
 
 
@@ -184,7 +184,7 @@ PQ/T Hybrid cryptography can, in general, provide solutions to two migration pro
 - Ease-of-migration: During the transition period, systems will require mechanisms that allow for staged migrations from fully classical to fully post-quantum-aware cryptography.
 - Safeguard against faulty algorithm implementations and compromised keys: Even for long known algorithms there is a non-negligible risk of severe implementation faults. Latest examples are the ROCA attack and ECDSA psychic signatures. Using more than one algorithms will mitigate these risks.
 
-This document defines a specific instantiation of the PQ/T Hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single signature such that it can be treated as a single atomic algorithm at the protocol level. Composite algorithms address algorithm strength uncertainty because the composite algorithm remains strong so long as one of its components remains strong. Concrete instantiations of composite signature algorithms are provided based on ML-DSA, Falcon, RSA and ECDSA. Backwards compatibility is not directly covered in this document, but is the subject of {{sec-backwards-compat}}.
+This document defines a specific instantiation of the PQ/T Hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single signature such that it can be treated as a single atomic algorithm at the protocol level. Composite algorithms address algorithm strength uncertainty because the composite algorithm remains strong so long as one of its components remains strong. Concrete instantiations of composite signature algorithms are provided based on ML-DSA, RSA and ECDSA. Backwards compatibility is not directly covered in this document, but is the subject of {{sec-backwards-compat}}.
 
 This document is intended for general applicability anywhere that digital signatures are used within PKIX and CMS structures.   For a more detailed use-case discussion for composite signatures, the reader is encouraged to look at {{I-D.vaira-pquip-pqc-use-cases}}
 
@@ -424,9 +424,6 @@ As mentioned above, the OID input value for the Composite Signature Generation a
 | id-MLDSA87-ECDSA-P384-SHA512 |060B6086480186FA6B5008010B|
 | id-MLDSA87-ECDSA-brainpoolP384r1-SHA512 |060B6086480186FA6B5008010C|
 | id-MLDSA87-Ed448-SHA512 |060B6086480186FA6B5008010D|
-| id-Falon512-ECDSA-P256-SHA256 |060B6086480186FA6B5008010E|
-| id-Falcon512-ECDSA-brainpoolP256r1-SHA256 |060B6086480186FA6B5008010F|
-| id-Falcon512-Ed25519-SHA512 |060B6086480186FA6B50080110|
 {: #tab-sig-alg-oids title="Composite Signature OID Concatenations"}
 
 ## PreHashing the Message {#sec-prehash}
@@ -439,8 +436,6 @@ As noted in the composite signature generation process and composite signature v
 1. Ed25519 [RFC8032] uses SHA512 internally, therefore SHA512 is used to pre-hash the message when Ed25519 is a component algorithm.  
 
 1. Ed448 [RFC8032] uses SHAKE256 internally, but to reduce the set of prehashing algorihtms, SHA512 was selected to pre-hash the message when Ed448 is a component algorithm.
-  
-1. TODO:  For Falcon signing it is expected prehashing digest accomodations will be allowed.  
 
 <!-- End of Composite Signature Algorithm section -->
 
@@ -656,9 +651,6 @@ Signature public key types:
 | id-MLDSA87-ECDSA-P384-SHA512            | &lt;CompSig&gt;.11  | MLDSA87 | SHA512withECDSA |SHA512|
 | id-MLDSA87-ECDSA-brainpoolP384r1-SHA512 | &lt;CompSig&gt;.12 | MLDSA87 | SHA512withECDSA | SHA512 |
 | id-MLDSA87-Ed448-SHA512              | &lt;CompSig&gt;.13 | MLDSA87 | Ed448 |SHA512 |
-| id-Falon512-ECDSA-P256-SHA256             | &lt;CompSig&gt;.14  | Falcon512  | SHA256withECDSA | SHA256 |
-| id-Falcon512-ECDSA-brainpoolP256r1-SHA256  | &lt;CompSig&gt;.15  | Falcon512  | SHA256withECDSA |SHA256 | 
-| id-Falcon512-Ed25519-SHA512            | &lt;CompSig&gt;.16 | Falcon512  | Ed25519| SHA512 |
 {: #tab-sig-algs title="Composite Signature Algorithms"}
 
 The table above contains everything needed to implement the listed explicit composite algorithms. See the ASN.1 module in section {{sec-asn1-module}} for the explicit definitions of the above Composite signature algorithms.   
@@ -669,7 +661,6 @@ Full specifications for the referenced algorithms can be found as follows:
 * _MLDSA_: {{I-D.ietf-lamps-dilithium-certificates}} and [FIPS.204-ipd]
 * _ECDSA_: [RFC5480]
 * _Ed25519 / Ed448_: [RFC8410]
-* _Falcon_: TBD
 * _RSAES-PKCS-v1_5_: [RFC8017]
 * _RSASSA-PSS_: [RFC8017]
 
@@ -809,22 +800,6 @@ EDNOTE to IANA: OIDs will need to be replaced in both the ASN.1 module and in {{
   - Description:  id-MLDSA87-Ed448-SHA512
   - References: This Document  
   
--  id-Falon512-ECDSA-P256-SHA256
-  - Decimal: IANA Assigned
-  - Description:  id-Falon512-ECDSA-P256-SHA256
-  - References: This Document
-  
--  id-Falcon512-ECDSA-brainpoolP256r1-SHA256
-  - Decimal: IANA Assigned
-  - Description:  id-Falcon512-ECDSA-brainpoolP256r1-SHA256
-  - References: This Document     
-  
--  id-Falcon512-Ed25519-SHA512
-  - Decimal: IANA Assigned
-  - Description:  id-Falcon512-Ed25519-SHA512
-  - References: This Document               
-  
-
 <!-- End of IANA Considerations section -->
 
 
