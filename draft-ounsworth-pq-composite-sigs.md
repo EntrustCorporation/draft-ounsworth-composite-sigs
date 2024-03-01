@@ -224,8 +224,8 @@ DER:
           Distinguished Encoding Rules as defined in [X.690].
 
 LEGACY:   For the purposes of this document, a legacy algorithm is
-          any cryptographic algorithm currently is use which is 
-          not believe to be resistant to quantum cryptanalysis.
+          any cryptographic algorithm currently in use which is 
+          not believed to be resistant to quantum cryptanalysis.
 
 PKI:
           Public Key Infrastructure, as defined in [RFC5280].
@@ -358,7 +358,7 @@ Input:
                         composite inputs.
 
      Message            Message whose signature is to be verified, 
-                        an octet string
+                        an octet string.
      
      signature          CompositeSignatureValue containing the component
                         signature values (S1 and S2) to be verified.            
@@ -624,7 +624,7 @@ The choice of `SEQUENCE SIZE (2) OF BIT STRING`, rather than for example a singl
 
 This section defines the algorithm identifiers for explicit combinations.  For simplicity and prototyping purposes, the signature algorithm object identifiers specified in this document are the same as the composite key object Identifiers.  A proper implementation should not presume that the object ID of a composite key will be the same as its composite signature algorithm.   
 
-This section is not intended to be exhaustive and other authors may define others composite signature algorithms so long as they are compatible with the structures and processes defined in this and companion public and private key documents.
+This section is not intended to be exhaustive and other authors may define other composite signature algorithms so long as they are compatible with the structures and processes defined in this and companion public and private key documents.
 
 Some use-cases desire the flexibility for clients to use any combination of supported algorithms, while others desire the rigidity of explicitly-specified combinations of algorithms.
 
@@ -890,7 +890,7 @@ https://datatracker.ietf.org/ipr/3588/
 
 
 # Contributors and Acknowledgements
-This document incorporates contributions and comments from a large group of experts. The Editors would especially like to acknowledge the expertise and tireless dedication of the following people, who attended many long meetings and generated millions of bytes of electronic mail and VOIP traffic over the past year in pursuit of this document:
+This document incorporates contributions and comments from a large group of experts. The Editors would especially like to acknowledge the expertise and tireless dedication of the following people, who attended many long meetings and generated millions of bytes of electronic mail and VOIP traffic over the past few years in pursuit of this document:
 
 Scott Fluhrer (Cisco Systems),
 Daniel Van Geest (ISARA),
@@ -900,8 +900,9 @@ Panos Kampanakis (Cisco Systems),
 Richard Kisley (IBM),
 Serge Mister (Entrust),
 François Rousseau,
-Falko Strenzke and
+Falko Strenzke,
 Felipe Ventura (Entrust)
+Alexander Ralien (Siemens)
 
 We are grateful to all, including any contributors who may have
 been inadvertently omitted from this list.
