@@ -901,7 +901,7 @@ Richard Kisley (IBM),
 Serge Mister (Entrust),
 François Rousseau,
 Falko Strenzke,
-Felipe Ventura (Entrust)
+Felipe Ventura (Entrust) and
 Alexander Ralien (Siemens)
 
 We are grateful to all, including any contributors who may have
