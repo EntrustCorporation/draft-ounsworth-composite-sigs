@@ -181,8 +181,6 @@ Internet-Draft             PQ Composite ML-DSA                March 2024
    protocols must be modified or supplemented accordingly.  In addition,
    public key infrastructures, for example, must also be adapted"
 
-   TODO: Dive through Stravos?
-
    This specification represents the straightforward implementation of
    the hybrid solutions called for by European cyber security agencies.
 
@@ -217,6 +215,8 @@ Internet-Draft             PQ Composite ML-DSA                March 2024
    algorithms are provided based on ML-DSA, RSA and ECDSA.  Backwards
    compatibility is not directly covered in this document, but is the
    subject of Appendix B.2.
+
+
 
 
 

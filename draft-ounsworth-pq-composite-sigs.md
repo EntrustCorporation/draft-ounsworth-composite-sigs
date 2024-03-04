@@ -178,8 +178,6 @@ method. For this purpose, protocols must be modified
 or supplemented accordingly. In addition, public key
 infrastructures, for example, must also be adapted"
 
-TODO:  Dive through Stravos?
-
 This specification represents the straightforward implementation of the hybrid solutions called for by European cyber security agencies.
 
 
