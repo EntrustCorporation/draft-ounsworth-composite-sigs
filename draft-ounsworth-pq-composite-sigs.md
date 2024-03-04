@@ -159,6 +159,7 @@ This document defines Post-Quantum / Traditional composite Key Signaturem algori
 * Fixed up Algorithm names in Algorithm Deprecation section
 * Removed Falcon composites to not delay the release of this document.  Falcon (FN-DSA) composites can be added in 
 a separate document
+* Add a security consideration about Trust Anchors
 
 
 # Introduction {#sec-intro}
@@ -816,7 +817,15 @@ In the composite model this is less obvious since implementers may decide that c
 
 Since composite algorithms are registered independently of their component algorithms, their deprecation can be handled indpendently from that of their component algorithms. For example a cryptographic policy might continue to allow `id-MLDSA65-ECDSA-P256-SHA512` even after ECDSA-P256 is deprecated.
 
-This specification makes an assumption that composite public keys will be bound in a structure that contains a signature over the public key (for example, and X.509 Certificate), which is chained back to a trust anchor. Without such a mechanism in place (such as RFC 5914), it is possible that the component keys can be separated without detection. If a composite public key will appear in an unsigned structure, then they MUST be distributed in a way that prevents tampering. 
+When considering stripping attacks, one need consider the case where an attacker has fully compromised one of the component algorithms to the point that they can produce forged signatures that appear valid under one of the component public keys, and thus fool a victim verifier into accepting a forged signature. The protection against this attack relies on the victim verifier trusting the pair of public keys as a single composite key, and not trusting the individual component keys by themselves. 
+
+Specifically, in order to achieve this non-separability property, this specification makes two assumptions about how the verifier will establish trust in a composite public key:
+
+1. This specification assumes that all of the component keys within a composite key are freshly generated for the composite; ie a given public key MUST NOT appear as a component within a composite key and also within single-algorithm constructions. 
+
+2. This specification assumes that composite public keys will be bound in a structure that contains a signature over the public key (for example, an X.509 Certificate [RFC5280]), which is chained back to a trust anchor, and where that signature algorithm is at least as strong as the composite public key that it is protecting. 
+
+There are mechanisms within Internet PKI where trusted public keys do not appear within signed structures -- such as the Trust Anchor format defined in [RFC5914]. In such cases, it is the responsibility of implementers to ensure that trusted composite keys are distributed in a way that is tamper-resistant and does not allow the component keys to be trusted independently.
 
 
 <!-- End of Security Considerations section -->
