@@ -160,6 +160,7 @@ This document defines Post-Quantum / Traditional composite Key Signaturem algori
 * Removed Falcon composites to not delay the release of this document.  Falcon (FN-DSA) composites can be added in 
 a separate document
 * Add a security consideration about Trust Anchors
+* Updated the included samples to conform to this draft
 
 
 # Introduction {#sec-intro}
@@ -912,6 +913,7 @@ François Rousseau,
 Falko Strenzke,
 Felipe Ventura (Entrust) and
 Alexander Ralien (Siemens)
+
 
 We are grateful to all, including any contributors who may have
 been inadvertently omitted from this list.
