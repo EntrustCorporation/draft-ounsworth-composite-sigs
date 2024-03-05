@@ -841,17 +841,19 @@ There are mechanisms within Internet PKI where trusted public keys do not appear
 ## Explicit Composite Signature Examples {#appdx-expComposite-examples}
 
 ### MLDSA44-ECDSA-P256-SHA256 Public Key
-
+~~~
 {::include examples/MLDSA44-ECDSA-P256-SHA256.pub}
+~~~
 
 ### MLDSA44-ECDSA-P256 Private Key
-
+~~~
 {::include examples/MLDSA44-ECDSA-P256-SHA256.pvt}
-
+~~~
 
 ### MLDSA44-ECDSA-P256 Self-Signed X509 Certificate
-
+~~~
 {::include examples/MLDSA44-ECDSA-P256-SHA256.crt}
+~~~
 
 # Implementation Considerations {#sec-imp-considers}
 
